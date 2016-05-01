@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':core')
+
+    compile "com.fasterxml.jackson.core:jackson-core:2.7.3"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.7.3"
+
+    testCompile "com.jayway.jsonpath:json-path-assert:2.2.0"
+}

@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':core')
+
+    compile "org.apache.httpcomponents:httpasyncclient:4.1.1", {
+        exclude module: 'commons-logging'
+    }
+
+    // bridge commons-logging to SLF4J
+    runtime "org.slf4j:jcl-over-slf4j:${versions.slf4j}"
+}

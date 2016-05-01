@@ -1,0 +1,16 @@
+apply plugin: 'application'
+
+mainClassName = 'fi.linuxbox.upcloud.app.App'
+
+dependencies {
+    compile project(':core')
+    compile project(':ahc')
+    compile project(':jackson')
+    compile project(':model')
+
+    // Application must ensure that the SLF4J API is present at runtime
+    compile "org.slf4j:slf4j-api:${versions.slf4j}"
+
+    // Application can choose the SLF4J binding that is used at production runtime
+    compile "ch.qos.logback:logback-classic:${versions.logback}"
+}

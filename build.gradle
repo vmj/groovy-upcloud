@@ -1,0 +1,50 @@
+
+ext.versions = [groovy: '2.4.6',
+                logback: '1.1.7',
+                slf4j: '1.7.21',
+                spock: '1.0-groovy-2.4',
+]
+
+subprojects {
+    apply plugin: 'groovy'
+
+    group = 'fi.linuxbox.upcloud'
+    version = '1.0.0-SNAPSHOT'
+    archivesBaseName = "${rootProject.name}-${project.name}"
+
+    // Java 8
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // Everything is written in Groovy
+        compile "org.codehaus.groovy:groovy:${versions.groovy}"
+
+        // Dependency injections are marked with standard API
+        compile 'javax.inject:javax.inject:1'
+
+        // Libraries do not ship with logging API
+        // THIS SHOULD BE compileOnly, but IntelliJ doesn't seem to handle it (will not see this as a dependency)
+        compile "org.slf4j:slf4j-api:${versions.slf4j}"
+
+        // Tests need LogbackConfigurator
+        testCompile "ch.qos.logback:logback-classic:${versions.logback}"
+
+        // Tests are written in Spock
+        testCompile "org.spockframework:spock-core:${versions.spock}", {
+            exclude module: 'groovy-all'
+        }
+    }
+
+    groovydoc {
+        // Java SE 8 APIs
+        link("https://docs.oracle.com/javase/8/docs/api/", "java.io", "java.lang", "java.util")
+        // Java EE 7 APIs
+        link("https://docs.oracle.com/javaee/7/api/", "javax.inject")
+        // Groovy APIs
+        link("http://docs.groovy-lang.org/docs/groovy-2.4.6/html/gapi/", "groovy.lang")
+    }
+}
