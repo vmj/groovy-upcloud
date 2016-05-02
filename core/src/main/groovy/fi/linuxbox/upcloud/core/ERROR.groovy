@@ -21,7 +21,7 @@ package fi.linuxbox.upcloud.core
  *         server_error: { MODEL response ->
  *             // Default callback (for any 5xx HTTP response).
  *             // If this is called, it is always called with one argument.
- *             assert response.META.status.startsWith('5') // 5xx status code
+ *             assert response.META.status in (500..599) // 5xx status code
  *
  *         })
  *     api.GET('some-resource',

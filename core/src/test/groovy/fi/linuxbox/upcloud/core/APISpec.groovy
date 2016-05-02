@@ -43,23 +43,23 @@ class APISpec extends Specification {
             1 * http.execute({
                 Headers headers = it.headers
                 def ok = headers.all().size() == 5
-                ok = ok && headers.all().findResult { Header header -> header.name == 'Accept' ? true : null }
-                ok = ok && headers.all().findResult { Header header -> header.name == 'Authorization' ? true : null }
-                ok = ok && headers.all().findResult { Header header -> header.name == 'Content-Type' ? true : null }
-                ok = ok && headers.all().findResult { Header header -> header.name == 'Host' ? true : null }
-                ok = ok && headers.all().findResult { Header header -> header.name == 'User-Agent' ? true : null }
-                ok = ok && headers.all().every { Header header ->
-                    switch (header.name) {
+                ok = ok && headers.all().any { it.name == 'Accept' }
+                ok = ok && headers.all().any { it.name == 'Authorization' }
+                ok = ok && headers.all().any { it.name == 'Content-Type' }
+                ok = ok && headers.all().any { it.name == 'Host' }
+                ok = ok && headers.all().any { it.name == 'User-Agent' }
+                ok = ok && headers.all().every {
+                    switch (it.name) {
                         case 'Accept':
-                            return header.value == 'application/json; charset=UTF-8'
+                            return it.value == 'application/json; charset=UTF-8'
                         case 'Authorization':
-                            return header.value == 'Basic b3BlbjpzZXNhbWU='
+                            return it.value == 'Basic b3BlbjpzZXNhbWU='
                         case 'Content-Type':
-                            return header.value == 'application/json'
+                            return it.value == 'application/json'
                         case 'Host':
-                            return header.value == 'api.upcloud.com'
+                            return it.value == 'api.upcloud.com'
                         case 'User-Agent':
-                            return header.value.startsWith('Groovy UpCloud/0.1 ')
+                            return it.value.startsWith('Groovy UpCloud/0.1 ')
                         default:
                             return false
                     }
@@ -221,6 +221,7 @@ class APISpec extends Specification {
         where:
             status | cbname
             404    | '404'
+            302    | 302
             101    | 'info'
             204    | 'success'
             302    | 'redirect'
@@ -251,6 +252,18 @@ class APISpec extends Specification {
     }
 
     @Unroll
+    def "Additional request callback #cbname is rejected"() {
+        when:
+            api.request(null, null, null, (cbname): {}) {}
+
+        then:
+            thrown(IllegalArgumentException)
+
+        where:
+            cbname << [ '000', 9999, 404.5, null, '', true, [foo: 1], (100..199), 'infroooormationaaaaaale' ]
+    }
+
+    @Unroll
     def "Global callback #cbname is called for 101"() {
         given: "an HTTP implementation that calls the API callback with 101 status"
             1 * http.execute(*_) >> { args -> args[0].cb(new META(101, null), null, null) }
@@ -266,7 +279,7 @@ class APISpec extends Specification {
             ok
 
         where:
-            cbname << [ '101', 'info' ]
+            cbname << [ '101', 101, 'info' ]
     }
 
     @Unroll
@@ -276,7 +289,7 @@ class APISpec extends Specification {
 
         and: "a global callback"
             boolean ok = false
-            api.callback(cbname: {})
+            api.callback((cbname): {})
 
         when: "the API is invoked with a callback for 101"
             api.request(null, null, null, (cbname): { ok = true }) {}
@@ -286,6 +299,18 @@ class APISpec extends Specification {
 
         where:
             cbname << [ '101', 'info' ]
+    }
+
+    @Unroll
+    def "Invalid default callback #cbname is rejected"() {
+        when:
+            api.callback((cbname): {})
+
+        then:
+            thrown(IllegalArgumentException)
+
+        where:
+            cbname << ['099', 600, 'foo']
     }
 
     def "Default request callback with one parameter and error case"() {

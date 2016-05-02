@@ -4,6 +4,7 @@ import org.codehaus.groovy.runtime.typehandling.*
 import spock.lang.*
 
 import fi.linuxbox.upcloud.core.http.*
+import fi.linuxbox.upcloud.core.json.*
 
 class MODELSpec extends Specification {
 
@@ -49,7 +50,7 @@ class MODELSpec extends Specification {
     def "Model can be created with nested model property"() {
         given:
         def meta = new META(200, null)
-        def api = new API(Mock(HTTP), null, null, null)
+        def api = new API(Mock(HTTP), Mock(JSON), "foo", "bar")
 
         when:
         def model = new MODEL(API: api, META: meta, repr: [

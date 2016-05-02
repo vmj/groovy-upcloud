@@ -9,6 +9,7 @@ import fi.linuxbox.upcloud.http.ahc.*
 import fi.linuxbox.upcloud.jackson.*
 
 import static java.util.concurrent.TimeUnit.*
+
 /**
  *
  */
@@ -36,11 +37,11 @@ class App {
         def cloud = new UpCloud(api)
 
         cloud.account(
-                "200": { MODEL response ->
+                200: { response ->
                     cv.countDown()
                     log.info("${response.account.username}: ${response.account.credits}")
                 },
-                { MODEL response, ERROR err ->
+                { response, err ->
                     cv.countDown()
                     if (err) {
                         log.error("got a network error: ${err.message}")

@@ -36,7 +36,7 @@ class AhcHTTP8Spec extends Specification {
                         resource: '/',
                         headers: new SimpleHeaders([ 'X-Test': 'Yes' ]),
                         cb: { META meta, InputStream body, ERROR err ->
-                            if (meta.status == "200")
+                            if (meta.status == 200)
                                 cv.countDown()
                         }
                 ))

@@ -8,7 +8,7 @@ import fi.linuxbox.upcloud.core.http.Headers
  * <p>
  * This is basically the head of the HTTP message: the status code, the reason phrase, and the headers.  In the
  * application level callbacks, a reference to an instance of this class can be found in every model.  For example,
- * given the following response from the server:
+ * given the following odd response from the server:
  * </p>
  *
  * <pre>
@@ -23,12 +23,12 @@ import fi.linuxbox.upcloud.core.http.Headers
  *     }
  * </pre>
  *
- * The application callback will be called with an instance of MODEL as the first parameter:
+ * The application callback will be called with an instance of {@link MODEL} as the first parameter:
  *
  * <pre>
  *     { model ->
  *       assert model instanceof fi.linuxbox.upcloud.core.MODEL
- *       assert model.META.status == "200"
+ *       assert model.META.status == 200
  *       assert model.META.message == "OK"
  *       assert model.error instanceof fi.linuxbox.upcloud.model.Error
  *       assert model.error.errorCode == "BAD_REQUEST"
@@ -44,7 +44,7 @@ class META {
      * This is never null.
      * </p>
      */
-    final String status
+    final Integer status
     /**
      * The HTTP reason phrase.
      *
@@ -66,7 +66,7 @@ class META {
      * @param headers The HTTP headers.
      */
     META(int status, String message, Headers headers) {
-        this.status = status.toString()
+        this.status = status
         this.message = message
         this.headers = headers
     }
