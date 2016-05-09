@@ -1,7 +1,8 @@
 include 'core'
 include 'jackson'
-include 'model'
 include 'ahc'
+include 'builder'
+include 'model'
 include 'app'
 
 rootProject.name = 'groovy-upcloud'
