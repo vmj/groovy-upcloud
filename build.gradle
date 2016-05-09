@@ -5,11 +5,16 @@ ext.versions = [groovy: '2.4.6',
                 spock: '1.0-groovy-2.4',
 ]
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.13'
+}
+
 subprojects {
     apply plugin: 'groovy'
 
     group = 'fi.linuxbox.upcloud'
     version = '1.0.0-SNAPSHOT'
+
     archivesBaseName = "${rootProject.name}-${project.name}"
 
     // Java 8
