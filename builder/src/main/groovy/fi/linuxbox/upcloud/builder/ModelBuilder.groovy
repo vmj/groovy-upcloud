@@ -27,16 +27,16 @@ class ModelBuilder {
      * @return The new server.
      */
     static def server(Closure closure = null) {
-        model 'server', closure
+        build 'server', closure
     }
 
     def methodMissing(final String name, final def args) {
         switch (args.length) {
             case 0:
-                return model(name)
+                return build(name)
             case 1:
                 if (args[0] instanceof Closure)
-                    return model(name, args[0])
+                    return build(name, args[0])
         }
         throw new MissingMethodException(name, this.class, args)
     }
@@ -72,7 +72,7 @@ class ModelBuilder {
      *     ...
      * </p>
      * <code>
-     *     def model = model 'server', {
+     *     def model = build 'server', {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
@@ -83,7 +83,7 @@ class ModelBuilder {
      * @param closure A closure that will configure the new model
      * @return The new model.
      */
-    static def model(String type, Closure closure = null) {
+    static def build(String type, Closure closure = null) {
         MODEL model = new MODEL([repr: [(type): [:]]])."$type"
         configure model, closure
     }

@@ -42,7 +42,7 @@ class ModelBuilderSpec extends Specification{
 
     def "Named model creation and configuration"() {
         when:
-            def model = model 'ipAddress', {
+            def model = build 'ipAddress', {
                 hostname = 'server1.example.com'
                 coreNumber = '1'
                 memoryAmount = '2048'
@@ -57,7 +57,7 @@ class ModelBuilderSpec extends Specification{
 
     def "Named model creation without configuration"() {
         when:
-            def server = model 'portRangeStart'
+            def server = build 'portRangeStart'
 
         then:
             server?.class.simpleName == 'PortRangeStart'
