@@ -1,0 +1,15 @@
+== Introduction
+
+http://www.upcloud.com[UpCloud] is an IaaS provider:
+you can quickly create, upscale and downscale virtual servers,
+manage their storage devices and IP addresses,
+migrate and clone servers across multiple locations worldwide,
+and
+secure the servers with a firewall that's separate from the server OS.
+
+UpCloud API is an HTTP application programming interface provided by UpCloud.
+The API allows client programs to be written to automate the management of the servers and their resources.
+
+Groovy UpCloud is a library that makes it even easier to write client applications for UpCloud API.
+Groovy UpCloud is asynchronous and takes advantage of the dynamism of Groovy language.
+Groovy UpCloud is designed to be used to write scripts, desktop and mobile applications, and server side services.

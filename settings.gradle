@@ -6,5 +6,6 @@ include 'resource'
 include 'api'
 include 'script'
 include 'app'
+include 'manual'
 
 rootProject.name = 'groovy-upcloud'

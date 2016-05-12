@@ -1,0 +1,161 @@
+== Architecture overview
+
+=== API overview
+
+UpCloud API follows the RESTful principles.
+HTTP**S** is used for client-server communication, and all operations require authentication.
+
+=== API versioning
+
+Every application written on top of Groovy UpCloud must be aware of the UpCloud API version they are using.
+Each version of Groovy UpCloud communicates with one specific version of UpCloud API.
+
+This document describes Groovy UpCloud version {project-version}
+which is compatible with and uses UpCloud API version {api-version}.
+
+The UpCloud API is versioned.
+The API version is embedded in the base URL of the API.
+The base URL, in turn, is embedded in the Groovy UpCloud library.
+As a consequence, a specific version of Groovy UpCloud will always talk with a specific version of the API.
+
+Many of the backwards incompatible changes in the UpCloud API require only a version bump in the Groovy UpCloud library,
+but might require changes in the applications.
+
+For example, in order to support IPv6, UpCloud API added a mandatory `family` property to the IP address operations.
+Since the change was backwards incompatible, the API version was changed from 1.1 to 1.2.
+The new API was assigned a new base URL, and the Groovy UpCloud library was updated with the new API base URL.
+Groovy UpCloud does not define the resource properties statically,
+i.e. there was nothing to update in regards to the IP address operations.
+But because the API change was backwards incompatible, so was the Groovy UpCloud change,
+and the Groovy UpCloud minor version was bumped.
+Applications that made use of the affected IP address operations,
+had to stick to the old Groovy UpCloud version until they added the `family` property to the IP address creation.
+
+If UpCloud ever takes some of the older API versions down,
+the applications still using that version will start receiving `API_VERSION_OBSOLETE` or `API_VERSION_INVALID`
+<<Response codes,error codes>>.
+
+=== Authentication
+
+All operations against UpCloud API require authentication.
+An API account is separate from UpCloud account, and one UpCloud account may have multiple API accounts.
+API accounts can be created using the https://my.upcloud.com[UpCloud control panel].
+
+In Groovy UpCloud, the authentication is handled by the `API` class.
+One application may instantiate as many instances of the `API` class as needed, each with different credentials.
+If the credentials are mistyped or revoked, the application will receive `AUTHENTICATION_FAILED` error code.
+
+=== Resource identifiers
+
+UpCloud resources -- such as servers, storages, and IP addresses -- are referred to by unique identifiers.
+These identifiers are assigned by the UpCloud API when resources are created.
+They follow the version 4 format of the Universally Unique Identifier (UUID) standard.
+
+Groovy UpCloud never interprets the identifiers, and they are visible to the applications as opaque strings.
+
+=== Request and response data formats
+
+Between the applications and Groovy UpCloud, resource representations are instances of `MODEL` class (or subclasses).
+Behind the scenes, Groovy UpCloud is using JSON data format when communicating with the UpCloud API.
+
+The conversion between `MODEL`s and JSON is pretty straight forward.
+
+JSON data types `array`, `number`, `string`, `boolean`, and `null` are mapped to a corresponding Groovy data types:
+`List`, `Number`, `String`, `Boolean`, and `Object`, respectively.
+
+JSON `object` type is handled a little differently:
+if it has only one property and the value of that property is an `array`,
+then it is interpreted as a "list wrapper" and mapped to a `List`.
+Otherwise it is mapped to a `MODEL`, i.e. recursive interpretation.
+
+The "list wrapper" is a convention used by the UpCloud API.
+For example, when requesting a list of servers, the UpCloud API might respond with the following JSON:
+
+[source,json]
+----
+{ // <1>
+    "servers": { // <2>
+        "server": [ // <3>
+            {
+                "hostname": "server1.example.com",
+                "state": "started",
+                "core_number": "1",
+                "memory_amount": "2048"
+            },
+            {
+                "hostname": "server1.example.com",
+                "state": "started",
+                "core_number": "0",
+                "memory_amount": "512"
+            }
+        ]
+    }
+}
+----
+<1> the root type is always a JSON `object` (by convention)
+<2> a `servers` property whose value is a "list wrapper" JSON `object`
+<3> the actual list of server representations
+
+This JSON will be mapped to a following `MODEL` graph:
+
+[source,groovy]
+----
+def callbackClosure = { response ->
+    assert response.servers instanceof List // <1>
+    assert response.servers.size() == 2
+    assert response.servers.all { it.class.simpleName == 'Server' } // <2>
+    assert response.servers[0].hostname == "server1.example.com"
+    assert response.servers[1].coreNumber == "0" // <3>
+}
+----
+<1> the `servers` JSON property is "unwrapped" for Groovier access
+<2> the `servers` `MODEL` property contains instances of `Server` model
+<3> the JSON style property names are converted to Groovy style names
+
+=== Response codes
+
+The UpCloud API uses regular HTTP status codes to indicate success or failure of the operations.
+In addition, error responses will contain an `errorCode` and `errorMessage` properties for more details.
+
+For example, trying to start a server that does not exist might result in the following response:
+
+[source,groovy]
+----
+import static fi.linuxbox.upcloud.core.http.Status.NOT_FOUND
+
+def callbackClosure = { response ->
+    assert response.META.status == NOT_FOUND // <1>
+    assert response.error.errorCode == 'SERVER_NOT_FOUND' // <2>
+    assert response.error.errorMessage == 'The server 00af0f73-7082-4283-b925-811d1585774b does not exist." // <3>
+}
+----
+<1> the more general `META.status` property corresponds to the HTTP error code of 404 ("Not Found")
+<2> the more specific `errorCode` property tells us that it was a server that wasn't found
+<3> the `errorMessage` is a human readable explanation and contains the resource ID of the resource that wasn't found
+
+The error codes are defined alongside the API operations.
+
+==== Common error codes
+
+The following is a listing of common error codes.
+
+.Common error codes
+|===
+| HTTP status code | Error code | Description
+
+| 401
+| AUTHENTICATION_FAILED
+| Authentication failed using the given username and password.
+
+| 402
+| ?
+| The request cannot be processed because of insufficient credits.
+
+| 403
+| ?
+| The API account identified by the credentials does not have access to the requested resource.
+
+| 404
+| varies
+| The requested resource does not exist, but might have existed before.
+|===

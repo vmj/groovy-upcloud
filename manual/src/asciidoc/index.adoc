@@ -1,0 +1,30 @@
+= Groovy UpCloud Documentation
+Mikko Värri <mikko@varri.fi>
+v1.2, May 2016: First version, for UpCloud API {api-version} and Groovy UpCloud {project-version}
+:toc: left
+:sectnums:
+:icons: font
+:source-highlighter: coderay
+
+
+This is the landing page.
+
+include::introduction.adoc[]
+
+include::architecture_overview.adoc[]
+
+include::accounts.adoc[]
+
+include::pricing.adoc[]
+
+include::zones.adoc[]
+
+include::timezones.adoc[]
+
+include::servers.adoc[]
+
+include::storages.adoc[]
+
+include::ip_addresses.adoc[]
+
+include::firewall.adoc[]

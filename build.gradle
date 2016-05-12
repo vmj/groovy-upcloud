@@ -7,6 +7,8 @@ buildscript {
     }
 }
 
+ext.api_version = '1.2'
+
 ext.versions = [groovy: '2.4.6',
                 logback: '1.1.7',
                 slf4j: '1.7.21',
@@ -18,11 +20,12 @@ task wrapper(type: Wrapper) {
 }
 
 subprojects {
-    apply plugin: 'groovy'
-    apply plugin: 'com.bmuschko.nexus'
-
     group = 'fi.linuxbox.upcloud'
     version = '0.0.3-SNAPSHOT'
+}
+configure(subprojects.findAll { it.name != 'manual'}) {
+    apply plugin: 'groovy'
+    apply plugin: 'com.bmuschko.nexus'
 
     archivesBaseName = "${rootProject.name}-${project.name}"
 
