@@ -1,15 +1,17 @@
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.core.http.HeaderElement
-import org.apache.http.Header
+import org.apache.http.Header as HeaderImpl
+import org.apache.http.HeaderElement as HeaderElementImpl
+
+import fi.linuxbox.upcloud.core.http.*
 
 /**
  *
  */
-class AhcHeader implements fi.linuxbox.upcloud.core.http.Header {
-    private final Header header
+class AhcHeader implements Header {
+    private final HeaderImpl header
 
-    AhcHeader(final Header header) {
+    AhcHeader(final HeaderImpl header) {
         this.header = header
     }
 
@@ -29,9 +31,9 @@ class AhcHeader implements fi.linuxbox.upcloud.core.http.Header {
     }
 
     private static class AhcHeaderElementIterator implements Iterator<HeaderElement> {
-        private final Iterator<org.apache.http.HeaderElement> it
+        private final Iterator<HeaderElementImpl> it
 
-        AhcHeaderElementIterator(final Iterator<org.apache.http.HeaderElement> it) {
+        AhcHeaderElementIterator(final Iterator<HeaderElementImpl> it) {
             this.it = it
         }
 

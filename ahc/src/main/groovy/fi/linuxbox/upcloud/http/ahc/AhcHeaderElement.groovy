@@ -1,16 +1,17 @@
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.core.http.Parameter
-import org.apache.http.HeaderElement
 import org.apache.http.NameValuePair
+import org.apache.http.HeaderElement as HeaderElementImpl
+
+import fi.linuxbox.upcloud.core.http.*
 
 /**
  *
  */
-class AhcHeaderElement implements fi.linuxbox.upcloud.core.http.HeaderElement {
-    private final HeaderElement element
+class AhcHeaderElement implements HeaderElement {
+    private final HeaderElementImpl element
 
-    AhcHeaderElement(final HeaderElement element) {
+    AhcHeaderElement(final HeaderElementImpl element) {
         this.element = element
     }
 

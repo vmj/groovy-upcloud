@@ -22,8 +22,6 @@ class AhcHTTP implements HTTP, Closeable {
 
     private final HttpAsyncClient client
 
-    private final String userAgent
-
     @Inject
     AhcHTTP(final HttpAsyncClient client) {
         this.client = client
