@@ -11,7 +11,7 @@ import fi.linuxbox.upcloud.core.json.*
  * The API for all the things managed in UpCloud.
  *
  * <p>
- *     Together with the {@link MODEL} class, this is the most core part of the Groovy UpCloud library.  Although seldom
+ *     Together with the {@link Resource} class, this is the most core part of the Groovy UpCloud library.  Although seldom
  *     used directly, all the UpCloud API calls go through this class.
  * </p>
  * <p>
@@ -38,7 +38,7 @@ import fi.linuxbox.upcloud.core.json.*
  *     follows:
  * </p>
  * <pre>
- *     def server = createMyServerModel()
+ *     def server = createMyServerResource()
  *     server.create({ response ->
  *         // Do something with the response object.
  *     })
@@ -51,7 +51,7 @@ import fi.linuxbox.upcloud.core.json.*
  *     those API methods mentioned above take the default request callback as their last argument.
  * </p>
  * <p>
- *     The response object above is an instance of {@link MODEL} class.  You can read about it later, but for example,
+ *     The response object above is an instance of {@link Resource} class.  You can read about it later, but for example,
  *     to inspect the actual HTTP response status code, one could use the <code>response.META.status</code> property.
  *     But that is not typically necessary because there's a better way.
  * </p>
@@ -66,7 +66,7 @@ import fi.linuxbox.upcloud.core.json.*
  *     the server creation code like this:
  * </p>
  * <pre>
- *     def server = createMyServerModel()
+ *     def server = createMyServerResource()
  *     server.create(
  *         401: { response ->
  *             // The username/password pair were bogus.  Deal with it here.
@@ -84,7 +84,7 @@ import fi.linuxbox.upcloud.core.json.*
  * <p>
  *     Additional request callbacks are similar to default request callback: they are
  *     {@link groovy.lang.Closure Closures} with <code>void</code> return type.  They get called with one argument, the
- *     {@link MODEL} instance representing the HTTP response.  All of those API methods mentioned above (<code>GET</code>,
+ *     {@link Resource} instance representing the HTTP response.  All of those API methods mentioned above (<code>GET</code>,
  *     <code>POST</code>, and so on) take the <code>Map</code> of additional request callbacks as their first argument.
  * </p>
  * <p>
@@ -133,7 +133,7 @@ import fi.linuxbox.upcloud.core.json.*
  *                  redirect: { log.fatal("dear dear, but I don't want to go elsewhere") }
  * </pre>
  * <p>
- *     Of course, in reality, one would log some details from the passed in {@link MODEL} instance.
+ *     Of course, in reality, one would log some details from the passed in {@link Resource} instance.
  * </p>
  * <h1>Callback resolution order</h1>
  * <p>
@@ -325,23 +325,23 @@ class API {
      *
      * @param cbs Additional request callbacks.
      * @param method HTTP method.
-     * @param resource Resource path relative to the API context path, i.e. without leading slash.
-     * @param model MODEL to send or null.
+     * @param path Resource path relative to the API context path, i.e. without leading slash.
+     * @param resource Resource to send or null.
      * @param cb Default request callback.
      * @return Whatever is returned by the HTTP implementation for starting an asynchronous request.
      */
     @PackageScope // for testing
     def request(
             final Map<?, Closure<Void>> cbs = [ : ],
-            final String method, final String resource, final MODEL model, final Closure<Void> cb) {
+            final String method, final String path, final Resource resource, final Closure<Void> cb) {
         final Map<String, Closure<Void>> requestCallbacks = internalize(cbs)
 
         http.execute(new Exchange(
                 host: HOST,
                 method: method,
-                resource: API_VERSION + resource,
+                resource: API_VERSION + path,
                 headers: new SimpleHeaders(requestHeaders),
-                body: model ? json.encode(model as Map) : null,
+                body: resource ? json.encode(resource as Map) : null,
                 cb: { final META meta, final InputStream body, final ERROR err ->
                     if (!meta) {
                         callApp(cb, null, err) // err ought to be non-null
@@ -349,7 +349,7 @@ class API {
                     }
 
                     Map<String, Object> repr = decode(meta.headers, body)
-                    MODEL m = new MODEL(repr: repr, API: this, META: meta)
+                    Resource m = new Resource(repr: repr, API: this, META: meta)
                     final Closure<Void> callback = chooseCallback(meta.status, cb, requestCallbacks)
                     callApp(callback, m, null)
                     return
@@ -363,10 +363,10 @@ class API {
      *     This implementation adds the following methods:
      * </p>
      * <ul>
-     *     <li>GET(Map cbs = [:], String resource, Closure<Void> cb)</li>
-     *     <li>DELETE(Map cbs = [:], String resource, Closure<Void> cb)</li>
-     *     <li>PUT(Map cbs = [:], String resource, MODEL model, Closure<Void> cb)</li>
-     *     <li>POST(Map cbs = [:], String resource, MODEL model, Closure<Void> cb)</li>
+     *     <li>GET(Map cbs = [:], String path, Closure<Void> cb)</li>
+     *     <li>DELETE(Map cbs = [:], String path, Closure<Void> cb)</li>
+     *     <li>PUT(Map cbs = [:], String path, Resource resource, Closure<Void> cb)</li>
+     *     <li>POST(Map cbs = [:], String path, Resource resource, Closure<Void> cb)</li>
      * </ul>
      * <p>
      *     To be exact, the Map argument can exists anywhere, and it is moved to the beginning of the argument list.
@@ -385,7 +385,7 @@ class API {
      *     This implementation (mainly the move operation of the map) also enables the following higher level APIs:
      * </p>
      * <pre>
-     *     class Server extends MODEL {
+     *     class Server extends Resource {
      *         def create(...args) {
      *             this.API.POST('server', this.wrapper(), *args)
      *         }
@@ -440,10 +440,10 @@ class API {
             //if (!(ARGV[2] instanceof String))
             //    throw new MissingMethodException(name, this.class, args)
 
-            // If this is a GET or DELETE, force the fourth argument be null model
+            // If this is a GET or DELETE, force the fourth argument be null resource
             if (method.second)
                 ARGV.add(3, null)
-            //else if (!(ARGV[3] instanceof MODEL))
+            //else if (!(ARGV[3] instanceof Resource))
             //    throw new MissingMethodException(name, this.class, args)
 
             // The final argument is the mandatory default callback
@@ -471,7 +471,7 @@ class API {
      * </p>
      * @param meta HTTP headers from which to check whether the entity body is supposed to be UTF-8 JSON.
      * @param body HTTP entity body to parse.
-     * @return MODEL representation, or empty Map.
+     * @return Resource representation, or empty Map.
      */
     private Map<String, Object> decode(final Headers headers, final InputStream body) {
         if (headers && body) {
@@ -498,15 +498,15 @@ class API {
      * </p>
      *
      * @param callback Selected callback.
-     * @param model HTTP response or <code>null</code>
+     * @param resource HTTP response or <code>null</code>
      * @param err ERROR or <code>null</code>
      */
-    private void callApp(final Closure<Void> callback, final MODEL model, final ERROR err) {
+    private void callApp(final Closure<Void> callback, final Resource resource, final ERROR err) {
         try {
             if (callback.maximumNumberOfParameters == 2)
-                callback(model, err)
+                callback(resource, err)
             else
-                callback(model)
+                callback(resource)
         } catch (final MissingMethodException e) {
             // this is error because we couldn't reach the app
             log.error("application callback has wrong signature", e)

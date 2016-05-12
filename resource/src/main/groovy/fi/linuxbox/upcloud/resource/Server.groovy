@@ -1,6 +1,6 @@
-package fi.linuxbox.upcloud.model
+package fi.linuxbox.upcloud.resource
 
-import fi.linuxbox.upcloud.core.MODEL
+import fi.linuxbox.upcloud.core.Resource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory
  *
  * </p>
  */
-class Server extends MODEL {
+class Server extends Resource {
     private final Logger log = LoggerFactory.getLogger(Server)
 
     //private API (GET, DELETE, PUT, POST)
-    //private MODEL (wrapper(), uuid)
+    //private Resource (wrapper(), uuid)
 
     def create(...args) {
         API.POST(serversPath(), this.wrapper(), *args)
@@ -59,19 +59,19 @@ class Server extends MODEL {
         API.POST(cmdPath('restart'), restart, cbs, cb)
     }
 
-    def attach(MODEL storageDevice, ...args) {
+    def attach(Resource storageDevice, ...args) {
         API.POST(storagePath('attach'), storageDevice.wrapper(), *args)
     }
 
-    def detach(MODEL storageDevice, ...args) {
+    def detach(Resource storageDevice, ...args) {
         API.POST(storagePath('detach'), storageDevice.wrapper(), *args)
     }
 
-    def insert(MODEL storageDevice, ...args) {
+    def insert(Resource storageDevice, ...args) {
         API.POST(cdromPath('load'), storageDevice.wrapper(), *args)
     }
 
-    def eject(MODEL storageDevice, ...args) {
+    def eject(Resource storageDevice, ...args) {
         API.POST(cdromPath('eject'), null, *args)
     }
 
@@ -79,7 +79,7 @@ class Server extends MODEL {
         API.GET(firewallRulesPath(), *args)
     }
 
-    def createFirewallRule(MODEL firewallRule, ...args) {
+    def createFirewallRule(Resource firewallRule, ...args) {
         API.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
     }
 
@@ -93,7 +93,7 @@ class Server extends MODEL {
 
 
     private def cmd(final String name, final List<String> options, final Map kwargs) {
-        options.inject(new MODEL()."$name"(new MODEL())) { MODEL cmd, String option ->
+        options.inject(new Resource()."$name"(new Resource())) { Resource cmd, String option ->
             def value = kwargs.remove(option)
             if (value)
                 cmd."$name"."$option" = value

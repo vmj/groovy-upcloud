@@ -6,7 +6,7 @@ dependencies {
     compile project(':core')
     compile project(':ahc')
     compile project(':jackson')
-    compile project(':model')
+    compile project(':resource')
 
     // Application must ensure that the SLF4J API is present at runtime
     compile "org.slf4j:slf4j-api:${versions.slf4j}"

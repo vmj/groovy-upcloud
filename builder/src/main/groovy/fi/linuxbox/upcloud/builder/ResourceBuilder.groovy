@@ -7,16 +7,16 @@ import fi.linuxbox.upcloud.core.*
 /**
  *
  */
-class ModelBuilder {
-    private final Logger log = LoggerFactory.getLogger(ModelBuilder)
+class ResourceBuilder {
+    private final Logger log = LoggerFactory.getLogger(ResourceBuilder)
 
     /**
-     * Build a new server model.
+     * Build a new server resource.
      * <p>
      *     ...
      * </p>
      * <code>
-     *     def model = server {
+     *     def resource = server {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
@@ -42,49 +42,49 @@ class ModelBuilder {
     }
 
     /**
-     * (Re)configure a model.
+     * (Re)configure a resource.
      * <p>
      *     ...
      * </p>
      * <code>
-     *     def model = configure server, {
+     *     def resource = configure server, {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
      *     }
      * </code>
      *
-     * @param model The existing model to (re)configure.
-     * @param closure A closure that will (re)configure the model.
-     * @return The same model, (re)configured.
+     * @param resource The existing resource to (re)configure.
+     * @param closure A closure that will (re)configure the resource.
+     * @return The same resource, (re)configured.
      */
-    static MODEL configure(MODEL model, Closure closure = null) {
+    static Resource configure(Resource resource, Closure closure = null) {
         if (closure) {
-            closure.delegate = model
+            closure.delegate = resource
             closure.call()
         }
-        model
+        resource
     }
 
     /**
-     * Build a new named model.
+     * Build a new named resource.
      * <p>
      *     ...
      * </p>
      * <code>
-     *     def model = build 'server', {
+     *     def resource = build 'server', {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
      *     }
      * </code>
      *
-     * @param type Type of the model to create (simple class name with first letter in lowercase)
-     * @param closure A closure that will configure the new model
-     * @return The new model.
+     * @param type Type of the resource to create (simple class name with first letter in lowercase)
+     * @param closure A closure that will configure the new resource
+     * @return The new resource.
      */
     static def build(String type, Closure closure = null) {
-        MODEL model = new MODEL([repr: [(type): [:]]])."$type"
-        configure model, closure
+        Resource resource = new Resource([ repr: [ (type): [ :]]])."$type"
+        configure resource, closure
     }
 }

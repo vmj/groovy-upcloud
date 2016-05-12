@@ -51,7 +51,7 @@ class JacksonJSONSpec extends Specification {
     }
 
     def "Encode simple"() {
-        given: "a simple model representation"
+        given: "a simple resource representation"
         def repr = [foo: "bar"]
 
         when: "JSON implementation is asked to encode the representation into a stream"

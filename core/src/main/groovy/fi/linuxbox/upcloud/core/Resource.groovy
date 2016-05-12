@@ -4,7 +4,7 @@ import groovy.transform.PackageScope
 import org.slf4j.*
 
 /**
- * A model for all the things managed in UpCloud.
+ * Model for a resource in UpCloud, e.g. server, storage device, or an IP address.
  *
  * <p>
  * Together with the {@link API} class, this class is the most core of the Groovy UpCloud library.  You probably don't
@@ -16,7 +16,7 @@ import org.slf4j.*
  * For example, at the time of this writing, the UpCloud account API returns <code>credits</code> and
  * <code>username</code> properties, but no <code>email</code> property.  Not saying that it should, but it could be
  * useful.  Now, if a future revision of the API adds that property, it would be immediately available in the
- * <code>Account</code> model of this library, even without an update.
+ * <code>Account</code> resource of this library, even without an update.
  * </p>
  * <pre>
  *     HTTP/1.1 200 OK
@@ -71,11 +71,11 @@ import org.slf4j.*
  *
  * <pre>
  *     server.load({ response ->
- *       assert response.server instanceof fi.linuxbox.upcloud.model.Server
+ *       assert response.server instanceof fi.linuxbox.upcloud.resource.Server
  *       // Above is old news.
  *       // Now for the fun part:
  *       assert response.server.dockerImages instanceof List
- *       assert response.server.dockerImages.every { it instanceof fi.linuxbox.upcloud.model.DockerImage }
+ *       assert response.server.dockerImages.every { it instanceof fi.linuxbox.upcloud.resource.DockerImage }
  *       assert response.server.dockerImages[0].state == "running"
  *     })
  * </pre>
@@ -83,7 +83,7 @@ import org.slf4j.*
  * <p>
  * In reality, you wouldn't be able to write that code exactly as shown, because the <code>DockerImage</code> class is
  * not available at compile time, i.e. your compiler would complain about the reference.  But at runtime the class is
- * as real as any other model class.
+ * as real as any other resource class.
  * </p>
  *
  * <p>
@@ -96,7 +96,7 @@ import org.slf4j.*
  *
  * <ul>
  *   <li>A list wrapper: a map with one key whose value is a list</li>
- *   <li>A model: a map that is not a list wrapper</li>
+ *   <li>A resource: a map that is not a list wrapper</li>
  *   <li>A simple value: anything except a map</li>
  * </ul>
  *
@@ -105,15 +105,15 @@ import org.slf4j.*
  * </p>
  *
  * <ul>
- *   <li>object: either a list wrapper or a model</li>
+ *   <li>object: either a list wrapper or a resource</li>
  *   <li>array, number, string, boolean, null: a simple value</li>
  * </ul>
  */
-class MODEL {
-    private final Logger log = LoggerFactory.getLogger(MODEL)
+class Resource {
+    private final Logger log = LoggerFactory.getLogger(Resource)
 
-    private static final GroovyClassLoader gcl = new GroovyClassLoader(MODEL.classLoader)
-    private static final String modelPackageName = "fi.linuxbox.upcloud.model"
+    private static final GroovyClassLoader gcl = new GroovyClassLoader(Resource.classLoader)
+    private static final String resourcePackageName = "fi.linuxbox.upcloud.resource"
 
     final API API
     final META META
@@ -121,11 +121,11 @@ class MODEL {
     /**
      * Designated, and only, constructor.
      *
-     * @param kwargs.API The API instance.  This is used by the model specific API wrappers, not directly by this class.
+     * @param kwargs.API The API instance.  This is used by the resource specific API wrappers, not directly by this class.
      * @param kwargs.META The META instance.  This is received from the HTTP implementation.
      * @param kwargs.repr The Map<String, Object> intermediary representation from the JSON implementations.
      */
-    MODEL(final Map kwargs = [:]) {
+    Resource(final Map kwargs = [ :]) {
         // the second arg (register=false) makes this metaClass instance scoped
         metaClass = new ExpandoMetaClass(this.class, false, true)
         metaClass.initialize()
@@ -157,7 +157,7 @@ class MODEL {
                     final List list = (List) value[type_name];
                     this.metaClass."$propertyName" = list.collect { element ->
                         if (element instanceof Map<String, ?>) {
-                            final Class clazz = loadModelClass(className)
+                            final Class clazz = loadResourceClass(className)
                             element = clazz.metaClass.invokeConstructor([repr: element] + kwargs)
                         }
                         element
@@ -167,7 +167,7 @@ class MODEL {
                     // 'object': [key1: *, key2: *, ...]
                     final String className = className(key)
                     final String propertyName = propertyName(key)
-                    final Class clazz = loadModelClass(className)
+                    final Class clazz = loadResourceClass(className)
                     this.metaClass."$propertyName" = clazz.metaClass.invokeConstructor(kwargs + [repr: value])
                     //__setter_getter(this, attr)
                 }
@@ -181,16 +181,16 @@ class MODEL {
     }
 
     /**
-     * Returns properties of this model.
+     * Returns properties of this resource.
      *
      * <p>
-     * This method skips GroovyObject properties (every Groovy object has a 'class' property), meta model properties
-     * (every MODEL has 'META' and 'API' properties), and properties whose value is <code>null</code>.
+     * This method skips GroovyObject properties (every Groovy object has a 'class' property), meta resource properties
+     * (every Resource has 'META' and 'API' properties), and properties whose value is <code>null</code>.
      * </p>
      *
-     * @return Properties of this model.
+     * @return Properties of this resource.
      */
-    private List<Map.Entry<String, Object>> modelProperties() {
+    private List<Map.Entry<String, Object>> resourceProperties() {
         this.properties.grep { final Map.Entry<String, Object> property ->
             if (property.value == null)
                 null
@@ -204,10 +204,10 @@ class MODEL {
     }
 
     /**
-     * Converts this model to a Map<String, Object> representation for JSON generation.
+     * Converts this resource to a Map<String, Object> representation for JSON generation.
      *
      * <p>
-     * This is used as <code>model as Map</code> and meant to be invoked only from the API class, just before the model
+     * This is used as <code>resource as Map</code> and meant to be invoked only from the API class, just before the resource
      * is put into the queue of to-be-sent requests.
      * </p>
      *
@@ -216,7 +216,7 @@ class MODEL {
      * </p>
      * <ul>
      *     <li>
-     *         This allows for a quick snapshot of the model.  Generating the JSON could happen in a background thread.
+     *         This allows for a quick snapshot of the resource.  Generating the JSON could happen in a background thread.
      *     </li>
      *     <li>
      *         This allows the JSON generator to be stupid.  It doesn't have to deal with conversion between Java and
@@ -230,10 +230,10 @@ class MODEL {
      * </ul>
      *
      * @param clazz Map.  Nothing else supported.
-     * @return Representation of this model.
+     * @return Representation of this resource.
      */
     Object asType(Class clazz) {
-        modelProperties().grep { final Map.Entry<String, Object> property ->
+        resourceProperties().grep { final Map.Entry<String, Object> property ->
             if (property.value instanceof List && property.value.isEmpty())
                 null
             else
@@ -243,8 +243,8 @@ class MODEL {
             map[property_name] = property.value.with {
                 if (it instanceof List) {
                     final Object firstElement = it[0]
-                    if (!(firstElement instanceof MODEL))
-                        throw new UnsupportedOperationException("List of non-MODELs is not currently supported!!!")
+                    if (!(firstElement instanceof Resource))
+                        throw new UnsupportedOperationException("List of non-Resources is not currently supported!!!")
 
                     final String type_name = type_name(firstElement.class.simpleName)
 
@@ -256,7 +256,7 @@ class MODEL {
 
                     // the parens for the key force the GString to evaluate to String
                     [ (type_name): it.collect { it as Map }]
-                } else if (it instanceof MODEL) {
+                } else if (it instanceof Resource) {
                     // this.error = Error()
                     it as Map
                 } else {
@@ -269,25 +269,25 @@ class MODEL {
     }
 
     /**
-     * Returns this model wrapped in another model.
+     * Returns this resource wrapped in another resource.
      *
      * <p>
      * Many of the UpCloud APIs require a wrapping JSON object to be sent into the resources, and this method is used
      * in those places.
      * </p>
      *
-     * @return A wrapped model whose sole property is this model.
+     * @return A wrapped resource whose sole property is this resource.
      */
     def wrapper() {
         final String propertyName = propertyName(this.class)
-        new MODEL(API: API, META: META)."$propertyName"(this)
+        new Resource(API: API, META: META)."$propertyName"(this)
     }
 
     /**
-     * Returns a projection of this model.
+     * Returns a projection of this resource.
      *
      * <p>
-     * Projection is a copy of this model with some of the properties removed.
+     * Projection is a copy of this resource with some of the properties removed.
      * </p>
      *
      * <p>
@@ -296,30 +296,30 @@ class MODEL {
      * </p>
      *
      * @param properties A list of property names to exclude.
-     * @return A copy of this model with specified properties removed.
+     * @return A copy of this resource with specified properties removed.
      */
     def proj(final List<String> properties) {
-        modelProperties().grep { final Map.Entry<String, Object> property ->
+        resourceProperties().grep { final Map.Entry<String, Object> property ->
             if (property.key in properties)
                 property
             else
                 null
-        }.inject ((MODEL)this.metaClass.invokeConstructor(API: API, META: META)) {
-            final MODEL model, final Map.Entry<String, Object> property -> model."${property.key}"(property.value)
+        }.inject ((Resource)this.metaClass.invokeConstructor(API: API, META: META)) {
+            final Resource resource, final Map.Entry<String, Object> property -> resource."${property.key}"(property.value)
         }
     }
 
     /**
-     * MOP method that allows model properties to be set in a fluent fashion.
+     * MOP method that allows resource properties to be set in a fluent fashion.
      *
      * <p>
      * Allows for code like <code>server.name('my server').description('My server')</code> to set two properties for
-     * the server model.
+     * the server resource.
      * </p>
      *
      * @param name Name of the property.
      * @param args Value of the property (must be a single element argument array).
-     * @return The model for chaining.
+     * @return The resource for chaining.
      */
     def methodMissing(final String name, final def args) {
         if (args?.length == 1)
@@ -328,7 +328,7 @@ class MODEL {
     }
 
     /**
-     * MOP method that allows model properties to be missing.
+     * MOP method that allows resource properties to be missing.
      *
      * <p>
      * Allows for code like <code>if (server.name) ...</code> without actually defining Java Bean property for the name.
@@ -342,7 +342,7 @@ class MODEL {
     }
 
     /**
-     * MOP method that allows model properties to be set.
+     * MOP method that allows resource properties to be set.
      *
      * <p>
      * Allows for code like <code>server.name = "my server"</code> without actually defining Java Bean property for the
@@ -365,7 +365,7 @@ class MODEL {
      */
     @PackageScope
     static String propertyName(final Class clazz) {
-        clazz.simpleName.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // MODEL -> Model
+        clazz.simpleName.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // RESOURCE -> Resource
                 .replaceFirst(/^([A-Z])/, { it[0].toLowerCase() }) // Server -> server
     }
 
@@ -411,36 +411,36 @@ class MODEL {
      */
     @PackageScope
     static String type_name(final String className) {
-        className.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // MODEL -> Model
+        className.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // RESOURCE -> Resource
                 .replaceFirst(/^([A-Z])/, { it[0].toLowerCase() }) // Server -> server
                 .replaceAll(/([A-Z])/, { '_' + it[0].toLowerCase() }) // storageDevice -> storage_device
     }
 
     /**
-     * Returns a Class corresponding to the named model.
+     * Returns a Class corresponding to the named resource.
      *
      * <p>
-     * For example, <code>loadModelClass('Server')</code> would return the Class for
-     * <code>fi.linuxbox.upcloud.model.Server</code> class.
+     * For example, <code>loadResourceClass('Server')</code> would return the Class for
+     * <code>fi.linuxbox.upcloud.resource.Server</code> class.
      * </p>
      *
-     * @param modelClassName Simple name of the model class, i.e. name without the package.
-     * @return Class for the named model.
+     * @param resourceClassName Simple name of the resource class, i.e. name without the package.
+     * @return Class for the named resource.
      */
-    private Class loadModelClass(final String modelClassName) {
+    private Class loadResourceClass(final String resourceClassName) {
         Class clazz = null
         try {
-            clazz = gcl.loadClass("${modelPackageName}.$modelClassName")
-            log.debug("Loaded model $modelClassName")
+            clazz = gcl.loadClass("${resourcePackageName}.$resourceClassName")
+            log.debug("Loaded resource $resourceClassName")
         } catch (final ClassNotFoundException ignored) {
-            log.info("Generating model $modelClassName")
+            log.info("Generating resource $resourceClassName")
             clazz = gcl.parseClass("""
-                                   package ${modelPackageName}
+                                   package ${resourcePackageName}
 
-                                   import ${MODEL.class.name}
+                                   import ${Resource.class.name}
 
-                                   class $modelClassName extends MODEL {
-                                       $modelClassName(final Map kwargs = [:]) {
+                                   class $resourceClassName extends ${Resource.class.simpleName} {
+                                       $resourceClassName(final Map kwargs = [:]) {
                                            super(kwargs)
                                        }
                                    }

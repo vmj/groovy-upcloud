@@ -4,58 +4,58 @@ import spock.lang.*
 
 import fi.linuxbox.upcloud.core.*
 
-import static fi.linuxbox.upcloud.builder.ModelBuilder.*
+import static ResourceBuilder.*
 
 /**
  *
  */
 @Stepwise
-class ModelBuilderSpec extends Specification{
+class ResourceBuilderSpec extends Specification{
 
-    def "Configuring an existing model"() {
+    def "Configuring an existing resource"() {
         given:
-            MODEL model = new MODEL()
+            Resource resource = new Resource()
 
         when:
-            configure model, {
+            configure resource, {
                 hostname = 'server1.example.com'
                 coreNumber = '1'
                 memoryAmount = '2048'
             }
 
         then:
-            model?.hostname == 'server1.example.com'
-            model.coreNumber == '1'
-            model.memoryAmount == '2048'
+            resource?.hostname == 'server1.example.com'
+            resource.coreNumber == '1'
+            resource.memoryAmount == '2048'
     }
 
     def "Configuration no-op"() {
         given:
-            def someModel = new MODEL()
+            def someResource = new Resource()
 
         when:
-            def model = configure someModel
+            def resource = configure someResource
 
         then:
-            model?.class.simpleName == 'MODEL'
+            resource?.class.simpleName == 'Resource'
     }
 
-    def "Named model creation and configuration"() {
+    def "Named resource creation and configuration"() {
         when:
-            def model = build 'ipAddress', {
+            def resource = build 'ipAddress', {
                 hostname = 'server1.example.com'
                 coreNumber = '1'
                 memoryAmount = '2048'
             }
 
         then:
-            model?.class.simpleName == 'IpAddress'
-            model.hostname == 'server1.example.com'
-            model.coreNumber == '1'
-            model.memoryAmount == '2048'
+            resource?.class.simpleName == 'IpAddress'
+            resource.hostname == 'server1.example.com'
+            resource.coreNumber == '1'
+            resource.memoryAmount == '2048'
     }
 
-    def "Named model creation without configuration"() {
+    def "Named resource creation without configuration"() {
         when:
             def server = build 'portRangeStart'
 
@@ -63,31 +63,31 @@ class ModelBuilderSpec extends Specification{
             server?.class.simpleName == 'PortRangeStart'
     }
 
-    def "Custom model creation and configuration"() {
+    def "Custom resource creation and configuration"() {
         given:
-            def builder = new ModelBuilder()
+            def builder = new ResourceBuilder()
 
         when:
-            def model = builder.dockerImage {
+            def resource = builder.dockerImage {
                 image = 'nginx:latest'
                 state = 'running'
             }
 
         then:
-            model?.class.simpleName == 'DockerImage'
-            model.image == 'nginx:latest'
-            model.state == 'running'
+            resource?.class.simpleName == 'DockerImage'
+            resource.image == 'nginx:latest'
+            resource.state == 'running'
     }
 
-    def "Custom model creation without configuration"() {
+    def "Custom resource creation without configuration"() {
         given:
-            def builder = new ModelBuilder()
+            def builder = new ResourceBuilder()
 
         when:
-            def model = builder.RancherAgent()
+            def resource = builder.RancherAgent()
 
         then:
-            model?.class.simpleName == 'RancherAgent'
+            resource?.class.simpleName == 'RancherAgent'
     }
 
     def "Server creation and configuration"() {
@@ -107,9 +107,9 @@ class ModelBuilderSpec extends Specification{
 
     def "Server creation without configuration"() {
         when:
-            def model = server()
+            def resource = server()
 
         then:
-            model?.class.simpleName == 'Server'
+            resource?.class.simpleName == 'Server'
     }
 }

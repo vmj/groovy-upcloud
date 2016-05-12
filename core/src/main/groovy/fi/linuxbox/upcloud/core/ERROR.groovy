@@ -8,8 +8,8 @@ package fi.linuxbox.upcloud.core
  * response.  For example, when the server is unreachable, an instance of this class is instantiated.  But if the server
  * responds with, say, '403 Forbidden' because the username or password was revoked or mistyped, or with, say,
  * '500 Internal Server Error' because the server crashed, then this class is not used.  Instead, the {@link META} in
- * the {@link MODEL} will contain the status code and the reason phrase, and the MODEL will probably have an error
- * property with an instance of {@link fi.linuxbox.upcloud.model.Error Error} as the value.
+ * the {@link Resource} will contain the status code and the reason phrase, and the Resource will probably have an error
+ * property with an instance of {@link fi.linuxbox.upcloud.resource.Error Error} as the value.
  * </p>
  *
  * <p>
@@ -18,28 +18,28 @@ package fi.linuxbox.upcloud.core
  *
  * <pre>
  *     api.callback(
- *         server_error: { MODEL response ->
+ *         server_error: { Resource response ->
  *             // Default callback (for any 5xx HTTP response).
  *             // If this is called, it is always called with one argument.
  *             assert response.META.status in (500..599) // 5xx status code
  *
  *         })
  *     api.GET('some-resource',
- *         client_error: { MODEL response ->
+ *         client_error: { Resource response ->
  *             // Additional request callback (for any 4xx HTTP response).
  *             // If this is called, it is always called with one argument.
- *         }, { MODEL response, ERROR err ->
+ *         }, { Resource response, ERROR err ->
  *             // Default request callback.
  *             // If this is called, it is either with
- *             //    1. non-null MODEL and null ERROR, or
- *             //    2. null MODEL and non-null ERROR
+ *             //    1. non-null Resource and null ERROR, or
+ *             //    2. null Resource and non-null ERROR
  *         })
  * </pre>
  *
  * <p>
  * Because the default callbacks and the additional request callbacks are by definition tied to HTTP response status
  * codes and categories, they will never be invoked for network level errors.  If your default request callback doesn't
- * take two arguments, then in case of network level errors it will just receive a null model.
+ * take two arguments, then in case of network level errors it will just receive a null resource.
  * </p>
  */
 class ERROR {

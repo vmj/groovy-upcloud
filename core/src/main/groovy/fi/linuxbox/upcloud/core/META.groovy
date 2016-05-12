@@ -3,11 +3,11 @@ package fi.linuxbox.upcloud.core
 import fi.linuxbox.upcloud.core.http.Headers
 
 /**
- * Meta information about a model.
+ * Meta information about a resource.
  *
  * <p>
  * This is basically the head of the HTTP message: the status code, the reason phrase, and the headers.  In the
- * application level callbacks, a reference to an instance of this class can be found in every model.  For example,
+ * application level callbacks, a reference to an instance of this class can be found in every resource.  For example,
  * given the following odd response from the server:
  * </p>
  *
@@ -23,16 +23,16 @@ import fi.linuxbox.upcloud.core.http.Headers
  *     }
  * </pre>
  *
- * The application callback will be called with an instance of {@link MODEL} as the first parameter:
+ * The application callback will be called with an instance of {@link Resource} as the first parameter:
  *
  * <pre>
- *     { model ->
- *       assert model instanceof fi.linuxbox.upcloud.core.MODEL
- *       assert model.META.status == 200
- *       assert model.META.message == "OK"
- *       assert model.error instanceof fi.linuxbox.upcloud.model.Error
- *       assert model.error.errorCode == "BAD_REQUEST"
- *       assert model.error.errorMessage == "The value of foo cannot be bar"
+ *     { response ->
+ *       assert response instanceof fi.linuxbox.upcloud.core.Resource
+ *       assert response.META.status == 200
+ *       assert response.META.message == "OK"
+ *       assert response.error instanceof fi.linuxbox.upcloud.resource.Error
+ *       assert response.error.errorCode == "BAD_REQUEST"
+ *       assert response.error.errorMessage == "The value of foo cannot be bar"
  *     }
  * </pre>
  */

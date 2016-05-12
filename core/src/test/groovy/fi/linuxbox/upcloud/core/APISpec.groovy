@@ -69,7 +69,7 @@ class APISpec extends Specification {
     }
 
     def "Request body null"() {
-        when: "calling the API request method with null MODEL"
+        when: "calling the API request method with null resource"
             api.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives null entity body"
@@ -81,10 +81,10 @@ class APISpec extends Specification {
             def inputStream = new ByteArrayInputStream(new byte[0])
             1 * json.encode(_) >> inputStream
 
-        when: "calling the API request method with non-null MODEL"
-            api.request('GET', 'some-resource', new MODEL(), {})
+        when: "calling the API request method with non-null resource"
+            api.request('GET', 'some-resource', new Resource(), {})
 
-        then: "the HTTP implementation receives the serialized MODEL"
+        then: "the HTTP implementation receives the serialized resource"
             1 * http.execute({ it.body == inputStream })
     }
 
@@ -148,7 +148,7 @@ class APISpec extends Specification {
             1 * json.encode(_) >> inputStream
 
         when: "calling the API PUT method"
-            api.PUT('something', new MODEL()) {}
+            api.PUT('something', new Resource()) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
             1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == inputStream })
@@ -160,7 +160,7 @@ class APISpec extends Specification {
             1 * json.encode(_) >> inputStream
 
         when: "calling the API PUT method with additional callbacks"
-            api.PUT('something', new MODEL(), 404: {}) {}
+            api.PUT('something', new Resource(), 404: {}) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
             1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == inputStream })
@@ -172,7 +172,7 @@ class APISpec extends Specification {
             1 * json.encode(_) >> inputStream
 
         when: "calling the API POST method"
-            api.POST('something', new MODEL()) {}
+            api.POST('something', new Resource()) {}
 
         then: "the HTTP implementation is called with POST and non-null body"
             1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == inputStream })
@@ -184,7 +184,7 @@ class APISpec extends Specification {
             1 * json.encode(_) >> inputStream
 
         when: "calling the API POST method with additional callbacks"
-            api.POST('something', new MODEL(), 404: {}, {})
+            api.POST('something', new Resource(), 404: {}, {})
 
         then: "the HTTP implementation is called with POST and non-null body"
             1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == inputStream })
@@ -382,7 +382,7 @@ class APISpec extends Specification {
                 ok = resp?.server == "ok"
             }
 
-        then: "the callback is called with the MODEL whose server property is ok"
+        then: "the callback is called with the resource whose server property is ok"
             ok
     }
 
@@ -420,7 +420,7 @@ class APISpec extends Specification {
                 ok = resp != null
             }
 
-        then: "the callback is called with the MODEL whose server property is ok"
+        then: "the callback is called with a non-null resource"
             ok
     }
 
