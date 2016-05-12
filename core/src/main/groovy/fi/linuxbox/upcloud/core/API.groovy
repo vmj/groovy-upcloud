@@ -256,7 +256,7 @@ class API {
             'Authorization': 'Basic ',
             'Content-Type' : 'application/json',
             'Host'         : 'api.upcloud.com',
-            'User-Agent'   : 'Groovy UpCloud/0.1 ',
+            'User-Agent'   : 'Groovy UpCloud/0.0.1-SNAPSHOT ',
     ]
     /**
      * Default callbacks.
