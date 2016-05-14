@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.jackson;
+package fi.linuxbox.upcloud.json.jackson;
 
 import ch.qos.logback.classic.*;
 import ch.qos.logback.core.status.*;

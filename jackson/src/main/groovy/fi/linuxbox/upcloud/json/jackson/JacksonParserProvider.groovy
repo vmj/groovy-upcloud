@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.jackson
+package fi.linuxbox.upcloud.json.jackson
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import javax.inject.Provider

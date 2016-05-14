@@ -9,7 +9,7 @@ import fi.linuxbox.upcloud.core.*
 import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.json.*
 import fi.linuxbox.upcloud.http.ahc.*
-import fi.linuxbox.upcloud.jackson.*
+import fi.linuxbox.upcloud.json.jackson.*
 
 /**
  * A simple environment for scripts.
