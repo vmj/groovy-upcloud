@@ -1,3 +1,9 @@
+modifyPom {
+    project {
+        name 'Groovy UpCloud builder'
+        description 'Groovy UpCloud builder provides a convenient way to build resources'
+    }
+}
 dependencies {
     compile project(':core')
 }

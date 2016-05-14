@@ -1,3 +1,9 @@
+modifyPom {
+    project {
+        name 'Groovy UpCloud resource'
+        description 'Groovy UpCloud resource provides convenience resource representations'
+    }
+}
 dependencies {
     compile project(':core')
 }

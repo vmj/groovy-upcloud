@@ -1,0 +1,6 @@
+modifyPom {
+    project {
+        name 'Groovy UpCloud core'
+        description 'Groovy UpCloud core provides a way to talk to the UpCloud API and a representation of the Resources'
+    }
+}

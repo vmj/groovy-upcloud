@@ -1,3 +1,9 @@
+modifyPom {
+    project {
+        name 'Groovy UpCloud jackson'
+        description 'Groovy UpCloud jackson provides a Jackson based JSON implementation'
+    }
+}
 dependencies {
     compile project(':core')
 

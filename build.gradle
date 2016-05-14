@@ -1,3 +1,11 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
 
 ext.versions = [groovy: '2.4.6',
                 logback: '1.1.7',
@@ -11,6 +19,7 @@ task wrapper(type: Wrapper) {
 
 subprojects {
     apply plugin: 'groovy'
+    apply plugin: 'com.bmuschko.nexus'
 
     group = 'fi.linuxbox.upcloud'
     version = '0.0.1-SNAPSHOT'
@@ -51,5 +60,33 @@ subprojects {
         link("https://docs.oracle.com/javaee/7/api/", "javax.inject")
         // Groovy APIs
         link("http://docs.groovy-lang.org/docs/groovy-2.4.6/html/gapi/", "groovy.lang")
+    }
+
+    modifyPom {
+        project {
+            url 'https://github.com/vmj/groovy-upcloud'
+
+            licenses {
+                license {
+                    name 'GNU General Public License, version 3'
+                    url 'http://www.gnu.org/licenses/gpl-3.0.html'
+                    distribution 'repo'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'vmj'
+                    name 'Mikko Värri'
+                    email 'mikko@varri.fi'
+                }
+            }
+
+            scm {
+                url 'https://github.com/vmj/groovy-upcloud'
+                connection 'scm:https://github.com/vmj/groovy-upcloud.git'
+                developerConnection 'scm:git@github.com:vmj/groovy-upcloud.git'
+            }
+        }
     }
 }

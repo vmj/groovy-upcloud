@@ -1,3 +1,9 @@
+modifyPom {
+    project {
+        name 'Groovy UpCloud ahc'
+        description 'Groovy UpCloud ahc provides a Apache HttpAsyncClient based HTTP implementation'
+    }
+}
 dependencies {
     compile project(':core')
 
