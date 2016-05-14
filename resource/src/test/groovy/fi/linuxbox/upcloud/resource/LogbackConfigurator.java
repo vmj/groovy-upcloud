@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud;
+package fi.linuxbox.upcloud.resource;
 
 import ch.qos.logback.classic.*;
 import ch.qos.logback.core.status.*;
