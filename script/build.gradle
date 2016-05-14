@@ -1,0 +1,7 @@
+dependencies {
+    compile project(':core')
+    compile project(':ahc')
+    compile project(':jackson')
+    compile project(':builder')
+    compile project(':resource')
+}
