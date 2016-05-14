@@ -1,42 +1,44 @@
 package fi.linuxbox.upcloud.app
 
-import fi.linuxbox.upcloud.*
 import java.util.concurrent.*
 import org.slf4j.*
 
-import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.http.ahc.*
-import fi.linuxbox.upcloud.jackson.*
+import fi.linuxbox.upcloud.script.*
 
 import static java.util.concurrent.TimeUnit.*
 
 /**
  *
  */
-class App {
+class App implements Closeable {
     private final Logger log = LoggerFactory.getLogger(App)
 
+    private CountDownLatch cv = null
+    private UpCloudScriptContext ctx = null
+    private boolean running = false
+
     public static void main(String[] args) {
-        new App().run(args)
+        new App(args).run().close()
     }
 
-    def run(String[] args) {
-        if (args.length != 2) {
+    App(args) {
+        if (args?.length != 2) {
             log.error("USAGE: app username password")
             return
         }
+        cv = new CountDownLatch(1)
+        ctx = new UpCloudScriptContext(args[0], args[1])
+        running = true
+    }
+
+    def run(String[] args) {
+        if (!running) {
+            log.error("Not running")
+            return this
+        }
         log.info("Starting...")
 
-        def cv = new CountDownLatch(1)
-
-        def http = new AhcHTTP(new AhcClientProvider().get())
-        def json = new JacksonJSON(new JacksonParserProvider().get())
-
-        def api = new API(http, json, args[0], args[1])
-
-        def cloud = new UpCloud(api)
-
-        cloud.account(
+        ctx.upCloud.account(
                 200: { response ->
                     cv.countDown()
                     log.info("${response.account.username}: ${response.account.credits}")
@@ -56,7 +58,19 @@ class App {
         log.info("Waiting...")
         cv.await(30, SECONDS)
 
-        log.info("Closing...")
-        http.close()
+        this
+    }
+
+    @Override
+    void close() throws IOException {
+        if (running) {
+            log.info("Closing...")
+            ctx.close()
+            running = false
+        }
+    }
+
+    boolean isRunning() {
+        return running
     }
 }
