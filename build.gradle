@@ -60,6 +60,17 @@ subprojects {
         link("https://docs.oracle.com/javaee/7/api/", "javax.inject")
         // Groovy APIs
         link("http://docs.groovy-lang.org/docs/groovy-2.4.6/html/gapi/", "groovy.lang")
+
+        [ahc      : 'http.ahc',
+         api      : 'api',
+         app      : 'app',
+         builder  : 'builder',
+         core     : 'core',
+         jackson  : 'json.jackson',
+         resource : 'resource',
+         script   : 'script'].each {
+            link("http://upcloud.linuxbox.fi/api/${project.version}/${it.key}", "fi.linuxbox.upcloud.${it.value}")
+        }
     }
 
     modifyPom {
