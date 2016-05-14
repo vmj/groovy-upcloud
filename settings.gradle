@@ -3,6 +3,7 @@ include 'jackson'
 include 'ahc'
 include 'builder'
 include 'resource'
+include 'api'
 include 'script'
 include 'app'
 

@@ -1,0 +1,9 @@
+modifyPom {
+    project {
+        name 'Groovy UpCloud api'
+        description 'Groovy UpCloud api provides UpCloud APIs'
+    }
+}
+dependencies {
+    compile project(':core')
+}

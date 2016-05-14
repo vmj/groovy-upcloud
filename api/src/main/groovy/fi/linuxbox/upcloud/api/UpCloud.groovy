@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud
+package fi.linuxbox.upcloud.api
 
 import fi.linuxbox.upcloud.core.API
 import org.slf4j.*
@@ -19,13 +19,13 @@ class UpCloud {
     }
 
     private static final Map<String, String> resources = [
-            account      : 'account'     ,
-            prices       : 'price'       ,
-            zones        : 'zone'        ,
-            timezones    : 'timezone'    ,
-            server_sizes : 'server_size' ,
-            servers      : 'server'      ,
-            ip_addresses : 'ip_address'  ,
+            account     : 'account'     ,
+            prices      : 'price'       ,
+            zones       : 'zone'        ,
+            timezones   : 'timezone'    ,
+            serverSizes : 'server_size' ,
+            servers     : 'server'      ,
+            ipAddresses : 'ip_address'  ,
     ]
 
     def methodMissing(final String name, final def args) {
@@ -35,8 +35,8 @@ class UpCloud {
         throw new MissingMethodException(name, UpCloud, args)
     }
 
-    def storages(Map kwargs, Closure cb) {
-        def type = kwargs.remove('type')
+    def storages(Map kwargs = [:], Closure cb) {
+        def type = kwargs?.remove('type')
         if (type)
             this.API.GET("storage/$type", kwargs, cb)
         else

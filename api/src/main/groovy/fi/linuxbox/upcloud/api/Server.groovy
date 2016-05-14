@@ -1,8 +1,9 @@
-package fi.linuxbox.upcloud.resource
+package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.core.Resource
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import javax.inject.*
+import org.slf4j.*
+
+import fi.linuxbox.upcloud.core.*
 
 /**
  * Server related APIs.
@@ -21,14 +22,20 @@ import org.slf4j.LoggerFactory
  *
  * </p>
  */
-class Server extends Resource {
+class Server {
     private final Logger log = LoggerFactory.getLogger(Server)
 
-    //private API (GET, DELETE, PUT, POST)
-    //private Resource (wrapper(), uuid)
+    private final API API
+    private final Resource server
+
+    @Inject
+    Server(final API API, final Resource server) {
+        this.API = API
+        this.server = server
+    }
 
     def create(...args) {
-        API.POST(serversPath(), this.wrapper(), *args)
+        API.POST(serversPath(), server.wrapper(), *args)
     }
 
     def load(...args) {
@@ -36,7 +43,7 @@ class Server extends Resource {
     }
 
     def update(...args) {
-        API.PUT(serverPath(), this.wrapper(), *args)
+        API.PUT(serverPath(), server.wrapper(), *args)
     }
 
     def delete(...args) {
@@ -103,7 +110,7 @@ class Server extends Resource {
 
     private String serversPath() { 'server/' }
     private String serverPath() {
-        serversPath() + this.uuid // throws MissingPropertyExcepton
+        serversPath() + server.uuid
     }
     private String cmdPath(String cmd)     { serverPath() + '/$cmd' }
     private String storagePath(String cmd) { serverPath() + '/storage/$cmd' }
