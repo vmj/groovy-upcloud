@@ -1,6 +1,19 @@
 apply plugin: 'application'
 
+modifyPom {
+    project {
+        name 'Groovy UpCloud app'
+        description 'Groovy UpCloud app provides an example application'
+    }
+}
+
 mainClassName = 'fi.linuxbox.upcloud.app.App'
+
+distributions {
+    main {
+        baseName = project.archivesBaseName
+    }
+}
 
 dependencies {
     compile project(':script')
