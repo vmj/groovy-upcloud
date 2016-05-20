@@ -26,8 +26,8 @@ subprojects {
 
     archivesBaseName = "${rootProject.name}-${project.name}"
 
-    // Java 8
-    sourceCompatibility = 1.8
+    // Java 7
+    sourceCompatibility = 1.7
 
     repositories {
         jcenter()
