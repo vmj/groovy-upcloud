@@ -45,6 +45,11 @@ class AhcHeaders implements Headers {
         Header next() {
             new AhcHeader(it.nextHeader())
         }
+
+        @Override
+        void remove() {
+            it.remove()
+        }
     }
 
     private static class AhcHeaderElementIterator implements Iterator<HeaderElement> {
@@ -63,4 +68,10 @@ class AhcHeaders implements Headers {
         HeaderElement next() {
             new AhcHeaderElement(it.nextElement())
         }
-    }}
+
+        @Override
+        void remove() {
+            it.remove()
+        }
+    }
+}

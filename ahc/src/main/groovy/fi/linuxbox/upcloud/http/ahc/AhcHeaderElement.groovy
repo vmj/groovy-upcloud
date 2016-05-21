@@ -43,5 +43,10 @@ class AhcHeaderElement implements HeaderElement {
             final NameValuePair nvp = it.next()
             return new Parameter(nvp.name, nvp.value)
         }
+
+        @Override
+        void remove() {
+            it.remove()
+        }
     }
 }

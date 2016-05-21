@@ -21,4 +21,9 @@ class SimpleHeaderIterator implements Iterator<Header> {
     Header next() {
         new SimpleHeader(it.next())
     }
+
+    @Override
+    void remove() {
+        throw new UnsupportedOperationException("SimpleHeaderIterator is read-only")
+    }
 }

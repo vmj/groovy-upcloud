@@ -46,5 +46,10 @@ class AhcHeader implements Header {
         HeaderElement next() {
             new AhcHeaderElement(it.next())
         }
+
+        @Override
+        void remove() {
+            it.remove()
+        }
     }
 }

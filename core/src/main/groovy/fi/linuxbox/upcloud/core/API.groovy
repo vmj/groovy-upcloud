@@ -288,7 +288,7 @@ class API {
     API(HTTP http, JSON json, @Named("username") String username, @Named("password") String password) {
         this.http = http
         this.json = json
-        requestHeaders['Authorization'] += Base64.encoder.encodeToString("$username:$password".bytes)
+        requestHeaders['Authorization'] += "$username:$password".bytes.encodeBase64().toString()
         requestHeaders['User-Agent'] += http.userAgent
     }
 
