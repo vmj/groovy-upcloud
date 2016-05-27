@@ -55,10 +55,10 @@ Groovy UpCloud never interprets the identifiers, and they are visible to the app
 
 === Request and response data formats
 
-Between the applications and Groovy UpCloud, resource representations are instances of `MODEL` class (or subclasses).
+Between the applications and Groovy UpCloud, resource representations are instances of `Resource` class (or subclasses).
 Behind the scenes, Groovy UpCloud is using JSON data format when communicating with the UpCloud API.
 
-The conversion between `MODEL`s and JSON is pretty straight forward.
+The conversion between `Resource`s and JSON is pretty straight forward.
 
 JSON data types `array`, `number`, `string`, `boolean`, and `null` are mapped to a corresponding Groovy data types:
 `List`, `Number`, `String`, `Boolean`, and `Object`, respectively.
@@ -66,7 +66,7 @@ JSON data types `array`, `number`, `string`, `boolean`, and `null` are mapped to
 JSON `object` type is handled a little differently:
 if it has only one property and the value of that property is an `array`,
 then it is interpreted as a "list wrapper" and mapped to a `List`.
-Otherwise it is mapped to a `MODEL`, i.e. recursive interpretation.
+Otherwise it is mapped to a `Resource`, i.e. recursive interpretation.
 
 The "list wrapper" is a convention used by the UpCloud API.
 For example, when requesting a list of servers, the UpCloud API might respond with the following JSON:
@@ -96,7 +96,7 @@ For example, when requesting a list of servers, the UpCloud API might respond wi
 <2> a `servers` property whose value is a "list wrapper" JSON `object`
 <3> the actual list of server representations
 
-This JSON will be mapped to a following `MODEL` graph:
+This JSON will be mapped to a following `Resource` graph:
 
 [source,groovy]
 ----
@@ -108,8 +108,8 @@ def callbackClosure = { response ->
     assert response.servers[1].coreNumber == "0" // <3>
 }
 ----
-<1> the `servers` JSON property is "unwrapped" for Groovier access
-<2> the `servers` `MODEL` property contains instances of `Server` model
+<1> the `servers` property is an "unwrapped" list, for Groovier access
+<2> the `servers` property contains instances of `Server` resource
 <3> the JSON style property names are converted to Groovy style names
 
 === Response codes

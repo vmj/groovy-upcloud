@@ -13,3 +13,50 @@ The API allows client programs to be written to automate the management of the s
 Groovy UpCloud is a library that makes it even easier to write client applications for UpCloud API.
 Groovy UpCloud is asynchronous and takes advantage of the dynamism of Groovy language.
 Groovy UpCloud is designed to be used to write scripts, desktop and mobile applications, and server side services.
+
+== Quick starts
+
+This sections contains a few ways to get a feel of what Groovy UpCloud provides.
+
+=== Scripting
+
+If you have got the `groovy` command installed, then the quickest way to try Groovy UpCloud is to write the following
+to a file:
+
+[source,groovy]
+----
+@Grab("fi.linuxbox.upcloud:groovy-upcloud-script:0.0.1")
+import fi.linuxbox.upcloud.script.*
+
+import java.util.concurrent.*
+import static java.util.concurrent.TimeUnit.*
+def cv = new CountDownLatch(1)
+
+if (args.length != 2) {
+        println "ERROR: too few or too many arguments"
+        return
+}
+
+def ctx = new UpCloudScriptContext(args[0], args[1])
+ctx.upCloud.account(
+        success: { response ->
+                println "${response.account.username}: ${response.account.credits}"
+                cv.countDown()
+        },
+        { response, err ->
+                if (err) {
+                        println "Network error: ${err.message}"
+                        if (err.cause)
+                                err.cause.printStackTrace()
+                } else {
+                        println "HTTP status: ${response.META.status}: ${response.META.message}"
+                        if (response.error)
+                            println "Detailed error: ${response.error.errorCode}: ${response.error.errorMessage}"
+                }
+                cv.countDown()
+        });
+
+cv.await(30, SECONDS)
+ctx.close()
+----
+

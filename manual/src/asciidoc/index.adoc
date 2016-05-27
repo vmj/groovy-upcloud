@@ -11,7 +11,9 @@ This is the landing page.
 
 include::introduction.adoc[]
 
+
 include::architecture_overview.adoc[]
+
 
 include::accounts.adoc[]
 
