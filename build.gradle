@@ -41,8 +41,7 @@ subprojects {
         compile 'javax.inject:javax.inject:1'
 
         // Libraries do not ship with logging API
-        // THIS SHOULD BE compileOnly, but IntelliJ doesn't seem to handle it (will not see this as a dependency)
-        compile "org.slf4j:slf4j-api:${versions.slf4j}"
+        compileOnly "org.slf4j:slf4j-api:${versions.slf4j}"
 
         // Tests need LogbackConfigurator
         testCompile "ch.qos.logback:logback-classic:${versions.logback}"
