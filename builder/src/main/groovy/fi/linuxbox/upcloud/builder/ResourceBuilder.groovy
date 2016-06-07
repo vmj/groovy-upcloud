@@ -4,6 +4,8 @@ import org.slf4j.*
 
 import fi.linuxbox.upcloud.core.*
 
+import static groovy.lang.Closure.DELEGATE_ONLY
+
 /**
  *
  */
@@ -58,10 +60,11 @@ class ResourceBuilder {
      * @param closure A closure that will (re)configure the resource.
      * @return The same resource, (re)configured.
      */
-    static Resource configure(Resource resource, Closure closure = null) {
+    static <R extends Resource> R configure(@DelegatesTo.Target R resource, @DelegatesTo(strategy = DELEGATE_ONLY) Closure<Void> closure = null) {
         if (closure) {
-            closure.delegate = resource
-            closure.call()
+            Closure<Void> c = closure.rehydrate(resource, this, this)
+            c.resolveStrategy = DELEGATE_ONLY
+            c.call()
         }
         resource
     }
