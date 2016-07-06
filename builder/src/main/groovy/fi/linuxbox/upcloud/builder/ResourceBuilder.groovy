@@ -12,26 +12,6 @@ import static groovy.lang.Closure.DELEGATE_ONLY
 class ResourceBuilder {
     private final Logger log = LoggerFactory.getLogger(ResourceBuilder)
 
-    /**
-     * Build a new server resource.
-     * <p>
-     *     ...
-     * </p>
-     * <code>
-     *     def resource = server {
-     *         hostname = 'server1.example.com'
-     *         coreNumber = '1'
-     *         memoryAmount = '2048'
-     *     }
-     * </code>
-     *
-     * @param closure A closure that will configure the new server.
-     * @return The new server.
-     */
-    static def server(Closure closure = null) {
-        build 'server', closure
-    }
-
     def methodMissing(final String name, final def args) {
         switch (args.length) {
             case 0:

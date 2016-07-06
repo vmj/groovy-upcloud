@@ -89,27 +89,4 @@ class ResourceBuilderSpec extends Specification{
         then:
             resource?.class.simpleName == 'RancherAgent'
     }
-
-    def "Server creation and configuration"() {
-        when:
-            def server = server {
-                hostname = 'server1.example.com'
-                coreNumber = '1'
-                memoryAmount = '2048'
-            }
-
-        then:
-            server?.class.simpleName == 'Server'
-            server.hostname == 'server1.example.com'
-            server.coreNumber == '1'
-            server.memoryAmount == '2048'
-    }
-
-    def "Server creation without configuration"() {
-        when:
-            def resource = server()
-
-        then:
-            resource?.class.simpleName == 'Server'
-    }
 }
