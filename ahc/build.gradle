@@ -1,3 +1,5 @@
+apply from: '../gradle/groovy-upcloud-lib.gradle'
+
 modifyPom {
     project {
         name 'Groovy UpCloud ahc'
