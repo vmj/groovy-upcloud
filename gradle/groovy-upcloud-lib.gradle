@@ -1,40 +1,12 @@
-apply plugin: 'groovy'
+apply from: "${projectDir}/../gradle/groovy-upcloud.gradle"
 apply plugin: 'com.bmuschko.nexus'
 
-ext.versions = [groovy: '2.4.7',
-                logback: '1.1.7',
-                slf4j: '1.7.21',
-                spock: '1.0-groovy-2.4',
-]
-
-apply from: "${projectDir}/../gradle/groovy-upcloud.gradle"
-
-archivesBaseName = "${rootProject.name}-${project.name}"
-
-// Java 7
-sourceCompatibility = 1.7
-
-repositories {
-    jcenter()
-}
-
 dependencies {
-    // Everything is written in Groovy
-    compile "org.codehaus.groovy:groovy:${versions.groovy}"
-
     // Dependency injections are marked with standard API
     compile 'javax.inject:javax.inject:1'
 
     // Libraries do not ship with logging API
     compileOnly "org.slf4j:slf4j-api:${versions.slf4j}"
-
-    // Tests need LogbackConfigurator
-    testCompile "ch.qos.logback:logback-classic:${versions.logback}"
-
-    // Tests are written in Spock
-    testCompile "org.spockframework:spock-core:${versions.spock}", {
-        exclude module: 'groovy-all'
-    }
 }
 
 groovydoc {
