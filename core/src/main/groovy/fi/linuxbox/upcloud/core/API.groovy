@@ -201,7 +201,7 @@ class API {
     /**
      * HTTP response status categories.
      */
-    private static final List<Tuple2<Range<Integer>, String>> HTTP_STATUS_CATEGORIES = [
+    private static final List<Tuple2<IntRange, String>> HTTP_STATUS_CATEGORIES = [
             new Tuple2((100..199), 'info'),
             new Tuple2((200..299), 'success'),
             new Tuple2((300..399), 'redirect'),
@@ -233,7 +233,7 @@ class API {
      * they take, and the boolean describes whether the method takes an entity body or not.
      * </p>
      */
-    private final static Map<String, Tuple2<Range<Integer>, Boolean>> HTTP_METHODS = [
+    private final static Map<String, Tuple2<IntRange, Boolean>> HTTP_METHODS = [
             GET   : new Tuple2((2..3), true),
             DELETE: new Tuple2((2..3), true),
             PUT   : new Tuple2((3..4), false),
@@ -534,7 +534,7 @@ class API {
             return callback
 
         // Try one of the broad categories
-        callback = HTTP_STATUS_CATEGORIES.findResult { final Range<Integer> range, final String category ->
+        callback = HTTP_STATUS_CATEGORIES.findResult { final IntRange range, final String category ->
             selectCallback(statusCode, range, category, requestCallbacks)
         }
         if (callback)
@@ -560,7 +560,7 @@ class API {
      * @return A callback corresponding to the response status, or null.
      */
     private Closure<Void> selectCallback(
-            final int statusCode, final Range<Integer> range, final String category,
+            final int statusCode, final IntRange range, final String category,
             final Map<String, Closure<Void>> requestCallbacks) {
         statusCode in range ? selectCallback(category, requestCallbacks) : null
     }

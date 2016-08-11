@@ -20,51 +20,42 @@ class UpCloudSpec extends Specification {
         upCloud = new UpCloud(new API(http, json, "foo", "bar"))
     }
 
-    def "storages does GET .../storage"() {
-        given:
-            boolean ok = false
-            1 * http.execute({ it.method == 'GET' && it.resource.endsWith('/storage') }) >> { ok = true }
-
-        when:
-            upCloud.storages {}
-
-        then:
-            ok
-    }
-
     def "storages type: 'favorite' does GET .../storage/favorite"() {
-        given:
-            boolean ok = false
-            1 * http.execute({ it.resource.endsWith('/storage/favorite') }) >> { ok = true }
+        given: "a mock HTTP implementation that saves the given request"
+            def req = null
+            1 * http.execute(_) >> { req = it[0] }
 
-        when:
+        when: "UpCloud API is invoked"
             upCloud.storages type: 'favorite', {}
 
-        then:
-            ok
+        then: "expected HTTP request is generated"
+            req?.method == 'GET'
+            req?.resource.endsWith('/storage/favorite')
     }
 
     @Unroll
-    def "#methodName does GET .../#resource"() {
-        given:
-            boolean ok = false
-            1 * http.execute({ it.method == 'GET' && it.resource.endsWith("/$resource") }) >> { ok = true }
+    def "#methodName does GET ...#resource"() {
+        given: "a mock HTTP implementation that saves the given request"
+            def req = null
+            1 * http.execute(_) >> { req = it[0] }
 
-        when:
+        when: "UpCloud API is invoked"
             upCloud."$methodName" {}
 
-        then:
-            ok
+        then: "expected HTTP request is generated"
+            req?.method == 'GET'
+            req.resource.endsWith(resource)
 
         where:
             methodName    | resource
-            'account'     | 'account'
-            'prices'      | 'price'
-            'zones'       | 'zone'
-            'timezones'   | 'timezone'
-            'serverSizes' | 'server_size'
-            'servers'     | 'server'
-            'ipAddresses' | 'ip_address'
+            'account'     | '/account'
+            'prices'      | '/price'
+            'zones'       | '/zone'
+            'timezones'   | '/timezone'
+            'serverSizes' | '/server_size'
+            'servers'     | '/server'
+            'ipAddresses' | '/ip_address'
+            'storages'    | '/storage'
 
     }
 }

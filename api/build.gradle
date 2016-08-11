@@ -6,6 +6,8 @@ modifyPom {
         description 'Groovy UpCloud api provides UpCloud APIs'
     }
 }
+
 dependencies {
     compile project(':core')
+    testCompile project(':builder')
 }
