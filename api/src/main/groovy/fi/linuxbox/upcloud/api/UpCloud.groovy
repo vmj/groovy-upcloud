@@ -31,6 +31,10 @@ class UpCloud {
         this.API.GET('timezone', *args)
     }
 
+    def plans(...args) {
+        this.API.GET('plan', *args)
+    }
+
     def serverSizes(...args) {
         this.API.GET('server_size', *args)
     }
