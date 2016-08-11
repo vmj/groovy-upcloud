@@ -52,6 +52,7 @@ class UpCloudSpec extends Specification {
             'prices'      | '/price'
             'zones'       | '/zone'
             'timezones'   | '/timezone'
+            'plans'       | '/plan'
             'serverSizes' | '/server_size'
             'servers'     | '/server'
             'ipAddresses' | '/ip_address'
