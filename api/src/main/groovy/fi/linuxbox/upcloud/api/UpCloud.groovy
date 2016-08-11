@@ -43,6 +43,10 @@ class UpCloud {
         this.API.GET('ip_address', *args)
     }
 
+    def tags(...args) {
+        this.API.GET('tag', *args)
+    }
+
     def storages(Map kwargs = [:], Closure cb) {
         def type = kwargs?.remove('type')
         if (type)

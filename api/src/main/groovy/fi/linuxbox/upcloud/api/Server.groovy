@@ -15,6 +15,7 @@ import fi.linuxbox.upcloud.core.*
  *     <li>attaching and detaching storage devices to a server</li>
  *     <li>inserting and ejecting CD-roms</li>
  *     <li>managing firewall rules for a server (list rules, getting details, adding, and deletion of individual rules)</li>
+ *     <li>adding and removing tags from a server</li>
  * </ul>
  * <p>
  *

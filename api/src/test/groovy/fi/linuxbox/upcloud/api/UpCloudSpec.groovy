@@ -56,6 +56,6 @@ class UpCloudSpec extends Specification {
             'servers'     | '/server'
             'ipAddresses' | '/ip_address'
             'storages'    | '/storage'
-
+            'tags'        | '/tag'
     }
 }
