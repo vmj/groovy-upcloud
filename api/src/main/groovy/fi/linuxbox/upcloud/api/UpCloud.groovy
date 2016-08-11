@@ -1,16 +1,13 @@
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.core.API
-import org.slf4j.*
+import javax.inject.*
 
-import javax.inject.Inject
+import fi.linuxbox.upcloud.core.*
 
 /**
  *
  */
 class UpCloud {
-    private final Logger log = LoggerFactory.getLogger(UpCloud)
-
     private final API API
 
     @Inject
@@ -18,21 +15,32 @@ class UpCloud {
         this.API = API
     }
 
-    private static final Map<String, String> resources = [
-            account     : 'account'     ,
-            prices      : 'price'       ,
-            zones       : 'zone'        ,
-            timezones   : 'timezone'    ,
-            serverSizes : 'server_size' ,
-            servers     : 'server'      ,
-            ipAddresses : 'ip_address'  ,
-    ]
+    def account(...args) {
+        this.API.GET('account', *args)
+    }
 
-    def methodMissing(final String name, final def args) {
-        def resource = resources[name]
-        if (resource)
-            return this.API.GET(resource, *args)
-        throw new MissingMethodException(name, UpCloud, args)
+    def prices(...args) {
+        this.API.GET('price', *args)
+    }
+
+    def zones(...args) {
+        this.API.GET('zone', *args)
+    }
+
+    def timezones(...args) {
+        this.API.GET('timezone', *args)
+    }
+
+    def serverSizes(...args) {
+        this.API.GET('server_size', *args)
+    }
+
+    def servers(...args) {
+        this.API.GET('server', *args)
+    }
+
+    def ipAddresses(...args) {
+        this.API.GET('ip_address', *args)
     }
 
     def storages(Map kwargs = [:], Closure cb) {
