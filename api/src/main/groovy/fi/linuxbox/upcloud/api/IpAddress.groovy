@@ -25,7 +25,7 @@ trait IpAddress {
     }
 
     def update(...args) {
-        this.API.PUT(ipAddressPath(), wrapper(), *args)
+        this.API.PUT(ipAddressPath(), wrapper(), *args)  // FIXME: update issue: ip address required for URL, but should not be in PUT repr
     }
 
     def delete(...args) {

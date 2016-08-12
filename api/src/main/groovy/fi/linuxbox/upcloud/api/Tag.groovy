@@ -21,7 +21,7 @@ trait Tag {
     }
 
     def update(...args) {
-        this.API.PUT(tagPath(), wrapper(), *args)
+        this.API.PUT(tagPath(), wrapper(), *args) // FIXME: update issue: old tag name required for URL, but new for PUT repr
     }
 
     def delete(...args) {

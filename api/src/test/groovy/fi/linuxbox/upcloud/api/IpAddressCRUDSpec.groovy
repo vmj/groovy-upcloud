@@ -66,7 +66,7 @@ class IpAddressCRUDSpec extends Specification {
         then:
             requestIs 'PUT', '/ip_address/0.0.0.0',
                     [ "mock_ip_address": [
-                            "address": "0.0.0.0",  // FIXME: update issue: ip address required for URL, but should not be in POSTed repr
+                            "address": "0.0.0.0",
                             "ptr_record": "hostname.example.com"
                     ] ]
     }

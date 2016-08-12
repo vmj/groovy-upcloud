@@ -41,7 +41,7 @@ class TagCRUDSpec extends Specification {
 
         then:
             requestIs 'PUT', '/tag/DEV',
-                    [ "mock_tag": [ "name": "DEV" ] ] // FIXME: update issue: old tag name required for URL, but new for POSTed repr
+                    [ "mock_tag": [ "name": "DEV" ] ]
     }
 
     def "delete: DELETE /tag/DEV"() {
