@@ -15,24 +15,24 @@ class IpAddressCRUDSpec extends ApiSpecification {
             ipAddress.load {}
 
         then:
-            requestIs 'GET',  '/ip_address/0.0.0.0'
+            requestIs 'GET', '/ip_address/0.0.0.0'
     }
 
     def "update: PUT /ip_address/0.0.0.0"() {
         given:
-            configure ipAddress, {
+            def changes = build 'IpAddress', {
                 ptrRecord = "hostname.example.com"
             }
 
         when:
-            ipAddress.update {}
+            ipAddress.update changes, {}
 
         then:
             requestIs 'PUT', '/ip_address/0.0.0.0',
-                    [ "mock_ip_address": [
-                            "address": "0.0.0.0",
+                    [ "ip_address": [
                             "ptr_record": "hostname.example.com"
-                    ] ]
+                        ]
+                    ]
     }
 
     def "delete: DELETE /ip_address/0.0.0.0"() {

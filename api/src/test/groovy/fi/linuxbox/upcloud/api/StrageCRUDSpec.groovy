@@ -1,6 +1,8 @@
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.StorageSpecification
+import fi.linuxbox.upcloud.api.spec.*
+
+import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class StrageCRUDSpec extends StorageSpecification {
 
@@ -9,16 +11,26 @@ class StrageCRUDSpec extends StorageSpecification {
             storage.load {}
 
         then:
-            requestIs 'GET',  '/storage/fake-uuid'
+            requestIs 'GET', '/storage/fake-uuid'
     }
 
     def "update: PUT /storage/fake-uuid"() {
+        given:
+            def changes = build 'Storage', {
+                size = "20"
+                title = "A larger storage"
+            }
+
         when:
-            storage.update {}
+            storage.update changes, {}
 
         then:
             requestIs 'PUT', '/storage/fake-uuid',
-                    [ "mock_storage": [ "uuid": "fake-uuid" ] ]
+                    [ "storage": [
+                            "size": "20",
+                            "title": "A larger storage"
+                        ]
+                    ]
     }
 
     def "delete: DELETE /storage/fake-uuid"() {

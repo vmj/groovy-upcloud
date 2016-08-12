@@ -1,6 +1,8 @@
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.ServerSpecification
+import fi.linuxbox.upcloud.api.spec.*
+
+import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class ServerCRUDSpec extends ServerSpecification {
 
@@ -9,16 +11,28 @@ class ServerCRUDSpec extends ServerSpecification {
             server.load {}
 
         then:
-            requestIs 'GET',  '/server/fake-uuid'
+            requestIs 'GET', '/server/fake-uuid'
     }
 
     def "update: PUT /server/fake-uuid"() {
+        given:
+            def changes = build 'Server', {
+                coreNumber = "8"
+                memoryAmount = "16384"
+                plan = "custom"
+            }
+
         when:
-            server.update {}
+            server.update changes, {}
 
         then:
             requestIs 'PUT', '/server/fake-uuid',
-                    [ "mock_server": [ "uuid": "fake-uuid" ] ]
+                    [ "server": [
+                            "core_number": "8",
+                            "memory_amount": "16384",
+                            "plan": "custom"
+                        ]
+                    ]
     }
 
     def "delete: DELETE /server/fake-uuid"() {

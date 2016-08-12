@@ -23,7 +23,6 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
  *     <li>non-null uuid property, which can be read-only</li>
- *     <li>wrapper method (only needed in update)</li>
  * </ul>
  */
 @SelfType(Resource) // must have uuid property
@@ -33,8 +32,8 @@ trait Server {
         this.API.GET(serverPath(), *args)
     }
 
-    def update(...args) {
-        this.API.PUT(serverPath(), wrapper(), *args)
+    def update(Resource resource, ...args) {
+        this.API.PUT(serverPath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {

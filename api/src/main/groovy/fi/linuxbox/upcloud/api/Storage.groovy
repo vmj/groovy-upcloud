@@ -22,7 +22,7 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
  *     <li>non-null uuid property, which can be read-only</li>
- *     <li>wrapper method (only needed in update, and clone, backup, and templatize)</li>
+ *     <li>wrapper method (only needed in clone, backup, and templatize)</li>
  * </ul>
  */
 @SelfType(Resource) // must have uuid property
@@ -32,8 +32,8 @@ trait Storage {
         this.API.GET(storagePath(), *args)
     }
 
-    def update(...args) {
-        this.API.PUT(storagePath(), wrapper(), *args) // FIXME: update issue: uuid needed for URL, but should not be PUT in repr
+    def update(Resource resource, ...args) {
+        this.API.PUT(storagePath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {

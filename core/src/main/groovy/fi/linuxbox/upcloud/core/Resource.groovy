@@ -258,6 +258,7 @@ class Resource {
                         // HACK: only places I know of where we need this:
                         //       * server creation: [ssh_keys: [ssh_key: [key1, key2]]]
                         //       * tag creation: [servers: [server: [uuid1, uuid2]]]
+                        //       * tag update: [servers: [server: [uuid1, uuid2]]]
                         //       so naive unpluralization of the property_name (ssh_keys or servers)
                         //       will do for those.
                         final String type_name = property_name.substring(0, property_name.size() - 1)

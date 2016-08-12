@@ -18,14 +18,13 @@ import fi.linuxbox.upcloud.core.Resource
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
  *     <li>non-null name property, which can be read-only</li>
- *     <li>wrapper method (only needed in update)</li>
  * </ul>
  */
 @SelfType(Resource) // must have name property
 trait Tag {
 
-    def update(...args) {
-        this.API.PUT(tagPath(), wrapper(), *args) // FIXME: update issue: old tag name required for URL, but new for PUT repr
+    def update(Resource resource, ...args) {
+        this.API.PUT(tagPath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {

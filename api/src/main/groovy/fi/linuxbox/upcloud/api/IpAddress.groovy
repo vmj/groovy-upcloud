@@ -18,7 +18,6 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
  *     <li>non-null address property, which can be read-only</li>
- *     <li>wrapper method (only needed in update)</li>
  * </ul>
  */
 @SelfType(Resource) // must have address property
@@ -28,8 +27,8 @@ trait IpAddress {
         this.API.GET(ipAddressPath(), *args)
     }
 
-    def update(...args) {
-        this.API.PUT(ipAddressPath(), wrapper(), *args)  // FIXME: update issue: ip address required for URL, but should not be in PUT repr
+    def update(Resource resource, ...args) {
+        this.API.PUT(ipAddressPath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {
