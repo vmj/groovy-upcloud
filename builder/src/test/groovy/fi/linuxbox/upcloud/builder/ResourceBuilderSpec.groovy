@@ -3,14 +3,16 @@ package fi.linuxbox.upcloud.builder
 import spock.lang.*
 
 import fi.linuxbox.upcloud.core.*
+import fi.linuxbox.upcloud.core.http.*
 
-import static ResourceBuilder.*
+import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 /**
  *
  */
-@Stepwise
 class ResourceBuilderSpec extends Specification{
+
+    API api = new API(Mock(HTTP), null, null, null)
 
     def "Configuring an existing resource"() {
         given:
@@ -63,6 +65,25 @@ class ResourceBuilderSpec extends Specification{
             server?.class.simpleName == 'PortRangeStart'
     }
 
+    def "Named resource creation with kwargs and config"() {
+        when:
+            def resource = build 'Tag', API: api, {
+                name = 'DEV'
+            }
+
+        then:
+            resource?.API != null
+            resource.name == 'DEV'
+    }
+
+    def "Named resource creation with kwargs and no config"() {
+        when:
+            def resource = build 'Tag', API: api
+
+        then:
+            resource?.API != null
+    }
+
     def "Custom resource creation and configuration"() {
         given:
             def builder = new ResourceBuilder()
@@ -88,5 +109,30 @@ class ResourceBuilderSpec extends Specification{
 
         then:
             resource?.class.simpleName == 'RancherAgent'
+    }
+
+    def "Custom resource creation with kwargs and config"() {
+        given:
+            def builder = new ResourceBuilder()
+
+        when:
+            def resource = builder.dockerImage API: api, {
+                image = 'nginx:stable'
+            }
+
+        then:
+            resource?.API != null
+            resource.image == 'nginx:stable'
+    }
+
+    def "Custom resource creation with kwags and no config"() {
+        given:
+            def builder = new ResourceBuilder()
+
+        when:
+            def resource = builder.RancherAgent API: api
+
+        then:
+            resource?.API != null
     }
 }
