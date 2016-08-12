@@ -22,7 +22,6 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
  *     <li>non-null uuid property, which can be read-only</li>
- *     <li>wrapper method (only needed in clone, backup, and templatize)</li>
  * </ul>
  */
 @SelfType(Resource) // must have uuid property
@@ -40,16 +39,16 @@ trait Storage {
         this.API.DELETE(storagePath(), *args)
     }
 
-    def clone(...args) {
-        this.API.POST(cmdPath('clone'), wrapper(), *args) // TODO: clone, templatize, backup: maybe take the storage body as arg
+    def clone(Resource resource, ...args) {
+        this.API.POST(cmdPath('clone'), resource.wrapper(), *args)
     }
 
-    def templatize(...args) {
-        this.API.POST(cmdPath('templatize'), wrapper(), *args)
+    def templatize(Resource resource, ...args) {
+        this.API.POST(cmdPath('templatize'), resource.wrapper(), *args)
     }
 
-    def backup(...args) {
-        this.API.POST(cmdPath('backup'), wrapper(), *args)
+    def backup(Resource resource, ...args) {
+        this.API.POST(cmdPath('backup'), resource.wrapper(), *args)
     }
 
     def restore(...args) {

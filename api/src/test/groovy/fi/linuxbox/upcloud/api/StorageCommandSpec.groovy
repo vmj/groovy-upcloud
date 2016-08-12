@@ -1,34 +1,64 @@
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.StorageSpecification
+import fi.linuxbox.upcloud.api.spec.*
+
+import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class StorageCommandSpec extends StorageSpecification {
 
     def "clone: POST /storage/fake-uuid/clone"() {
+        given:
+            def newStorage = build 'Storage', {
+                zone = 'fi-hel1'
+                tier = 'maxiops'
+                title = 'Clone of operating system disk'
+            }
+
         when:
-            storage.clone {}
+            storage.clone newStorage, {}
 
         then:
             requestIs 'POST',  '/storage/fake-uuid/clone',
-                    [ "mock_storage": [ "uuid": "fake-uuid" ] ]
+                    [ "storage": [
+                            "zone": "fi-hel1",
+                            "tier": "maxiops",
+                            "title": "Clone of operating system disk"
+                        ]
+                    ]
     }
 
     def "templatize: POST /storage/fake-uuid/templatize"() {
+        given:
+            def template = build 'Storage', {
+                title = "My server template"
+            }
+
         when:
-            storage.templatize {}
+            storage.templatize template, {}
 
         then:
             requestIs 'POST', '/storage/fake-uuid/templatize',
-                    [ "mock_storage": [ "uuid": "fake-uuid" ] ]
+                    [ "storage": [
+                            "title": "My server template"
+                        ]
+                    ]
     }
 
     def "backup: POST /storage/fake-uuid/backup"() {
+        given:
+            def backup = build 'Storage', {
+                title = 'Manually created backup'
+            }
+
         when:
-            storage.backup {}
+            storage.backup backup, {}
 
         then:
             requestIs 'POST', '/storage/fake-uuid/backup',
-                    [ "mock_storage": [ "uuid": "fake-uuid" ] ]
+                    [ "storage": [
+                            "title": "Manually created backup"
+                        ]
+                    ]
     }
 
     def "restore: POST /storage/fake-uuid/restore"() {
