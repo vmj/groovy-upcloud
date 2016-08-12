@@ -13,7 +13,7 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>getting account information</li>
  *     <li>listing prices, zones, timezones, plans, and server sizes</li>
- *     <li>listing servers, IP addresses, tags, and storages</li>
+ *     <li>listing and creating servers, IP addresses, tags, and storages</li>
  * </ul>
  */
 class UpCloud {
@@ -60,7 +60,7 @@ class UpCloud {
         this.API.GET('tag', *args)
     }
 
-    def storages(Map kwargs = [:], Closure cb) {
+    def storages(Map kwargs = [:], Closure cb) { // FIXME: upCloud storages: ...args
         def type = kwargs?.remove('type')
         if (type)
             this.API.GET("storage/$type", kwargs, cb)

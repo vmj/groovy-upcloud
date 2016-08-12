@@ -44,7 +44,7 @@ trait Server {
         this.API.POST(cmdPath('start'), null, *args)
     }
 
-    def stop(Map cbs = [:], Closure cb) {
+    def stop(Map cbs = [:], Closure cb) { // FIXME: server stop/restart: ...args
         def stop = cmd('stop_server', ['stop_type', 'timeout'],  cbs)
 
         this.API.POST(cmdPath('stop'), stop, cbs, cb)
@@ -80,7 +80,7 @@ trait Server {
         this.API.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
     }
 
-    def loadFirewallRule(def position, ...args) {
+    def loadFirewallRule(def position, ...args) { // FIXME: firewall load/detele: position as Resource?
         this.API.GET(firewallRulePath(position), *args)
     }
 
@@ -88,7 +88,7 @@ trait Server {
         this.API.DELETE(firewallRulePath(position), *args)
     }
 
-    def addTags(def tags, ...args) {
+    def addTags(def tags, ...args) { // FIXME: server tags add/delete: tag(s) as Resource?
         this.API.POST(tagPath(tags), null, *args)
     }
 
