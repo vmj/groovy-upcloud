@@ -12,6 +12,14 @@ import fi.linuxbox.upcloud.core.*
  * <lu>
  *     <li>creating, modifying, and deleting tags</li>
  * </ul>
+ * <p>
+ *     This trait can be implemented by any class that has
+ * </p>
+ * <ul>
+ *     <li>non-null API property, which can be read-only</li>
+ *     <li>non-null address property, which can be read-only (creation does not need it, though)</li>
+ *     <li>wrapper method (only needed in create and update)</li>
+ * </ul>
  */
 @SelfType(Resource) // must have address property
 trait IpAddress {

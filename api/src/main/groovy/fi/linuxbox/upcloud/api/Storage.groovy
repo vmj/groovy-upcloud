@@ -22,7 +22,7 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
  *     <li>non-null uuid property, which can be read-only (creation does not need it, though)</li>
- *     <li>wrapper method</li>
+ *     <li>wrapper method (only needed in create and update, and clone, backup, and templatize)</li>
  * </ul>
  */
 @SelfType(Resource) // must have uuid property

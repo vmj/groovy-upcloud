@@ -5,7 +5,15 @@ import javax.inject.*
 import fi.linuxbox.upcloud.core.*
 
 /**
- *
+ * Top-level APIs.
+ * <p>
+ *     This class provides following APIs:
+ * </p>
+ * <ul>
+ *     <li>getting account information</li>
+ *     <li>listing prices, zones, timezones, plans, and server sizes</li>
+ *     <li>listing servers, IP addresses, tags, and storages</li>
+ * </ul>
  */
 class UpCloud {
     private final API API
