@@ -3,13 +3,12 @@ package fi.linuxbox.upcloud.api
 import spock.lang.*
 
 import fi.linuxbox.upcloud.api.spec.*
-import fi.linuxbox.upcloud.core.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class UpCloudSpec extends ApiSpecification {
 
-    UpCloud upCloud = new UpCloud(new API(http, json, "foo", "bar"))
+    UpCloud upCloud = new UpCloud(api)
 
     def "storages type: 'favorite' does GET .../storage/favorite"() {
         when:

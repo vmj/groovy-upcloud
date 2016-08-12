@@ -345,10 +345,11 @@ class Resource {
      * </p>
      *
      * @param name Name of the property.
-     * @return <code>null</code>.
+     * @return Value of the property or <code>null</code>.
      */
     def propertyMissing(final String name) {
-        null
+        // Help the trait proxies see all the properties (we used to return null here, but the proxies didn't work).
+        this.properties[name]
     }
 
     /**

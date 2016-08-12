@@ -1,14 +1,13 @@
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.mock.*
 import fi.linuxbox.upcloud.api.spec.*
-import fi.linuxbox.upcloud.core.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class TagCRUDSpec extends ApiSpecification {
 
-    Tag tag = new MockTag(API: new API(http, json, null, null))
+    // build minimal class that works for the Tag trait: API and name
+    Tag tag = build 'Tag', API: api, { name = 'DEV' } withTraits Tag
 
     def "update: PUT /tag/DEV"() {
         given:

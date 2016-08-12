@@ -1,14 +1,13 @@
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.mock.MockIpAddress
 import fi.linuxbox.upcloud.api.spec.*
-import fi.linuxbox.upcloud.core.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class IpAddressCRUDSpec extends ApiSpecification {
 
-    IpAddress ipAddress = new MockIpAddress(API: new API(http, json, null, null))
+    // build minimal class that works for the IpAddress trait: API and address
+    def ipAddress = build 'IpAddress', API: api, { address = '0.0.0.0' } withTraits IpAddress
 
     def "load: GET /ip_address/0.0.0.0"() {
         when:

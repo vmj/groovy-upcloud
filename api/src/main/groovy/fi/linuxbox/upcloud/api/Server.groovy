@@ -1,7 +1,5 @@
 package fi.linuxbox.upcloud.api
 
-import groovy.transform.SelfType
-
 import fi.linuxbox.upcloud.core.*
 /**
  * Server related APIs.
@@ -25,7 +23,6 @@ import fi.linuxbox.upcloud.core.*
  *     <li>non-null uuid property, which can be read-only</li>
  * </ul>
  */
-@SelfType(Resource) // must have uuid property
 trait Server {
 
     def load(...args) {

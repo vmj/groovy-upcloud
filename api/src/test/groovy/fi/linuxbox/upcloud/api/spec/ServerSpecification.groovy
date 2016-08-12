@@ -1,11 +1,13 @@
 package fi.linuxbox.upcloud.api.spec
 
 import fi.linuxbox.upcloud.api.*
-import fi.linuxbox.upcloud.api.mock.*
-import fi.linuxbox.upcloud.core.*
+
+import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
+
 /**
  * Base class for Server API specifications.
  */
 abstract class ServerSpecification extends ApiSpecification {
-    Server server = new MockServer(API: new API(http, json, null, null))
+    // build minimal class that works for the Server trait: API and uuid
+    Server server = build 'Server', API: api, { uuid = 'fake-uuid' } withTraits Server
 }

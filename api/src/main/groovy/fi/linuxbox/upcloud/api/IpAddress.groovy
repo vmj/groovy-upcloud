@@ -1,7 +1,5 @@
 package fi.linuxbox.upcloud.api
 
-import groovy.transform.*
-
 import fi.linuxbox.upcloud.core.*
 
 /**
@@ -20,7 +18,6 @@ import fi.linuxbox.upcloud.core.*
  *     <li>non-null address property, which can be read-only</li>
  * </ul>
  */
-@SelfType(Resource) // must have address property
 trait IpAddress {
 
     def load(...args) {

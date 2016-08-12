@@ -1,8 +1,6 @@
 package fi.linuxbox.upcloud.api
 
-import groovy.transform.SelfType
-
-import fi.linuxbox.upcloud.core.Resource
+import fi.linuxbox.upcloud.core.*
 
 /**
  * Tag related APIs.
@@ -20,7 +18,6 @@ import fi.linuxbox.upcloud.core.Resource
  *     <li>non-null name property, which can be read-only</li>
  * </ul>
  */
-@SelfType(Resource) // must have name property
 trait Tag {
 
     def update(Resource resource, ...args) {

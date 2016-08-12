@@ -2,7 +2,8 @@ package fi.linuxbox.upcloud.api.spec
 
 import spock.lang.*
 
-import fi.linuxbox.upcloud.api.mock.MockInputStream
+import fi.linuxbox.upcloud.api.mock.*
+import fi.linuxbox.upcloud.core.*
 import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.json.*
 
@@ -13,6 +14,7 @@ abstract class ApiSpecification extends Specification {
 
     HTTP http = Mock()
     JSON json = Mock()
+    API api = new API(http, json, null, null)
     Exchange req
 
     def setup() {
