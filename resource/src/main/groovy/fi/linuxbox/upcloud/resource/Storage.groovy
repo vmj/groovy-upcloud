@@ -8,9 +8,6 @@ import fi.linuxbox.upcloud.core.*
  *
  */
 @InheritConstructors
-class Server extends Resource {
+class Storage extends Resource {
     String uuid
-    String hostname
-    String coreNumber
-    String memoryAmount
 }
