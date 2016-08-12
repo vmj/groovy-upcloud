@@ -2,43 +2,30 @@ package fi.linuxbox.upcloud.api
 
 import spock.lang.*
 
+import fi.linuxbox.upcloud.api.spec.*
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.http.*
-import fi.linuxbox.upcloud.core.json.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class UpCloudSpec extends Specification {
+class UpCloudSpec extends ApiSpecification {
 
-    HTTP http = Mock()
-    JSON json = Mock()
-    Exchange req
-
-    UpCloud upCloud
-
-    def setup() {
-        upCloud = new UpCloud(new API(http, json, "foo", "bar"))
-        http.execute(_) >> { req = it[0] } // at most once
-        json.encode(_) >> { new MockInputStream(it[0]) } // at most once
-    }
+    UpCloud upCloud = new UpCloud(new API(http, json, "foo", "bar"))
 
     def "storages type: 'favorite' does GET .../storage/favorite"() {
-        when: "UpCloud API is invoked"
+        when:
             upCloud.storages type: 'favorite', {}
 
-        then: "expected HTTP request is generated"
-            req?.method == 'GET'
-            req?.resource.endsWith('/storage/favorite')
+        then:
+            requestIs 'GET', '/storage/favorite'
     }
 
     @Unroll
     def "#methodName does GET ...#resource"() {
-        when: "UpCloud API is invoked"
+        when:
             upCloud."$methodName" {}
 
-        then: "expected HTTP request is generated"
-            req?.method == 'GET'
-            req.resource.endsWith(resource)
+        then:
+            requestIs 'GET', resource
 
         where:
             methodName    | resource
@@ -65,12 +52,12 @@ class UpCloudSpec extends Specification {
             upCloud.create ipAddress, {}
 
         then:
-            req?.method == 'POST'
-            req.resource.endsWith('/ip_address')
-            req.body?.repr == [ 'ip_address': [
-                    "family": "IPv4",
-                    "server": "fake-uuid"
-            ] ]
+            requestIs 'POST', '/ip_address',
+                    [ 'ip_address': [
+                            "family": "IPv4",
+                            "server": "fake-uuid"
+                        ]
+                    ]
     }
 
     def "creating a server (from template)"() {
@@ -102,36 +89,35 @@ class UpCloudSpec extends Specification {
             upCloud.create server, {}
 
         then:
-            req?.method == 'POST'
-            req.resource.endsWith('/server')
-            req.body?.repr == [
-                "server": [
-                    "zone": "fi-hel1",
-                    "title": "My Debian server",
-                    "hostname": "debian.example.com",
-                    "plan": "2xCPU-2GB",
-                    "storage_devices": [
-                        "storage_device": [
-                                [
-                                    "action": "clone",
-                                    "storage": "01000000-0000-4000-8000-000020030100",
-                                    "title": "Debian from a template",
-                                    "size": 50,
-                                    "tier": "maxiops"
-                                ]
-                        ]
-                    ],
-                    "login_user": [
-                        "username": "upclouduser",
-                        "ssh_keys": [
-                            "ssh_key": [
-                                    "ssh-rsa AAAAB3NzaC1yc2EAA[...]ptshi44x user@some.host",
-                                    "ssh-dss AAAAB3NzaC1kc3MAA[...]VHRzAA== someuser@some.other.host"
+            requestIs 'POST', '/server',
+                    [
+                            "server": [
+                                    "zone": "fi-hel1",
+                                    "title": "My Debian server",
+                                    "hostname": "debian.example.com",
+                                    "plan": "2xCPU-2GB",
+                                    "storage_devices": [
+                                            "storage_device": [
+                                                    [
+                                                            "action": "clone",
+                                                            "storage": "01000000-0000-4000-8000-000020030100",
+                                                            "title": "Debian from a template",
+                                                            "size": 50,
+                                                            "tier": "maxiops"
+                                                    ]
+                                            ]
+                                    ],
+                                    "login_user": [
+                                            "username": "upclouduser",
+                                            "ssh_keys": [
+                                                    "ssh_key": [
+                                                            "ssh-rsa AAAAB3NzaC1yc2EAA[...]ptshi44x user@some.host",
+                                                            "ssh-dss AAAAB3NzaC1kc3MAA[...]VHRzAA== someuser@some.other.host"
+                                                    ]
+                                            ]
+                                    ]
                             ]
-                        ]
                     ]
-                ]
-            ]
     }
 
     def "creating a storage"() {
@@ -152,21 +138,20 @@ class UpCloudSpec extends Specification {
             upCloud.create storage, {}
 
         then:
-            req?.method == 'POST'
-            req.resource.endsWith('/storage')
-            req.body?.repr == [
-                    "storage": [
-                        "size": "10",
-                        "tier": "maxiops",
-                        "title": "My data collection",
-                        "zone": "fi-hel1",
-                        "backup_rule": [
-                            "interval": "daily",
-                            "time": "0430",
-                            "retention": "365"
-                        ]
+            requestIs 'POST', '/storage',
+                    [
+                            "storage": [
+                                    "size": "10",
+                                    "tier": "maxiops",
+                                    "title": "My data collection",
+                                    "zone": "fi-hel1",
+                                    "backup_rule": [
+                                            "interval": "daily",
+                                            "time": "0430",
+                                            "retention": "365"
+                                    ]
+                            ]
                     ]
-            ]
     }
 
     def "creating a tag"() {
@@ -183,19 +168,18 @@ class UpCloudSpec extends Specification {
             upCloud.create tag, {}
 
         then:
-            req?.method == 'POST'
-            req.resource.endsWith('/tag')
-            req.body?.repr == [
-                    "tag": [
-                        "name": "DEV",
-                        "description": "Development servers",
-                        "servers": [
-                            "server": [
-                                    "0077fa3d-32db-4b09-9f5f-30d9e9afb565"
+            requestIs 'POST', '/tag',
+                    [
+                            "tag": [
+                                    "name": "DEV",
+                                    "description": "Development servers",
+                                    "servers": [
+                                            "server": [
+                                                    "0077fa3d-32db-4b09-9f5f-30d9e9afb565"
+                                            ]
+                                    ]
                             ]
-                        ]
                     ]
-            ]
     }
 
     @Unroll

@@ -1,31 +1,13 @@
 package fi.linuxbox.upcloud.api
 
-import spock.lang.*
-
+import fi.linuxbox.upcloud.api.spec.*
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.http.*
-import fi.linuxbox.upcloud.core.json.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class IpAddressCRUDSpec extends Specification {
+class IpAddressCRUDSpec extends ApiSpecification {
 
-    HTTP http = Mock()
-    JSON json = Mock()
-    IpAddress ipAddress
-    Exchange req
-
-    def setup() {
-        ipAddress = new MockIpAddress(API: new API(http, json, null, null))
-        1 * http.execute(_) >> { req = it[0] }
-        json.encode(_) >> { new MockInputStream(it[0]) } // at most once
-    }
-
-    void requestIs(def method, def resource, def repr = null) {
-        assert req?.method == method
-        assert req.resource.endsWith(resource)
-        assert req.body?.repr == repr
-    }
+    IpAddress ipAddress = new MockIpAddress(API: new API(http, json, null, null))
 
     def "load: GET /ip_address/0.0.0.0"() {
         when:
