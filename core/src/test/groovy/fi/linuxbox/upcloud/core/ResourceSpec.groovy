@@ -151,15 +151,15 @@ class ResourceSpec extends Specification {
         resource.timezones == ["America/Chicago", "Europe/Helsinki", "Europe/London", "UTC"]
     }
 
-    def "List of strings as a map is not supported"() {
+    def "List-of-strings property as a map has a list of strings property"() {
         given:
-        def resource = new Resource(repr: [ timezones: [ timezone: [ "foo", "bar", "baz"]]])
+        def resource = new Resource(repr: [ ssh_keys: [ ssh_key: [ "foo", "bar", "baz"]]])
 
         when:
-        resource as Map
+        def repr = resource as Map
 
         then:
-        thrown UnsupportedOperationException
+        repr == [ ssh_keys: [ ssh_key: [ "foo", "bar", "baz" ] ] ]
     }
 
     def "Resource property can have a previously unknown class"() {

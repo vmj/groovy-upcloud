@@ -243,19 +243,28 @@ class Resource {
             map[property_name] = property.value.with {
                 if (it instanceof List) {
                     final Object firstElement = it[0]
-                    if (!(firstElement instanceof Resource))
-                        throw new UnsupportedOperationException("List of non-Resources is not currently supported!!!")
+                    if (firstElement instanceof Resource) {
+                        final String type_name = type_name(firstElement.class.simpleName)
 
-                    final String type_name = type_name(firstElement.class.simpleName)
+                        // this.prices = [ Zone(), ... ]
+                        // map[prices] = [ zone: [ [:], ... ] ]
 
-                    // this.prices = [ Zone(), ... ]
-                    // map[prices] = [ zone: [ [:], ... ] ]
+                        // this.timezones = [ "asd", "dsa", ... ]
+                        // map[timezones] = [ timezone: [ "asd", "dsa", ... ] ]
 
-                    // this.timezones = [ "asd", "dsa", ... ]
-                    // map[timezones] = [ timezone: [ "asd", "dsa", ... ] ]
-
-                    // the parens for the key force the GString to evaluate to String
-                    [ (type_name): it.collect { it as Map }]
+                        // the parens for the key force the GString to evaluate to String
+                        [ (type_name): it.collect { it as Map }]
+                    } else if (firstElement instanceof String) {
+                        // HACK: only places I know of where we need this:
+                        //       * server creation: [ssh_keys: [ssh_key: [key1, key2]]]
+                        //       * tag creation: [servers: [server: [uuid1, uuid2]]]
+                        //       so naive unpluralization of the property_name (ssh_keys or servers)
+                        //       will do for those.
+                        final String type_name = property_name.substring(0, property_name.size() - 1)
+                        [ (type_name): it.collect { it as String }]
+                    } else {
+                        throw new UnsupportedOperationException("Only lists of Resources or Strings is currently supported!!!")
+                    }
                 } else if (it instanceof Resource) {
                     // this.error = Error()
                     it as Map
