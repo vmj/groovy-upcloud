@@ -10,7 +10,7 @@ import fi.linuxbox.upcloud.core.*
  *     This class provides the following APIs:
  * </p>
  * <ul>
- *     <li>CRUD operations for servers (create, get details, update, and delete)</li>
+ *     <li>loading, modifying, and deleting  servers</li>
  *     <li>starting, stopping, and restarting a server, including soft and hard stops</li>
  *     <li>attaching and detaching storage devices to a server</li>
  *     <li>inserting and ejecting CD-roms</li>
@@ -22,16 +22,12 @@ import fi.linuxbox.upcloud.core.*
  * </p>
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
- *     <li>non-null uuid property, which can be read-only (creation does not need it, though)</li>
- *     <li>wrapper method (only needed in create and update)</li>
+ *     <li>non-null uuid property, which can be read-only</li>
+ *     <li>wrapper method (only needed in update)</li>
  * </ul>
  */
 @SelfType(Resource) // must have uuid property
 trait Server {
-
-    def create(...args) {
-        this.API.POST(serversPath(), wrapper(), *args)
-    }
 
     def load(...args) {
         this.API.GET(serverPath(), *args)
@@ -112,8 +108,7 @@ trait Server {
     }
 
 
-    private String serversPath() { 'server/' }
-    private String serverPath() { "${serversPath()}$uuid" }
+    private String serverPath() { "server/$uuid" }
     private String cmdPath(String cmd)     { "${serverPath()}/$cmd" }
     private String storagePath(String cmd) { "${serverPath()}/storage/$cmd" }
     private String cdromPath(String cmd)   { "${serverPath()}/cdrom/$cmd" }

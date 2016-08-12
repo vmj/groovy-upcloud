@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.api
 
+import groovy.transform.PackageScope
 import javax.inject.*
 
 import fi.linuxbox.upcloud.core.*
@@ -65,5 +66,26 @@ class UpCloud {
             this.API.GET("storage/$type", kwargs, cb)
         else
             this.API.GET("storage", kwargs, cb)
+    }
+
+    def create(Resource resource, ...args) {
+        this.API.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
+    }
+
+    /**
+     * Converts a class name to a URL path segment.
+     *
+     * <p>
+     * For example, 'IpAddress' becomes 'ip_address'.
+     * </p>
+     *
+     * @param className Simple name of a class, i.e. name without the package.
+     * @return URL path style segment.
+     */
+    @PackageScope
+    static String url_path_segment(final String className) {
+        className.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // RESOURCE -> Resource
+                .replaceFirst(/^([A-Z])/, { it[0].toLowerCase() }) // Server -> server
+                .replaceAll(/([A-Z])/, { '_' + it[0].toLowerCase() }) // storageDevice -> storage_device
     }
 }

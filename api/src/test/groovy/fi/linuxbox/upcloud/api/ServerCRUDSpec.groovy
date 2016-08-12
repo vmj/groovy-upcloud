@@ -2,15 +2,6 @@ package fi.linuxbox.upcloud.api
 
 class ServerCRUDSpec extends ServerSpecification {
 
-    def "create: POST /server/"() {
-        when:
-            server.create {}
-
-        then:
-            requestIs 'POST', '/server/',
-                    [ "mock_server": [ "uuid": "fake-uuid" ] ]
-    }
-
     def "load: GET /server/fake-uuid"() {
         when:
             server.load {}

@@ -11,8 +11,8 @@ import fi.linuxbox.upcloud.core.*
  *     This class provides the following APIs:
  * </p>
  * <ul>
- *     <li>CRUD operations for storages</li>
- *     <li>cloning, and templatizing storages</li>
+ *     <li>loading, modifying, and deleting storages</li>
+ *     <li>cloning and templatizing storages</li>
  *     <li>creating and restoring backups</li>
  *     <li>adding and removing storages from favorites</li>
  * </ul>
@@ -21,16 +21,12 @@ import fi.linuxbox.upcloud.core.*
  * </p>
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
- *     <li>non-null uuid property, which can be read-only (creation does not need it, though)</li>
- *     <li>wrapper method (only needed in create and update, and clone, backup, and templatize)</li>
+ *     <li>non-null uuid property, which can be read-only</li>
+ *     <li>wrapper method (only needed in update, and clone, backup, and templatize)</li>
  * </ul>
  */
 @SelfType(Resource) // must have uuid property
 trait Storage {
-
-    def create(...args) {
-        this.API.POST(storagesPath(), wrapper(), *args)
-    }
 
     def load(...args) {
         this.API.GET(storagePath(), *args)
@@ -69,7 +65,6 @@ trait Storage {
     }
 
 
-    private String storagesPath()      { 'storage/' }
-    private String storagePath()       { "${storagesPath()}$uuid" }
+    private String storagePath()       { "storage/$uuid" }
     private String cmdPath(String cmd) { "${storagePath()}/$cmd" }
 }

@@ -2,15 +2,6 @@ package fi.linuxbox.upcloud.api
 
 class StrageCRUDSpec extends StorageSpecification {
 
-    def "create: POST /storage/"() {
-        when:
-            storage.create {}
-
-        then:
-            requestIs 'POST', '/storage/',
-                    [ "mock_storage": [ "uuid": "fake-uuid" ] ]
-    }
-
     def "load: GET /storage/fake-uuid"() {
         when:
             storage.load {}

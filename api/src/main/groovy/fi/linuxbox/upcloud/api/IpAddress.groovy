@@ -10,23 +10,19 @@ import fi.linuxbox.upcloud.core.*
  *     This class provides following APIs:
  * </p>
  * <lu>
- *     <li>creating, modifying, and deleting tags</li>
+ *     <li>modifying and deleting tags</li>
  * </ul>
  * <p>
  *     This trait can be implemented by any class that has
  * </p>
  * <ul>
  *     <li>non-null API property, which can be read-only</li>
- *     <li>non-null address property, which can be read-only (creation does not need it, though)</li>
- *     <li>wrapper method (only needed in create and update)</li>
+ *     <li>non-null address property, which can be read-only</li>
+ *     <li>wrapper method (only needed in update)</li>
  * </ul>
  */
 @SelfType(Resource) // must have address property
 trait IpAddress {
-
-    def create(...args) {
-        this.API.POST(ipAddressesPath(), wrapper(), *args)
-    }
 
     def load(...args) {
         this.API.GET(ipAddressPath(), *args)
@@ -40,6 +36,5 @@ trait IpAddress {
         this.API.DELETE(ipAddressPath(), *args)
     }
 
-    private String ipAddressesPath() { 'ip_address/' }
-    private String ipAddressPath() { "${ipAddressesPath()}$address" }
+    private String ipAddressPath() { "ip_address/$address" }
 }

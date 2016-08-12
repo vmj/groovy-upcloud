@@ -26,15 +26,6 @@ class TagCRUDSpec extends Specification {
         assert req.body?.repr == repr
     }
 
-    def "create: POST /tag/"() {
-        when:
-            tag.create {}
-
-        then:
-            requestIs 'POST', '/tag/',
-                    [ "mock_tag": [ "name": "DEV" ] ]
-    }
-
     def "update: PUT /tag/DEV"() {
         when:
             tag.update {}

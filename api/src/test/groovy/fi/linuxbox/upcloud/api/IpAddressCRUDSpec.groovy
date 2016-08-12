@@ -27,25 +27,6 @@ class IpAddressCRUDSpec extends Specification {
         assert req.body?.repr == repr
     }
 
-    def "create: POST /ip_address/"() {
-        given:
-            configure ipAddress, {
-                address = null
-                family = "IPv4"
-                server = "fake-uuid"
-            }
-
-        when:
-            ipAddress.create {}
-
-        then:
-            requestIs 'POST', '/ip_address/',
-                    [ "mock_ip_address": [
-                            "family": "IPv4",
-                            "server": "fake-uuid"
-                    ] ]
-    }
-
     def "load: GET /ip_address/0.0.0.0"() {
         when:
             ipAddress.load {}
