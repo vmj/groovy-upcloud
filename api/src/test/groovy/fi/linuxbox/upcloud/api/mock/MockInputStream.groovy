@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.api
+package fi.linuxbox.upcloud.api.mock
 
 /**
  *

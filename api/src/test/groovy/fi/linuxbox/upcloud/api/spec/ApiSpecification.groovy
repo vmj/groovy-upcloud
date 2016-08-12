@@ -2,7 +2,7 @@ package fi.linuxbox.upcloud.api.spec
 
 import spock.lang.*
 
-import fi.linuxbox.upcloud.api.*
+import fi.linuxbox.upcloud.api.mock.MockInputStream
 import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.json.*
 

@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.api
 
+import fi.linuxbox.upcloud.api.mock.MockTag
 import fi.linuxbox.upcloud.api.spec.*
 import fi.linuxbox.upcloud.core.*
 

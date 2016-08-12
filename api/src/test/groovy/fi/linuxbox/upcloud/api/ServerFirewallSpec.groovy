@@ -1,5 +1,7 @@
 package fi.linuxbox.upcloud.api
 
+import fi.linuxbox.upcloud.api.spec.ServerSpecification
+
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class ServerFirewallSpec extends ServerSpecification {

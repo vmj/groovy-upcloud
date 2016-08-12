@@ -1,5 +1,7 @@
 package fi.linuxbox.upcloud.api
 
+import fi.linuxbox.upcloud.api.spec.ServerSpecification
+
 class ServerCommandSpec extends ServerSpecification {
 
     def "start: POST /server/fake-uuid/start"() {

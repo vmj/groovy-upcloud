@@ -1,5 +1,7 @@
 package fi.linuxbox.upcloud.api
 
+import fi.linuxbox.upcloud.api.spec.ServerSpecification
+
 class ServerCRUDSpec extends ServerSpecification {
 
     def "load: GET /server/fake-uuid"() {

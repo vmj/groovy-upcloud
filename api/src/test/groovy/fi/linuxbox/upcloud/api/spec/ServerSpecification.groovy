@@ -1,8 +1,8 @@
-package fi.linuxbox.upcloud.api
+package fi.linuxbox.upcloud.api.spec
 
-import fi.linuxbox.upcloud.api.spec.*
+import fi.linuxbox.upcloud.api.*
+import fi.linuxbox.upcloud.api.mock.*
 import fi.linuxbox.upcloud.core.*
-
 /**
  * Base class for Server API specifications.
  */

@@ -1,5 +1,6 @@
-package fi.linuxbox.upcloud.api
+package fi.linuxbox.upcloud.api.mock
 
+import fi.linuxbox.upcloud.api.IpAddress
 import fi.linuxbox.upcloud.core.*
 
 class MockIpAddress extends Resource implements IpAddress {

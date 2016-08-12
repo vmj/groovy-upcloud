@@ -1,5 +1,6 @@
-package fi.linuxbox.upcloud.api
+package fi.linuxbox.upcloud.api.mock
 
+import fi.linuxbox.upcloud.api.Server
 import fi.linuxbox.upcloud.core.*
 
 /**
