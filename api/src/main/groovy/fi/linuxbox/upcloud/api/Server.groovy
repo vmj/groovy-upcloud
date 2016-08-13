@@ -41,16 +41,16 @@ trait Server {
         this.API.POST(cmdPath('start'), null, *args)
     }
 
-    def stop(Map cbs = [:], Closure cb) { // FIXME: server stop/restart: ...args
-        def stop = cmd('stop_server', ['stop_type', 'timeout'],  cbs)
+    def stop(...args) {
+        def stop = cmd('stop_server', ['stop_type', 'timeout'], args)
 
-        this.API.POST(cmdPath('stop'), stop, cbs, cb)
+        this.API.POST(cmdPath('stop'), stop, *args)
     }
 
-    def restart(Map cbs = [:], Closure cb) {
-        def restart = cmd('restart_server', ['stop_type', 'timeout', 'timeout_action'], cbs)
+    def restart(...args) {
+        def restart = cmd('restart_server', ['stop_type', 'timeout', 'timeout_action'], args)
 
-        this.API.POST(cmdPath('restart'), restart, cbs, cb)
+        this.API.POST(cmdPath('restart'), restart, *args)
     }
 
     def attach(Resource storageDevice, ...args) {
@@ -94,7 +94,8 @@ trait Server {
     }
 
 
-    private def cmd(final String name, final List<String> options, final Map kwargs) {
+    private def cmd(final String name, final List<String> options, final Object[] args) {
+        Map kwargs = args.find { it instanceof Map }
         options.inject(new Resource()."$name"(new Resource())) { Resource cmd, String option ->
             def value = kwargs?.remove(option)
             if (value)
