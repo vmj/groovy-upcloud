@@ -60,12 +60,13 @@ class UpCloud {
         this.API.GET('tag', *args)
     }
 
-    def storages(Map kwargs = [:], Closure cb) { // FIXME: upCloud storages: ...args
+    def storages(...args) {
+        Map kwargs = args.find { it instanceof Map }
         def type = kwargs?.remove('type')
         if (type)
-            this.API.GET("storage/$type", kwargs, cb)
+            this.API.GET("storage/$type", *args)
         else
-            this.API.GET("storage", kwargs, cb)
+            this.API.GET("storage", *args)
     }
 
     def create(Resource resource, ...args) {
