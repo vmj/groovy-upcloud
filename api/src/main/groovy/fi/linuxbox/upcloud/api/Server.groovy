@@ -77,7 +77,7 @@ trait Server {
         this.API.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
     }
 
-    def loadFirewallRule(def position, ...args) { // FIXME: firewall load/detele: position as Resource?
+    def loadFirewallRule(def position, ...args) {
         this.API.GET(firewallRulePath(position), *args)
     }
 
@@ -85,7 +85,7 @@ trait Server {
         this.API.DELETE(firewallRulePath(position), *args)
     }
 
-    def addTags(def tags, ...args) { // FIXME: server tags add/delete: tag(s) as Resource?
+    def addTags(def tags, ...args) {
         this.API.POST(tagPath(tags), null, *args)
     }
 
