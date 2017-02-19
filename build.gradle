@@ -17,5 +17,5 @@ buildScan {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.0-rc-2'
+    gradleVersion = '3.3'
 }
