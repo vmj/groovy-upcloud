@@ -15,7 +15,7 @@ groovydoc {
     // Java EE 7 APIs
     link("https://docs.oracle.com/javaee/7/api/", "javax.inject")
     // Groovy APIs
-    link("http://docs.groovy-lang.org/docs/groovy-2.4.7/html/gapi/", "groovy.lang")
+    link("http://docs.groovy-lang.org/docs/groovy-${versions.groovy}/html/gapi/", "groovy.lang")
 
     [ahc      : 'http.ahc',
      api      : 'api',
