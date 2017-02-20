@@ -181,12 +181,15 @@ class ResourceSpec extends Specification {
         resource.baz == [1,2,3]
     }
 
-    def "Accessing properties that are not defined returns null"() {
+    def "Accessing properties that are not defined throws missing property exception"() {
         given:
         def resource = new Resource(repr: [ missing_property: [ :]])
 
-        expect:
+        when:
         resource.foo == null
+
+        then:
+        thrown MissingPropertyException
     }
 
     def "In dynamic resources, properties can be set using a method call"() {

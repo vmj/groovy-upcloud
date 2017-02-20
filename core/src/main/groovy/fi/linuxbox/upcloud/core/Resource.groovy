@@ -326,7 +326,10 @@ class Resource {
      */
     def propertyMissing(final String name) {
         // Help the trait proxies see all the properties (we used to return null here, but the proxies didn't work).
-        this.properties[name]
+        if (this.hasProperty(name))
+            this.properties[name]
+        else
+            throw new MissingPropertyException(name, this.class)
     }
 
     /**

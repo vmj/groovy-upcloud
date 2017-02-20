@@ -14,6 +14,22 @@ class ResourceBuilderSpec extends Specification{
 
     API api = new API(Mock(HTTP), null, null, null)
 
+    private static class Mother {
+        def prop = 'prop'
+        def method() { 'method'}
+
+        Resource birth(param) {
+            def local = 'local'
+            configure new Resource(), {
+                rThis = this
+                rLocal = local
+                rParam = param
+                rProp = prop
+                rMethod = method()
+            }
+        }
+    }
+
     def "Configuring an existing resource"() {
         given:
             Resource resource = new Resource()
@@ -40,6 +56,39 @@ class ResourceBuilderSpec extends Specification{
 
         then:
             resource?.class.simpleName == 'Resource'
+    }
+
+    def "Configuring with nested scopes"() {
+        when:
+            def resource = configure new Resource(), {
+                name = 'root'
+                child = configure new Resource(), {
+                    age = 5
+                }
+            }
+
+        then:
+            resource?.name == 'root'
+            !resource.hasProperty('age')
+            resource.child?.age == 5
+            !resource.child.hasProperty('name')
+    }
+
+    def "Configuring with a closure scope"() {
+        given:
+            def mother = new Mother()
+
+        when:
+            def resource = mother.birth('param')
+
+        then:
+            resource?.rThis == mother
+            // bound variables
+            resource.rLocal == 'local'
+            resource.rParam == 'param'
+            // free variables, resolved
+            resource.rProp == 'prop'
+            resource.rMethod == 'method'
     }
 
     def "Named resource creation and configuration"() {

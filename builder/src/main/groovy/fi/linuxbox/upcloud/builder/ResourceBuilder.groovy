@@ -84,11 +84,18 @@ class ResourceBuilder {
      * @param closure A closure that will (re)configure the resource.
      * @return The same resource, (re)configured.
      */
-    static <R extends Resource> R configure(@DelegatesTo.Target R resource, @DelegatesTo(strategy = DELEGATE_ONLY) Closure<Void> closure = null) {
+    static <R extends Resource> R configure(@DelegatesTo.Target("resource")
+                                            R resource,
+                                            @DelegatesTo(value = DelegatesTo.Target,
+                                                         target = "resource",
+                                                         strategy = DELEGATE_FIRST)
+                                            @ClosureParams(FirstParam)
+                                            Closure<Void> closure = null) {
         if (closure) {
-            Closure<Void> c = closure.rehydrate(resource, this, this)
-            c.resolveStrategy = DELEGATE_ONLY
-            c.call()
+            final Closure<Void> c = closure.clone()
+            c.resolveStrategy = DELEGATE_FIRST
+            c.delegate = resource
+            c.call(resource)
         }
         resource
     }
