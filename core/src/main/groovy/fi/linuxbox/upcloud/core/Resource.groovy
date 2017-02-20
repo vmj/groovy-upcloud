@@ -344,7 +344,7 @@ class Resource {
      * @param arg Value of the property.
      * @return Value of the property.
      */
-    def propertyMissing(final String name, final def arg) {
+    def propertyMissing(final String name, final arg) {
         this.metaClass."$name" = arg
     }
 
@@ -408,21 +408,13 @@ class Resource {
     }
 
     /**
-     * Returns <code>true</code> if the <code>value</code> is a list wrapper.
+     * Represents a list wrapper.
      *
      * <p>
      * A list wrapper is a Map that has only one key and the value corresponding to that key is a list.  This is a
      * convention in the UpCloud API.
      * </p>
-     *
-     * @param value A map which to check.
-     * @return <code>true</code> if <code>value</code> is a list wrapper, <code>false</code> otherwise.
      */
-    private static boolean isListWrapper(final Map<String, ?> value) {
-        final Set<String> keys = value.keySet()
-        keys.size() == 1 && value[keys[0]] instanceof List
-    }
-
     private static class ListWrapper {
         static Boolean isCase(final Object value) {
             value instanceof Map<String, ?> && value.size() == 1 && value.values()[0] instanceof List

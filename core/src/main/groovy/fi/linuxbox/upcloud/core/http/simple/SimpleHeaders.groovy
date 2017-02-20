@@ -19,7 +19,7 @@ import fi.linuxbox.upcloud.core.http.Headers
  * </p>
  */
 class SimpleHeaders implements Headers {
-    private final Map<String, String> headers;
+    private final Map<String, String> headers
 
     SimpleHeaders(final Map<String, String> headers) {
         this.headers = headers

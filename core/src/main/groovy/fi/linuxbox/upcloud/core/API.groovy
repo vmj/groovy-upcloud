@@ -331,7 +331,7 @@ class API {
      * @return Whatever is returned by the HTTP implementation for starting an asynchronous request.
      */
     @PackageScope // for testing
-    def request(
+    request(
             final Map<?, Closure<Void>> cbs = [ : ],
             final String method, final String path, final Resource resource, final Closure<Void> cb) {
         final Map<String, Closure<Void>> requestCallbacks = internalize(cbs)
@@ -352,7 +352,6 @@ class API {
                     Resource m = new Resource(repr: repr, API: this, META: meta)
                     final Closure<Void> callback = chooseCallback(meta.status, cb, requestCallbacks)
                     callApp(callback, m, null)
-                    return
                 }))
     }
 
@@ -420,7 +419,7 @@ class API {
      * @param args The rest of the arguments.
      * @return Whatever the HTTP implementation returns as a result of starting an asynchronous operation.
      */
-    def methodMissing(final String name, final def args) {
+    def methodMissing(final String name, final args) {
         def method = HTTP_METHODS[name]
         if (method && args.length in method.first) {
             def ARGV = [ *args ]
@@ -540,8 +539,8 @@ class API {
         if (callback)
             return callback
 
-        // Fall back to default callback;
-        return defaultRequestCallback;
+        // Fall back to default callback
+        return defaultRequestCallback
     }
 
     /**

@@ -26,7 +26,7 @@ interface Headers {
      *
      * @return The iterator over all HTTP headers in this collection.
      */
-    Iterator<Header> all();
+    Iterator<Header> all()
 
     /**
      * An iterator over all HTTP header value elements of all headers with the given name in this collection.
@@ -65,7 +65,7 @@ interface Headers {
      * @param name Case-insensitive header name.
      * @return Iterator over value elements of headers with the given name.
      */
-    Iterator<HeaderElement> getAt(String name);
+    Iterator<HeaderElement> getAt(String name)
 
     /**
      * Adds a new header to this collection of headers.
@@ -77,5 +77,5 @@ interface Headers {
      * @param name Name of the new header.
      * @param value Value, i.e. possibly a comma separated list of elements with their parameters, of the new header.
      */
-    void putAt(String name, String value);
+    void putAt(String name, String value)
 }
