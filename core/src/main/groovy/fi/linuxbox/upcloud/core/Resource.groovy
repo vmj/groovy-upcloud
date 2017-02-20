@@ -112,9 +112,6 @@ import org.slf4j.*
 class Resource {
     private final Logger log = LoggerFactory.getLogger(Resource)
 
-    private static final GroovyClassLoader gcl = new GroovyClassLoader(Resource.classLoader)
-    private static final String resourcePackageName = "fi.linuxbox.upcloud.resource"
-
     final API API
     final META META
 
@@ -125,7 +122,7 @@ class Resource {
      * @param kwargs.META The META instance.  This is received from the HTTP implementation.
      * @param kwargs.repr The Map<String, Object> intermediary representation from the JSON implementations.
      */
-    Resource(final Map kwargs = [ :]) {
+    Resource(final Map kwargs = [:]) {
         // the second arg (register=false) makes this metaClass instance scoped
         metaClass = new ExpandoMetaClass(this.class, false, true)
         metaClass.initialize()
@@ -135,14 +132,14 @@ class Resource {
 
         final Map<String, ?> map = kwargs.remove('repr') as Map<String, ?>
         map?.each { final String key, final Object value ->
-            if (value instanceof Map<String, ?>) {
-                if (isListWrapper(value)) {
+            final String propertyName = propertyName(key)
+            switch (value) {
+                case ListWrapper:
                     //  value ----v
                     // 'objects': [ 'object': [ [:], ... ]
                     // 'objects': [ 'object': [ string, ... ]
                     final String type_name = value.keySet()[0] // the only key
                     final String className = className(type_name)
-                    final String propertyName = propertyName(key)
                     // e.g.
                     //    [
                     //       prices: [
@@ -154,28 +151,23 @@ class Resource {
                     //    ]
                     // becomes
                     //    this.prices = [ Zone(), ... ]
-                    final List list = (List) value[type_name];
+                    final List list = (List) value[type_name]
                     this.metaClass."$propertyName" = list.collect { element ->
                         if (element instanceof Map<String, ?>) {
-                            final Class clazz = loadResourceClass(className)
-                            element = clazz.metaClass.invokeConstructor([repr: element] + kwargs)
+                            element = ResourceLoader.instantiateResourceClass(className, [*:kwargs, repr: element])
                         }
                         element
                     }
-                    //__setter_getter(this, attr)
-                } else { // Map but not list wrapper
+                    break
+                case Map/*<String, ?>*/: // groovy cannot handle the generics syntax here
                     // 'object': [key1: *, key2: *, ...]
                     final String className = className(key)
-                    final String propertyName = propertyName(key)
-                    final Class clazz = loadResourceClass(className)
-                    this.metaClass."$propertyName" = clazz.metaClass.invokeConstructor(kwargs + [repr: value])
-                    //__setter_getter(this, attr)
-                }
-            } else { // not Map
-                // simple attribute
-                final String propertyName = propertyName(key)
-                this.metaClass."$propertyName" = value
-                //__setter_getter(this, attr)
+                    this.metaClass."$propertyName" = ResourceLoader.instantiateResourceClass(className, [*:kwargs, repr: value])
+                    break
+                default:
+                    // simple attribute
+                    this.metaClass."$propertyName" = value
+                    break
             }
         }
     }
@@ -190,17 +182,9 @@ class Resource {
      *
      * @return Properties of this resource.
      */
-    private List<Map.Entry<String, Object>> resourceProperties() {
-        this.properties.grep { final Map.Entry<String, Object> property ->
-            if (property.value == null)
-                null
-            else if (property.key == 'class' && property.value instanceof Class)
-                null
-            else if (property.key =~ /^[A-Z]+$/)
-                null
-            else
-                property
-        }
+    private Map<String, Object> resourceProperties() {
+        def reserved = ~/^[A-Z]+$/
+        this.properties.findAll {!(it.key == 'class' || it.value == null || it.key =~ reserved) }
     }
 
     /**
@@ -233,48 +217,45 @@ class Resource {
      * @return Representation of this resource.
      */
     Object asType(Class clazz) {
-        resourceProperties().grep { final Map.Entry<String, Object> property ->
-            if (property.value instanceof List && property.value.isEmpty())
-                null
-            else
-                property
-        }.inject([:]) { final Map map, final Map.Entry<String, Object> property ->
-            final String property_name = type_name(property.key)
-            map[property_name] = property.value.with {
-                if (it instanceof List) {
-                    final Object firstElement = it[0]
-                    if (firstElement instanceof Resource) {
-                        final String type_name = type_name(firstElement.class.simpleName)
-
-                        // this.prices = [ Zone(), ... ]
-                        // map[prices] = [ zone: [ [:], ... ] ]
-
-                        // this.timezones = [ "asd", "dsa", ... ]
-                        // map[timezones] = [ timezone: [ "asd", "dsa", ... ] ]
-
-                        // the parens for the key force the GString to evaluate to String
-                        [ (type_name): it.collect { it as Map }]
-                    } else if (firstElement instanceof String) {
-                        // HACK: only places I know of where we need this:
-                        //       * server creation: [ssh_keys: [ssh_key: [key1, key2]]]
-                        //       * tag creation: [servers: [server: [uuid1, uuid2]]]
-                        //       * tag update: [servers: [server: [uuid1, uuid2]]]
-                        //       so naive unpluralization of the property_name (ssh_keys or servers)
-                        //       will do for those.
-                        final String type_name = property_name.substring(0, property_name.size() - 1)
-                        [ (type_name): it.collect { it as String }]
-                    } else {
-                        throw new UnsupportedOperationException("Only lists of Resources or Strings is currently supported!!!")
-                    }
-                } else if (it instanceof Resource) {
-                    // this.error = Error()
-                    it as Map
-                } else {
-                    // this.id = "fi-hel1"
-                    it
+        resourceProperties().collectEntries { final String key, final Object value ->
+            final String property_name = type_name(key)
+            [(property_name): value.with {
+                switch (it) {
+                    case { it instanceof List && !it.isEmpty() }: // non-empty List
+                        String type_name_str
+                        Closure mapper
+                        // Assume that all elements are of the same type
+                        final Object firstElement = it[0]
+                        switch (firstElement) {
+                            case Resource:
+                                // this.prices = [ Zone(), ... ]
+                                // map[prices] = [ zone: [ [:], ... ] ]
+                                // this.timezones = [ "asd", "dsa", ... ]
+                                // map[timezones] = [ timezone: [ "asd", "dsa", ... ] ]
+                                type_name_str = type_name(firstElement.class.simpleName)
+                                mapper = { it as Map }
+                                break
+                            case String:
+                                // HACK: only places I know of where we need this:
+                                //       * server creation: [ssh_keys: [ssh_key: [key1, key2]]]
+                                //       * tag creation: [servers: [server: [uuid1, uuid2]]]
+                                //       * tag update: [servers: [server: [uuid1, uuid2]]]
+                                //       so naive unpluralization of the property_name (ssh_keys or servers)
+                                //       will do for those.
+                                type_name_str = property_name[0..-2]
+                                mapper = { it }
+                                break
+                            default:
+                                throw new UnsupportedOperationException("Only lists of Resources or Strings is currently supported!!!")
+                        }
+                        // the parentheses around the key force the GString to evaluate to String
+                        return [(type_name_str): it.collect(mapper)]
+                    case Resource:
+                        return it as Map
+                    default:
+                        return it
                 }
-            }
-            map
+            }]
         }
     }
 
@@ -309,12 +290,8 @@ class Resource {
      * @return A copy of this resource with specified properties removed.
      */
     def proj(final List<String> properties) {
-        resourceProperties().grep { final Map.Entry<String, Object> property ->
-            if (property.key in properties)
-                property
-            else
-                null
-        }.inject ((Resource)this.metaClass.invokeConstructor(API: API, META: META)) {
+        resourceProperties().grep { it.key in properties }
+                .inject ((Resource)this.metaClass.invokeConstructor(API: API, META: META)) {
             final Resource resource, final Map.Entry<String, Object> property -> resource."${property.key}"(property.value)
         }
     }
@@ -428,39 +405,6 @@ class Resource {
     }
 
     /**
-     * Returns a Class corresponding to the named resource.
-     *
-     * <p>
-     * For example, <code>loadResourceClass('Server')</code> would return the Class for
-     * <code>fi.linuxbox.upcloud.resource.Server</code> class.
-     * </p>
-     *
-     * @param resourceClassName Simple name of the resource class, i.e. name without the package.
-     * @return Class for the named resource.
-     */
-    private Class loadResourceClass(final String resourceClassName) {
-        Class clazz = null
-        try {
-            clazz = gcl.loadClass("${resourcePackageName}.$resourceClassName")
-            log.debug("Loaded resource $resourceClassName")
-        } catch (final ClassNotFoundException ignored) {
-            log.info("Generating resource $resourceClassName")
-            clazz = gcl.parseClass("""
-                                   package ${resourcePackageName}
-
-                                   import ${Resource.class.name}
-
-                                   class $resourceClassName extends ${Resource.class.simpleName} {
-                                       $resourceClassName(final Map kwargs = [:]) {
-                                           super(kwargs)
-                                       }
-                                   }
-                                   """)
-        }
-        clazz
-    }
-
-    /**
      * Returns <code>true</code> if the <code>value</code> is a list wrapper.
      *
      * <p>
@@ -474,5 +418,11 @@ class Resource {
     private static boolean isListWrapper(final Map<String, ?> value) {
         final Set<String> keys = value.keySet()
         keys.size() == 1 && value[keys[0]] instanceof List
+    }
+
+    private static class ListWrapper {
+        static Boolean isCase(final Object value) {
+            value instanceof Map<String, ?> && value.size() == 1 && value.values()[0] instanceof List
+        }
     }
 }

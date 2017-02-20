@@ -1,10 +1,13 @@
 package fi.linuxbox.upcloud.builder
 
-import org.slf4j.*
+import fi.linuxbox.upcloud.core.Resource
+import fi.linuxbox.upcloud.core.ResourceLoader
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.FirstParam
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-import fi.linuxbox.upcloud.core.*
-
-import static groovy.lang.Closure.DELEGATE_ONLY
+import static groovy.lang.Closure.DELEGATE_FIRST
 
 /**
  *
@@ -54,10 +57,13 @@ class ResourceBuilder {
             case 0:
                 return build(name)
             case 1:
-                if (args[0] instanceof Closure)
-                    return build(name, args[0])
-                else if (args[0] instanceof Map)
-                    return build(args[0], name)
+                switch (args[0]) {
+                    case Closure:
+                        return build(name, args[0])
+                    case Map:
+                        return build(args[0], name)
+                }
+                break
             case 2:
                 return build(args[0], name, args[1])
         }
@@ -105,26 +111,26 @@ class ResourceBuilder {
      *     }
      * </code>
      *
-     * @param type Type of the resource to create (simple class name, possibly with first letter in lowercase)
+     * @param resourceClassName Type of the resource to create (simple class name, possibly with first letter in lowercase)
      * @param closure Optional keyword arguments and closure that will configure the new resource
      * @return The new resource.
      */
-    static Resource build(Map kwargs, String type, Closure closure = null) {
+    static Resource build(Map kwargs, String resourceClassName, Closure closure = null) {
         // Support both "IpAddress" and "ipAddress"
-        type = type.replaceFirst('^([A-Z])') { it[0].toLowerCase() }
+        resourceClassName = resourceClassName.replaceFirst('^([a-z])') { it[0].toUpperCase() }
 
-        Resource resource = new Resource((kwargs ?: [:]) + [ repr: [ (type): [ :]]])."$type"
+        Resource resource = ResourceLoader.instantiateResourceClass(resourceClassName, kwargs)
         configure resource, closure
     }
 
     /**
      * Calls build with empty keyword arguments.
      *
-     * @param type Type of the resource to create (simple class name, possibly with first letter in lowercase)
+     * @param resourceClassName Type of the resource to create (simple class name, possibly with first letter in lowercase)
      * @param closure Optional closure that will configure the new resource
      * @return The new resource.
      */
-    static Resource build(String type, Closure closure = null) {
-        build([:], type, closure)
+    static Resource build(String resourceClassName, Closure closure = null) {
+        build([:], resourceClassName, closure)
     }
 }
