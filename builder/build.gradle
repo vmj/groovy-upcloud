@@ -8,4 +8,7 @@ modifyPom {
 }
 dependencies {
     compile project(':core')
+
+    // it is interesting, on occasion, to look how the behaviour changes when the resources are on the classpath.
+    //testRuntime project(':resource')
 }
