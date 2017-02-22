@@ -61,8 +61,7 @@ class UpCloud {
     }
 
     def storages(...args) {
-        Map kwargs = args.find { it instanceof Map }
-        def type = kwargs?.remove('type')
+        def type = args.find { it instanceof Map } ?.remove('type')
         if (type)
             this.API.GET("storage/$type", *args)
         else
