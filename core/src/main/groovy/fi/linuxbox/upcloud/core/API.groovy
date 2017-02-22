@@ -212,18 +212,11 @@ class API {
     /**
      * HTTP response status category names.
      */
-    private static final List<String> HTTP_STATUS_CATEGORY_NAMES = [
-            'info', 'success', 'redirect', 'client_error', 'server_error', 'error'
-    ]
+    private static final List<String> HTTP_STATUS_CATEGORY_NAMES = HTTP_STATUS_CATEGORIES.second
     /**
-     * HTTP response status code minimum.
+     * HTTP response status code range.
      */
-    private static final Integer HTTP_STATUS_CODE_MIN = 100
-    /**
-     * HTTP response status code maximum.
-     */
-    private static final Integer HTTP_STATUS_CODE_MAX = 599
-
+    private static final IntRange HTTP_STATUS_CODE_RANGE = (HTTP_STATUS_CATEGORIES[0].first.from..HTTP_STATUS_CATEGORIES[-1].first.to)
 
     /**
      * HTTP method descriptions.
@@ -614,10 +607,10 @@ class API {
 
         final BigInteger statusCode = internalizeStatusCode(statusString)
         if (statusCode) {
-            if (statusCode >= HTTP_STATUS_CODE_MIN && statusCode <= HTTP_STATUS_CODE_MAX)
+            if (statusCode in HTTP_STATUS_CODE_RANGE)
                 return statusCode.toString()
             throw new IllegalArgumentException(
-                    "HTTP status code must be in range (${HTTP_STATUS_CODE_MIN}..${HTTP_STATUS_CODE_MAX}): $status")
+                    "HTTP status code must be in range (${HTTP_STATUS_CODE_RANGE.inspect()}): $status")
         }
 
         if (statusString in HTTP_STATUS_CATEGORY_NAMES)
