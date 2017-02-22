@@ -21,11 +21,15 @@ class ResourceBuilderSpec extends Specification{
         Resource birth(param) {
             def local = 'local'
             configure new Resource(), {
-                rThis = this
-                rLocal = local
-                rParam = param
-                rProp = prop
-                rMethod = method()
+                // 'this' cannot appear on LHS, as per Groovy syntax
+                thisObject = this
+                // when bound and free variables share the name of the
+                // resource property, delegate has to be mentioned
+                // explicitly
+                delegate.local = local
+                delegate.param = param
+                delegate.prop = prop
+                delegate.method = method()
             }
         }
     }
@@ -63,6 +67,7 @@ class ResourceBuilderSpec extends Specification{
             def resource = configure new Resource(), {
                 name = 'root'
                 child = configure new Resource(), {
+                    name = name // outer scope name is used to set inner scope name
                     age = 5
                 }
             }
@@ -71,7 +76,7 @@ class ResourceBuilderSpec extends Specification{
             resource?.name == 'root'
             !resource.hasProperty('age')
             resource.child?.age == 5
-            !resource.child.hasProperty('name')
+            resource.child.name == 'root'
     }
 
     def "Configuring with a closure scope"() {
@@ -82,13 +87,13 @@ class ResourceBuilderSpec extends Specification{
             def resource = mother.birth('param')
 
         then:
-            resource?.rThis == mother
+            resource?.thisObject == mother
             // bound variables
-            resource.rLocal == 'local'
-            resource.rParam == 'param'
+            resource.local == 'local'
+            resource.param == 'param'
             // free variables, resolved
-            resource.rProp == 'prop'
-            resource.rMethod == 'method'
+            resource.prop == 'prop'
+            resource.method == 'method'
     }
 
     def "Named resource creation and configuration"() {
