@@ -7,10 +7,10 @@ modifyPom {
     }
 }
 dependencies {
-    compile project(':core')
+    implementation project(':core')
 
-    compile "com.fasterxml.jackson.core:jackson-core:2.8.6"
-    compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.8.6"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.8.6"
 
-    testCompile "com.jayway.jsonpath:json-path-assert:2.2.0"
+    testImplementation "com.jayway.jsonpath:json-path-assert:2.2.0"
 }

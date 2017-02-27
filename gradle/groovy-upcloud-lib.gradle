@@ -1,12 +1,23 @@
+apply plugin: 'java-library'
 apply from: "${projectDir}/../gradle/groovy-upcloud.gradle"
 apply plugin: 'com.bmuschko.nexus'
 
+configurations {
+    apiElements {
+        outgoing.variants.getByName('classes').artifact(
+                file: compileGroovy.destinationDir,
+                type: JavaPlugin.CLASS_DIRECTORY,
+                builtBy: compileGroovy
+        )
+    }
+}
+
 dependencies {
     // Dependency injections are marked with standard API
-    compile 'javax.inject:javax.inject:1'
+    implementation 'javax.inject:javax.inject:1'
 
     // Libraries do not ship with logging API
-    compileOnly "org.slf4j:slf4j-api:${versions.slf4j}"
+    implementation "org.slf4j:slf4j-api:${versions.slf4j}"
 }
 
 groovydoc {

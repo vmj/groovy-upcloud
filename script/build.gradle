@@ -7,9 +7,9 @@ modifyPom {
     }
 }
 dependencies {
-    compile project(':core')
-    compile project(':ahc')
-    compile project(':jackson')
-    compile project(':builder')
-    compile project(':api')
+    api project(':core')
+    implementation project(':ahc')
+    implementation project(':jackson')
+    api project(':builder')
+    api project(':api')
 }

@@ -20,13 +20,13 @@ repositories {
 
 dependencies {
     // Everything is written in Groovy
-    compile "org.codehaus.groovy:groovy:${versions.groovy}:indy"
+    implementation "org.codehaus.groovy:groovy:${versions.groovy}:indy"
 
     // Tests need LogbackConfigurator
-    testCompile "ch.qos.logback:logback-classic:${versions.logback}"
+    testImplementation "ch.qos.logback:logback-classic:${versions.logback}"
 
     // Tests are written in Spock
-    testCompile "org.spockframework:spock-core:${versions.spock}", {
+    testImplementation "org.spockframework:spock-core:${versions.spock}", {
         exclude module: 'groovy-all'
     }
 }

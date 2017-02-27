@@ -7,6 +7,6 @@ modifyPom {
     }
 }
 dependencies {
-    compile project(':core')
-    compile project(':builder')
+    api project(':core')
+    api project(':builder')
 }
