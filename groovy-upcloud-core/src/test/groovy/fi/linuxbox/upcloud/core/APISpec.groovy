@@ -1,9 +1,9 @@
 package fi.linuxbox.upcloud.core
 
-import fi.linuxbox.upcloud.core.http.ERROR
-import fi.linuxbox.upcloud.core.http.HTTP
-import fi.linuxbox.upcloud.core.http.Headers
-import fi.linuxbox.upcloud.core.http.META
+import fi.linuxbox.upcloud.http.spi.ERROR
+import fi.linuxbox.upcloud.http.spi.HTTP
+import fi.linuxbox.upcloud.http.spi.Headers
+import fi.linuxbox.upcloud.http.spi.META
 import spock.lang.*
 import fi.linuxbox.upcloud.core.json.*
 

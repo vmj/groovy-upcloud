@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.core.http
+package fi.linuxbox.upcloud.http.spi
 
 /**
  * A collection of HTTP message headers.

@@ -1,6 +1,6 @@
 package fi.linuxbox.upcloud.core.http.simple
 
-import fi.linuxbox.upcloud.core.http.Header
+import fi.linuxbox.upcloud.http.spi.Header
 
 
 /**

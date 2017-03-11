@@ -1,7 +1,4 @@
-package fi.linuxbox.upcloud.core.http
-
-import fi.linuxbox.upcloud.core.http.Headers
-
+package fi.linuxbox.upcloud.http.spi
 /**
  * Meta information about a resource.
  *

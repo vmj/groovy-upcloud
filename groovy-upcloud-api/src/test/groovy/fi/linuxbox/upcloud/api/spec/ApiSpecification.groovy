@@ -1,7 +1,7 @@
 package fi.linuxbox.upcloud.api.spec
 
-import fi.linuxbox.upcloud.core.http.Exchange
-import fi.linuxbox.upcloud.core.http.HTTP
+import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.HTTP
 import spock.lang.*
 
 import fi.linuxbox.upcloud.api.mock.*

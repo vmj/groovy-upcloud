@@ -1,8 +1,8 @@
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.core.http.ERROR
-import fi.linuxbox.upcloud.core.http.Exchange
-import fi.linuxbox.upcloud.core.http.META
+import fi.linuxbox.upcloud.http.spi.ERROR
+import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.META
 
 import java.util.concurrent.*
 import spock.lang.*

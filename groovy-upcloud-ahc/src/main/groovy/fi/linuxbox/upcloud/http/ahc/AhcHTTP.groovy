@@ -1,5 +1,9 @@
 package fi.linuxbox.upcloud.http.ahc
 
+import fi.linuxbox.upcloud.http.spi.ERROR
+import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.HTTP
+
 import javax.inject.*
 import org.apache.http.*
 import org.apache.http.entity.*

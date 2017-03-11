@@ -1,8 +1,8 @@
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.core.http.Header
-import fi.linuxbox.upcloud.core.http.HeaderElement
-import fi.linuxbox.upcloud.core.http.Headers
+import fi.linuxbox.upcloud.http.spi.Header
+import fi.linuxbox.upcloud.http.spi.HeaderElement
+import fi.linuxbox.upcloud.http.spi.Headers
 import org.apache.http.HeaderIterator
 import org.apache.http.HttpMessage
 import org.apache.http.message.BasicHeaderElementIterator

@@ -1,9 +1,9 @@
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.core.http.Header
-import fi.linuxbox.upcloud.core.http.HeaderElement
-import fi.linuxbox.upcloud.core.http.Headers
-import fi.linuxbox.upcloud.core.http.Parameter
+import fi.linuxbox.upcloud.http.spi.Header
+import fi.linuxbox.upcloud.http.spi.HeaderElement
+import fi.linuxbox.upcloud.http.spi.Headers
+import fi.linuxbox.upcloud.http.spi.Parameter
 
 import org.apache.http.HttpResponse
 import org.apache.http.message.BasicHttpResponse

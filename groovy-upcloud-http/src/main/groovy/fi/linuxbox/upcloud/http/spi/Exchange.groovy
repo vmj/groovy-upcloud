@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.core.http
+package fi.linuxbox.upcloud.http.spi
 
 /**
  * An HTTP exchange.

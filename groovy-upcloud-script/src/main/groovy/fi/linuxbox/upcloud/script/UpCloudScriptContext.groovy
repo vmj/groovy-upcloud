@@ -1,6 +1,6 @@
 package fi.linuxbox.upcloud.script
 
-import fi.linuxbox.upcloud.core.http.HTTP
+import fi.linuxbox.upcloud.http.spi.HTTP
 
 import javax.inject.*
 import org.slf4j.*
