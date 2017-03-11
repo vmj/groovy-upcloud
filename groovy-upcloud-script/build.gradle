@@ -8,7 +8,7 @@ modifyPom {
 }
 dependencies {
     api project(':groovy-upcloud-core')
-    implementation project(':groovy-upcloud-ahc')
+    implementation project(':groovy-upcloud-http-ahc')
     implementation project(':groovy-upcloud-jackson')
     api project(':groovy-upcloud-builder')
     api project(':groovy-upcloud-api')
