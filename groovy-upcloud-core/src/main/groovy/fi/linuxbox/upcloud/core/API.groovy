@@ -6,10 +6,10 @@ import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Headers
 import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
+import fi.linuxbox.upcloud.json.spi.JSON
 import groovy.transform.*
 import javax.inject.*
 import org.slf4j.*
-import fi.linuxbox.upcloud.core.json.*
 
 /**
  * The API for all the things managed in UpCloud.

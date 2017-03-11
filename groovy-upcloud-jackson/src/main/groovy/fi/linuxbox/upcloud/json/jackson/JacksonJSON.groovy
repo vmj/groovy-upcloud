@@ -1,7 +1,7 @@
 package fi.linuxbox.upcloud.json.jackson
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import fi.linuxbox.upcloud.core.json.JSON
+import fi.linuxbox.upcloud.json.spi.JSON
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

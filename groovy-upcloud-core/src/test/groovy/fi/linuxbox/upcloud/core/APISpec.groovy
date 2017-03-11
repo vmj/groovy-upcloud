@@ -4,8 +4,8 @@ import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Headers
 import fi.linuxbox.upcloud.http.spi.META
+import fi.linuxbox.upcloud.json.spi.JSON
 import spock.lang.*
-import fi.linuxbox.upcloud.core.json.*
 
 /**
  *

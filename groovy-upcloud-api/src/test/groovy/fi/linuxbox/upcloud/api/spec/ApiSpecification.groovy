@@ -2,11 +2,11 @@ package fi.linuxbox.upcloud.api.spec
 
 import fi.linuxbox.upcloud.http.spi.Exchange
 import fi.linuxbox.upcloud.http.spi.HTTP
+import fi.linuxbox.upcloud.json.spi.JSON
 import spock.lang.*
 
 import fi.linuxbox.upcloud.api.mock.*
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.json.*
 
 /**
  * Base class for API specifications.

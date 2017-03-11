@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.core.json
+package fi.linuxbox.upcloud.json.spi
 
 /**
  * An interface which is implemented by the JSON implementation.
