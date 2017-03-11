@@ -7,7 +7,7 @@ modifyPom {
     }
 }
 dependencies {
-    implementation project(':core')
+    implementation project(':groovy-upcloud-core')
 
     implementation "com.fasterxml.jackson.core:jackson-core:2.8.6"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.8.6"

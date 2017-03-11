@@ -9,8 +9,6 @@ ext.versions = [groovy: '2.4.9',
                 spock: '1.0-groovy-2.4',
 ]
 
-archivesBaseName = "${rootProject.name}-${project.name}"
-
 // Java 7
 sourceCompatibility = 1.7
 

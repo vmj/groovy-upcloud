@@ -36,7 +36,7 @@ groovydoc {
      jackson  : 'json.jackson',
      resource : 'resource',
      script   : 'script'].each {
-        link("http://upcloud.linuxbox.fi/api/${project.version}/${it.key}", "fi.linuxbox.upcloud.${it.value}")
+        link("http://upcloud.linuxbox.fi/api/${project.version}/groovy-upcloud-${it.key}", "fi.linuxbox.upcloud.${it.value}")
     }
 }
 

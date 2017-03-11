@@ -8,9 +8,9 @@ modifyPom {
 }
 
 dependencies {
-    api project(':core')
+    api project(':groovy-upcloud-core')
 
-    testImplementation project(':builder')
+    testImplementation project(':groovy-upcloud-builder')
     // it is interesting, on occasion, to look how the behaviour changes when the resources are on the classpath.
-    //testRuntimeOnly project(':resource')
+    //testRuntimeOnly project(':groovy-upcloud-resource')
 }

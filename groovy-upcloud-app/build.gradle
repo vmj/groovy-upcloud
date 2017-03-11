@@ -11,14 +11,8 @@ modifyPom {
 
 mainClassName = 'fi.linuxbox.upcloud.app.App'
 
-distributions {
-    main {
-        baseName = project.archivesBaseName
-    }
-}
-
 dependencies {
-    compile project(':script')
+    compile project(':groovy-upcloud-script')
 
     // Application must ensure that the SLF4J API is present at runtime
     compile "org.slf4j:slf4j-api:${versions.slf4j}"
