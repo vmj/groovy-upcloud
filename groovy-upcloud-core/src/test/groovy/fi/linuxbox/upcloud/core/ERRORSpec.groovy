@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.http.ERROR
 import spock.lang.Specification
 
 class ERRORSpec extends Specification {

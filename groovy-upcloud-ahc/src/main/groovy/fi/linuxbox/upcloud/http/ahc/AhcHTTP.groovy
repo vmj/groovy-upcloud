@@ -8,8 +8,6 @@ import org.apache.http.message.*
 import org.apache.http.nio.client.*
 import org.apache.http.util.*
 import org.slf4j.*
-
-import fi.linuxbox.upcloud.core.*
 import fi.linuxbox.upcloud.core.http.*
 
 /**

@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.http.ERROR
 import fi.linuxbox.upcloud.core.http.HTTP
 import fi.linuxbox.upcloud.core.http.Headers
 import spock.lang.*

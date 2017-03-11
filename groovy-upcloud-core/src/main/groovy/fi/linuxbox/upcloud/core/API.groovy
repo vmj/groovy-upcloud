@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.http.ERROR
 import fi.linuxbox.upcloud.core.http.Exchange
 import fi.linuxbox.upcloud.core.http.HTTP
 import fi.linuxbox.upcloud.core.http.Headers
@@ -183,10 +184,10 @@ import fi.linuxbox.upcloud.core.json.*
  *     the default request callback comes apparent.
  * </p>
  * <p>
- *     The default request callback takes a second optional argument: an instance of {@link ERROR} class.  This is
+ *     The default request callback takes a second optional argument: an instance of {@link fi.linuxbox.upcloud.core.http.ERROR} class.  This is
  *     <code>null</code> whenever the response from the server is available, even if the response represents an error,
  *     and <code>non-null</code> if the server is, for example, unreachable or there's a I/O error talking to the
- *     server.  Read more about that in the {@link ERROR} class documentation.
+ *     server.  Read more about that in the {@link fi.linuxbox.upcloud.core.http.ERROR} class documentation.
  * </p>
  */
 class API {

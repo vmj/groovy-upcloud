@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.http.ahc
 
+import fi.linuxbox.upcloud.core.http.ERROR
 import fi.linuxbox.upcloud.core.http.Exchange
 import org.apache.http.*
 import org.apache.http.entity.BasicHttpEntity
