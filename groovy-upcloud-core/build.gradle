@@ -8,5 +8,5 @@ modifyPom {
 }
 
 dependencies {
-    api project(':groovy-upcloud-http')
+    api project(':groovy-upcloud-http-spi')
 }

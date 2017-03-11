@@ -1,6 +1,6 @@
 include 'groovy-upcloud-core'
 include 'groovy-upcloud-jackson'
-include 'groovy-upcloud-http'
+include 'groovy-upcloud-http-spi'
 include 'groovy-upcloud-ahc'
 include 'groovy-upcloud-builder'
 include 'groovy-upcloud-resource'

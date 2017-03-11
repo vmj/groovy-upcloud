@@ -7,7 +7,7 @@ modifyPom {
     }
 }
 dependencies {
-    implementation project(':groovy-upcloud-http')
+    implementation project(':groovy-upcloud-http-spi')
     testImplementation project(':groovy-upcloud-core')
 
     implementation "org.apache.httpcomponents:httpasyncclient:4.1.3", {
