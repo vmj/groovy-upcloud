@@ -1,6 +1,7 @@
 package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.core.http.HTTP
+import fi.linuxbox.upcloud.core.http.META
 import org.codehaus.groovy.runtime.typehandling.*
 import spock.lang.*
 import fi.linuxbox.upcloud.core.json.*

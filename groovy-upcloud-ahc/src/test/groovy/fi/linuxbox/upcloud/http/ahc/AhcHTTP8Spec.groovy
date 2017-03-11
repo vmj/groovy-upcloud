@@ -2,11 +2,10 @@ package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.core.http.ERROR
 import fi.linuxbox.upcloud.core.http.Exchange
+import fi.linuxbox.upcloud.core.http.META
 
 import java.util.concurrent.*
 import spock.lang.*
-
-import fi.linuxbox.upcloud.core.*
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
 
 import static java.util.concurrent.TimeUnit.SECONDS

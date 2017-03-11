@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.http.META
 import groovy.transform.PackageScope
 import org.slf4j.*
 

@@ -1,7 +1,7 @@
 package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.core.http.ERROR
-import fi.linuxbox.upcloud.core.META
+import fi.linuxbox.upcloud.core.http.META
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine
 import org.apache.http.concurrent.FutureCallback

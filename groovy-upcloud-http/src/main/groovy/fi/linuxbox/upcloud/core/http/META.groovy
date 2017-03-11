@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.core
+package fi.linuxbox.upcloud.core.http
 
 import fi.linuxbox.upcloud.core.http.Headers
 

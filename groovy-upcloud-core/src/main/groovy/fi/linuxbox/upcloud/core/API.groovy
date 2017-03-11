@@ -4,6 +4,7 @@ import fi.linuxbox.upcloud.core.http.ERROR
 import fi.linuxbox.upcloud.core.http.Exchange
 import fi.linuxbox.upcloud.core.http.HTTP
 import fi.linuxbox.upcloud.core.http.Headers
+import fi.linuxbox.upcloud.core.http.META
 import groovy.transform.*
 import javax.inject.*
 import org.slf4j.*
