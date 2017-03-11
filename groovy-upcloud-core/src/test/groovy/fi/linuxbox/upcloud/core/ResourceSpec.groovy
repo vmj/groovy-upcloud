@@ -1,9 +1,8 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.http.HTTP
 import org.codehaus.groovy.runtime.typehandling.*
 import spock.lang.*
-
-import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.json.*
 
 class ResourceSpec extends Specification {

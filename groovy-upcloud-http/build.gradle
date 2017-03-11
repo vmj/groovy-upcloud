@@ -1,0 +1,8 @@
+apply from: '../gradle/groovy-upcloud-lib.gradle'
+
+modifyPom {
+    project {
+        name 'Groovy UpCloud HTTP SPI'
+        description 'Groovy UpCloud HTTP provides SPIs for HTTP'
+    }
+}

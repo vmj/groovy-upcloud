@@ -1,9 +1,9 @@
 package fi.linuxbox.upcloud.builder
 
+import fi.linuxbox.upcloud.core.http.HTTP
 import spock.lang.*
 
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.http.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 

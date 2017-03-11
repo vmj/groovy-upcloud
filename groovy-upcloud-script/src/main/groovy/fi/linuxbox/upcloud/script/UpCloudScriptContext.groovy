@@ -1,12 +1,13 @@
 package fi.linuxbox.upcloud.script
 
+import fi.linuxbox.upcloud.core.http.HTTP
+
 import javax.inject.*
 import org.slf4j.*
 
 import fi.linuxbox.upcloud.api.*
 import fi.linuxbox.upcloud.builder.*
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.json.*
 import fi.linuxbox.upcloud.http.ahc.*
 import fi.linuxbox.upcloud.json.jackson.*

@@ -2,6 +2,7 @@ package fi.linuxbox.upcloud.core.http.simple
 
 import fi.linuxbox.upcloud.core.http.Header
 
+
 /**
  * Iterator over simple headers.
  */

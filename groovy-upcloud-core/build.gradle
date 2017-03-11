@@ -6,3 +6,7 @@ modifyPom {
         description 'Groovy UpCloud core provides a way to talk to the UpCloud API and a representation of the Resources'
     }
 }
+
+dependencies {
+    api project(':groovy-upcloud-http')
+}

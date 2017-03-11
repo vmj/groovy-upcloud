@@ -40,9 +40,9 @@ class Exchange {
      *     This must be called with three arguments:
      * </p>
      * <ol>
-     *     <li>{@link fi.linuxbox.upcloud.core.META META} instance or <code>null</code></li>
+     *     <li>{@link META META} instance or <code>null</code></li>
      *     <li>response entity as an {@link java.io.InputStream InputStream} or <code>null</code>, and
-     *     <li>{@link fi.linuxbox.upcloud.core.ERROR ERROR} instance or <code>null</code></li>
+     *     <li>{@link ERROR ERROR} instance or <code>null</code></li>
      * </ol>
      * <p>
      *     In case of failed network or cancelled request, the <code>META</code> must be <code>null</code> and the

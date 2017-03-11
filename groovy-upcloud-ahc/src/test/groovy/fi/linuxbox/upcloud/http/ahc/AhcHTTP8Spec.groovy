@@ -1,10 +1,11 @@
 package fi.linuxbox.upcloud.http.ahc
 
+import fi.linuxbox.upcloud.core.http.Exchange
+
 import java.util.concurrent.*
 import spock.lang.*
 
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
 
 import static java.util.concurrent.TimeUnit.SECONDS

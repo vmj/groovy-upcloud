@@ -1,9 +1,9 @@
 package fi.linuxbox.upcloud.http.ahc
 
+import fi.linuxbox.upcloud.core.http.Header
+import fi.linuxbox.upcloud.core.http.HeaderElement
 import org.apache.http.Header as HeaderImpl
 import org.apache.http.HeaderElement as HeaderElementImpl
-
-import fi.linuxbox.upcloud.core.http.*
 
 /**
  *

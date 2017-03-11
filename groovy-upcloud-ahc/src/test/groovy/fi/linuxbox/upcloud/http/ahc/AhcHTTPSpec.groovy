@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.http.ahc
 
+import fi.linuxbox.upcloud.core.http.Exchange
 import org.apache.http.*
 import org.apache.http.entity.BasicHttpEntity
 import org.apache.http.message.BasicStatusLine
@@ -7,7 +8,6 @@ import org.apache.http.nio.client.*
 import spock.lang.*
 
 import fi.linuxbox.upcloud.core.*
-import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.http.simple.*
 
 class AhcHTTPSpec extends Specification {

@@ -4,8 +4,10 @@ import fi.linuxbox.upcloud.core.http.Header
 import fi.linuxbox.upcloud.core.http.HeaderElement
 import fi.linuxbox.upcloud.core.http.Headers
 import fi.linuxbox.upcloud.core.http.Parameter
+
 import org.apache.http.HttpResponse
 import org.apache.http.message.BasicHttpResponse
+
 import spock.lang.Specification
 
 import static org.apache.http.HttpStatus.SC_OK

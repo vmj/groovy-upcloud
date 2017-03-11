@@ -1,12 +1,14 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.http.Exchange
+import fi.linuxbox.upcloud.core.http.HTTP
+import fi.linuxbox.upcloud.core.http.Headers
 import groovy.transform.*
 import javax.inject.*
 import org.slf4j.*
-
-import fi.linuxbox.upcloud.core.http.*
 import fi.linuxbox.upcloud.core.http.simple.*
 import fi.linuxbox.upcloud.core.json.*
+
 /**
  * The API for all the things managed in UpCloud.
  *

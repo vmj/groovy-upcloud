@@ -1,5 +1,6 @@
 include 'groovy-upcloud-core'
 include 'groovy-upcloud-jackson'
+include 'groovy-upcloud-http'
 include 'groovy-upcloud-ahc'
 include 'groovy-upcloud-builder'
 include 'groovy-upcloud-resource'
@@ -9,3 +10,4 @@ include 'groovy-upcloud-app'
 include 'manual'
 
 rootProject.name = 'groovy-upcloud'
+
