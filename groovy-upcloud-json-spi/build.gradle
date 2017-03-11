@@ -1,0 +1,8 @@
+apply from: '../gradle/groovy-upcloud-lib.gradle'
+
+modifyPom {
+    project {
+        name 'Groovy UpCloud JSON SPI'
+        description 'Groovy UpCloud JSON provides SPIs for JSON'
+    }
+}
