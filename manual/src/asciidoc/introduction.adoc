@@ -25,7 +25,7 @@ to a file:
 
 [source,groovy]
 ----
-@Grab("fi.linuxbox.upcloud:groovy-upcloud-script:0.0.1")
+@Grab("fi.linuxbox.upcloud:groovy-upcloud-script:0.0.4")
 import fi.linuxbox.upcloud.script.*
 
 import java.util.concurrent.*

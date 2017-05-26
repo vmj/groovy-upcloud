@@ -61,7 +61,7 @@ class APISpec extends Specification {
                         case 'Host':
                             return it.value == 'api.upcloud.com'
                         case 'User-Agent':
-                            return it.value.startsWith('Groovy UpCloud/0.0.3 ')
+                            return it.value.startsWith('Groovy UpCloud/0.0.4 ')
                         default:
                             return false
                     }
