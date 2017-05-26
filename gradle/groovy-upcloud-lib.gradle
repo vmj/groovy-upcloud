@@ -28,15 +28,12 @@ groovydoc {
     // Groovy APIs
     link("http://docs.groovy-lang.org/docs/groovy-${versions.groovy}/html/gapi/", "groovy.lang")
 
-    [ahc      : 'http.ahc',
-     api      : 'api',
-     app      : 'app',
-     builder  : 'builder',
-     core     : 'core',
-     jackson  : 'json.jackson',
-     resource : 'resource',
-     script   : 'script'].each {
-        link("http://upcloud.linuxbox.fi/api/${project.version}/groovy-upcloud-${it.key}", "fi.linuxbox.upcloud.${it.value}")
+    ['api', 'app', 'builder', 'core', 'http-ahc', 'http-spi', 'json-jackson', 'json-spi', 'resource', 'script'].each {
+        // Local link for development purposes
+        //def localUrl = "file:///Users/vmj/src/groovy-upcloud/groovy-upcloud-$it/build/docs/groovydoc/"
+        def onlineUrl = "http://www.javadoc.io/page/${project.group}/groovy-upcloud-${it}/${project.version}/"
+        def packageName = "fi.linuxbox.upcloud.${it.replace('-', '.')}"
+        link(onlineUrl, packageName)
     }
 }
 

@@ -17,3 +17,9 @@ dependencies {
     // bridge commons-logging to SLF4J
     runtimeOnly "org.slf4j:jcl-over-slf4j:${versions.slf4j}"
 }
+
+groovydoc {
+    link("https://hc.apache.org/httpcomponents-asyncclient-dev/httpasyncclient/apidocs/", "org.apache.http.nio.client.",
+                                                                                          'org.apache.http.impl.nio.')
+    link("https://hc.apache.org/httpcomponents-core-ga/httpcore/apidocs/",                "org.apache.http.")
+}

@@ -14,3 +14,7 @@ dependencies {
 
     testImplementation "com.jayway.jsonpath:json-path-assert:2.2.0"
 }
+
+groovydoc {
+    link("https://fasterxml.github.io/jackson-databind/javadoc/2.8/", 'com.fasterxml.jackson')
+}
