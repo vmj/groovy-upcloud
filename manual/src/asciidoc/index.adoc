@@ -7,7 +7,7 @@ v1.2, May 2016: First version, for UpCloud API {api-version} and Groovy UpCloud 
 :source-highlighter: coderay
 
 
-This is the landing page.
+Welcome to Groovy UpCloud User Manual.
 
 include::introduction.adoc[]
 
