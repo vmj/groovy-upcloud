@@ -4,9 +4,9 @@ group = 'fi.linuxbox.upcloud'
 version = '0.0.3'
 
 ext.versions = [groovy: '2.4.11',
-                logback: '1.2.1',
-                slf4j: '1.7.23',
-                spock: '1.0-groovy-2.4',
+                logback: '1.2.2',
+                slf4j: '1.7.25',
+                spock: '1.1-groovy-2.4',
 ]
 
 // Java 7
