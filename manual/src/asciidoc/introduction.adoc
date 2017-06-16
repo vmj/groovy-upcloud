@@ -54,7 +54,7 @@ ctx.upCloud.account(
                             println "Detailed error: ${response.error.errorCode}: ${response.error.errorMessage}"
                 }
                 cv.countDown()
-        });
+        })
 
 cv.await(30, SECONDS)
 ctx.close()

@@ -6,10 +6,32 @@ buildscript {
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
     }
 }
+apply plugin: 'java-library'
 apply plugin: 'org.asciidoctor.convert'
 apply from: '../gradle/groovy-upcloud.gradle'
+
+// Configuring the groovy plugin to work with java-library
+// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_known_issues_compat
+configurations {
+    apiElements {
+        outgoing.variants.getByName('classes').artifact(
+                file: compileGroovy.destinationDir,
+                type: ArtifactTypeDefinition.JVM_CLASS_DIRECTORY,
+                builtBy: compileGroovy
+        )
+    }
+}
 
 asciidoctor {
     sourceDir = file('src/asciidoc')
     attributes 'api-version': '1.2'
+}
+
+dependencies {
+    // Ivy is the library which manages the dependencies loaded by @Grab.
+    // Groovy is not adding it by default.
+    testRuntime "org.apache.ivy:ivy:2.4.0"
+
+    // FIXME: groovy-upcloud-script does not have a transitive dependency on 
+    testRuntime project(':groovy-upcloud-http-ahc')
 }

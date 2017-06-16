@@ -2,11 +2,13 @@ apply plugin: 'java-library'
 apply from: "${projectDir}/../gradle/groovy-upcloud.gradle"
 apply plugin: 'com.bmuschko.nexus'
 
+// Configuring the groovy plugin to work with java-library
+// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_known_issues_compat
 configurations {
     apiElements {
         outgoing.variants.getByName('classes').artifact(
                 file: compileGroovy.destinationDir,
-                type: JavaPlugin.CLASS_DIRECTORY,
+                type: ArtifactTypeDefinition.JVM_CLASS_DIRECTORY,
                 builtBy: compileGroovy
         )
     }
