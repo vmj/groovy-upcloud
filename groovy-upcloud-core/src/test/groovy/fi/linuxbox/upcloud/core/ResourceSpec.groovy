@@ -50,10 +50,10 @@ class ResourceSpec extends Specification {
     def "Resource can be created with nested resource property"() {
         given:
         def meta = new META(200, null)
-        def api = new API(Mock(HTTP), Mock(JSON), "foo", "bar")
+        def session = new Session(Mock(HTTP), Mock(JSON), "foo", "bar")
 
         when:
-        def resource = new Resource(API: api, META: meta, repr: [
+        def resource = new Resource(SESSION: session, META: meta, repr: [
                 error: [
                         error_code: 'SOME_ERROR',
                         error_message: 'Something went wrong'
@@ -61,11 +61,11 @@ class ResourceSpec extends Specification {
         ])
 
         then:
-        resource.API == api
+        resource.SESSION == session
         resource.META == meta
         resource.error instanceof Resource
         resource.error.class.name == 'fi.linuxbox.upcloud.resource.Error'
-        resource.error.API == api
+        resource.error.SESSION == session
         resource.error.META == meta
         resource.error.errorCode == 'SOME_ERROR'
         resource.error.errorMessage == 'Something went wrong'

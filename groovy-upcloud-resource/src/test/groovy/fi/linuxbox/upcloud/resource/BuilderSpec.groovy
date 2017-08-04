@@ -12,7 +12,7 @@ import static fi.linuxbox.upcloud.resource.Builder.*
  */
 class BuilderSpec extends Specification {
 
-    API api = new API(Mock(HTTP), null, null, null)
+    Session session = new Session(Mock(HTTP), null, null, null)
 
     def "server builder"() {
         when:
@@ -37,7 +37,7 @@ class BuilderSpec extends Specification {
 
     def "server with kwargs and config"() {
         when:
-            def server = server API: api, {
+            def server = server SESSION: session, {
                 hostname = "foo"
             }
 
@@ -48,7 +48,7 @@ class BuilderSpec extends Specification {
 
     def "server with kwargs and no config"() {
         when:
-            def server = server API: api
+            def server = server SESSION: session
 
         then:
             server?.class.simpleName == 'Server'

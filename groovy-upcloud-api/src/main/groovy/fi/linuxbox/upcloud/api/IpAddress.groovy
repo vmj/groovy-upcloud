@@ -14,22 +14,22 @@ import fi.linuxbox.upcloud.core.*
  *     This trait can be implemented by any class that has
  * </p>
  * <ul>
- *     <li>non-null API property, which can be read-only</li>
+ *     <li>non-null SESSION property, which can be read-only</li>
  *     <li>non-null address property, which can be read-only</li>
  * </ul>
  */
 trait IpAddress {
 
     def load(...args) {
-        this.API.GET(ipAddressPath(), *args)
+        this.SESSION.GET(ipAddressPath(), *args)
     }
 
     def update(Resource resource, ...args) {
-        this.API.PUT(ipAddressPath(), resource.wrapper(), *args)
+        this.SESSION.PUT(ipAddressPath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {
-        this.API.DELETE(ipAddressPath(), *args)
+        this.SESSION.DELETE(ipAddressPath(), *args)
     }
 
     private String ipAddressPath() { "ip_address/$address" }

@@ -8,7 +8,7 @@ import org.slf4j.*
  * Model for a resource in UpCloud, e.g. server, storage device, or an IP address.
  *
  * <p>
- * Together with the {@link API} class, this class is the most core of the Groovy UpCloud library.  You probably don't
+ * Together with the {@link Session} class, this class is the most core of the Groovy UpCloud library.  You probably don't
  * use this directly, but you could.  This class allows for dynamic creation of UpCloud resource representations and
  * their properties.
  * </p>
@@ -113,13 +113,13 @@ import org.slf4j.*
 class Resource {
     private final Logger log = LoggerFactory.getLogger(Resource)
 
-    final API API
+    final Session SESSION
     final META META
 
     /**
      * Designated, and only, constructor.
      *
-     * @param kwargs.API The API instance.  This is used by the resource specific API wrappers, not directly by this class.
+     * @param kwargs.SESSION The Session instance.  This is used by the resource specific API wrappers, not directly by this class.
      * @param kwargs.META The META instance.  This is received from the HTTP implementation.
      * @param kwargs.repr The Map<String, Object> intermediary representation from the JSON implementations.
      */
@@ -128,7 +128,7 @@ class Resource {
         metaClass = new ExpandoMetaClass(this.class, false, true)
         metaClass.initialize()
 
-        API = kwargs.API
+        SESSION = kwargs.SESSION
         META = kwargs.META
 
         final Map<String, ?> map = kwargs.remove('repr') as Map<String, ?>
@@ -178,7 +178,7 @@ class Resource {
      *
      * <p>
      * This method skips GroovyObject properties (every Groovy object has a 'class' property), meta resource properties
-     * (every Resource has 'META' and 'API' properties), and properties whose value is <code>null</code>.
+     * (every Resource has 'META' and 'SESSION' properties), and properties whose value is <code>null</code>.
      * </p>
      *
      * @return Properties of this resource.
@@ -192,7 +192,7 @@ class Resource {
      * Converts this resource to a Map<String, Object> representation for JSON generation.
      *
      * <p>
-     * This is used as <code>resource as Map</code> and meant to be invoked only from the API class, just before the resource
+     * This is used as <code>resource as Map</code> and meant to be invoked only from the Session class, just before the resource
      * is put into the queue of to-be-sent requests.
      * </p>
      *
@@ -272,7 +272,7 @@ class Resource {
      */
     def wrapper() {
         final String propertyName = propertyName(this.class)
-        new Resource(API: API, META: META)."$propertyName"(this)
+        new Resource(SESSION: SESSION, META: META)."$propertyName"(this)
     }
 
     /**
@@ -292,7 +292,7 @@ class Resource {
      */
     def proj(final List<String> properties) {
         resourceProperties().grep { it.key in properties }
-                .inject ((Resource)this.metaClass.invokeConstructor(API: API, META: META)) {
+                .inject ((Resource)this.metaClass.invokeConstructor(SESSION: SESSION, META: META)) {
             final Resource resource, final Map.Entry<String, Object> property -> resource."${property.key}"(property.value)
         }
     }

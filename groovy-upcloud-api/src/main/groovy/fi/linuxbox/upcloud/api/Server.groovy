@@ -19,78 +19,78 @@ import fi.linuxbox.upcloud.core.*
  *     This trait can be implemented by any class that has
  * </p>
  * <ul>
- *     <li>non-null API property, which can be read-only</li>
+ *     <li>non-null SESSION property, which can be read-only</li>
  *     <li>non-null uuid property, which can be read-only</li>
  * </ul>
  */
 trait Server {
 
     def load(...args) {
-        this.API.GET(serverPath(), *args)
+        this.SESSION.GET(serverPath(), *args)
     }
 
     def update(Resource resource, ...args) {
-        this.API.PUT(serverPath(), resource.wrapper(), *args)
+        this.SESSION.PUT(serverPath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {
-        this.API.DELETE(serverPath(), *args)
+        this.SESSION.DELETE(serverPath(), *args)
     }
 
     def start(...args) {
-        this.API.POST(cmdPath('start'), null, *args)
+        this.SESSION.POST(cmdPath('start'), null, *args)
     }
 
     def stop(...args) {
         def stop = cmd('stop_server', ['stop_type', 'timeout'], args)
 
-        this.API.POST(cmdPath('stop'), stop, *args)
+        this.SESSION.POST(cmdPath('stop'), stop, *args)
     }
 
     def restart(...args) {
         def restart = cmd('restart_server', ['stop_type', 'timeout', 'timeout_action'], args)
 
-        this.API.POST(cmdPath('restart'), restart, *args)
+        this.SESSION.POST(cmdPath('restart'), restart, *args)
     }
 
     def attach(Resource storageDevice, ...args) {
-        this.API.POST(storagePath('attach'), storageDevice.wrapper(), *args)
+        this.SESSION.POST(storagePath('attach'), storageDevice.wrapper(), *args)
     }
 
     def detach(Resource storageDevice, ...args) {
-        this.API.POST(storagePath('detach'), storageDevice.wrapper(), *args)
+        this.SESSION.POST(storagePath('detach'), storageDevice.wrapper(), *args)
     }
 
     def insert(Resource storageDevice, ...args) {
-        this.API.POST(cdromPath('load'), storageDevice.wrapper(), *args)
+        this.SESSION.POST(cdromPath('load'), storageDevice.wrapper(), *args)
     }
 
     def eject(...args) {
-        this.API.POST(cdromPath('eject'), null, *args)
+        this.SESSION.POST(cdromPath('eject'), null, *args)
     }
 
     def firewallRules(...args) {
-        this.API.GET(firewallRulesPath(), *args)
+        this.SESSION.GET(firewallRulesPath(), *args)
     }
 
     def createFirewallRule(Resource firewallRule, ...args) {
-        this.API.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
+        this.SESSION.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
     }
 
     def loadFirewallRule(def position, ...args) {
-        this.API.GET(firewallRulePath(position), *args)
+        this.SESSION.GET(firewallRulePath(position), *args)
     }
 
     def deleteFirewallRule(def position, ...args) {
-        this.API.DELETE(firewallRulePath(position), *args)
+        this.SESSION.DELETE(firewallRulePath(position), *args)
     }
 
     def addTags(def tags, ...args) {
-        this.API.POST(tagPath(tags), null, *args)
+        this.SESSION.POST(tagPath(tags), null, *args)
     }
 
     def deleteTag(def tag, ...args) {
-        this.API.POST(untagPath(tag), null, *args)
+        this.SESSION.POST(untagPath(tag), null, *args)
     }
 
 

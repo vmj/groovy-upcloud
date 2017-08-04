@@ -12,7 +12,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
  */
 class ResourceBuilderSpec extends Specification{
 
-    API api = new API(Mock(HTTP), null, null, null)
+    Session session = new Session(Mock(HTTP), null, null, null)
 
     private static class Mother {
         def prop = 'prop'
@@ -121,21 +121,21 @@ class ResourceBuilderSpec extends Specification{
 
     def "Named resource creation with kwargs and config"() {
         when:
-            def resource = build 'Tag', API: api, {
+            def resource = build 'Tag', SESSION: session, {
                 name = 'DEV'
             }
 
         then:
-            resource?.API != null
+            resource?.SESSION != null
             resource.name == 'DEV'
     }
 
     def "Named resource creation with kwargs and no config"() {
         when:
-            def resource = build 'Tag', API: api
+            def resource = build 'Tag', SESSION: session
 
         then:
-            resource?.API != null
+            resource?.SESSION != null
     }
 
     def "Custom resource creation and configuration"() {
@@ -170,12 +170,12 @@ class ResourceBuilderSpec extends Specification{
             def builder = new ResourceBuilder()
 
         when:
-            def resource = builder.dockerImage API: api, {
+            def resource = builder.dockerImage SESSION: session, {
                 image = 'nginx:stable'
             }
 
         then:
-            resource?.API != null
+            resource?.SESSION != null
             resource.image == 'nginx:stable'
     }
 
@@ -184,9 +184,9 @@ class ResourceBuilderSpec extends Specification{
             def builder = new ResourceBuilder()
 
         when:
-            def resource = builder.RancherAgent API: api
+            def resource = builder.RancherAgent SESSION: session
 
         then:
-            resource?.API != null
+            resource?.SESSION != null
     }
 }

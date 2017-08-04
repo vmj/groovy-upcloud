@@ -17,59 +17,59 @@ import fi.linuxbox.upcloud.core.*
  * </ul>
  */
 class UpCloud {
-    private final API API
+    private final Session SESSION
 
     @Inject
-    UpCloud(final API API) {
-        this.API = API
+    UpCloud(final Session SESSION) {
+        this.SESSION = SESSION
     }
 
     def account(...args) {
-        this.API.GET('account', *args)
+        this.SESSION.GET('account', *args)
     }
 
     def prices(...args) {
-        this.API.GET('price', *args)
+        this.SESSION.GET('price', *args)
     }
 
     def zones(...args) {
-        this.API.GET('zone', *args)
+        this.SESSION.GET('zone', *args)
     }
 
     def timezones(...args) {
-        this.API.GET('timezone', *args)
+        this.SESSION.GET('timezone', *args)
     }
 
     def plans(...args) {
-        this.API.GET('plan', *args)
+        this.SESSION.GET('plan', *args)
     }
 
     def serverSizes(...args) {
-        this.API.GET('server_size', *args)
+        this.SESSION.GET('server_size', *args)
     }
 
     def servers(...args) {
-        this.API.GET('server', *args)
+        this.SESSION.GET('server', *args)
     }
 
     def ipAddresses(...args) {
-        this.API.GET('ip_address', *args)
+        this.SESSION.GET('ip_address', *args)
     }
 
     def tags(...args) {
-        this.API.GET('tag', *args)
+        this.SESSION.GET('tag', *args)
     }
 
     def storages(...args) {
         def type = args.find { it instanceof Map } ?.remove('type')
         if (type)
-            this.API.GET("storage/$type", *args)
+            this.SESSION.GET("storage/$type", *args)
         else
-            this.API.GET("storage", *args)
+            this.SESSION.GET("storage", *args)
     }
 
     def create(Resource resource, ...args) {
-        this.API.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
+        this.SESSION.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
     }
 
     /**

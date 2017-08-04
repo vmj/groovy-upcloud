@@ -12,7 +12,7 @@ import fi.linuxbox.upcloud.http.spi.Header
  * </p>
  *
  * <p>
- * This class is used in communication between API and the HTTP implementation.  In responses, the HTTP implementation
+ * This class is used in communication between Session and the HTTP implementation.  In responses, the HTTP implementation
  * will provide fully functional headers for the application.
  * </p>
  */

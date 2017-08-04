@@ -41,7 +41,7 @@ import org.slf4j.*
  *     response is received from the server.
  * </p>
  * <p>
- *     As said, the API methods are typically called indirectly.  For example, to create a server, one could do as
+ *     As said, the HTTP methods are typically called indirectly.  For example, to create a server, one could do as
  *     follows:
  * </p>
  * <pre>
@@ -51,11 +51,11 @@ import org.slf4j.*
  *     })
  * </pre>
  * <p>
- *     Above <code>server.create(...)</code> will call <code>API.POST(..., Closure&lt;Void&gt; cb)</code>.
+ *     Above <code>server.create(...)</code> will call <code>session.POST(..., Closure&lt;Void&gt; cb)</code>.
  * </p>
  * <p>
  *     The default request callback is a {@link groovy.lang.Closure Closure} that doesn't return anything.  All of
- *     those API methods mentioned above take the default request callback as their last argument.
+ *     those HTTP methods mentioned above take the default request callback as their last argument.
  * </p>
  * <p>
  *     The response object above is an instance of {@link Resource} class.  You can read about it later, but for example,
@@ -91,7 +91,7 @@ import org.slf4j.*
  * <p>
  *     Additional request callbacks are similar to default request callback: they are
  *     {@link groovy.lang.Closure Closures} with <code>void</code> return type.  They get called with one argument, the
- *     {@link Resource} instance representing the HTTP response.  All of those API methods mentioned above (<code>GET</code>,
+ *     {@link Resource} instance representing the HTTP response.  All of those HTTP methods mentioned above (<code>GET</code>,
  *     <code>POST</code>, and so on) take the <code>Map</code> of additional request callbacks as their first argument.
  * </p>
  * <p>
@@ -99,18 +99,18 @@ import org.slf4j.*
  * </p>
  * <h1>Sessions callbacks</h1>
  * <p>
- *     One can attach session callbacks to the <code>API</code> instance.  These are just like additional request
+ *     One can attach session callbacks to the <code>Session</code> instance.  These are just like additional request
  *     callbacks, except that these are considered for all future HTTP requests made through this instance of the
- *     <code>API</code>.
+ *     <code>Session</code>.
  * </p>
  * <p>
  *     For example, the above 401 response can be handled once and for all like this:
  * </p>
  * <pre>
- *     api.callback 401: { log.fatal("configuration error: the username/password is no good") }
+ *     session.callback 401: { log.fatal("configuration error: the username/password is no good") }
  * </pre>
  * <p>
- *     From that point on, all the requests made through this <code>API</code> instance would have that callback in
+ *     From that point on, all the requests made through this <code>Session</code> instance would have that callback in
  *     their set of callbacks.
  * </p>
  * <h1>HTTP response status categories</h1>
@@ -136,7 +136,7 @@ import org.slf4j.*
  *     <code>redirect</code> type of status codes.  So, I might recommend adding this to the beginning of scripts:
  * </p>
  * <pre>
- *     api.callback info: { log.fatal("oh my, assumptions are all broken" },
+ *     session.callback info: { log.fatal("oh my, assumptions are all broken" },
  *                  redirect: { log.fatal("dear dear, but I don't want to go elsewhere") }
  * </pre>
  * <p>
@@ -158,9 +158,9 @@ import org.slf4j.*
  * </p>
  * <ol>
  *     <li>If there's an additional request callback for "200", that is invoked</li>
- *     <li>If there's a session callback for "200" attached to the <code>API</code> instance, that is invoked</li>
+ *     <li>If there's a session callback for "200" attached to the <code>Session</code> instance, that is invoked</li>
  *     <li>If there's an additional request callback for "info", that is invoked</li>
- *     <li>If there's a session callback for "info" attached to the <code>API</code> instance, that is invoked</li>
+ *     <li>If there's a session callback for "info" attached to the <code>Session</code> instance, that is invoked</li>
  *     <li>Failing all above, the default request callback is invoked</li>
  * </ol>
  * <p>
@@ -182,7 +182,7 @@ import org.slf4j.*
  * </p>
  * <h1>Network error handling</h1>
  * <p>
- *     The additional request callbacks and the session callbacks attached to the <code>API</code> instance, are all by
+ *     The additional request callbacks and the session callbacks attached to the <code>Session</code> instance, are all by
  *     definition tied to the HTTP response status code or the status category.  However, networks are unreliable and
  *     the communication with the server may not always work.  This is where the special nature, and the importance, of
  *     the default request callback comes apparent.
@@ -194,8 +194,8 @@ import org.slf4j.*
  *     server.  Read more about that in the {@link ERROR} class documentation.
  * </p>
  */
-class API {
-    private final Logger log = LoggerFactory.getLogger(API)
+class Session {
+    private final Logger log = LoggerFactory.getLogger(Session)
 
     /**
      * UpCloud API host.
@@ -265,7 +265,7 @@ class API {
      * @param password UpCloud API password.  This is not the one you use to login to the control panel.
      */
     @Inject
-    API(HTTP http, JSON json, @Named("username") String username, @Named("password") String password) {
+    Session(HTTP http, JSON json, @Named("username") String username, @Named("password") String password) {
         this.http = http
         this.json = json
         requestHeaders['Authorization'] += "$username:$password".bytes.encodeBase64().toString()
@@ -348,13 +348,13 @@ class API {
      *     This is to allow the Groovy style of keyword arguments:
      * </p>
      * <pre>
-     *     api.GET('some-resource',
-     *             error: {
-     *                 // handle error
-     *             },
-     *             {
-     *                 // handle all the other cases
-     *             })
+     *     session.GET('some-resource',
+     *                 error: {
+     *                     // handle error
+     *                 },
+     *                 {
+     *                     // handle all the other cases
+     *                 })
      * </pre>
      * <p>
      *     This implementation (mainly the move operation of the map) also enables the following higher level APIs:
@@ -362,7 +362,7 @@ class API {
      * <pre>
      *     class Server extends Resource {
      *         def create(...args) {
-     *             this.API.POST('server', this.wrapper(), *args)
+     *             this.SESSION.POST('server', this.wrapper(), *args)
      *         }
      *     }
      * </pre>
@@ -444,7 +444,7 @@ class API {
      */
     private Resource decode(final META meta, final InputStream body) {
         final Map<String, Object> repr = decode(meta?.headers, body)
-        return new Resource(repr: repr, API: this, META: meta)
+        return new Resource(repr: repr, SESSION: this, META: meta)
     }
 
     /**

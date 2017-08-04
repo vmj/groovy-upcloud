@@ -41,8 +41,8 @@ All operations against UpCloud API require authentication.
 An API account is separate from UpCloud account, and one UpCloud account may have multiple API accounts.
 API accounts can be created using the https://my.upcloud.com[UpCloud control panel].
 
-In Groovy UpCloud, the authentication is handled by the `API` class.
-One application may instantiate as many instances of the `API` class as needed, each with different credentials.
+In Groovy UpCloud, the authentication is handled by the `Session` class.
+One application may instantiate as many instances of the `Session` class as needed, each with different credentials.
 If the credentials are mistyped or revoked, the application will receive `AUTHENTICATION_FAILED` error code.
 
 === Resource identifiers

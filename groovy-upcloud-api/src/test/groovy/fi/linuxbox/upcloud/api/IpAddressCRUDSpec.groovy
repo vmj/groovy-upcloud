@@ -6,8 +6,8 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class IpAddressCRUDSpec extends ApiSpecification {
 
-    // build minimal class that works for the IpAddress trait: API and address
-    def ipAddress = build 'IpAddress', API: api, { address = '0.0.0.0' } withTraits IpAddress
+    // build minimal class that works for the IpAddress trait: SESSION and address
+    def ipAddress = build 'IpAddress', SESSION: session, { address = '0.0.0.0' } withTraits IpAddress
 
     def "load: GET /ip_address/0.0.0.0"() {
         when:

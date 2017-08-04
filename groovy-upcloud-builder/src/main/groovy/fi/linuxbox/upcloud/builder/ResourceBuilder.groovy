@@ -38,11 +38,11 @@ class ResourceBuilder {
      * <code>
      *     ResourceBuilder builder = new ResourceBuilder()
      *
-     *     def dockerImage = builder.dockerImage API: myApi, {
+     *     def dockerImage = builder.dockerImage SESSION: mySession, {
      *         ...
      *     }
      *
-     *     def rancherAgent = builder.RangerAgent API: myApi
+     *     def rancherAgent = builder.RangerAgent SESSION: mySession
      * </code>
      * <p>
      *     If possible, use the static build method instead.
@@ -113,7 +113,7 @@ class ResourceBuilder {
      *     This also supports passing the keyword arguments:
      * </p>
      * <code>
-     *     def resource = build 'Server', API: myApi, {
+     *     def resource = build 'Server', SESSION: mySession, {
      *         ...
      *     }
      * </code>

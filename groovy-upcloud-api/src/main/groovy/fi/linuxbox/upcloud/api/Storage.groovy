@@ -18,46 +18,46 @@ import fi.linuxbox.upcloud.core.*
  *     This trait can be implemented by any class that has
  * </p>
  * <ul>
- *     <li>non-null API property, which can be read-only</li>
+ *     <li>non-null SESSION property, which can be read-only</li>
  *     <li>non-null uuid property, which can be read-only</li>
  * </ul>
  */
 trait Storage {
 
     def load(...args) {
-        this.API.GET(storagePath(), *args)
+        this.SESSION.GET(storagePath(), *args)
     }
 
     def update(Resource resource, ...args) {
-        this.API.PUT(storagePath(), resource.wrapper(), *args)
+        this.SESSION.PUT(storagePath(), resource.wrapper(), *args)
     }
 
     def delete(...args) {
-        this.API.DELETE(storagePath(), *args)
+        this.SESSION.DELETE(storagePath(), *args)
     }
 
     def clone(Resource resource, ...args) {
-        this.API.POST(cmdPath('clone'), resource.wrapper(), *args)
+        this.SESSION.POST(cmdPath('clone'), resource.wrapper(), *args)
     }
 
     def templatize(Resource resource, ...args) {
-        this.API.POST(cmdPath('templatize'), resource.wrapper(), *args)
+        this.SESSION.POST(cmdPath('templatize'), resource.wrapper(), *args)
     }
 
     def backup(Resource resource, ...args) {
-        this.API.POST(cmdPath('backup'), resource.wrapper(), *args)
+        this.SESSION.POST(cmdPath('backup'), resource.wrapper(), *args)
     }
 
     def restore(...args) {
-        this.API.POST(cmdPath('restore'), null, *args)
+        this.SESSION.POST(cmdPath('restore'), null, *args)
     }
 
     def favor(...args) {
-        this.API.POST(cmdPath('favorite'), null, *args)
+        this.SESSION.POST(cmdPath('favorite'), null, *args)
     }
 
     def unfavor(...args) {
-        this.API.DELETE(cmdPath('favorite'), *args)
+        this.SESSION.DELETE(cmdPath('favorite'), *args)
     }
 
 

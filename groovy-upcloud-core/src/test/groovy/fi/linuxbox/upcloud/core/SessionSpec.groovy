@@ -10,36 +10,36 @@ import spock.lang.*
 /**
  *
  */
-class APISpec extends Specification {
+class SessionSpec extends Specification {
 
     HTTP http = Mock()
     JSON json = Mock()
 
-    API api
+    Session session
 
     def setup() {
-        api = new API(http, json, "open", "sesame")
+        session = new Session(http, json, "open", "sesame")
     }
 
     def "Request method"() {
-        when: "calling the API request method with GET"
-            api.request('GET', 'some-resource', null, {})
+        when: "calling the Session request method with GET"
+            session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation is called with GET"
             1 * http.execute({ it.method == 'GET' })
     }
 
     def "Request URI"() {
-        when: "calling the API request method with a resource"
-            api.request('GET', 'some-resource', null, {})
+        when: "calling the Session request method with a resource"
+            session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives both the host and full resource path"
             1 * http.execute({ it.host =~ '^https?://[^/]+$' && it.resource =~ '^/1.[1-9]/some-resource$' })
     }
 
     def "Request headers"() {
-        when: "calling the API request method"
-            api.request('GET', 'some-resource', null, {})
+        when: "calling the Session request method"
+            session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives the correct headers"
             1 * http.execute({
@@ -71,8 +71,8 @@ class APISpec extends Specification {
     }
 
     def "Request body null"() {
-        when: "calling the API request method with null resource"
-            api.request('GET', 'some-resource', null, {})
+        when: "calling the Session request method with null resource"
+            session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives null entity body"
             1 * http.execute({ it.body == null })
@@ -83,16 +83,16 @@ class APISpec extends Specification {
             def inputStream = new ByteArrayInputStream(new byte[0])
             1 * json.encode(_) >> inputStream
 
-        when: "calling the API request method with non-null resource"
-            api.request('GET', 'some-resource', new Resource(), {})
+        when: "calling the Session request method with non-null resource"
+            session.request('GET', 'some-resource', new Resource(), {})
 
         then: "the HTTP implementation receives the serialized resource"
             1 * http.execute({ it.body == inputStream })
     }
 
     def "Request with additional callbacks"() {
-        when: "calling the API request method with additional callbacks"
-            api.request 'GET', 'some-resource', null,
+        when: "calling the Session request method with additional callbacks"
+            session.request 'GET', 'some-resource', null,
                     200: {},
                     300: {},
                     {}
@@ -104,24 +104,24 @@ class APISpec extends Specification {
     }
 
     def "POST request"() {
-        when: "calling the API request method with POST"
-            api.request('POST', 'other/resource', null, {})
+        when: "calling the Session request method with POST"
+            session.request('POST', 'other/resource', null, {})
 
         then: "the HTTP implementation is called with POST"
             1 * http.execute({ it.method == 'POST' && it.resource =~ '/other/resource$' })
     }
 
     def "Convenience GET method"() {
-        when: "calling the API GET method"
-            api.GET('something') {}
+        when: "calling the Session GET method"
+            session.GET('something') {}
 
         then: "the HTTP implementation is called with GET and null body"
             1 * http.execute({ it.method == 'GET' && it.resource =~ '/something$' && it.body == null })
     }
 
     def "Convenience GET method with additional callbacks"() {
-        when: "calling the API GET method with additional callbacks"
-            api.GET('something', 404: {}) {}
+        when: "calling the Session GET method with additional callbacks"
+            session.GET('something', 404: {}) {}
 
         then: "the HTTP implementation is called with GET and null body"
             1 * http.execute({ it.method == 'GET' && it.resource =~ '/something$' && it.body == null })
@@ -129,16 +129,16 @@ class APISpec extends Specification {
 
 
     def "Convenience DELETE method"() {
-        when: "calling the API DELETE method"
-            api.DELETE('something') {}
+        when: "calling the Session DELETE method"
+            session.DELETE('something') {}
 
         then: "the HTTP implementation is called with DELETE and null body"
             1 * http.execute({ it.method == 'DELETE' && it.resource =~ '/something$' && it.body == null })
     }
 
     def "Convenience DELETE method with additional callbacks"() {
-        when: "calling the API DELETE method with additional callbacks"
-            api.DELETE('something', 404: {}) {}
+        when: "calling the Session DELETE method with additional callbacks"
+            session.DELETE('something', 404: {}) {}
 
         then: "the HTTP implementation is called with DELETE and null body"
             1 * http.execute({ it.method == 'DELETE' && it.resource =~ '/something$' && it.body == null })
@@ -149,8 +149,8 @@ class APISpec extends Specification {
             def inputStream = new ByteArrayInputStream(new byte[0])
             1 * json.encode(_) >> inputStream
 
-        when: "calling the API PUT method"
-            api.PUT('something', new Resource()) {}
+        when: "calling the Session PUT method"
+            session.PUT('something', new Resource()) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
             1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == inputStream })
@@ -161,8 +161,8 @@ class APISpec extends Specification {
             def inputStream = new ByteArrayInputStream(new byte[0])
             1 * json.encode(_) >> inputStream
 
-        when: "calling the API PUT method with additional callbacks"
-            api.PUT('something', new Resource(), 404: {}) {}
+        when: "calling the Session PUT method with additional callbacks"
+            session.PUT('something', new Resource(), 404: {}) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
             1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == inputStream })
@@ -173,8 +173,8 @@ class APISpec extends Specification {
             def inputStream = new ByteArrayInputStream(new byte[0])
             1 * json.encode(_) >> inputStream
 
-        when: "calling the API POST method"
-            api.POST('something', new Resource()) {}
+        when: "calling the Session POST method"
+            session.POST('something', new Resource()) {}
 
         then: "the HTTP implementation is called with POST and non-null body"
             1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == inputStream })
@@ -185,8 +185,8 @@ class APISpec extends Specification {
             def inputStream = new ByteArrayInputStream(new byte[0])
             1 * json.encode(_) >> inputStream
 
-        when: "calling the API POST method with additional callbacks"
-            api.POST('something', new Resource(), 404: {}, {})
+        when: "calling the Session POST method with additional callbacks"
+            session.POST('something', new Resource(), 404: {}, {})
 
         then: "the HTTP implementation is called with POST and non-null body"
             1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == inputStream })
@@ -196,13 +196,13 @@ class APISpec extends Specification {
         given: "a success flag"
             boolean ok = false
 
-        and: "an HTTP implementation that calls the API callback"
+        and: "an HTTP implementation that calls the Session callback"
             1 * http.execute(_) >> { args -> args[0].cb(new META(404, null), null, null) }
 
-        when: "API is invoked with one callback"
-            api.request(null, null, null) { ok = true }
+        when: "Session is invoked with one callback"
+            session.request(null, null, null) { ok = true }
 
-        then: "the API invokes that callback"
+        then: "the Session invokes that callback"
             ok
     }
 
@@ -211,13 +211,13 @@ class APISpec extends Specification {
         given: "a success flag"
             boolean ok = false
 
-        and: "an HTTP implementation that calls the API callback"
+        and: "an HTTP implementation that calls the Session callback"
             1 * http.execute(*_) >> { args -> args[0].cb(new META(status, null), null, null) }
 
-        when: "API is invoked with additional callbacks"
-            api.request(null, null, null, (cbname): { ok = true }) {}
+        when: "Session is invoked with additional callbacks"
+            session.request(null, null, null, (cbname): { ok = true }) {}
 
-        then: "API invokes the correct callback"
+        then: "Session invokes the correct callback"
             ok
 
         where:
@@ -238,13 +238,13 @@ class APISpec extends Specification {
         given: "a success flag"
             boolean ok = false
 
-        and: "an HTTP implementation that calls the API callback"
+        and: "an HTTP implementation that calls the Session callback"
             1 * http.execute(*_) >> { args -> args[0].cb(new META(status, null), null, null) }
 
-        when: "API is invoked with generic error handler and more specific error handler"
-            api.request(null, null, null, error: {}, (error): { ok = true }) {}
+        when: "Session is invoked with generic error handler and more specific error handler"
+            session.request(null, null, null, error: {}, (error): { ok = true }) {}
 
-        then: "API invokes the correct callback"
+        then: "Session invokes the correct callback"
             ok
 
         where:
@@ -256,7 +256,7 @@ class APISpec extends Specification {
     @Unroll
     def "Additional request callback #cbname is rejected"() {
         when:
-            api.request(null, null, null, (cbname): {}) {}
+            session.request(null, null, null, (cbname): {}) {}
 
         then:
             thrown(IllegalArgumentException)
@@ -267,17 +267,17 @@ class APISpec extends Specification {
 
     @Unroll
     def "Global callback #cbname is called for 101"() {
-        given: "an HTTP implementation that calls the API callback with 101 status"
+        given: "an HTTP implementation that calls the Session callback with 101 status"
             1 * http.execute(*_) >> { args -> args[0].cb(new META(101, null), null, null) }
 
         and: "a global callback"
             boolean ok = false
-            api.callback([ (cbname): { ok = true } ])
+            session.callback([(cbname): { ok = true } ])
 
-        when: "the API is invoked without a callback for 101"
-            api.request(null, null, null) {}
+        when: "the Session is invoked without a callback for 101"
+            session.request(null, null, null) {}
 
-        then: "the API invokes the global callback"
+        then: "the Session invokes the global callback"
             ok
 
         where:
@@ -286,17 +286,17 @@ class APISpec extends Specification {
 
     @Unroll
     def "Global callback for #cbname is not called when overridden"() {
-        given: "an HTTP implementation that calls the API callback with status 101"
+        given: "an HTTP implementation that calls the Session callback with status 101"
             1 * http.execute(*_) >> { args -> args[0].cb(new META(101, null), null, null) }
 
         and: "a global callback"
             boolean ok = false
-            api.callback((cbname): {})
+            session.callback((cbname): {})
 
-        when: "the API is invoked with a callback for 101"
-            api.request(null, null, null, (cbname): { ok = true }) {}
+        when: "the Session is invoked with a callback for 101"
+            session.request(null, null, null, (cbname): { ok = true }) {}
 
-        then: "the API invokes the request specific callback"
+        then: "the Session invokes the request specific callback"
             ok
 
         where:
@@ -306,7 +306,7 @@ class APISpec extends Specification {
     @Unroll
     def "Invalid default callback #cbname is rejected"() {
         when:
-            api.callback((cbname): {})
+            session.callback((cbname): {})
 
         then:
             thrown(IllegalArgumentException)
@@ -316,42 +316,42 @@ class APISpec extends Specification {
     }
 
     def "Default request callback with one parameter and error case"() {
-        given: "an HTTP implementation that calls the API callback with null META and non-null ERROR"
+        given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
             1 * http.execute(_) >> { args -> args[0].cb(null, null, new ERROR("foo")) }
 
         and: "a success flag"
             boolean ok = false
 
-        when: "API is invoked with a default request callback that takes only one argument"
-            api.request(null, null, null, null) { resource -> ok = resource == null }
+        when: "Session is invoked with a default request callback that takes only one argument"
+            session.request(null, null, null, null) { resource -> ok = resource == null }
 
         then: "the default request callback is called with null META"
             ok
     }
 
     def "Default request callback with two parameters and error case"() {
-        given: "an HTTP implementation that calls the API callback with null META and non-null ERROR"
+        given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
             1 * http.execute(_) >> { args -> args[0].cb(null, null, new ERROR("foo")) }
 
         and: "a success flag"
             boolean ok = false
 
-        when: "API is invoked with a default request callback that takes two arguments"
-            api.request(null, null, null, null) { resource, err -> ok = resource == null && err != null }
+        when: "Session is invoked with a default request callback that takes two arguments"
+            session.request(null, null, null, null) { resource, err -> ok = resource == null && err != null }
 
         then: "the default request callback is called with null META"
             ok
     }
 
     def "Default request callback with two parameters and success case"() {
-        given: "an HTTP implementation that calls the API callback with non-null META and null ERROR"
+        given: "an HTTP implementation that calls the Session callback with non-null META and null ERROR"
             1 * http.execute(_) >> { args -> args[0].cb(new META(200, null), null, null) }
 
         and: "a success flag"
             boolean ok = false
 
-        when: "API is invoked with a default request callback that takes two arguments"
-            api.request(null, null, null, null) { meta, err -> ok = meta != null && err == null }
+        when: "Session is invoked with a default request callback that takes two arguments"
+            session.request(null, null, null, null) { meta, err -> ok = meta != null && err == null }
 
         then: "the default request callback is called with null META"
             ok
@@ -368,7 +368,7 @@ class APISpec extends Specification {
                     ]]
             ].iterator()
 
-        and: "an HTTP implementation that calls the API callback with those headers and a non-null entity body"
+        and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
             1 * http.execute(_) >> { args ->
                 args[0].cb(new META(200, headers), new ByteArrayInputStream(new byte[0]), null)
             }
@@ -379,8 +379,8 @@ class APISpec extends Specification {
         and: "a success flag"
             boolean ok = false
 
-        when: "invoking the API with a callback"
-            api.request(null, null, null, null) { resp ->
+        when: "invoking the Session with a callback"
+            session.request(null, null, null, null) { resp ->
                 ok = resp?.server == "ok"
             }
 
@@ -399,7 +399,7 @@ class APISpec extends Specification {
                     ]]
             ].iterator()
 
-        and: "an HTTP implementation that calls the API callback with those headers and a non-null entity body"
+        and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
             1 * http.execute(_) >> { args ->
                 args[0].cb(new META(200, headers), new ByteArrayInputStream(new byte[0]), null)
             }
@@ -417,8 +417,8 @@ class APISpec extends Specification {
         and: "a success flag"
             boolean ok = false
 
-        when: "invoking the API with a callback"
-            api.request(null, null, null, null) { resp ->
+        when: "invoking the Session with a callback"
+            session.request(null, null, null, null) { resp ->
                 ok = resp != null
             }
 
@@ -428,7 +428,7 @@ class APISpec extends Specification {
 
     def "Read method with zero arguments"() {
         when:
-            api.GET()
+            session.GET()
 
         then:
             thrown(MissingMethodException)
@@ -436,7 +436,7 @@ class APISpec extends Specification {
 
     def "Read method with one argument"() {
         when:
-            api.GET({})
+            session.GET({})
 
         then:
             thrown(MissingMethodException)
@@ -444,7 +444,7 @@ class APISpec extends Specification {
 
     def "Read method with two arguments"() {
         when:
-            api.GET 400: {}, {}
+            session.GET 400: {}, {}
 
         then:
             thrown(MissingMethodException)

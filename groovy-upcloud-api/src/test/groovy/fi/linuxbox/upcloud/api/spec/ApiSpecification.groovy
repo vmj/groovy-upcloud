@@ -15,7 +15,7 @@ abstract class ApiSpecification extends Specification {
 
     HTTP http = Mock()
     JSON json = Mock()
-    API api = new API(http, json, null, null)
+    Session session = new Session(http, json, null, null)
     Exchange req
 
     def setup() {

@@ -17,14 +17,14 @@ package fi.linuxbox.upcloud.http.spi
  * </p>
  *
  * <pre>
- *     api.callback(
+ *     session.callback(
  *         server_error: { Resource response ->
  *             // Default callback (for any 5xx HTTP response).
  *             // If this is called, it is always called with one argument.
  *             assert response.META.status in (500..599) // 5xx status code
  *
  *         })
- *     api.GET('some-resource',
+ *     session.GET('some-resource',
  *         client_error: { Resource response ->
  *             // Additional request callback (for any 4xx HTTP response).
  *             // If this is called, it is always called with one argument.

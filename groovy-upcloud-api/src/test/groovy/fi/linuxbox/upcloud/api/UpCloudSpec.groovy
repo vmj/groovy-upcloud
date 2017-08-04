@@ -8,7 +8,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class UpCloudSpec extends ApiSpecification {
 
-    UpCloud upCloud = new UpCloud(api)
+    UpCloud upCloud = new UpCloud(session)
 
     def "storages type: 'favorite' does GET .../storage/favorite"() {
         when:

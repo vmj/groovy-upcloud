@@ -21,7 +21,7 @@ class UpCloudScriptContext implements Closeable {
     final HTTP http
     final JSON json
 
-    final API api
+    final Session session
 
     final UpCloud upCloud
 
@@ -31,9 +31,9 @@ class UpCloudScriptContext implements Closeable {
         http = new AhcHTTP(new AhcClientProvider().get())
         json = new JacksonJSON(new JacksonParserProvider().get())
 
-        api = new API(http, json, username, password)
+        session = new Session(http, json, username, password)
 
-        upCloud = new UpCloud(api)
+        upCloud = new UpCloud(session)
 
         builder = new ResourceBuilder()
     }

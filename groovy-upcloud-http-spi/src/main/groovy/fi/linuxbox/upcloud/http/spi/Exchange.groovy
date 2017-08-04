@@ -4,7 +4,7 @@ package fi.linuxbox.upcloud.http.spi
  * An HTTP exchange.
  *
  * <p>
- * This class is used between API and HTTP implementations.
+ * This class is used between Session and HTTP implementations.
  * </p>
  */
 class Exchange {
