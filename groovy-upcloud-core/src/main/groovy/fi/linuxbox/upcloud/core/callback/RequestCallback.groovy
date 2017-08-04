@@ -19,24 +19,18 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
     private final Logger log = LoggerFactory.getLogger(RequestCallback)
 
     /**
-     * An unmodifiable copy of the session callbacks.
+     * An unmodifiable copy of the callbacks.
      * <p>
      *     This is taken at the time of request initialization, and any
-     *     modifications to the session callbacks during the HTTP exchange
-     *     have no affect on this copy.
+     *     modifications to the session or request callbacks during the HTTP
+     *     exchange have no affect on this copy.
      * </p>
-     */
-    private final Map<String, Closure<Void>> sessionCallbacks
-
-    /**
-     * An unmodifiable copy of the request callbacks.
      * <p>
-     *     This is taken at the time of request initialization, and any
-     *     modifications to the original map given to the API
-     *     have no affect on this copy.
+     *     The session and request callbacks are merged into this map.
+     *     Request callbacks override session callbacks.
      * </p>
      */
-    private final Map<String, Closure<Void>> requestCallbacks
+    private final Map<String, Closure<Void>> callbacks
 
     /**
      * Default request callback.
@@ -60,8 +54,8 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
     RequestCallback(final SessionCallbacks sessionCallbacks,
                     final Map<?, Closure<Void>> requestCallbacks,
                     final Closure<Void> defaultRequestCallback) {
-        this.sessionCallbacks = sessionCallbacks.asUnmodifiableMap()
-        this.requestCallbacks = unmodifiableMap(internalize(requestCallbacks))
+        this.callbacks = unmodifiableMap(
+                sessionCallbacks.asUnmodifiableMap() + internalize(requestCallbacks))
         this.defaultRequestCallback = defaultRequestCallback
     }
 
@@ -117,54 +111,18 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
             return defaultRequestCallback
 
         // Try exact match to the status code first
-        Closure<Void> callback = selectCallback(statusCode.toString())
+        Closure<Void> callback = callbacks[statusCode.toString()]
         if (callback)
             return callback
 
         // Try one of the broad categories
         callback = HTTP_STATUS_CATEGORIES.findResult { final IntRange range, final String category ->
-            selectCallback(statusCode, range, category)
+            statusCode in range ? callbacks[category] : null
         }
         if (callback)
             return callback
 
         // Fall back to default request callback
         return defaultRequestCallback
-    }
-
-    /**
-     * Return a callback for the given category.
-     *
-     * <p>
-     * If the given {@param statusCode} does not match the given {@param range},
-     * <code>null</code> is returned.  Otherwise, the given {@param category}
-     * is used to search for a callback.  If the category is not found from the
-     * request callbacks, then the session callbacks is checked.
-     * </p>
-     *
-     * @param statusCode The HTTP response status code.
-     * @param statusRange A status category range, like (200..299).
-     * @param statusCategory A status category name, like "success".
-     * @return A callback corresponding to the response status, or null.
-     */
-    private Closure<Void> selectCallback(final Integer statusCode,
-                                         final IntRange statusRange,
-                                         final String statusCategory) {
-        statusCode in statusRange ? selectCallback(statusCategory) : null
-    }
-
-    /**
-     * Return a callback for the given status or category.
-     *
-     * <p>
-     * A callback from additional request callbacks is returned if found.
-     * Otherwise, a callback from session callbacks is returned if it exists.
-     * </p>
-     *
-     * @param selector The HTTP response status code or category.
-     * @return A callback corresponding to the selector, or null.
-     */
-    private Closure<Void> selectCallback(final String selector) {
-        requestCallbacks[selector] ?: sessionCallbacks[selector]
     }
 }
