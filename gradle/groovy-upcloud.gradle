@@ -3,8 +3,8 @@ apply plugin: 'groovy'
 group = 'fi.linuxbox.upcloud'
 version = '0.0.4'
 
-ext.versions = [groovy: '2.4.11',
-                logback: '1.2.2',
+ext.versions = [groovy: '2.4.12',
+                logback: '1.2.3',
                 slf4j: '1.7.25',
                 spock: '1.1-groovy-2.4',
 ]

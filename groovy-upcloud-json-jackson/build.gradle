@@ -9,12 +9,12 @@ modifyPom {
 dependencies {
     api project(':groovy-upcloud-json-spi')
 
-    implementation "com.fasterxml.jackson.core:jackson-core:2.8.8"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.8.8"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.9.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.9.0"
 
-    testImplementation "com.jayway.jsonpath:json-path-assert:2.2.0"
+    testImplementation "com.jayway.jsonpath:json-path-assert:2.4.0"
 }
 
 groovydoc {
-    link("https://fasterxml.github.io/jackson-databind/javadoc/2.8/", 'com.fasterxml.jackson')
+    link("https://fasterxml.github.io/jackson-databind/javadoc/2.9/", 'com.fasterxml.jackson')
 }
