@@ -9,8 +9,8 @@ ext.versions = [groovy: '2.4.12',
                 spock: '1.1-groovy-2.4',
 ]
 
-// Java 8
-sourceCompatibility = 1.8
+// Java 7
+sourceCompatibility = 1.7
 
 repositories {
     jcenter()

@@ -1,6 +1,7 @@
 language: java
 jdk:
   - oraclejdk8
+  - openjdk7
 # A peculiarity of dependency caching in Gradle means that to avoid uploading the cache after every build the following
 # lines must be added:
 before_cache:
