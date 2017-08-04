@@ -1,5 +1,7 @@
 package fi.linuxbox.upcloud.core
 
+import fi.linuxbox.upcloud.core.callback.RequestCallback
+import fi.linuxbox.upcloud.core.callback.SessionCallbacks
 import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.Exchange
 import fi.linuxbox.upcloud.http.spi.HTTP
@@ -8,6 +10,7 @@ import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
 import fi.linuxbox.upcloud.json.spi.JSON
 import groovy.transform.*
+
 import javax.inject.*
 import org.slf4j.*
 
@@ -202,25 +205,6 @@ class API {
      * UpCloud API context path.
      */
     private static final String API_VERSION = '/1.2/'
-    /**
-     * HTTP response status categories.
-     */
-    private static final List<Tuple2<IntRange, String>> HTTP_STATUS_CATEGORIES = [
-            new Tuple2((100..199), 'info'),
-            new Tuple2((200..299), 'success'),
-            new Tuple2((300..399), 'redirect'),
-            new Tuple2((400..499), 'client_error'),
-            new Tuple2((500..599), 'server_error'),
-            new Tuple2((400..599), 'error')
-    ]
-    /**
-     * HTTP response status category names.
-     */
-    private static final List<String> HTTP_STATUS_CATEGORY_NAMES = HTTP_STATUS_CATEGORIES.second
-    /**
-     * HTTP response status code range.
-     */
-    private static final IntRange HTTP_STATUS_CODE_RANGE = (HTTP_STATUS_CATEGORIES[0].first.from..HTTP_STATUS_CATEGORIES[-1].first.to)
 
     /**
      * HTTP method descriptions.
@@ -259,11 +243,10 @@ class API {
      * Session callbacks.
      *
      * <p>
-     * Application can store common callbacks in here.  The key is the HTTP response status code as a String, e.g. "500",
-     * or a category like "server_error".
+     * Application can store common callbacks in here.
      * </p>
      */
-    private final Map<String, Closure<Void>> sessionCallbacks = [: ]
+    private final SessionCallbacks sessionCallbacks = new SessionCallbacks()
     /**
      * HTTP implementation.
      */
@@ -302,19 +285,17 @@ class API {
      *     Note that the old callbacks are not removed, unless their corresponding key is set to <code>null</code> in
      *     {@param cbs}.
      * </p>
+     * <p>
+     *     Note also that the given map is copied while checking the keys,
+     *     so any later modifications to the map itself are not picked up by
+     *     this class.
+     * </p>
      *
      * @param cbs Session callbacks to set or clear.  Note that any previously set callbacks are not cleared unless
      *            they are explicitly set to <code>null</code> in this argument.
      */
     void callback(Map<?, Closure<Void>> cbs) {
-        final Map<String, Closure<Void>> sessionCallbacks = internalize(cbs)
-
-        sessionCallbacks.each { String status, Closure<Void> cb ->
-            if (cb)
-                this.sessionCallbacks[status] = cb
-            else
-                this.sessionCallbacks.remove(status)
-        }
+        sessionCallbacks.callback(cbs)
     }
 
     /**
@@ -330,26 +311,24 @@ class API {
     @PackageScope // for testing
     request(
             final Map<?, Closure<Void>> cbs = [ : ],
-            final String method, final String path, final Resource resource, final Closure<Void> cb) {
-        final Map<String, Closure<Void>> requestCallbacks = internalize(cbs)
+            final String method, final String path, final Resource resource,
+            final Closure<Void> cb) {
+        final RequestCallback requestCallback =
+                new RequestCallback(sessionCallbacks, cbs, cb)
 
-        http.execute(new Exchange(
+        http.execute new Exchange(
                 host: HOST,
                 method: method,
                 resource: API_VERSION + path,
                 headers: new SimpleHeaders(requestHeaders),
                 body: resource ? json.encode(resource as Map) : null,
-                cb: { final META meta, final InputStream body, final ERROR err ->
-                    if (!meta) {
-                        callApp(cb, null, err) // err ought to be non-null
-                        return
-                    }
-
-                    Map<String, Object> repr = decode(meta.headers, body)
-                    Resource m = new Resource(repr: repr, API: this, META: meta)
-                    final Closure<Void> callback = chooseCallback(meta.status, cb, requestCallbacks)
-                    callApp(callback, m, null)
-                }))
+                cb: { final META meta,
+                      final InputStream body, final ERROR err ->
+                    // Contract is that either resource is non-null, or err
+                    // is non-null.  Never both nulls and never both non-nulls.
+                    final Resource m = err ? null : decode(meta, body)
+                    requestCallback.accept(m, err)
+                })
     }
 
     /**
@@ -453,6 +432,22 @@ class API {
     }
 
     /**
+     * Decodes the entity {@param body}, if it is valid UTF-8 JSON.
+     * <p>
+     *     Even in case it is not, an empty <code>Resource</code> is
+     *     returned containing the headers.
+     * </p>
+     *
+     * @param meta HTTP headers from which to check whether the entity body is supposed to be UTF-8 JSON.
+     * @param body HTTP entity body to parse.
+     * @return Resource, never null.
+     */
+    private Resource decode(final META meta, final InputStream body) {
+        final Map<String, Object> repr = decode(meta?.headers, body)
+        return new Resource(repr: repr, API: this, META: meta)
+    }
+
+    /**
      * Decodes the entity {@param body}, but only if it is claimed to be UTF-8 JSON by the {@param headers}.
      * <p>
      *     The server may respond with HTML or XML or something else, especially if we screw up with the request
@@ -484,160 +479,5 @@ class API {
             }
         }
         return [:]
-    }
-
-    /**
-     * Calls back to the app.
-     * <p>
-     *     Tries to accommodate to the number of arguments expected by the app, and shields the HTTP implementation
-     *     from having to deal with exceptions.
-     * </p>
-     *
-     * @param callback Selected callback.
-     * @param resource HTTP response or <code>null</code>
-     * @param err ERROR or <code>null</code>
-     */
-    private void callApp(final Closure<Void> callback, final Resource resource, final ERROR err) {
-        try {
-            if (callback.maximumNumberOfParameters == 2)
-                callback(resource, err)
-            else
-                callback(resource)
-        } catch (final MissingMethodException e) {
-            // this is error because we couldn't reach the app
-            log.error("application callback has wrong signature", e)
-        } catch (final Exception e) {
-            // this is "only" warning because we reached the app but it failed
-            log.warn("application callback threw an exception", e)
-        }
-    }
-
-    /**
-     * Return a callback for the given status.
-     *
-     * @param statusCode The response status, an exact number like 200.
-     * @param defaultRequestCallback The default request callback.
-     * @param requestCallbacks The request callbacks.
-     * @return A callback corresponding to the response status.
-     */
-    private Closure<Void> chooseCallback(final int statusCode, final Closure<Void> defaultRequestCallback, final Map<String, Closure<Void>> requestCallbacks) {
-        if (!statusCode)
-            return defaultRequestCallback
-
-        // Try exact match to the status code first
-        Closure<Void> callback = selectCallback(statusCode.toString(), requestCallbacks)
-        if (callback)
-            return callback
-
-        // Try one of the broad categories
-        callback = HTTP_STATUS_CATEGORIES.findResult { final IntRange range, final String category ->
-            selectCallback(statusCode, range, category, requestCallbacks)
-        }
-        if (callback)
-            return callback
-
-        // Fall back to default request callback
-        return defaultRequestCallback
-    }
-
-    /**
-     * Return a callback for the given category.
-     *
-     * <p>
-     * If the given {@param statusCode} does not match the given {@param range}, <code>null</code> is returned.
-     * Otherwise, the given {@param category} is used to search for a callback.  If the category is not found from the
-     * additional request callbacks, then the session callbacks is checked.
-     * </p>
-     *
-     * @param statusCode The response status, an exact number like 200.
-     * @param range A status category range, like (200..299).
-     * @param category A status category name, like "success".
-     * @param requestCallbacks The additional request callbacks.
-     * @return A callback corresponding to the response status, or null.
-     */
-    private Closure<Void> selectCallback(
-            final int statusCode, final IntRange range, final String category,
-            final Map<String, Closure<Void>> requestCallbacks) {
-        statusCode in range ? selectCallback(category, requestCallbacks) : null
-    }
-
-    /**
-     * Return a callback for the given status or category.
-     *
-     * <p>
-     * A callback from additional request callbacks is returned if found.  Otherwise, a callback from session callbacks is returned
-     * if it exists.
-     * </p>
-     *
-     * @param selector The response status, either an exact number like "200" or a category like "success".
-     * @param requestCallbacks The additional request callbacks.
-     * @return A callback corresponding to the selector, or null.
-     */
-    private Closure<Void> selectCallback(final String selector, final Map<String, Closure<Void>> requestCallbacks) {
-        requestCallbacks[selector] ?: sessionCallbacks[selector]
-    }
-
-    /**
-     * Cleans up and checks the map for internal use.
-     * <p>
-     *     Converts the keys to internal representation.
-     * </p>
-     *
-     * @param cbs Application provided callbacks.  Note that map values may also be null.
-     * @return Internalized and sanitized map of callbacks.
-     * @throws IllegalArgumentException if the cleanup fails.
-     */
-    private Map<String, Closure<Void>> internalize(final Map<?, Closure<Void>> cbs) {
-        if (!cbs) return [:]
-        cbs.inject(new LinkedHashMap<String, Closure<Void>>()) { Map callbacks, Map.Entry<?, Closure<Void>> cb ->
-            callbacks[internalizeStatus(cb.key)] = cb.value
-            callbacks
-        }
-    }
-
-    /**
-     * Try to interpret the status as either a status code or a status category.
-     *
-     * @param status Object to interpret
-     * @return Internal representation of the callback name (key to the map of callbacks)
-     * @throws IllegalArgumentException if the interpretation fails.
-     */
-    private String internalizeStatus(final Object status) {
-        if (status == null)
-            throw new IllegalArgumentException("HTTP status must be non-null")
-
-        // specifically thinking of GStrings with this .toString(), but why not for something else, too.
-        final String statusString = status.toString()
-
-        final BigInteger statusCode = internalizeStatusCode(statusString)
-        if (statusCode) {
-            if (statusCode in HTTP_STATUS_CODE_RANGE)
-                return statusCode.toString()
-            throw new IllegalArgumentException(
-                    "HTTP status code must be in range (${HTTP_STATUS_CODE_RANGE.inspect()}): $status")
-        }
-
-        if (statusString in HTTP_STATUS_CATEGORY_NAMES)
-            return statusString
-        throw new IllegalArgumentException(
-                "HTTP status category must be one of ${HTTP_STATUS_CATEGORY_NAMES}: $status")
-    }
-
-    /**
-     * Try to interpret the status as a status code.
-     * <p>
-     *     This method does not do any range checks.
-     * </p>
-     * @param status Object to interpret.
-     * @return The integral number, or <code>null</code> it the object doesn't look like an integral number.
-     */
-    private BigInteger internalizeStatusCode(final String status) {
-        try {
-            // ".valueOf()" and "as BigInteger" both parse the beginning of the string and accept anything at the end.
-            // new BigInteger(string) however rejects any junk at the end.
-            new BigInteger(status)
-        } catch (final NumberFormatException ignored) {
-            return null
-        }
     }
 }

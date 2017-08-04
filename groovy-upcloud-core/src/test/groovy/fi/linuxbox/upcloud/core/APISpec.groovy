@@ -323,7 +323,7 @@ class APISpec extends Specification {
             boolean ok = false
 
         when: "API is invoked with a default request callback that takes only one argument"
-            api.request(null, null, null, null) { meta -> ok = meta == null }
+            api.request(null, null, null, null) { resource -> ok = resource == null }
 
         then: "the default request callback is called with null META"
             ok
@@ -337,7 +337,7 @@ class APISpec extends Specification {
             boolean ok = false
 
         when: "API is invoked with a default request callback that takes two arguments"
-            api.request(null, null, null, null) { meta, err -> ok = meta == null && err != null }
+            api.request(null, null, null, null) { resource, err -> ok = resource == null && err != null }
 
         then: "the default request callback is called with null META"
             ok
