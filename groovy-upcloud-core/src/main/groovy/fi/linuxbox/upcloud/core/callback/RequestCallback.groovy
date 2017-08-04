@@ -6,7 +6,7 @@ import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.util.function.BiConsumer
+//import java.util.function.BiConsumer
 
 import static java.util.Collections.unmodifiableMap
 
@@ -15,7 +15,7 @@ import static java.util.Collections.unmodifiableMap
  * of them based on HTTP response status code.
  */
 @CompileStatic
-class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
+class RequestCallback extends Callbacks /*implements BiConsumer<Resource, ERROR>*/ {
     private final Logger log = LoggerFactory.getLogger(RequestCallback)
 
     /**
@@ -65,7 +65,7 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
      * @param resource Resource to pass to the callback (or null)
      * @param error Error to pass to the callback (or null)
      */
-    @Override
+    //@Override
     void accept(final Resource resource, final ERROR error) {
         final Integer status = resource?.META?.status
         final Closure<Void> callback = chooseCallback(status)
