@@ -94,9 +94,9 @@ import org.slf4j.*
  * <p>
  *     Dealing with common HTTP error responses like above can get boring after awhile.  Worry not, there's another way.
  * </p>
- * <h1>Default callbacks</h1>
+ * <h1>Sessions callbacks</h1>
  * <p>
- *     One can attach default callbacks to the <code>API</code> instance.  These are just like additional request
+ *     One can attach session callbacks to the <code>API</code> instance.  These are just like additional request
  *     callbacks, except that these are considered for all future HTTP requests made through this instance of the
  *     <code>API</code>.
  * </p>
@@ -155,9 +155,9 @@ import org.slf4j.*
  * </p>
  * <ol>
  *     <li>If there's an additional request callback for "200", that is invoked</li>
- *     <li>If there's a default callback for "200" attached to the <code>API</code> instance, that is invoked</li>
+ *     <li>If there's a session callback for "200" attached to the <code>API</code> instance, that is invoked</li>
  *     <li>If there's an additional request callback for "info", that is invoked</li>
- *     <li>If there's a default callback for "info" attached to the <code>API</code> instance, that is invoked</li>
+ *     <li>If there's a session callback for "info" attached to the <code>API</code> instance, that is invoked</li>
  *     <li>Failing all above, the default request callback is invoked</li>
  * </ol>
  * <p>
@@ -166,11 +166,11 @@ import org.slf4j.*
  * </p>
  * <ol>
  *     <li>request callback for "400"</li>
- *     <li>default callback for "400"</li>
+ *     <li>session callback for "400"</li>
  *     <li>request callback for "client_error"</li>
- *     <li>default callback for "client_error"</li>
+ *     <li>session callback for "client_error"</li>
  *     <li>request callback for "error"</li>
- *     <li>default callback for "error"</li>
+ *     <li>session callback for "error"</li>
  *     <li>default request callback</li>
  * </ol>
  * <p>
@@ -179,7 +179,7 @@ import org.slf4j.*
  * </p>
  * <h1>Network error handling</h1>
  * <p>
- *     The additional request callbacks and the default callbacks attached to the <code>API</code> instance, are all by
+ *     The additional request callbacks and the session callbacks attached to the <code>API</code> instance, are all by
  *     definition tied to the HTTP response status code or the status category.  However, networks are unreliable and
  *     the communication with the server may not always work.  This is where the special nature, and the importance, of
  *     the default request callback comes apparent.
@@ -256,14 +256,14 @@ class API {
             'User-Agent'   : 'Groovy UpCloud/0.0.4 ',
     ]
     /**
-     * Default callbacks.
+     * Session callbacks.
      *
      * <p>
      * Application can store common callbacks in here.  The key is the HTTP response status code as a String, e.g. "500",
      * or a category like "server_error".
      * </p>
      */
-    private final Map<String, Closure<Void>> defaultCallbacks = [ : ]
+    private final Map<String, Closure<Void>> sessionCallbacks = [: ]
     /**
      * HTTP implementation.
      */
@@ -290,10 +290,10 @@ class API {
     }
 
     /**
-     * Set or clear default callbacks.
+     * Set or clear session callbacks.
      *
      * <p>
-     *     The set of default callbacks is empty by default.  Application can store common callbacks in this map.  The
+     *     The set of session callbacks is empty by default.  Application can store common callbacks in this map.  The
      *     keys in the given map are HTTP response status codes like 500 or 404, or HTTP status categories: "info",
      *     "success", "redirect", "client_error", "server_error", "error".  If the key is not recognized as either a
      *     status code or category, an {@ IllegalAgumentException} is thrown.
@@ -303,17 +303,17 @@ class API {
      *     {@param cbs}.
      * </p>
      *
-     * @param cbs Default callbacks to set or clear.  Note that any previously set callbacks are not cleared unless
+     * @param cbs Session callbacks to set or clear.  Note that any previously set callbacks are not cleared unless
      *            they are explicitly set to <code>null</code> in this argument.
      */
     void callback(Map<?, Closure<Void>> cbs) {
-        final Map<String, Closure<Void>> defaultCallbacks = internalize(cbs)
+        final Map<String, Closure<Void>> sessionCallbacks = internalize(cbs)
 
-        defaultCallbacks.each { String status, Closure<Void> cb ->
+        sessionCallbacks.each { String status, Closure<Void> cb ->
             if (cb)
-                this.defaultCallbacks[status] = cb
+                this.sessionCallbacks[status] = cb
             else
-                this.defaultCallbacks.remove(status)
+                this.sessionCallbacks.remove(status)
         }
     }
 
@@ -442,7 +442,7 @@ class API {
             //else if (!(ARGV[3] instanceof Resource))
             //    throw new MissingMethodException(name, this.class, args)
 
-            // The final argument is the mandatory default callback
+            // The final argument is the mandatory default request callback
             //if (!(ARGV[4] instanceof Closure<Void>))
             //    throw new MissingMethodException(name, this.class, args)
 
@@ -516,7 +516,7 @@ class API {
      * Return a callback for the given status.
      *
      * @param statusCode The response status, an exact number like 200.
-     * @param defaultRequestCallback The default callback.
+     * @param defaultRequestCallback The default request callback.
      * @param requestCallbacks The request callbacks.
      * @return A callback corresponding to the response status.
      */
@@ -536,7 +536,7 @@ class API {
         if (callback)
             return callback
 
-        // Fall back to default callback
+        // Fall back to default request callback
         return defaultRequestCallback
     }
 
@@ -546,13 +546,13 @@ class API {
      * <p>
      * If the given {@param statusCode} does not match the given {@param range}, <code>null</code> is returned.
      * Otherwise, the given {@param category} is used to search for a callback.  If the category is not found from the
-     * request callbacks, then the default callbacks is checked.
+     * additional request callbacks, then the session callbacks is checked.
      * </p>
      *
      * @param statusCode The response status, an exact number like 200.
      * @param range A status category range, like (200..299).
      * @param category A status category name, like "success".
-     * @param requestCallbacks The request callbacks.
+     * @param requestCallbacks The additional request callbacks.
      * @return A callback corresponding to the response status, or null.
      */
     private Closure<Void> selectCallback(
@@ -565,16 +565,16 @@ class API {
      * Return a callback for the given status or category.
      *
      * <p>
-     * A callback from request callbacks is returned if found.  Otherwise, a callback from default callbacks is returned
+     * A callback from additional request callbacks is returned if found.  Otherwise, a callback from session callbacks is returned
      * if it exists.
      * </p>
      *
      * @param selector The response status, either an exact number like "200" or a category like "success".
-     * @param requestCallbacks The request callbacks.
+     * @param requestCallbacks The additional request callbacks.
      * @return A callback corresponding to the selector, or null.
      */
     private Closure<Void> selectCallback(final String selector, final Map<String, Closure<Void>> requestCallbacks) {
-        requestCallbacks[selector] ?: defaultCallbacks[selector]
+        requestCallbacks[selector] ?: sessionCallbacks[selector]
     }
 
     /**
