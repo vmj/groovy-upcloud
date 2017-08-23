@@ -6,13 +6,14 @@ import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
 import org.apache.http.*
 import org.apache.http.entity.BasicHttpEntity
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
 import org.apache.http.message.BasicStatusLine
 import org.apache.http.nio.client.*
 import spock.lang.*
 
 class AhcHTTPSpec extends Specification {
 
-    HttpAsyncClient client = Mock()
+    CloseableHttpAsyncClient client = Mock()
 
     AhcHTTP http
 

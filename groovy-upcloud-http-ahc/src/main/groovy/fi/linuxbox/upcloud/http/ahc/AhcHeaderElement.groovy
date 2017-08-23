@@ -2,12 +2,14 @@ package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.HeaderElement
 import fi.linuxbox.upcloud.http.spi.Parameter
+import groovy.transform.CompileStatic
 import org.apache.http.NameValuePair
 import org.apache.http.HeaderElement as HeaderElementImpl
 
 /**
  *
  */
+@CompileStatic
 class AhcHeaderElement implements HeaderElement {
     private final HeaderElementImpl element
 

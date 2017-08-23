@@ -2,18 +2,18 @@ package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.META
+import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine
 import org.apache.http.concurrent.FutureCallback
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  *
  */
+@CompileStatic
+@Slf4j
 class AhcCallback implements FutureCallback<HttpResponse> {
-    private final Logger log = LoggerFactory.getLogger(AhcCallback)
-
     private Closure<Void> cb
 
     AhcCallback(final Closure<Void> cb) {
@@ -35,7 +35,7 @@ class AhcCallback implements FutureCallback<HttpResponse> {
 
     @Override
     void failed(final Exception ex) {
-        log.warn("failed to finish HTTP exchange", e)
+        log.warn("failed to finish HTTP exchange", ex)
         cb(null, null, new ERROR("failed", ex))
     }
 

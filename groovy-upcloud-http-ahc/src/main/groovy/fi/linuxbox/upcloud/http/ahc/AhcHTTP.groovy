@@ -3,43 +3,49 @@ package fi.linuxbox.upcloud.http.ahc
 import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.Exchange
 import fi.linuxbox.upcloud.http.spi.HTTP
+import fi.linuxbox.upcloud.http.spi.Header
+import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
+import org.apache.http.HttpHost
+import org.apache.http.HttpRequest
+import org.apache.http.ProtocolVersion
+import org.apache.http.RequestLine
+import org.apache.http.entity.BasicHttpEntity
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
+import org.apache.http.impl.nio.client.HttpAsyncClients
+import org.apache.http.message.BasicHttpEntityEnclosingRequest
+import org.apache.http.message.BasicHttpRequest
+import org.apache.http.message.BasicRequestLine
+import org.apache.http.util.VersionInfo
 
-import javax.inject.*
-import org.apache.http.*
-import org.apache.http.entity.*
-import org.apache.http.impl.nio.client.*
-import org.apache.http.message.*
-import org.apache.http.nio.client.*
-import org.apache.http.util.*
-import org.slf4j.*
-import fi.linuxbox.upcloud.core.http.*
+import javax.inject.Inject
 
 /**
- *
+ * This is thread safe if client close(), isRunning(), start(), and
+ * execute(HttpHost, HttpRequest, FutureCallback<HttpResponse>) are.
  */
+@CompileStatic
+@Slf4j
 class AhcHTTP implements HTTP, Closeable {
-    private final Logger log = LoggerFactory.getLogger(AhcHTTP)
-
     private final static ProtocolVersion HTTP_1_1 = new ProtocolVersion("HTTP", 1, 1)
 
-    private final HttpAsyncClient client
+    private final CloseableHttpAsyncClient client
 
     @Inject
-    AhcHTTP(final HttpAsyncClient client) {
+    AhcHTTP(final CloseableHttpAsyncClient client) {
         this.client = client
     }
 
     @Override
     void close() throws IOException {
-        if (client instanceof Closeable)
-            client.close()
+        client.close()
     }
 
     @Override
     String getUserAgent() {
         // Following was how the default User-Agent string is formed in HttpAsyncClient version 4.1.1
         // org.apache.http.impl.nio.client.MinimalHttpAsyncClientBuilder#build() lines 133-134.
-        VersionInfo.getUserAgent("Apache-HttpAsyncClient", "org.apache.http.nio.client", HttpAsyncClients);
+        VersionInfo.getUserAgent("Apache-HttpAsyncClient", "org.apache.http.nio.client", HttpAsyncClients)
     }
 
     @Override
@@ -55,16 +61,18 @@ class AhcHTTP implements HTTP, Closeable {
             doExecute(exchange)
         } catch (final Exception e) {
             log.warn("failed to start HTTP exchange", e)
-            exchange.cb(null, null, new ERROR("failed to start HTTP exchange", e))
+            final Closure<Void> cb = exchange.cb
+            cb(null, null, new ERROR("failed to start HTTP exchange", e))
         }
     }
 
     private void doExecute(final Exchange exchange) {
         // isRunning() and start() are only available in this CloseableHAC API :/
-        if (client instanceof CloseableHttpAsyncClient && !client.running)
+        if (!client.running)
             client.start()
 
-        HttpRequest request = exchange.headers.all().inject(request(exchange)) { HttpRequest request, def header ->
+        HttpRequest request = exchange.headers.all()
+                .inject(request(exchange)) { HttpRequest request, Header header ->
             request.addHeader(header.name, header.value)
             request
         }

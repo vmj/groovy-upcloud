@@ -3,6 +3,7 @@ package fi.linuxbox.upcloud.http.ahc
 import fi.linuxbox.upcloud.http.spi.Header
 import fi.linuxbox.upcloud.http.spi.HeaderElement
 import fi.linuxbox.upcloud.http.spi.Headers
+import groovy.transform.CompileStatic
 import org.apache.http.HeaderIterator
 import org.apache.http.HttpMessage
 import org.apache.http.message.BasicHeaderElementIterator
@@ -10,6 +11,7 @@ import org.apache.http.message.BasicHeaderElementIterator
 /**
  *
  */
+@CompileStatic
 class AhcHeaders implements Headers {
     private final HttpMessage httpMessage
 

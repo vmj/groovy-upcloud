@@ -1,13 +1,16 @@
 package fi.linuxbox.upcloud.http.ahc
 
-import javax.inject.*
-import org.apache.http.impl.nio.client.*
-import org.slf4j.*
+import groovy.transform.CompileStatic
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
+import org.apache.http.impl.nio.client.HttpAsyncClients
+
+import javax.inject.Provider
+
 /**
  *
  */
+@CompileStatic
 class AhcClientProvider implements Provider<CloseableHttpAsyncClient> {
-    private final Logger log = LoggerFactory.getLogger(AhcClientProvider)
 
     @Override
     CloseableHttpAsyncClient get() {

@@ -16,6 +16,9 @@ dependencies {
 
     // bridge commons-logging to SLF4J
     runtimeOnly "org.slf4j:jcl-over-slf4j:${versions.slf4j}"
+
+    // Spock will use this for mocking the abstract CloseableHttpAsyncClient
+    testImplementation 'cglib:cglib-nodep:2.2'
 }
 
 groovydoc {
