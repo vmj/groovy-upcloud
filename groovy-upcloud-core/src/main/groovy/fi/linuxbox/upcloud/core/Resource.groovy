@@ -344,8 +344,11 @@ class Resource {
      */
     @PackageScope
     static String propertyName(final Class clazz) {
-        clazz.simpleName.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // RESOURCE -> Resource
-                .replaceFirst(/^([A-Z])/, { it[0].toLowerCase() }) // Server -> server
+        clazz.simpleName.replaceAll(/([A-Z])([A-Z]+)/, {
+            it[1] + it[2].toLowerCase() // RESOURCE -> Resource
+        }) replaceFirst(/^([A-Z])/, {
+            it[0].toLowerCase() // Server -> server
+        })
     }
 
     /**
@@ -360,7 +363,9 @@ class Resource {
      */
     @PackageScope
     static String propertyName(final String type_name) {
-        type_name.replaceAll(/_([a-z])/, { it[1].toUpperCase() }) // type_name -> typeName
+        type_name.replaceAll(/_([a-z])/, {
+            it[1].toUpperCase() // type_name -> typeName
+        })
     }
 
     /**
@@ -375,11 +380,13 @@ class Resource {
      */
     @PackageScope
     static String className(final String type_name) {
-        type_name.replaceAll(/(?:^|_)([a-z])/, { it[1].toUpperCase() }) // type_name -> TypeName
+        type_name.replaceAll(/(?:^|_)([a-z])/, {
+            it[1].toUpperCase() // type_name -> TypeName
+        })
     }
 
     /**
-     * Converts a class name to a JSON property name.
+     * Converts a class name or a Java property name to a JSON property name.
      *
      * <p>
      * For example, 'StorageDevice' becomes 'storage_device'.
@@ -390,9 +397,13 @@ class Resource {
      */
     @PackageScope
     static String type_name(final String className) {
-        className.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // RESOURCE -> Resource
-                .replaceFirst(/^([A-Z])/, { it[0].toLowerCase() }) // Server -> server
-                .replaceAll(/([A-Z])/, { '_' + it[0].toLowerCase() }) // storageDevice -> storage_device
+        className.replaceAll(/([A-Z])([A-Z]+)/, {
+            it[1] + it[2].toLowerCase() // RESOURCE -> Resource
+        }) replaceFirst(/^([A-Z])/, {
+            it[0].toLowerCase() // Server -> server
+        }) replaceAll(/([A-Z])/, {
+            '_' + it[0].toLowerCase() // storageDevice -> storage_device
+        })
     }
 
     /**
