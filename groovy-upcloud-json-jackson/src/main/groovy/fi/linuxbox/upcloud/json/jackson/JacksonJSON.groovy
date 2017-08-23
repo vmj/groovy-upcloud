@@ -2,17 +2,15 @@ package fi.linuxbox.upcloud.json.jackson
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import fi.linuxbox.upcloud.json.spi.JSON
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.transform.CompileStatic
 
 import javax.inject.Inject
 
 /**
  *
  */
+@CompileStatic
 class JacksonJSON implements JSON {
-    private final Logger log = LoggerFactory.getLogger(JacksonJSON)
-
     private final ObjectMapper mapper
 
     @Inject

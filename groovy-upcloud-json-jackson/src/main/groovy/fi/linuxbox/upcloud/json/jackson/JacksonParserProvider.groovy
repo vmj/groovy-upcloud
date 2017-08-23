@@ -1,15 +1,15 @@
 package fi.linuxbox.upcloud.json.jackson
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import groovy.transform.CompileStatic
+
 import javax.inject.Provider
-import org.slf4j.*
 
 /**
  *
  */
+@CompileStatic
 class JacksonParserProvider implements Provider<ObjectMapper> {
-    private final Logger log = LoggerFactory.getLogger(JacksonParserProvider)
-
     @Override
     ObjectMapper get() {
         new ObjectMapper()
