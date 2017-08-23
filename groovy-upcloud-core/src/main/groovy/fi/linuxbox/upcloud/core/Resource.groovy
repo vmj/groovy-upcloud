@@ -4,6 +4,10 @@ import fi.linuxbox.upcloud.http.spi.META
 import groovy.transform.PackageScope
 import org.slf4j.*
 
+import static fi.linuxbox.upcloud.core.Resource.ListWrapper.getElementClassName
+import static fi.linuxbox.upcloud.core.Resource.ListWrapper.getElements
+import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
+
 /**
  * Model for a resource in UpCloud, e.g. server, storage device, or an IP address.
  *
@@ -133,43 +137,26 @@ class Resource {
 
         final Map<String, ?> map = kwargs.remove('repr') as Map<String, ?>
         map?.each { final String key, final Object value ->
-            final String propertyName = propertyName(key)
+            Object propertyValue
             switch (value) {
                 case ListWrapper:
-                    //  value ----v
-                    // 'objects': [ 'object': [ [:], ... ]
-                    // 'objects': [ 'object': [ string, ... ]
-                    final String type_name = value.keySet()[0] // the only key
-                    final String className = className(type_name)
-                    // e.g.
-                    //    [
-                    //       prices: [
-                    //                  zone: [
-                    //                           [:],
-                    //                           ...
-                    //                        ]
-                    //               ]
-                    //    ]
-                    // becomes
-                    //    this.prices = [ Zone(), ... ]
-                    final List list = (List) value[type_name]
-                    this.metaClass."$propertyName" = list.collect { element ->
-                        if (element instanceof Map<String, ?>) {
-                            element = ResourceLoader.instantiateResourceClass(className, [*:kwargs, repr: element])
-                        }
-                        element
+                    final String className = getElementClassName(value)
+                    propertyValue = getElements(value) collect {
+                        if (it instanceof Map<String, ?>)
+                            instantiateResourceClass(className, [*:kwargs, repr: it])
+                        else
+                            it
                     }
                     break
                 case Map/*<String, ?>*/: // groovy cannot handle the generics syntax here
-                    // 'object': [key1: *, key2: *, ...]
                     final String className = className(key)
-                    this.metaClass."$propertyName" = ResourceLoader.instantiateResourceClass(className, [*:kwargs, repr: value])
+                    propertyValue = instantiateResourceClass(className, [*:kwargs, repr: value])
                     break
                 default:
-                    // simple attribute
-                    this.metaClass."$propertyName" = value
+                    propertyValue = value
                     break
             }
+            this.metaClass.setProperty(this, propertyName(key), propertyValue)
         }
     }
 
@@ -410,15 +397,75 @@ class Resource {
 
     /**
      * Represents a list wrapper.
-     *
      * <p>
-     * A list wrapper is a Map that has only one key and the value corresponding to that key is a list.  This is a
-     * convention in the UpCloud API.
+     *      A list wrapper is a Map that has only one key and the value
+     *      corresponding to that key is a list.  This is a convention in the
+     *      UpCloud API.
+     * </p>
+     * <p>
+     *     A list of prices is one example (in JSON below):
+     * <p>
+     * <pre>
+     *       { "prices":
+     *           { "zone":
+     *               [ { ... first zone object ... },
+     *                 { ... another zone object ... },
+     *                 ...
+     *               ]
+     *           }
+     *       }
+     * </pre>
+     * <p>
+     *     Or a list of IP addresses:
+     * </p>
+     * <pre>
+     *       { "ip_addresses":
+     *           { "ip_address":
+     *               [ "123.123.123.123",
+     *                 "234.234.234.234"
+     *               ]
+     *           }
+     *       }
+     * </pre>
+     * <p>
+     *     In the above examples, the element class names would be "Zone" and
+     *     "IpAddress", and the elements would be the list of zones and list
+     *     of IP address strings.
      * </p>
      */
     private static class ListWrapper {
+        /**
+         * Answers whether the object looks like a list wrapper.
+         *
+         * @param value Candidate object
+         * @return {@code true} if candidate looks like a list wrapper,
+         * {@code false} otherwise
+         */
         static Boolean isCase(final Object value) {
             value instanceof Map<String, ?> && value.size() == 1 && value.values()[0] instanceof List
+        }
+        /**
+         * Returns the simple class name of the elements.
+         *
+         * @param self
+         * @return
+         */
+        static String getElementClassName(final Map<String, ?> self) {
+            assert isCase(self)
+            className(getKey(self))
+        }
+        static List getElements(final Map<String, ?> self) {
+            assert isCase(self)
+            (List) self.get(getKey(self))
+        }
+        /**
+         *
+         * @param self
+         * @return
+         */
+        static String getKey(final Map<String, ?> self) {
+            assert isCase(self)
+            self.keySet()[0]
         }
     }
 }
