@@ -1,5 +1,6 @@
 apply plugin: 'java-library'
 apply from: "${projectDir}/../gradle/groovy-upcloud.gradle"
+apply plugin: 'net.saliman.cobertura'
 apply plugin: 'com.bmuschko.nexus'
 
 // Configuring the groovy plugin to work with java-library
