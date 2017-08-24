@@ -1,6 +1,6 @@
 package fi.linuxbox.upcloud.api.spec
 
-import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.json.spi.JSON
 import spock.lang.*
@@ -16,7 +16,7 @@ abstract class ApiSpecification extends Specification {
     HTTP http = Mock()
     JSON json = Mock()
     Session session = new Session(http, json, null, null)
-    Exchange req
+    Request req
 
     def setup() {
         (_..1) * http.execute(_) >> { req = it[0] }

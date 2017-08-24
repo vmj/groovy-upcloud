@@ -1,14 +1,13 @@
 package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.ERROR
-import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
 import org.apache.http.*
 import org.apache.http.entity.BasicHttpEntity
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
 import org.apache.http.message.BasicStatusLine
-import org.apache.http.nio.client.*
 import spock.lang.*
 
 class AhcHTTPSpec extends Specification {
@@ -17,12 +16,12 @@ class AhcHTTPSpec extends Specification {
 
     AhcHTTP http
 
-    Exchange exchange
+    Request request
 
     def setup() {
         http = new AhcHTTP(client)
 
-        exchange = new Exchange(
+        request = new Request(
                 // AhcHTTP is using static helper to parse the host, so host has to be valid
                 host: 'http://localhost:8080',
                 // AhcHTTP is using real HttpRequest instances, so method and resource are parsed by those
@@ -43,7 +42,7 @@ class AhcHTTPSpec extends Specification {
 
     def "Client arguments"() {
         when: "the HTTP implementation is invoked"
-            http.execute(exchange)
+            http.execute(request)
 
         then: "it passes the host, merhod, resource, headers, and a callback to the real client"
             1 * client.execute({ HttpHost host -> host != null  },
@@ -85,12 +84,12 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            exchange.cb = { def meta, def body, def err ->
+            request.cb = { def meta, def body, def err ->
                 ok = meta instanceof META && body instanceof InputStream && err == null
             }
 
         when:
-            http.execute(exchange)
+            http.execute(request)
 
         then:
             ok
@@ -110,10 +109,10 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            exchange.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            request.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(exchange)
+            http.execute(request)
 
         then:
             ok
@@ -129,10 +128,10 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            exchange.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            request.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(exchange)
+            http.execute(request)
 
         then:
             ok
@@ -146,10 +145,10 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            exchange.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            request.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(exchange)
+            http.execute(request)
 
         then:
             ok

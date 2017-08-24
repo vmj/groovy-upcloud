@@ -1,7 +1,7 @@
 package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.ERROR
-import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.META
 
 import java.util.concurrent.*
@@ -31,7 +31,7 @@ class AhcHTTP8Spec extends Specification {
 
         when:
             8.times {
-                http.execute(new Exchange(
+                http.execute(new Request(
                         host: 'https://www.google.fi',
                         method: 'GET',
                         resource: '/',

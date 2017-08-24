@@ -3,7 +3,7 @@ package fi.linuxbox.upcloud.core
 import fi.linuxbox.upcloud.core.callback.RequestCallback
 import fi.linuxbox.upcloud.core.callback.SessionCallbacks
 import fi.linuxbox.upcloud.http.spi.ERROR
-import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Headers
 import fi.linuxbox.upcloud.http.spi.META
@@ -316,7 +316,7 @@ class Session {
         final RequestCallback requestCallback =
                 new RequestCallback(sessionCallbacks, cbs, cb)
 
-        http.execute new Exchange(
+        http.execute new Request(
                 host: HOST,
                 method: method,
                 resource: API_VERSION + path,

@@ -1,15 +1,15 @@
 package fi.linuxbox.upcloud.http.spi
 
 /**
- * An HTTP exchange.
+ * An HTTP request.
  *
  * <p>
  * This class is used between Session and HTTP implementations.
  * </p>
  */
-class Exchange {
+class Request {
     /**
-     * Target host of the HTTP exchange.
+     * Target host of the HTTP request.
      * <p>
      * This must contain the protocol, and the port if needed, but must not end in a slash.
      * </p>

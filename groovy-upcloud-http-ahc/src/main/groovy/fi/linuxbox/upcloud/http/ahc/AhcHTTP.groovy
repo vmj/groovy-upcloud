@@ -1,7 +1,7 @@
 package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.ERROR
-import fi.linuxbox.upcloud.http.spi.Exchange
+import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Header
 import groovy.transform.CompileStatic
@@ -49,43 +49,43 @@ class AhcHTTP implements HTTP, Closeable {
     }
 
     @Override
-    void execute(final Exchange exchange) {
+    void execute(final Request request) {
         if (client == null)
             throw new IllegalStateException("no client provided")
-        if (exchange == null)
-            throw new IllegalArgumentException("exchange is null")
-        if (exchange.cb == null)
-            throw new IllegalArgumentException("exchange.cb is null")
+        if (request == null)
+            throw new IllegalArgumentException("request is null")
+        if (request.cb == null)
+            throw new IllegalArgumentException("request.cb is null")
 
         try {
-            doExecute(exchange)
+            doExecute(request)
         } catch (final Exception e) {
             log.warn("failed to start HTTP exchange", e)
-            final Closure<Void> cb = exchange.cb
+            final Closure<Void> cb = request.cb
             cb(null, null, new ERROR("failed to start HTTP exchange", e))
         }
     }
 
-    private void doExecute(final Exchange exchange) {
+    private void doExecute(final Request request) {
         // isRunning() and start() are only available in this CloseableHAC API :/
         if (!client.running)
             client.start()
 
-        HttpRequest request = exchange.headers.all()
-                .inject(request(exchange)) { HttpRequest request, Header header ->
-            request.addHeader(header.name, header.value)
-            request
+        HttpRequest req = request.headers.all()
+                .inject(toHttpRequest(request)) { HttpRequest req, Header header ->
+            req.addHeader(header.name, header.value)
+            req
         }
 
-        client.execute(HttpHost.create(exchange.host), request, new AhcCallback(exchange.cb))
+        client.execute(HttpHost.create(request.host), req, new AhcCallback(request.cb))
     }
 
-    private HttpRequest request(final Exchange exchange) {
-        final RequestLine rl = new BasicRequestLine(exchange.method, exchange.resource, HTTP_1_1)
+    private HttpRequest toHttpRequest(final Request request) {
+        final RequestLine rl = new BasicRequestLine(request.method, request.resource, HTTP_1_1)
 
-        if (exchange.body) {
+        if (request.body) {
             BasicHttpEntity entity = new BasicHttpEntity()
-            entity.content = exchange.body
+            entity.content = request.body
 
             BasicHttpEntityEnclosingRequest req = new BasicHttpEntityEnclosingRequest(rl)
             req.entity = entity
