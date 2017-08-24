@@ -19,7 +19,7 @@ abstract class ApiSpecification extends Specification {
     Request req
 
     def setup() {
-        (_..1) * http.execute(_) >> { req = it[0] }
+        (_..1) * http.execute(*_) >> { req = it[0] }
         (_..1) * json.encode(_) >> { new MockInputStream(it[0]) }
     }
 

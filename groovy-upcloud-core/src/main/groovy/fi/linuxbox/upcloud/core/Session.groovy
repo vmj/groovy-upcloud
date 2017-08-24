@@ -321,14 +321,14 @@ class Session {
                 method: method,
                 resource: API_VERSION + path,
                 headers: new SimpleHeaders(requestHeaders),
-                body: resource ? json.encode(resource as Map) : null,
-                cb: { final META meta,
+                body: resource ? json.encode(resource as Map) : null),
+                { final META meta,
                       final InputStream body, final ERROR err ->
                     // Contract is that either resource is non-null, or err
                     // is non-null.  Never both nulls and never both non-nulls.
                     final Resource m = err ? null : decode(meta, body)
                     requestCallback.accept(m, err)
-                })
+                }
     }
 
     /**

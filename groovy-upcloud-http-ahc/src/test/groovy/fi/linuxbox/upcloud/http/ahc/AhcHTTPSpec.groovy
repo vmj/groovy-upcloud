@@ -33,18 +33,15 @@ class AhcHTTPSpec extends Specification {
                         'Content-Type'  : 'application/json',
                         'User-Agent'    : 'Groovy Upcloud/1.0'
                 ]),
-                body: null,
-                cb: { ...args ->
-                    println args
-                }
+                body: null
         )
     }
 
     def "Client arguments"() {
         when: "the HTTP implementation is invoked"
-            http.execute(request)
+            http.execute(request, {})
 
-        then: "it passes the host, merhod, resource, headers, and a callback to the real client"
+        then: "it passes the host, method, resource, headers, and a callback to the real client"
             1 * client.execute({ HttpHost host -> host != null  },
                     { HttpRequest req ->
                         req.requestLine.method == 'GET' &&
@@ -84,12 +81,12 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            request.cb = { def meta, def body, def err ->
+            Closure<Void> cb = { def meta, def body, def err ->
                 ok = meta instanceof META && body instanceof InputStream && err == null
             }
 
         when:
-            http.execute(request)
+            http.execute(request, cb)
 
         then:
             ok
@@ -109,10 +106,10 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            request.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(request)
+            http.execute(request, cb)
 
         then:
             ok
@@ -128,10 +125,10 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            request.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(request)
+            http.execute(request, cb)
 
         then:
             ok
@@ -145,10 +142,10 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            request.cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(request)
+            http.execute(request, cb)
 
         then:
             ok

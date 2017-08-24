@@ -31,18 +31,17 @@ class AhcHTTP8Spec extends Specification {
 
         when:
             8.times {
-                http.execute(new Request(
+                http.execute new Request(
                         host: 'https://www.google.fi',
                         method: 'GET',
                         resource: '/',
-                        headers: new SimpleHeaders([ 'X-Test': 'Yes' ]),
-                        cb: { META meta, InputStream body, ERROR err ->
+                        headers: new SimpleHeaders([ 'X-Test': 'Yes' ])),
+                        { META meta, InputStream body, ERROR err ->
                             if (meta.status == 200)
                                 cv.countDown()
                         }
-                ))
             }
-            cv.await(30, SECONDS)
+            cv.await 30, SECONDS
 
         then:
             noExceptionThrown()

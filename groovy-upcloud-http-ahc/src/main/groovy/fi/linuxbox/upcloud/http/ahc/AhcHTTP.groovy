@@ -49,24 +49,23 @@ class AhcHTTP implements HTTP, Closeable {
     }
 
     @Override
-    void execute(final Request request) {
+    void execute(final Request request, final Closure<Void> cb) {
         if (client == null)
             throw new IllegalStateException("no client provided")
         if (request == null)
             throw new IllegalArgumentException("request is null")
-        if (request.cb == null)
-            throw new IllegalArgumentException("request.cb is null")
+        if (cb == null)
+            throw new IllegalArgumentException("cb is null")
 
         try {
-            doExecute(request)
+            doExecute(request, cb)
         } catch (final Exception e) {
             log.warn("failed to start HTTP exchange", e)
-            final Closure<Void> cb = request.cb
             cb(null, null, new ERROR("failed to start HTTP exchange", e))
         }
     }
 
-    private void doExecute(final Request request) {
+    private void doExecute(final Request request, final Closure<Void> cb) {
         // isRunning() and start() are only available in this CloseableHAC API :/
         if (!client.running)
             client.start()
@@ -77,7 +76,7 @@ class AhcHTTP implements HTTP, Closeable {
             req
         }
 
-        client.execute(HttpHost.create(request.host), req, new AhcCallback(request.cb))
+        client.execute(HttpHost.create(request.host), req, new AhcCallback(cb))
     }
 
     private HttpRequest toHttpRequest(final Request request) {
