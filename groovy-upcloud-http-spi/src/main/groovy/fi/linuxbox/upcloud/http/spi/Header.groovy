@@ -7,7 +7,7 @@ package fi.linuxbox.upcloud.http.spi
  * An HTTP header is a name value pair, where the value can have multiple elements embedded in it.
  * </p>
  */
-interface Header {
+interface Header extends Iterable<HeaderElement> {
 
     /**
      * Name of this HTTP header.
@@ -29,7 +29,7 @@ interface Header {
      * </p>
      *
      * <p>
-     * If you need to access each value element of this header separately, use the {#getElements()} method.
+     * If you need to access each value element of this header separately, use the {#iterator()} method.
      * </p>
      *
      * @return The value of this HTTP header.

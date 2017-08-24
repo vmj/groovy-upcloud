@@ -7,7 +7,7 @@ package fi.linuxbox.upcloud.http.spi
  * An HTTP header value element can have a semicolon separated list of parameters.
  * </p>
  */
-interface HeaderElement {
+interface HeaderElement extends Iterable<Parameter> {
     /**
      * Name of this HTTP header value element.
      *

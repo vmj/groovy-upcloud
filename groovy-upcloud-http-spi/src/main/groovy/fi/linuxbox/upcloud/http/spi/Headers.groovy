@@ -1,33 +1,22 @@
 package fi.linuxbox.upcloud.http.spi
 
 /**
- * A collection of HTTP message headers.
+ * An iterable over a collection of HTTP message headers.
  *
  * <p>
- * Don't fall for the simplification that a header is just a name value pair.  It is, but each HTTP message can have
- * multiple headers with the same name.  And the names are case-insensitive.  Furthermore, each header value is
- * actually a comma separated list.  People often refer to these value <i>elements</i> as "the header value".  To top
- * it off, each of those elements can have its own set of parameters.
+ *     Don't fall for the simplification that a header is just a name value pair.  It is, but each HTTP message can
+ *     have multiple headers with the same name.  And the names are case-insensitive.  Furthermore, each header value
+ *     is actually a comma separated list.  People often refer to these value <i>elements</i> as "the header value".
+ *     To top it off, each of those elements can have its own set of parameters.
+ * </p>
+ * <p>
+ *     When this iterable is used via {@link #iterator} method or anything built on it, like the
+ *     <a href="http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/Iterable.html">Groovy extensions</a>,
+ *     the headers with the same (case-insensitive) name will be available separately.  This is useful when the
+ *     meaning of the headers doesn't really matter.  E.g. when copying the headers from one place to another.
  * </p>
  */
-interface Headers {
-    /**
-     * An iterator over all HTTP headers in this collection.
-     *
-     * <p>
-     * Since a single HTTP message may contain multiple headers with the same name, this iterator will give them to you
-     * separately.
-     * </p>
-     *
-     * <p>
-     * This method can be used when the meaning of the headers doesn't really matter.  E.g. when copying the headers
-     * from one place to another.
-     * </p>
-     *
-     * @return The iterator over all HTTP headers in this collection.
-     */
-    Iterator<Header> all()
-
+interface Headers extends Iterable<Header> {
     /**
      * An iterator over all HTTP header value elements of all headers with the given name in this collection.
      *
@@ -51,12 +40,23 @@ interface Headers {
      * <pre>
      *     headers['Set-Cookie'].each { cookie ->
      *         println "Cookie called ${cookie.name} has a value of ${cookie.value}"
-     *         cookie.parameters.each { param ->
+     *         cookie.each { param ->
      *             println " - ${param.name} = ${param.value}
      *         }
      *     }
      * </pre>
-     *
+     * <p>
+     *     Above would print:
+     * </p>
+     * <pre>
+     *     Cookie c1 has a value of a
+     *      - path = /
+     *      - domain = localhost
+     *     Cookie c2 has a value of b
+     *      - path = /
+     *     Cookie c3 has a value of c
+     *      - domain = localhost
+     * </pre>
      * <p>
      * Note, however, that not all elements have a value.  E.g. in header 'Accept: application/json', the sole element
      * has name 'application/json' and a null value.

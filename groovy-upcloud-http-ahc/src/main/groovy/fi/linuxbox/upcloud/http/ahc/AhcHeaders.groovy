@@ -20,7 +20,7 @@ class AhcHeaders implements Headers {
     }
 
     @Override
-    Iterator<Header> all() {
+    Iterator<Header> iterator() {
         new AhcHeaderIterator(httpMessage.headerIterator())
     }
 

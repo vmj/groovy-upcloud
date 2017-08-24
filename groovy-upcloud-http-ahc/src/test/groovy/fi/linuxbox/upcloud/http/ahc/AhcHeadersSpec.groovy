@@ -31,24 +31,27 @@ class AhcHeadersSpec extends Specification {
     }
 
     def "test"() {
-        given:
-
         when:
-        headers.all().each { Header header ->
-            header.elements.each { HeaderElement headerElement ->
+        headers.each { Header header ->
+            header.each { HeaderElement headerElement ->
                 println "${header.name}: ${header.value} (HeaderName: HeaderValue)"
                 println "  ${headerElement.name} = ${headerElement.value} (ElementName = ElementValue)"
-                headerElement.parameters.each { Parameter parameter ->
+                headerElement.each { Parameter parameter ->
                     println "    ${parameter.first} = ${parameter.second} (ParameterName = ParameterValue)"
                 }
             }
         }
-        println "====="
-        headers['Set-Cookie'].each { HeaderElement he ->
-            println "Set-Cookie: xxx (Hardcoded)"
-            println "  ${he.name} = ${he.value} (ElementName = ElementValue)"
-            he.parameters.each { Parameter parameter ->
-                println "    ${parameter.first} = ${parameter.second} (ParameterName = ParameterValue)"
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "test the cookie example in Headers javadoc"() {
+        when:
+        headers['Set-Cookie'].each { cookie ->
+            println "Cookie ${cookie.name} has a value of ${cookie.value}"
+            cookie.each { param ->
+                println " - ${param.name} = ${param.value}"
             }
         }
 
@@ -58,7 +61,7 @@ class AhcHeadersSpec extends Specification {
 
     def "AhcHeaders -> Iterator<Header> is read-only"() {
         when:
-        headers.all().remove()
+        headers.iterator().remove()
 
         then:
         thrown(UnsupportedOperationException)
@@ -74,7 +77,7 @@ class AhcHeadersSpec extends Specification {
 
     def "AhcHeader -> Iterator<HeaderElement> is read-only 2"() {
         when:
-        headers.all().next().elements.remove()
+        headers.first().elements.remove()
 
         then:
         thrown(UnsupportedOperationException)
@@ -82,7 +85,7 @@ class AhcHeadersSpec extends Specification {
 
     def "AhcHeaderElement -> Iterator<Parameter> is read-only"() {
         when:
-        headers["Set-Cookie"].next().parameters.remove()
+        headers["Set-Cookie"][0].parameters.remove()
 
         then:
         thrown(UnsupportedOperationException)

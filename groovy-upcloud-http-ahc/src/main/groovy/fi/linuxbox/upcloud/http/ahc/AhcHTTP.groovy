@@ -71,8 +71,7 @@ class AhcHTTP implements HTTP, Closeable {
         if (!client.running)
             client.start()
 
-        HttpRequest req = request.headers.all()
-                .inject(toHttpRequest(request)) { HttpRequest req, Header header ->
+        HttpRequest req = request.headers.inject(toHttpRequest(request)) { HttpRequest req, Header header ->
             req.addHeader(header.name, header.value)
             req
         }

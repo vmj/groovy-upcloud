@@ -28,8 +28,13 @@ class AhcHeader implements Header {
     }
 
     @Override
-    Iterator<HeaderElement> getElements() {
+    Iterator<HeaderElement> iterator() {
         new AhcHeaderElementIterator(header.elements.iterator())
+    }
+
+    @Override
+    Iterator<HeaderElement> getElements() {
+        iterator()
     }
 
     private static class AhcHeaderElementIterator implements Iterator<HeaderElement> {

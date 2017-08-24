@@ -10,7 +10,7 @@ class SimpleHeadersSpec extends Specification {
 
     def "SimpleHeaders can return an iterator"() {
         expect:
-        headers.all() != null
+        headers.iterator() != null
     }
 
     def "SimpleHeaders does not support header elements"() {
@@ -23,7 +23,7 @@ class SimpleHeadersSpec extends Specification {
 
     def "SimpleHeaders -> Iterator<Header> is read-only"() {
         when:
-        headers.all().remove()
+        headers.iterator().remove()
 
         then:
         thrown(UnsupportedOperationException)
@@ -31,7 +31,7 @@ class SimpleHeadersSpec extends Specification {
 
     def "SimpleHeaders header iterator works"() {
         given:
-        Iterator<Header> iter = headers.all()
+        Iterator<Header> iter = headers.iterator()
 
         expect:
         iter.hasNext()
@@ -41,7 +41,7 @@ class SimpleHeadersSpec extends Specification {
 
     def "SimpleHeader name and value works"() {
         given:
-        Header header = headers.all().next()
+        Header header = headers.first()
 
         expect:
         header.name == 'foo'
@@ -50,7 +50,7 @@ class SimpleHeadersSpec extends Specification {
 
     def "SimpleHeader does not support header elements"() {
         when:
-        headers.all().next().elements
+        headers.first().elements
 
         then:
         thrown(UnsupportedOperationException)

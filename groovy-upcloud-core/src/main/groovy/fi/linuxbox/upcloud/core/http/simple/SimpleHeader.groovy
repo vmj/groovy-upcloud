@@ -34,7 +34,12 @@ class SimpleHeader implements Header {
     }
 
     @Override
-    Iterator<HeaderElement> getElements() {
+    Iterator<HeaderElement> iterator() {
         throw new UnsupportedOperationException("SimpleHeader should not be parsed; just set it to request")
+    }
+
+    @Override
+    Iterator<HeaderElement> getElements() {
+        iterator()
     }
 }

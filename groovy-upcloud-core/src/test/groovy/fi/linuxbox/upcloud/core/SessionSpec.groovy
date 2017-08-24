@@ -46,13 +46,13 @@ class SessionSpec extends Specification {
         then: "the HTTP implementation receives the correct headers"
             1 * http.execute({
                 Headers headers = it.headers
-                def ok = headers.all().size() == 5
-                ok = ok && headers.all().any { it.name == 'Accept' }
-                ok = ok && headers.all().any { it.name == 'Authorization' }
-                ok = ok && headers.all().any { it.name == 'Content-Type' }
-                ok = ok && headers.all().any { it.name == 'Host' }
-                ok = ok && headers.all().any { it.name == 'User-Agent' }
-                ok = ok && headers.all().every {
+                def ok = headers.size() == 5
+                ok = ok && headers.any { it.name == 'Accept' }
+                ok = ok && headers.any { it.name == 'Authorization' }
+                ok = ok && headers.any { it.name == 'Content-Type' }
+                ok = ok && headers.any { it.name == 'Host' }
+                ok = ok && headers.any { it.name == 'User-Agent' }
+                ok = ok && headers.every {
                     switch (it.name) {
                         case 'Accept':
                             return it.value == 'application/json; charset=UTF-8'
