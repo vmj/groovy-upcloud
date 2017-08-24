@@ -1,4 +1,5 @@
 package fi.linuxbox.upcloud.http.spi
+
 /**
  * Meta information about a resource.
  *
@@ -20,7 +21,7 @@ package fi.linuxbox.upcloud.http.spi
  *     }
  * </pre>
  *
- * The application callback will be called with an instance of {@link Resource} as the first parameter:
+ * The application callback will be called with an instance of {@link fi.linuxbox.upcloud.core.Resource} as the first parameter:
  *
  * <pre>
  *     { response ->

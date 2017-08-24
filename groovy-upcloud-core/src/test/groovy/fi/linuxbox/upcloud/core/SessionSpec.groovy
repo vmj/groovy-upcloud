@@ -12,6 +12,8 @@ import spock.lang.*
  */
 class SessionSpec extends Specification {
 
+    InputStream body = new ByteArrayInputStream(new byte[0])
+
     HTTP http = Mock()
     JSON json = Mock()
 
@@ -80,14 +82,13 @@ class SessionSpec extends Specification {
 
     def "Request body non-null"() {
         given: "a fake JSON serializer"
-            def inputStream = new ByteArrayInputStream(new byte[0])
-            1 * json.encode(_) >> inputStream
+            1 * json.encode(_) >> body
 
         when: "calling the Session request method with non-null resource"
             session.request('GET', 'some-resource', new Resource(), {})
 
         then: "the HTTP implementation receives the serialized resource"
-            1 * http.execute({ it.body == inputStream }, _)
+            1 * http.execute({ it.body == body }, _)
     }
 
     def "Request with additional callbacks"() {
@@ -146,50 +147,46 @@ class SessionSpec extends Specification {
 
     def "Convenience PUT method"() {
         given: "a fake JSON serializer"
-            def inputStream = new ByteArrayInputStream(new byte[0])
-            1 * json.encode(_) >> inputStream
+            1 * json.encode(_) >> body
 
         when: "calling the Session PUT method"
             session.PUT('something', new Resource()) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
-            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == inputStream }, _)
+            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == body }, _)
     }
 
     def "Convenience PUT method with additional callbacks"() {
         given: "a fake JSON serializer"
-            def inputStream = new ByteArrayInputStream(new byte[0])
-            1 * json.encode(_) >> inputStream
+            1 * json.encode(_) >> body
 
         when: "calling the Session PUT method with additional callbacks"
             session.PUT('something', new Resource(), 404: {}) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
-            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == inputStream }, _)
+            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == body }, _)
     }
 
     def "Convenience POST method"() {
         given: "a fake JSON serializer"
-            def inputStream = new ByteArrayInputStream(new byte[0])
-            1 * json.encode(_) >> inputStream
+            1 * json.encode(_) >> body
 
         when: "calling the Session POST method"
             session.POST('something', new Resource()) {}
 
         then: "the HTTP implementation is called with POST and non-null body"
-            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == inputStream }, _)
+            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == body }, _)
     }
 
     def "Convenience POST method with additional callbacks"() {
         given: "a fake JSON serializer"
-            def inputStream = new ByteArrayInputStream(new byte[0])
-            1 * json.encode(_) >> inputStream
+            1 * json.encode(_) >> body
 
         when: "calling the Session POST method with additional callbacks"
             session.POST('something', new Resource(), 404: {}, {})
 
         then: "the HTTP implementation is called with POST and non-null body"
-            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == inputStream }, _)
+            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == body }, _)
     }
 
     def "Default callback"() {
@@ -197,7 +194,7 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         and: "an HTTP implementation that calls the Session callback"
-            1 * http.execute(*_) >> { args -> args[1](new META(404, null), null, null) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(404, null), null, null) }
 
         when: "Session is invoked with one callback"
             session.request(null, null, null) { ok = true }
@@ -212,7 +209,7 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         and: "an HTTP implementation that calls the Session callback"
-            1 * http.execute(*_) >> { args -> args[1](new META(status, null), null, null) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(status, null), null, null) }
 
         when: "Session is invoked with additional callbacks"
             session.request(null, null, null, (cbname): { ok = true }) {}
@@ -239,7 +236,7 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         and: "an HTTP implementation that calls the Session callback"
-            1 * http.execute(*_) >> { args -> args[1](new META(status, null), null, null) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(status, null), null, null) }
 
         when: "Session is invoked with generic error handler and more specific error handler"
             session.request(null, null, null, error: {}, (error): { ok = true }) {}
@@ -268,7 +265,7 @@ class SessionSpec extends Specification {
     @Unroll
     def "Global callback #cbname is called for 101"() {
         given: "an HTTP implementation that calls the Session callback with 101 status"
-            1 * http.execute(*_) >> { args -> args[1](new META(101, null), null, null) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(101, null), null, null) }
 
         and: "a global callback"
             boolean ok = false
@@ -287,7 +284,7 @@ class SessionSpec extends Specification {
     @Unroll
     def "Global callback for #cbname is not called when overridden"() {
         given: "an HTTP implementation that calls the Session callback with status 101"
-            1 * http.execute(*_) >> { args -> args[1](new META(101, null), null, null) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(101, null), null, null) }
 
         and: "a global callback"
             boolean ok = false
@@ -317,7 +314,7 @@ class SessionSpec extends Specification {
 
     def "Default request callback with one parameter and error case"() {
         given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
-            1 * http.execute(*_) >> { args -> args[1](null, null, new ERROR("foo")) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(null, null, new ERROR("foo")) }
 
         and: "a success flag"
             boolean ok = false
@@ -331,7 +328,7 @@ class SessionSpec extends Specification {
 
     def "Default request callback with two parameters and error case"() {
         given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
-            1 * http.execute(*_) >> { args -> args[1](null, null, new ERROR("foo")) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(null, null, new ERROR("foo")) }
 
         and: "a success flag"
             boolean ok = false
@@ -345,7 +342,7 @@ class SessionSpec extends Specification {
 
     def "Default request callback with two parameters and success case"() {
         given: "an HTTP implementation that calls the Session callback with non-null META and null ERROR"
-            1 * http.execute(*_) >> { args -> args[1](new META(200, null), null, null) }
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, null), null, null) }
 
         and: "a success flag"
             boolean ok = false
@@ -369,8 +366,7 @@ class SessionSpec extends Specification {
             ].iterator()
 
         and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
-            1 * http.execute(*_) >> { args ->
-                args[1](new META(200, headers), new ByteArrayInputStream(new byte[0]), null)
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, headers), body, null)
             }
 
         and: "a JSON implementation that parses the fake input"
@@ -400,8 +396,7 @@ class SessionSpec extends Specification {
             ].iterator()
 
         and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
-            1 * http.execute(*_) >> { args ->
-                args[1](new META(200, headers), new ByteArrayInputStream(new byte[0]), null)
+            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, headers), body, null)
             }
 
         and: "a JSON implementation that fails to parse the input"

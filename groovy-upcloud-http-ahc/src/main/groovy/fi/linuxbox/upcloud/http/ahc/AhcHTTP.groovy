@@ -1,5 +1,6 @@
 package fi.linuxbox.upcloud.http.ahc
 
+import fi.linuxbox.upcloud.http.spi.CompletionCallback
 import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.HTTP
@@ -49,7 +50,7 @@ class AhcHTTP implements HTTP, Closeable {
     }
 
     @Override
-    void execute(final Request request, final Closure<Void> cb) {
+    void execute(final Request request, final CompletionCallback cb) {
         if (client == null)
             throw new IllegalStateException("no client provided")
         if (request == null)
@@ -61,11 +62,11 @@ class AhcHTTP implements HTTP, Closeable {
             doExecute(request, cb)
         } catch (final Exception e) {
             log.warn("failed to start HTTP exchange", e)
-            cb(null, null, new ERROR("failed to start HTTP exchange", e))
+            cb.completed(null, null, new ERROR("failed to start HTTP exchange", e))
         }
     }
 
-    private void doExecute(final Request request, final Closure<Void> cb) {
+    private void doExecute(final Request request, final CompletionCallback cb) {
         // isRunning() and start() are only available in this CloseableHAC API :/
         if (!client.running)
             client.start()
