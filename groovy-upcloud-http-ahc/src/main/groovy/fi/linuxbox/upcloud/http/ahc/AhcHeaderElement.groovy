@@ -28,11 +28,6 @@ class AhcHeaderElement implements HeaderElement {
         new AhcHeaderParameterIterator(element.parameters.iterator())
     }
 
-    @Override
-    Iterator<Parameter> getParameters() {
-        iterator()
-    }
-
     private static class AhcHeaderParameterIterator implements Iterator<Parameter> {
         private final Iterator<NameValuePair> it
 

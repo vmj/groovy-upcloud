@@ -1,4 +1,6 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
+
+import java.util.Iterator;
 
 /**
  * An HTTP header value element.
@@ -7,7 +9,7 @@ package fi.linuxbox.upcloud.http.spi
  * An HTTP header value element can have a semicolon separated list of parameters.
  * </p>
  */
-interface HeaderElement extends Iterable<Parameter> {
+public interface HeaderElement extends Iterable<Parameter> {
     /**
      * Name of this HTTP header value element.
      *
@@ -17,7 +19,7 @@ interface HeaderElement extends Iterable<Parameter> {
      *
      * @return Name of this element.
      */
-    String getName()
+    String getName();
 
     /**
      * Value of this HTTP header value element.
@@ -28,12 +30,12 @@ interface HeaderElement extends Iterable<Parameter> {
      *
      * @return Value of this element.
      */
-    String getValue()
+    String getValue();
 
     /**
      * Iterator over the parameters of this HTTP header value element.
      *
      * @return Iterator over parameters of this element.
      */
-    Iterator<Parameter> getParameters()
+    default Iterator<Parameter> getParameters() { return iterator(); }
 }

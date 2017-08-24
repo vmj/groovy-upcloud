@@ -1,4 +1,6 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
+
+import java.util.Iterator;
 
 /**
  * An iterable over a collection of HTTP message headers.
@@ -16,7 +18,7 @@ package fi.linuxbox.upcloud.http.spi
  *     meaning of the headers doesn't really matter.  E.g. when copying the headers from one place to another.
  * </p>
  */
-interface Headers extends Iterable<Header> {
+public interface Headers extends Iterable<Header> {
     /**
      * An iterator over all HTTP header value elements of all headers with the given name in this collection.
      *
@@ -65,5 +67,5 @@ interface Headers extends Iterable<Header> {
      * @param name Case-insensitive header name.
      * @return Iterator over value elements of headers with the given name.
      */
-    Iterator<HeaderElement> getAt(String name)
+    Iterator<HeaderElement> getAt(final String name);
 }

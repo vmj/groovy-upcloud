@@ -1,4 +1,6 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
+
+import java.util.Iterator;
 
 /**
  * An HTTP header.
@@ -7,7 +9,7 @@ package fi.linuxbox.upcloud.http.spi
  * An HTTP header is a name value pair, where the value can have multiple elements embedded in it.
  * </p>
  */
-interface Header extends Iterable<HeaderElement> {
+public interface Header extends Iterable<HeaderElement> {
 
     /**
      * Name of this HTTP header.
@@ -18,7 +20,7 @@ interface Header extends Iterable<HeaderElement> {
      *
      * @return The name of this HTTP header.
      */
-    String getName()
+    String getName();
 
     /**
      * Value of this HTTP header.
@@ -34,7 +36,7 @@ interface Header extends Iterable<HeaderElement> {
      *
      * @return The value of this HTTP header.
      */
-    String getValue()
+    String getValue();
 
     /**
      * Iterator over separate elements of this HTTP header value.
@@ -50,5 +52,5 @@ interface Header extends Iterable<HeaderElement> {
      *
      * @return Iterator over elements of the value of this HTTP header.
      */
-    Iterator<HeaderElement> getElements()
+    default Iterator<HeaderElement> getElements() { return iterator(); }
 }

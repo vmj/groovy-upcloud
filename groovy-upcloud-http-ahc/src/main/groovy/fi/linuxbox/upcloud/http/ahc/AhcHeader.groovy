@@ -32,11 +32,6 @@ class AhcHeader implements Header {
         new AhcHeaderElementIterator(header.elements.iterator())
     }
 
-    @Override
-    Iterator<HeaderElement> getElements() {
-        iterator()
-    }
-
     private static class AhcHeaderElementIterator implements Iterator<HeaderElement> {
         private final Iterator<HeaderElementImpl> it
 
