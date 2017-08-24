@@ -9,7 +9,6 @@ class AccountSpec extends Specification {
 
         when:
             shell.evaluate("""
-@Grab("fi.linuxbox.upcloud:groovy-upcloud-script:0.0.4")
 import fi.linuxbox.upcloud.script.*
 
 import java.util.concurrent.*

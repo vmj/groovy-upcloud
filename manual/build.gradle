@@ -28,10 +28,5 @@ asciidoctor {
 }
 
 dependencies {
-    // Ivy is the library which manages the dependencies loaded by @Grab.
-    // Groovy is not adding it by default.
-    testRuntime "org.apache.ivy:ivy:2.4.0"
-
-    // FIXME: groovy-upcloud-script does not have a transitive dependency on 
-    testRuntime project(':groovy-upcloud-http-ahc')
+    testRuntime project(':groovy-upcloud-script')
 }
