@@ -35,9 +35,4 @@ class SimpleHeaders implements Headers {
     Iterator<HeaderElement> getAt(final String name) {
         throw new UnsupportedOperationException("SimpleHeaders should not be parsed; just set them to request")
     }
-
-    @Override
-    void putAt(final String name, final String value) {
-        throw new UnsupportedOperationException("SimpleHeaders is read-only")
-    }
 }

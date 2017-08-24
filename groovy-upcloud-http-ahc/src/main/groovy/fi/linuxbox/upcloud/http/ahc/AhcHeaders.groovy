@@ -29,11 +29,6 @@ class AhcHeaders implements Headers {
         new AhcHeaderElementIterator(new BasicHeaderElementIterator(httpMessage.headerIterator(header)))
     }
 
-    @Override
-    void putAt(final String name, final String value) {
-        httpMessage.addHeader(name, value)
-    }
-
     private static class AhcHeaderIterator implements Iterator<Header> {
         final HeaderIterator it
 
@@ -49,11 +44,6 @@ class AhcHeaders implements Headers {
         @Override
         Header next() {
             new AhcHeader(it.nextHeader())
-        }
-
-        @Override
-        void remove() {
-            it.remove()
         }
     }
 
@@ -72,11 +62,6 @@ class AhcHeaders implements Headers {
         @Override
         HeaderElement next() {
             new AhcHeaderElement(it.nextElement())
-        }
-
-        @Override
-        void remove() {
-            it.remove()
         }
     }
 }
