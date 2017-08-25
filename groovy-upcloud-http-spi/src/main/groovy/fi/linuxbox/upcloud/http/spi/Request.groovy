@@ -37,6 +37,9 @@ class Request {
     final Headers headers
     /**
      * Request entity, or <code>null</code>.
+     * <p>
+     *     The HTTP implementation is responsible for closing this input stream when done with it.
+     * <p>
      */
     final InputStream body
 }

@@ -83,6 +83,7 @@ class AhcHTTP implements HTTP, Closeable {
         final RequestLine rl = new BasicRequestLine(request.method, request.resource, HTTP_1_1)
 
         if (request.body) {
+            // BasicHTTPEntity will close the content when done with it
             BasicHttpEntity entity = new BasicHttpEntity()
             entity.content = request.body
 

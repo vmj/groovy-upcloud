@@ -327,6 +327,7 @@ class Session {
                     // Contract is that either resource is non-null, or err
                     // is non-null.  Never both nulls and never both non-nulls.
                     final Resource m = err ? null : decode(meta, body)
+                    body?.close()
                     requestCallback.accept(m, err)
                 }
     }

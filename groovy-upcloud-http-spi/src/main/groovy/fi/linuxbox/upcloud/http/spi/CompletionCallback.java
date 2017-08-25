@@ -15,6 +15,9 @@ public interface CompletionCallback {
      *     second argument, the <code>InputStream</code>, can be <code>null</code> if the HTTP response
      *     didn't have an entity body.
      * </p>
+     * <p>
+     *     The Session will close the input stream when done with it.
+     * </p>
      *
      * @param meta information about the response, or <code>null</code>
      * @param entity response entity or <code>null</code>
