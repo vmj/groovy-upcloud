@@ -1,15 +1,15 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
 
 /**
  * An interface which is implemented by the HTTP implementation.
  */
-interface HTTP {
+public interface HTTP {
     /**
      * Returns the User-Agent string for this implementation.
      *
      * @return User-Agent string for this implementation.
      */
-    String getUserAgent()
+    String getUserAgent();
 
     /**
      * Execute the HTTP exchange asynchronously.
@@ -17,5 +17,5 @@ interface HTTP {
      * @param request HTTP request to execute.
      * @param cb Completion callback to call when the response is received.
      */
-    void execute(final Request request, final CompletionCallback cb)
+    void execute(final Request request, final CompletionCallback cb);
 }

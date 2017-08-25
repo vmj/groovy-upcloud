@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
 
 /**
  * Meta information about a resource.
@@ -34,27 +34,10 @@ package fi.linuxbox.upcloud.http.spi
  *     }
  * </pre>
  */
-class META {
-    /**
-     * The HTTP status code.
-     *
-     * <p>
-     * This is never null.
-     * </p>
-     */
-    final Integer status
-    /**
-     * The HTTP reason phrase.
-     *
-     * <p>
-     * This may be null.
-     * </p>
-     */
-    final String message
-    /**
-     * The HTTP headers.
-     */
-    final Headers headers
+public class META {
+    private final Integer status;
+    private final String message;
+    private final Headers headers;
 
     /**
      * Designated constructor.
@@ -63,10 +46,10 @@ class META {
      * @param message The HTTP status phrase.  May be null.
      * @param headers The HTTP headers.
      */
-    META(int status, String message, Headers headers) {
-        this.status = status
-        this.message = message
-        this.headers = headers
+    public META(final int status, final String message, final Headers headers) {
+        this.status = status;
+        this.message = message;
+        this.headers = headers;
     }
 
     /**
@@ -75,7 +58,36 @@ class META {
      * @param status The HTTP status code.  This must not be null.
      * @param headers The HTTP headers.
      */
-    META(int status, Headers headers) {
-        this(status, null, headers)
+    public META(final int status, final Headers headers) {
+        this(status, null, headers);
+    }
+
+    /**
+     * The HTTP status code.
+     *
+     * <p>
+     * This is never null.
+     * </p>
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * The HTTP reason phrase.
+     *
+     * <p>
+     * This may be null.
+     * </p>
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * The HTTP headers.
+     */
+    public Headers getHeaders() {
+        return headers;
     }
 }

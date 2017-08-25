@@ -1,4 +1,4 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
 
 /**
  * Error container.
@@ -42,23 +42,17 @@ package fi.linuxbox.upcloud.http.spi
  * take two arguments, then in case of network level errors it will just receive a null resource.
  * </p>
  */
-class ERROR {
-    /**
-     * Short explanatory description of this error for human consumption.
-     */
-    final String message
-    /**
-     * Possibly null exception that caused this error.
-     */
-    final Throwable cause
+public class ERROR {
+    private final String message;
+    private final Throwable cause;
 
     /**
      * Constructor that sets the cause to null.
      *
      * @param message Short explanatory description of this error for human consumption.
      */
-    ERROR(final String message) {
-        this(message, null)
+    public ERROR(final String message) {
+        this(message, null);
     }
 
     /**
@@ -67,8 +61,22 @@ class ERROR {
      * @param message Short explanatory description of this error for human consumption.
      * @param cause Exception that caused this error
      */
-    ERROR(final String message, final Throwable cause) {
-        this.message = message
-        this.cause = cause
+    public ERROR(final String message, final Throwable cause) {
+        this.message = message;
+        this.cause = cause;
+    }
+
+    /**
+     * Short explanatory description of this error for human consumption.
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Possibly null exception that caused this error.
+     */
+    public Throwable getCause() {
+        return cause;
     }
 }

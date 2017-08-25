@@ -1,4 +1,6 @@
-package fi.linuxbox.upcloud.http.spi
+package fi.linuxbox.upcloud.http.spi;
+
+import groovy.lang.Tuple2;
 
 /**
  * An HTTP header parameter.
@@ -7,15 +9,15 @@ package fi.linuxbox.upcloud.http.spi
  * HTTP header parameters are a list of name value pairs, and part of the header value.
  * </p>
  */
-class Parameter extends Tuple2<String, String> {
+public class Parameter extends Tuple2<String, String> {
     /**
      * The sole constructor.
      *
      * @param name Name of the parameter.  E.g. "charset" in a header "Accept: application/json; charset=UTF-8"
      * @param value value of the parameter.  E.g. "UTF-8" in a header "Accept: application/json; charset=UTF-8"
      */
-    Parameter(final String name, final String value) {
-        super(name, value)
+    public Parameter(final String name, final String value) {
+        super(name, value);
     }
 
     /**
@@ -27,7 +29,7 @@ class Parameter extends Tuple2<String, String> {
      *
      * @return The name of this HTTP header parameter.
      */
-    String getName() { first }
+    public String getName() { return getFirst(); }
 
     /**
      * Value of this HTTP header parameter.
@@ -38,5 +40,5 @@ class Parameter extends Tuple2<String, String> {
      *
      * @return The value of this HTTP header parameter.
      */
-    String getValue() { second }
+    public String getValue() { return getSecond(); }
 }

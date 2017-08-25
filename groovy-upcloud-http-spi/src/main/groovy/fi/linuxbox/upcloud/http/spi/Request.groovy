@@ -1,5 +1,8 @@
 package fi.linuxbox.upcloud.http.spi
 
+import groovy.transform.CompileStatic
+import groovy.transform.Immutable
+
 /**
  * An HTTP request.
  *
@@ -7,6 +10,8 @@ package fi.linuxbox.upcloud.http.spi
  * This class is used between Session and HTTP implementations.
  * </p>
  */
+@CompileStatic
+@Immutable(knownImmutableClasses = [Headers.class, InputStream])
 class Request {
     /**
      * Target host of the HTTP request.
@@ -14,24 +19,24 @@ class Request {
      * This must contain the protocol, and the port if needed, but must not end in a slash.
      * </p>
      */
-    String host
+    final String host
     /**
      * HTTP method to use in the request.
      */
-    String method
+    final String method
     /**
      * The resource ID.
      * <p>
      * This must be the full path to the resource, starting with the slash.
      * </p>
      */
-    String resource
+    final String resource
     /**
      * Headers to include in the request.
      */
-    Headers headers
+    final Headers headers
     /**
      * Request entity, or <code>null</code>.
      */
-    InputStream body
+    final InputStream body
 }
