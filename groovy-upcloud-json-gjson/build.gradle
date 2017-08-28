@@ -1,0 +1,15 @@
+apply from: '../gradle/groovy-upcloud-lib.gradle'
+
+modifyPom {
+    project {
+        name 'Groovy UpCloud gjson'
+        description 'Groovy UpCloud gjson provides a Groovy JSON based JSON implementation'
+    }
+}
+dependencies {
+    api project(':groovy-upcloud-json-spi')
+
+    implementation "org.codehaus.groovy:groovy-json:${versions.groovy}:indy"
+
+    testImplementation "com.jayway.jsonpath:json-path-assert:2.4.0"
+}
