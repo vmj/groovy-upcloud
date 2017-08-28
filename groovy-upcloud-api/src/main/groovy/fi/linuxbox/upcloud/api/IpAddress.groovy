@@ -8,7 +8,7 @@ import fi.linuxbox.upcloud.core.*
  *     This class provides following APIs:
  * </p>
  * <lu>
- *     <li>modifying and deleting tags</li>
+ *     <li>loading, modifying, and deleting IP addresses</li>
  * </ul>
  * <p>
  *     This trait can be implemented by any class that has
