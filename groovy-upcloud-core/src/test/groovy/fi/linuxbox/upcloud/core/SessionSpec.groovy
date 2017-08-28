@@ -63,7 +63,7 @@ class SessionSpec extends Specification {
                         case 'Host':
                             return it.value == 'api.upcloud.com'
                         case 'User-Agent':
-                            return it.value.startsWith('Groovy UpCloud/0.0.4 ')
+                            return it.value.startsWith('Groovy UpCloud/0.0.5 ')
                         default:
                             return false
                     }
