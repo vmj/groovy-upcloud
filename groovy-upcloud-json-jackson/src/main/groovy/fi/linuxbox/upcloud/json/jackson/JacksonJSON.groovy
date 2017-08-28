@@ -18,6 +18,10 @@ class JacksonJSON implements JSON {
         this.mapper = mapper
     }
 
+    JacksonJSON() {
+        this(new JacksonParserProvider().get())
+    }
+
     @Override
     Map<String, Object> decode(final InputStream data) {
         mapper.readValue(data, Map)

@@ -27,7 +27,7 @@ import javax.inject.Inject
  */
 @CompileStatic
 @Slf4j
-class AhcHTTP implements HTTP, Closeable {
+class AhcHTTP implements HTTP {
     private final static ProtocolVersion HTTP_1_1 = new ProtocolVersion("HTTP", 1, 1)
 
     private final CloseableHttpAsyncClient client
@@ -35,6 +35,10 @@ class AhcHTTP implements HTTP, Closeable {
     @Inject
     AhcHTTP(final CloseableHttpAsyncClient client) {
         this.client = client
+    }
+
+    AhcHTTP() {
+        this(new AhcClientProvider().get())
     }
 
     @Override

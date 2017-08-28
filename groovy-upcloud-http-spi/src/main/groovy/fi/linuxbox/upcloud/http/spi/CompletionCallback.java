@@ -22,6 +22,7 @@ public interface CompletionCallback {
      * @param meta information about the response, or <code>null</code>
      * @param entity response entity or <code>null</code>
      * @param error information about failure to talk to the server, or <code>null</code>
+     * @throws InterruptedException in case the caller is shutting down
      */
-    void completed(final META meta, final InputStream entity, final ERROR error);
+    void completed(final META meta, final InputStream entity, final ERROR error) throws InterruptedException;
 }

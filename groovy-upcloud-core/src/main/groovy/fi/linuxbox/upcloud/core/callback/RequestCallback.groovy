@@ -92,6 +92,9 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
         } catch (final MissingMethodException e) {
             // this is error because we couldn't reach the app
             log.error("application callback has wrong signature", e)
+        } catch (final InterruptedException e) {
+            log.debug("application callback interrupted; shutting down")
+            Thread.currentThread().interrupt()
         } catch (final Exception e) {
             // this is "only" warning because we reached the app but it failed
             log.warn("application callback threw an exception", e)

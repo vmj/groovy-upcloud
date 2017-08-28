@@ -1,9 +1,11 @@
 package fi.linuxbox.upcloud.http.spi;
 
+import java.io.Closeable;
+
 /**
  * An interface which is implemented by the HTTP implementation.
  */
-public interface HTTP {
+public interface HTTP extends Closeable {
     /**
      * Returns the User-Agent string for this implementation.
      *

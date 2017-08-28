@@ -7,9 +7,10 @@ modifyPom {
     }
 }
 dependencies {
-    api project(':groovy-upcloud-core')
-    implementation project(':groovy-upcloud-http-ahc')
-    implementation project(':groovy-upcloud-json-jackson')
-    api project(':groovy-upcloud-builder')
     api project(':groovy-upcloud-api')
+    api project(':groovy-upcloud-resource')
+
+    // testRuntime relies on its own implementations of HTTP and JSON
+    runtimeOnly project(':groovy-upcloud-http-ahc')
+    runtimeOnly project(':groovy-upcloud-json-jackson')
 }

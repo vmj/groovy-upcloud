@@ -1,46 +1,55 @@
+import fi.linuxbox.upcloud.script.UpCloudScript
+import org.codehaus.groovy.control.CompilerConfiguration
 import spock.lang.Specification
 
 class AccountSpec extends Specification {
 
     def "scripting test"() {
-        given:
-            StringWriter content = new StringWriter()
-            GroovyShell shell = new GroovyShell(new Binding(out: new PrintWriter(content)))
+        given: "a compiler configuration that customizes the script class"
+            def config = new CompilerConfiguration()
+            config.scriptBaseClass = UpCloudScript.name
+
+        and: "a groovy shell with that config (also capturing System.out)"
+            def content = new StringWriter()
+            def shell = new GroovyShell(new Binding(out: new PrintWriter(content)), config)
 
         when:
             shell.evaluate("""
-import fi.linuxbox.upcloud.script.*
+import fi.linuxbox.upcloud.api.UpCloud
 
-import java.util.concurrent.*
-import static java.util.concurrent.TimeUnit.*
-def cv = new CountDownLatch(1)
+def session = newSession("foo", "bar")
+def upCloud = new UpCloud(session)
 
-def ctx = new UpCloudScriptContext("foo", "bar")
-ctx.upCloud.account(
-        success: { response ->
-                println "\${response.account.username}: \${response.account.credits}"
-                cv.countDown()
-        },
-        { response, err ->
-                if (err) {
-                        println "Network error: \${err.message}"
-                        if (err.cause)
-                                err.cause.printStackTrace()
-                } else {
-                        println "HTTP status: \${response.META.status}: \${response.META.message}"
-                        if (response.error)
-                            println "Detailed error: \${response.error.errorCode}: \${response.error.errorMessage}"
-                }
-                cv.countDown()
-        })
+// Add a session wide auth error callback
+session.callback(401: { resp ->
+    assert resp.META.status == 401
+    assert resp.META.message == 'Authorization Required'
+    assert resp.error.errorCode == 'AUTHENTICATION_FAILED'
+    assert resp.error.errorMessage == 'Authentication failed using the given username and password.'
+    println "Got auth error as expected"
+    close()
+})
 
-cv.await(30, SECONDS)
-ctx.close()
+upCloud.account(
+    success: { resp ->
+        println "Unexpectedly got user info for '\${resp.account.username}', credits: \${resp.account.credits}"
+        close()
+    },
+    { resp, err ->
+        if (err) {
+            println "Unexpected network error: \${err.message}"
+            if (err.cause)
+                err.cause.printStackTrace()
+        } else {
+            println "Unexpected HTTP status: \${resp.META.status} (\${resp.META.message})"
+            if (resp.error)
+                println "Detailed error: \${resp.error.errorCode}: \${resp.error.errorMessage}"
+        }
+        close()
+     })
 """)
 
         then:
-            content.toString() == """HTTP status: 401: Authorization Required
-Detailed error: AUTHENTICATION_FAILED: Authentication failed using the given username and password.
-"""
+            content.toString() == "Got auth error as expected\n"
     }
 }

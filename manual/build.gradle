@@ -28,5 +28,5 @@ asciidoctor {
 }
 
 dependencies {
-    testRuntime project(':groovy-upcloud-script')
+    testCompile project(':groovy-upcloud-script')
 }
