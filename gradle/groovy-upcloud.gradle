@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 group = 'fi.linuxbox.upcloud'
 version = '0.0.6-SNAPSHOT'
 
-ext.versions = [groovy: '2.4.12',
+ext.versions = [groovy: '2.6.0-alpha-1',
                 logback: '1.2.3',
                 slf4j: '1.7.25',
                 spock: '1.1-groovy-2.4',
@@ -27,4 +27,8 @@ dependencies {
     testImplementation "org.spockframework:spock-core:${versions.spock}", {
         exclude module: 'groovy-all'
     }
+}
+
+tasks.withType(GroovyCompile) {
+    groovyOptions.forkOptions.jvmArgs += ["-Dgroovy.antlr4=true"]
 }

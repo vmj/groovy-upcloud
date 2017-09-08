@@ -231,7 +231,7 @@ class SessionSpec extends Specification {
     }
 
     @Unroll
-    def "More specific #error is called for #status"() {
+    def "More specific #error_cat is called for #status"() {
         given: "a success flag"
             boolean ok = false
 
@@ -239,13 +239,13 @@ class SessionSpec extends Specification {
             1 * http.execute(*_) >> { _, cb -> cb.completed(new META(status, null), null, null) }
 
         when: "Session is invoked with generic error handler and more specific error handler"
-            session.request(null, null, null, error: {}, (error): { ok = true }) {}
+            session.request(null, null, null, error: {}, (error_cat): { ok = true }) {}
 
         then: "Session invokes the correct callback"
             ok
 
         where:
-            status | error
+            status | error_cat
             412    | 'client_error'
             596    | 'server_error'
     }
