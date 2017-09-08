@@ -10,4 +10,8 @@ modifyPom {
 dependencies {
     api project(':groovy-upcloud-http-spi')
     api project(':groovy-upcloud-json-spi')
+
+    // for functional testing: JSON to Resource
+    testImplementation project(':groovy-upcloud-json-gjson')
+    testImplementation project(':groovy-upcloud-resource')
 }
