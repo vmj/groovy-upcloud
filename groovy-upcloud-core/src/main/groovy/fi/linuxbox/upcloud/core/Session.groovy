@@ -308,8 +308,7 @@ class Session {
      * @param cb Default request callback.
      * @return Whatever is returned by the HTTP implementation for starting an asynchronous request.
      */
-    @PackageScope // for testing
-    request(
+    def request(
             final Map<?, Closure<Void>> cbs = [ : ],
             final String method, final String path, final Resource resource,
             final Closure<Void> cb) {

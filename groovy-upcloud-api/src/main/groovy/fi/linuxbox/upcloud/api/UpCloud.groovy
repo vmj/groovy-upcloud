@@ -24,6 +24,22 @@ class UpCloud {
         this.SESSION = SESSION
     }
 
+    /**
+     * Fetch UpCloud API account information for the session.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Account} in the
+     *     {@code account} property.
+     * </p>
+     * <pre>
+     *     upcloud.account { resp, err ->
+     *         assert resp?.account instanceof Account
+     *     }
+     * </pre>
+     *
+     * @param args Request callbacks for the {@code GET /account} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/3-accounts/#get-account-information" target="_top">UpCloud API docs for GET /account</a>
+     */
     def account(...args) {
         this.SESSION.GET('account', *args)
     }

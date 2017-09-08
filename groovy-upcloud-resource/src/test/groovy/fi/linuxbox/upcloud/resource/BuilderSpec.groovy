@@ -14,6 +14,45 @@ class BuilderSpec extends Specification {
 
     Session session = new Session(Mock(HTTP), null, null, null)
 
+    def "account builder"() {
+        when:
+        def account = account {
+            username = 'groovy'
+        }
+
+        then:
+        account?.class?.simpleName == 'Account'
+        account.username == 'groovy'
+    }
+
+
+    def "account without config"() {
+        when:
+        def account = account()
+
+        then:
+        account?.class.simpleName == 'Account'
+    }
+
+    def "account with kwargs and config"() {
+        when:
+        def account = account SESSION: session, {
+            username = 'groovy'
+        }
+
+        then:
+        account?.class.simpleName == 'Account'
+        account.username == 'groovy'
+    }
+
+    def "account with kwargs and no config"() {
+        when:
+        def account = account SESSION: session
+
+        then:
+        account?.class.simpleName == 'Account'
+    }
+
     def "server builder"() {
         when:
             def server = server {
