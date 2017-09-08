@@ -90,4 +90,14 @@ public class META {
     public Headers getHeaders() {
         return headers;
     }
+
+    /**
+     * Returns a string representation of this instance.
+     *
+     * @return A string representation.
+     */
+    @Override
+    public String toString() {
+        return status + ": " + message;
+    }
 }

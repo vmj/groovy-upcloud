@@ -32,7 +32,7 @@ session.callback(401: { resp ->
 
 upCloud.account(
     success: { resp ->
-        println "Unexpectedly got user info for '\${resp.account.username}', credits: \${resp.account.credits}"
+        println "Unexpectedly got user info: \${resp.account}"
         close()
     },
     { resp, err ->
@@ -41,9 +41,8 @@ upCloud.account(
             if (err.cause)
                 err.cause.printStackTrace()
         } else {
-            println "Unexpected HTTP status: \${resp.META.status} (\${resp.META.message})"
-            if (resp.error)
-                println "Detailed error: \${resp.error.errorCode}: \${resp.error.errorMessage}"
+            println "Unexpected HTTP status: \${resp?.META}"
+            println "Detailed error: \${resp?.error}"
         }
         close()
      })

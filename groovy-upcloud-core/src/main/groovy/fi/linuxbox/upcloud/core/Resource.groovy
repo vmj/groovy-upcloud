@@ -285,6 +285,24 @@ class Resource {
     }
 
     /**
+     * Returns a string representation of the UpCloud resource.
+     * <p>
+     *     This is meant to be human readable, not as an API.
+     * </p>
+     *
+     * @return A string representation of the resource
+     */
+    @Override
+    String toString() {
+        this.class.simpleName + "(" +
+                resourceProperties()
+                        .collect { k, v -> "$k: $v" }
+                        .sort()
+                        .join(', ') +
+                ")"
+    }
+
+    /**
      * MOP method that allows resource properties to be set in a fluent fashion.
      *
      * <p>
@@ -335,6 +353,7 @@ class Resource {
     def propertyMissing(final String name, final arg) {
         this.metaClass."$name" = arg
     }
+
 
     /**
      * Converts Class name to a Java style property name.

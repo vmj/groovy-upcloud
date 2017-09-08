@@ -73,6 +73,7 @@ class ResourceSpec extends Specification {
         resource.error.errorMessage == 'Something went wrong'
         !resource.hasProperty('errorMessage')
         !resource.hasProperty('name')
+        resource.toString() == "Resource(error: Error(errorCode: SOME_ERROR, errorMessage: Something went wrong))"
     }
 
     def "Resource with resource property as a map has map property"() {
@@ -113,6 +114,7 @@ class ResourceSpec extends Specification {
         resource.zones[1].description == 'London #1'
         resource.zones[2].id == 'us-chi1'
         resource.zones[2].description == 'Chicago #1'
+        resource.toString() == "Resource(zones: [Zone(description: Helsinki #1, id: fi-hel1), Zone(description: London #1, id: uk-lon1), Zone(description: Chicago #1, id: us-chi1)])"
     }
 
     def "List-of-resources property as a map has list of resources property"() {
@@ -151,6 +153,7 @@ class ResourceSpec extends Specification {
 
         then:
         resource.timezones == ["America/Chicago", "Europe/Helsinki", "Europe/London", "UTC"]
+        resource.toString() == "Resource(timezones: [America/Chicago, Europe/Helsinki, Europe/London, UTC])"
     }
 
     def "List-of-strings property as a map has a list of strings property"() {
@@ -170,6 +173,7 @@ class ResourceSpec extends Specification {
 
         then: "a class is created dynamically"
         resource.dynamicResource?.class?.simpleName == "DynamicResource"
+        resource.toString() == "Resource(dynamicResource: DynamicResource())"
     }
 
     def "In dynamic resources, properties can be set"() {
@@ -229,7 +233,7 @@ class ResourceSpec extends Specification {
         thrown GroovyCastException
     }
 
-    def "Properties can change type even if changing it via setter method"() {
+    def "Properties can not change type even if changing it via setter method"() {
         given:
         def resource = new Resource(repr: [ dynamic_type: [ :]])
 
@@ -240,7 +244,6 @@ class ResourceSpec extends Specification {
         then:
         thrown GroovyCastException
     }
-
 
     def "Wrapped empty resource has resource property"() {
         when:
