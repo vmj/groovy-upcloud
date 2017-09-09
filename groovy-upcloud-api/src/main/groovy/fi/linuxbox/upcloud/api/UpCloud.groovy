@@ -44,6 +44,23 @@ class UpCloud {
         this.SESSION.GET('account', *args)
     }
 
+    /**
+     * Fetch UpCloud prices for all zones.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Zone} instances in
+     *     the {@code prices} property.
+     * </p>
+     * <pre>
+     *     upcloud.prices { resp, err ->
+     *         assert resp?.prices instanceof List
+     *         assert rest.prices.every { it instanceof Zone }
+     *     }
+     * </pre>
+     *
+     * @param args Request callbacks for the {@code GET /price} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/4-pricing/" target="_top">UpCloud API docs for GET /price</a>
+     */
     def prices(...args) {
         this.SESSION.GET('price', *args)
     }

@@ -16,33 +16,26 @@ class BuilderSpec extends Specification {
 
     def "account builder"() {
         when:
-        def account = account {
-            username = 'groovy'
-        }
+        def account = account {}
 
         then:
-        account?.class?.simpleName == 'Account'
-        account.username == 'groovy'
+        account instanceof Account
     }
-
 
     def "account without config"() {
         when:
         def account = account()
 
         then:
-        account?.class.simpleName == 'Account'
+        account instanceof Account
     }
 
     def "account with kwargs and config"() {
         when:
-        def account = account SESSION: session, {
-            username = 'groovy'
-        }
+        def account = account SESSION: session, {}
 
         then:
-        account?.class.simpleName == 'Account'
-        account.username == 'groovy'
+        account instanceof Account
     }
 
     def "account with kwargs and no config"() {
@@ -50,46 +43,582 @@ class BuilderSpec extends Specification {
         def account = account SESSION: session
 
         then:
-        account?.class.simpleName == 'Account'
+        account instanceof Account
+    }
+
+    def "ioRequestBackup builder"() {
+        when:
+        def ioRequestBackup = ioRequestBackup {}
+
+        then:
+        ioRequestBackup instanceof IoRequestBackup
+    }
+
+    def "ioRequestBackup without config"() {
+        when:
+        def ioRequestBackup = ioRequestBackup()
+
+        then:
+        ioRequestBackup instanceof IoRequestBackup
+    }
+
+    def "ioRequestBackup with kwargs and config"() {
+        when:
+        def ioRequestBackup = ioRequestBackup SESSION: session, {}
+
+        then:
+        ioRequestBackup instanceof IoRequestBackup
+    }
+
+    def "ioRequestBackup with kwargs and no config"() {
+        when:
+        def ioRequestBackup = ioRequestBackup SESSION: session
+
+        then:
+        ioRequestBackup instanceof IoRequestBackup
+    }
+
+    def "ioRequestHdd builder"() {
+        when:
+        def ioRequestHdd = ioRequestHdd {}
+
+        then:
+        ioRequestHdd instanceof IoRequestHdd
+    }
+
+    def "ioRequestHdd without config"() {
+        when:
+        def ioRequestHdd = ioRequestHdd()
+
+        then:
+        ioRequestHdd instanceof IoRequestHdd
+    }
+
+    def "ioRequestHdd with kwargs and config"() {
+        when:
+        def ioRequestHdd = ioRequestHdd SESSION: session, {}
+
+        then:
+        ioRequestHdd instanceof IoRequestHdd
+    }
+
+    def "ioRequestHdd with kwargs and no config"() {
+        when:
+        def ioRequestHdd = ioRequestHdd SESSION: session
+
+        then:
+        ioRequestHdd instanceof IoRequestHdd
+    }
+
+    def "ioRequestMaxiops builder"() {
+        when:
+        def ioRequestMaxiops = ioRequestMaxiops {}
+
+        then:
+        ioRequestMaxiops instanceof IoRequestMaxiops
+    }
+
+    def "ioRequestMaxiops without config"() {
+        when:
+        def ioRequestMaxiops = ioRequestMaxiops()
+
+        then:
+        ioRequestMaxiops instanceof IoRequestMaxiops
+    }
+
+    def "ioRequestMaxiops with kwargs and config"() {
+        when:
+        def ioRequestMaxiops = ioRequestMaxiops SESSION: session, {}
+
+        then:
+        ioRequestMaxiops instanceof IoRequestMaxiops
+    }
+
+    def "ioRequestMaxiops with kwargs and no config"() {
+        when:
+        def ioRequestMaxiops = ioRequestMaxiops SESSION: session
+
+        then:
+        ioRequestMaxiops instanceof IoRequestMaxiops
+    }
+
+    def "ipv4Address builder"() {
+        when:
+        def ipv4Address = ipv4Address {}
+
+        then:
+        ipv4Address instanceof Ipv4Address
+    }
+
+    def "ipv4Address without config"() {
+        when:
+        def ipv4Address = ipv4Address()
+
+        then:
+        ipv4Address instanceof Ipv4Address
+    }
+
+    def "ipv4Address with kwargs and config"() {
+        when:
+        def ipv4Address = ipv4Address SESSION: session, {}
+
+        then:
+        ipv4Address instanceof Ipv4Address
+    }
+
+    def "ipv4Address with kwargs and no config"() {
+        when:
+        def ipv4Address = ipv4Address SESSION: session
+
+        then:
+        ipv4Address instanceof Ipv4Address
+    }
+
+    def "ipv6Address builder"() {
+        when:
+        def ipv6Address = ipv6Address {}
+
+        then:
+        ipv6Address instanceof Ipv6Address
+    }
+
+    def "ipv6Address without config"() {
+        when:
+        def ipv6Address = ipv6Address()
+
+        then:
+        ipv6Address instanceof Ipv6Address
+    }
+
+    def "ipv6Address with kwargs and config"() {
+        when:
+        def ipv6Address = ipv6Address SESSION: session, {}
+
+        then:
+        ipv6Address instanceof Ipv6Address
+    }
+
+    def "ipv6Address with kwargs and no config"() {
+        when:
+        def ipv6Address = ipv6Address SESSION: session
+
+        then:
+        ipv6Address instanceof Ipv6Address
+    }
+
+    def "publicIpv4BandwidthIn builder"() {
+        when:
+        def publicIpv4BandwidthIn = publicIpv4BandwidthIn {}
+
+        then:
+        publicIpv4BandwidthIn instanceof PublicIpv4BandwidthIn
+    }
+
+    def "publicIpv4BandwidthIn without config"() {
+        when:
+        def publicIpv4BandwidthIn = publicIpv4BandwidthIn()
+
+        then:
+        publicIpv4BandwidthIn instanceof PublicIpv4BandwidthIn
+    }
+
+    def "publicIpv4BandwidthIn with kwargs and config"() {
+        when:
+        def publicIpv4BandwidthIn = publicIpv4BandwidthIn SESSION: session, {}
+
+        then:
+        publicIpv4BandwidthIn instanceof PublicIpv4BandwidthIn
+    }
+
+    def "publicIpv4BandwidthIn with kwargs and no config"() {
+        when:
+        def publicIpv4BandwidthIn = publicIpv4BandwidthIn SESSION: session
+
+        then:
+        publicIpv4BandwidthIn instanceof PublicIpv4BandwidthIn
+    }
+
+    def "publicIpv4BandwidthOut builder"() {
+        when:
+        def publicIpv4BandwidthOut = publicIpv4BandwidthOut {}
+
+        then:
+        publicIpv4BandwidthOut instanceof PublicIpv4BandwidthOut
+    }
+
+    def "publicIpv4BandwidthOut without config"() {
+        when:
+        def publicIpv4BandwidthOut = publicIpv4BandwidthOut()
+
+        then:
+        publicIpv4BandwidthOut instanceof PublicIpv4BandwidthOut
+    }
+
+    def "publicIpv4BandwidthOut with kwargs and config"() {
+        when:
+        def publicIpv4BandwidthOut = publicIpv4BandwidthOut SESSION: session, {}
+
+        then:
+        publicIpv4BandwidthOut instanceof PublicIpv4BandwidthOut
+    }
+
+    def "publicIpv4BandwidthOut with kwargs and no config"() {
+        when:
+        def publicIpv4BandwidthOut = publicIpv4BandwidthOut SESSION: session
+
+        then:
+        publicIpv4BandwidthOut instanceof PublicIpv4BandwidthOut
+    }
+
+    def "publicIpv6BandwidthIn builder"() {
+        when:
+        def publicIpv6BandwidthIn = publicIpv6BandwidthIn {}
+
+        then:
+        publicIpv6BandwidthIn instanceof PublicIpv6BandwidthIn
+    }
+
+    def "publicIpv6BandwidthIn without config"() {
+        when:
+        def publicIpv6BandwidthIn = publicIpv6BandwidthIn()
+
+        then:
+        publicIpv6BandwidthIn instanceof PublicIpv6BandwidthIn
+    }
+
+    def "publicIpv6BandwidthIn with kwargs and config"() {
+        when:
+        def publicIpv6BandwidthIn = publicIpv6BandwidthIn SESSION: session, {}
+
+        then:
+        publicIpv6BandwidthIn instanceof PublicIpv6BandwidthIn
+    }
+
+    def "publicIpv6BandwidthIn with kwargs and no config"() {
+        when:
+        def publicIpv6BandwidthIn = publicIpv6BandwidthIn SESSION: session
+
+        then:
+        publicIpv6BandwidthIn instanceof PublicIpv6BandwidthIn
+    }
+
+    def "publicIpv6BandwidthOut builder"() {
+        when:
+        def publicIpv6BandwidthOut = publicIpv6BandwidthOut {}
+
+        then:
+        publicIpv6BandwidthOut instanceof PublicIpv6BandwidthOut
+    }
+
+    def "publicIpv6BandwidthOut without config"() {
+        when:
+        def publicIpv6BandwidthOut = publicIpv6BandwidthOut()
+
+        then:
+        publicIpv6BandwidthOut instanceof PublicIpv6BandwidthOut
+    }
+
+    def "publicIpv6BandwidthOut with kwargs and config"() {
+        when:
+        def publicIpv6BandwidthOut = publicIpv6BandwidthOut SESSION: session, {}
+
+        then:
+        publicIpv6BandwidthOut instanceof PublicIpv6BandwidthOut
+    }
+
+    def "publicIpv6BandwidthOut with kwargs and no config"() {
+        when:
+        def publicIpv6BandwidthOut = publicIpv6BandwidthOut SESSION: session
+
+        then:
+        publicIpv6BandwidthOut instanceof PublicIpv6BandwidthOut
     }
 
     def "server builder"() {
         when:
-            def server = server {
-                hostname = "foo"
-                coreNumber = 5
-            }
+        def server = server {}
 
         then:
-            server?.class.simpleName == 'Server'
-            server.hostname == 'foo'
-            server.coreNumber == '5'
+        server instanceof Server
     }
 
     def "server without config"() {
         when:
-            def server = server()
+        def server = server()
 
         then:
-            server?.class.simpleName == 'Server'
+        server instanceof Server
     }
 
     def "server with kwargs and config"() {
         when:
-            def server = server SESSION: session, {
-                hostname = "foo"
-            }
+        def server = server SESSION: session, {}
 
         then:
-            server?.class.simpleName == 'Server'
-            server.hostname == 'foo'
+        server instanceof Server
     }
 
     def "server with kwargs and no config"() {
         when:
-            def server = server SESSION: session
+        def server = server SESSION: session
 
         then:
-            server?.class.simpleName == 'Server'
+        server instanceof Server
+    }
+
+    def "serverCore builder"() {
+        when:
+        def serverCore = serverCore {}
+
+        then:
+        serverCore instanceof ServerCore
+    }
+
+    def "serverCore without config"() {
+        when:
+        def serverCore = serverCore()
+
+        then:
+        serverCore instanceof ServerCore
+    }
+
+    def "serverCore with kwargs and config"() {
+        when:
+        def serverCore = serverCore SESSION: session, {}
+
+        then:
+        serverCore instanceof ServerCore
+    }
+
+    def "serverCore with kwargs and no config"() {
+        when:
+        def serverCore = serverCore SESSION: session
+
+        then:
+        serverCore instanceof ServerCore
+    }
+
+    def "serverMemory builder"() {
+        when:
+        def serverMemory = serverMemory {}
+
+        then:
+        serverMemory instanceof ServerMemory
+    }
+
+    def "serverMemory without config"() {
+        when:
+        def serverMemory = serverMemory()
+
+        then:
+        serverMemory instanceof ServerMemory
+    }
+
+    def "serverMemory with kwargs and config"() {
+        when:
+        def serverMemory = serverMemory SESSION: session, {}
+
+        then:
+        serverMemory instanceof ServerMemory
+    }
+
+    def "serverMemory with kwargs and no config"() {
+        when:
+        def serverMemory = serverMemory SESSION: session
+
+        then:
+        serverMemory instanceof ServerMemory
+    }
+
+    def "serverPlan_1xCPU_1GB builder"() {
+        when:
+        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB {}
+
+        then:
+        serverPlan_1xCPU_1GB instanceof ServerPlan_1xCPU_1GB
+    }
+
+    def "serverPlan_1xCPU_1GB without config"() {
+        when:
+        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB()
+
+        then:
+        serverPlan_1xCPU_1GB instanceof ServerPlan_1xCPU_1GB
+    }
+
+    def "serverPlan_1xCPU_1GB with kwargs and config"() {
+        when:
+        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB SESSION: session, {}
+
+        then:
+        serverPlan_1xCPU_1GB instanceof ServerPlan_1xCPU_1GB
+    }
+
+    def "serverPlan_1xCPU_1GB with kwargs and no config"() {
+        when:
+        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB SESSION: session
+
+        then:
+        serverPlan_1xCPU_1GB instanceof ServerPlan_1xCPU_1GB
+    }
+
+    def "serverPlan_2xCPU_2GB builder"() {
+        when:
+        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB {}
+
+        then:
+        serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
+    }
+
+    def "serverPlan_2xCPU_2GB without config"() {
+        when:
+        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB()
+
+        then:
+        serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
+    }
+
+    def "serverPlan_2xCPU_2GB with kwargs and config"() {
+        when:
+        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB SESSION: session, {}
+
+        then:
+        serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
+    }
+
+    def "serverPlan_2xCPU_2GB with kwargs and no config"() {
+        when:
+        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB SESSION: session
+
+        then:
+        serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
+    }
+
+    def "storageBackup builder"() {
+        when:
+        def storageBackup = storageBackup {}
+
+        then:
+        storageBackup instanceof StorageBackup
+    }
+
+    def "storageBackup without config"() {
+        when:
+        def storageBackup = storageBackup()
+
+        then:
+        storageBackup instanceof StorageBackup
+    }
+
+    def "storageBackup with kwargs and config"() {
+        when:
+        def storageBackup = storageBackup SESSION: session, {}
+
+        then:
+        storageBackup instanceof StorageBackup
+    }
+
+    def "storageBackup with kwargs and no config"() {
+        when:
+        def storageBackup = storageBackup SESSION: session
+
+        then:
+        storageBackup instanceof StorageBackup
+    }
+
+    def "storageHdd builder"() {
+        when:
+        def storageHdd = storageHdd {}
+
+        then:
+        storageHdd instanceof StorageHdd
+    }
+
+    def "storageHdd without config"() {
+        when:
+        def storageHdd = storageHdd()
+
+        then:
+        storageHdd instanceof StorageHdd
+    }
+
+    def "storageHdd with kwargs and config"() {
+        when:
+        def storageHdd = storageHdd SESSION: session, {}
+
+        then:
+        storageHdd instanceof StorageHdd
+    }
+
+    def "storageHdd with kwargs and no config"() {
+        when:
+        def storageHdd = storageHdd SESSION: session
+
+        then:
+        storageHdd instanceof StorageHdd
+    }
+
+    def "storageMaxiops builder"() {
+        when:
+        def storageMaxiops = storageMaxiops {}
+
+        then:
+        storageMaxiops instanceof StorageMaxiops
+    }
+
+    def "storageMaxiops without config"() {
+        when:
+        def storageMaxiops = storageMaxiops()
+
+        then:
+        storageMaxiops instanceof StorageMaxiops
+    }
+
+    def "storageMaxiops with kwargs and config"() {
+        when:
+        def storageMaxiops = storageMaxiops SESSION: session, {}
+
+        then:
+        storageMaxiops instanceof StorageMaxiops
+    }
+
+    def "storageMaxiops with kwargs and no config"() {
+        when:
+        def storageMaxiops = storageMaxiops SESSION: session
+
+        then:
+        storageMaxiops instanceof StorageMaxiops
+    }
+
+    def "zone builder"() {
+        when:
+        def zone = zone {}
+
+        then:
+        zone instanceof Zone
+    }
+
+    def "zone without config"() {
+        when:
+        def zone = zone()
+
+        then:
+        zone instanceof Zone
+    }
+
+    def "zone with kwargs and config"() {
+        when:
+        def zone = zone SESSION: session, {}
+
+        then:
+        zone instanceof Zone
+    }
+
+    def "zone with kwargs and no config"() {
+        when:
+        def zone = zone SESSION: session
+
+        then:
+        zone instanceof Zone
     }
 }
