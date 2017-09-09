@@ -307,6 +307,7 @@ class ResourceSpec extends Specification {
         'server'                 | 'Server'
         'storage_device'         | 'StorageDevice'
         'destination_port_start' | 'DestinationPortStart'
+        'server_plan_1xCPU-1GB'  | 'ServerPlan_1xCPU_1GB'
     }
 
     @Unroll
@@ -332,5 +333,6 @@ class ResourceSpec extends Specification {
         'server'                 | 'server'
         'storage_device'         | 'storageDevice'
         'destination_port_start' | 'destinationPortStart'
+        'server_plan_1xCPU-1GB'  | 'serverPlan_1xCPU_1GB'
     }
 }

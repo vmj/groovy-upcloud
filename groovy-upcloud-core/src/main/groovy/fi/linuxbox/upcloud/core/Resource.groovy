@@ -384,7 +384,7 @@ class Resource {
     static String propertyName(final String type_name) {
         type_name.replaceAll(/_([a-z])/, {
             it[1].toUpperCase() // type_name -> typeName
-        })
+        }) replaceAll(/-/, '_') // typeName-1CPU-1GB -> typeName_1CPU_1GB
     }
 
     /**
@@ -401,7 +401,7 @@ class Resource {
     static String className(final String type_name) {
         type_name.replaceAll(/(?:^|_)([a-z])/, {
             it[1].toUpperCase() // type_name -> TypeName
-        })
+        }) replaceAll(/-/, '_') // TypeName-1CPU-1GB -> TypeName_1CPU_1GB
     }
 
     /**
