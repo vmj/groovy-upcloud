@@ -78,6 +78,14 @@ class Builder extends ResourceBuilder {
         ipv6Address(EMPTY_MAP, closure)
     }
 
+    static Plan plan(Map kwargs, @DelegatesTo(strategy = DELEGATE_ONLY, value = Plan) Closure closure = null) {
+        configure(new Plan(kwargs), closure)
+    }
+
+    static Plan plan(@DelegatesTo(strategy = DELEGATE_ONLY, value = Plan) Closure closure = null) {
+        plan(EMPTY_MAP, closure)
+    }
+
     static PublicIpv4BandwidthIn publicIpv4BandwidthIn(Map kwargs,
                                                        @DelegatesTo(strategy = DELEGATE_ONLY, value = PublicIpv4BandwidthIn) Closure closure = null) {
         configure(new PublicIpv4BandwidthIn(kwargs), closure)

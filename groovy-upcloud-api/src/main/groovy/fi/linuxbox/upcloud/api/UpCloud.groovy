@@ -116,6 +116,23 @@ class UpCloud {
         this.SESSION.GET('timezone', *args)
     }
 
+    /**
+     * Fetch a list of available plans.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Plan} instances in
+     *     the {@code plans} property.
+     * </p>
+     * <pre>
+     *     upcloud.plans { resp, err ->
+     *         assert resp?.plans instanceof List
+     *         assert rest.plans.every { it instanceof Plan }
+     *     }
+     * </pre>
+     *
+     * @param args Request callbacks for the {@code GET /plan} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/7-plans/" target="_top">UpCloud API docs for GET /plan</a>
+     */
     def plans(...args) {
         this.SESSION.GET('plan', *args)
     }

@@ -206,6 +206,39 @@ class BuilderSpec extends Specification {
         ipv6Address instanceof Ipv6Address
     }
 
+    def "plan builder"() {
+        when:
+        def plan = plan {}
+
+        then:
+        plan instanceof Plan
+    }
+
+
+    def "plan without config"() {
+        when:
+        def plan = plan()
+
+        then:
+        plan instanceof Plan
+    }
+
+    def "plan with kwargs and config"() {
+        when:
+        def plan = plan SESSION: session, {}
+
+        then:
+        plan instanceof Plan
+    }
+
+    def "plan with kwargs and no config"() {
+        when:
+        def plan = plan SESSION: session
+
+        then:
+        plan instanceof Plan
+    }
+
     def "publicIpv4BandwidthIn builder"() {
         when:
         def publicIpv4BandwidthIn = publicIpv4BandwidthIn {}
