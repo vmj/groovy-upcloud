@@ -3,10 +3,12 @@ package fi.linuxbox.upcloud.core
 import fi.linuxbox.upcloud.json.gjson.GJSON
 import fi.linuxbox.upcloud.json.spi.JSON
 import fi.linuxbox.upcloud.resource.Firewall
+import fi.linuxbox.upcloud.resource.IpAddress
 import fi.linuxbox.upcloud.resource.Plan
 import fi.linuxbox.upcloud.resource.Server
 import fi.linuxbox.upcloud.resource.ServerPlan_2xCPU_2GB
 import fi.linuxbox.upcloud.resource.ServerSize
+import fi.linuxbox.upcloud.resource.StorageDevice
 import fi.linuxbox.upcloud.resource.Zone
 import spock.lang.Specification
 
@@ -313,5 +315,84 @@ class ResponseFunctionalSpec extends Specification {
         resp.servers.every { it instanceof Server }
         resp.servers[0].coreNumber == '1'
         resp.servers[1].tags[1] == 'Ubuntu'
+    }
+
+    def "server JSON to Server"() {
+        when:
+        def resp = load("""
+            {
+              "server": {
+                "boot_order": "disk",
+                "core_number": "0",
+                "firewall": "on",
+                "host" : 7653311107,
+                "hostname": "server1.example.com",
+                "ip_addresses": {
+                  "ip_address": [
+                    {
+                      "access": "private",
+                      "address": "10.0.0.00",
+                      "family" : "IPv4"
+                    },
+                    {
+                      "access": "public",
+                      "address": "0.0.0.0",
+                      "family" : "IPv4"
+                    },
+                    {
+                      "access": "public",
+                      "address": "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx",
+                      "family" : "IPv6"
+                    }
+                  ]
+                },
+                "license": 0,
+                "memory_amount": "1024",
+                "nic_model": "virtio",
+                "plan" : "1xCPU-1GB",
+                "state": "started",
+                "storage_devices": {
+                  "storage_device": [
+                    {
+                      "address": "virtio:0",
+                      "part_of_plan" : "yes",
+                      "storage": "012580a1-32a1-466e-a323-689ca16f2d43",
+                      "storage_size": 20,
+                      "storage_title": "Storage for server1.example.com",
+                      "type": "disk"
+                    }
+                  ]
+                },
+                "tags" : {
+                   "tag" : [
+                      "DEV",
+                      "Ubuntu"
+                   ]
+                },
+                "timezone": "UTC",
+                "title": "server1.example.com",
+                "uuid": "0077fa3d-32db-4b09-9f5f-30d9e9afb565",
+                "video_model": "cirrus",
+                "vnc" : "on",
+                "vnc_host" : "fi-he1l.vnc.upcloud.com",
+                "vnc_password": "aabbccdd",
+                "vnc_port": "00000",
+                "zone": "fi-hel1"
+              }
+            }
+            """)
+
+        then:
+        resp?.server instanceof Server
+        resp.server.host == 7653311107
+        resp.server.ipAddresses instanceof List
+        resp.server.ipAddresses.every { it instanceof IpAddress }
+        resp.server.ipAddresses[2].family == 'IPv6'
+        resp.server.storageDevices instanceof List
+        resp.server.storageDevices.every { it instanceof StorageDevice }
+        resp.server.storageDevices[0].storageSize == 20
+        resp.server.tags instanceof List
+        resp.server.tags.every { it instanceof String }
+        resp.server.tags[1] == 'Ubuntu'
     }
 }

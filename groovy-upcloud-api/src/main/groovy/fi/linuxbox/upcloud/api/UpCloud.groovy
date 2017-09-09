@@ -164,6 +164,12 @@ class UpCloud {
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Server} instances
      *     in the {@code servers} property.
      * </p>
+     * <pre>
+     *     upcloud.servers { resp, err ->
+     *         assert resp?.servers instanceof List
+     *         assert rest.servers.every { it instanceof Server }
+     *     }
+     * </pre>
      * <p>
      *     Only the servers' most relevant information is returned by this operation. Further details on individual
      *     servers can be requested with the {@link Server#load(def)} API.

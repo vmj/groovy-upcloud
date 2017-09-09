@@ -142,6 +142,38 @@ class BuilderSpec extends Specification {
         ioRequestMaxiops instanceof IoRequestMaxiops
     }
 
+    def "ipAddress builder"() {
+        when:
+        def ipAddress = ipAddress {}
+
+        then:
+        ipAddress instanceof IpAddress
+    }
+
+    def "ipAddress without config"() {
+        when:
+        def ipAddress = ipAddress()
+
+        then:
+        ipAddress instanceof IpAddress
+    }
+
+    def "ipAddress with kwargs and config"() {
+        when:
+        def ipAddress = ipAddress SESSION: session, {}
+
+        then:
+        ipAddress instanceof IpAddress
+    }
+
+    def "ipAddress with kwargs and no config"() {
+        when:
+        def ipAddress = ipAddress SESSION: session
+
+        then:
+        ipAddress instanceof IpAddress
+    }
+
     def "ipv4Address builder"() {
         when:
         def ipv4Address = ipv4Address {}

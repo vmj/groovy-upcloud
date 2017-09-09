@@ -58,6 +58,15 @@ class Builder extends ResourceBuilder {
         ioRequestMaxiops(EMPTY_MAP, closure)
     }
 
+    static IpAddress ipAddress(Map kwargs,
+                               @DelegatesTo(strategy = DELEGATE_ONLY, value = IpAddress) Closure closure = null) {
+        configure(new IpAddress(kwargs), closure)
+    }
+
+    static IpAddress ipAddress(@DelegatesTo(strategy = DELEGATE_ONLY, value = IpAddress) Closure closure = null) {
+        ipAddress(EMPTY_MAP, closure)
+    }
+
     static Ipv4Address ipv4Address(Map kwargs,
                                    @DelegatesTo(strategy = DELEGATE_ONLY, value = Ipv4Address) Closure closure = null) {
         configure(new Ipv4Address(kwargs), closure)

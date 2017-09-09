@@ -25,6 +25,26 @@ import fi.linuxbox.upcloud.core.*
  */
 trait Server {
 
+    /**
+     * Fetch detailed information about a specific {@link fi.linuxbox.upcloud.resource.Server}.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre>
+     *     serverApi.load { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </pre>
+     * <p>
+     *     While this operation returns details of a single server, a less details list of all servers can be
+     *     requested with the {@link UpCloud#servers(def)} API.
+     * </p>
+     *
+     * @param args Request callbacks for the {@code GET /server/&#36;{server.uuid}} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#get-server-details" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}</a>
+     */
     def load(...args) {
         this.SESSION.GET(serverPath(), *args)
     }
