@@ -527,6 +527,39 @@ class BuilderSpec extends Specification {
         serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
     }
 
+    def "serverSize builder"() {
+        when:
+        def serverSize = serverSize {}
+
+        then:
+        serverSize instanceof ServerSize
+    }
+
+
+    def "serverSize without config"() {
+        when:
+        def serverSize = serverSize()
+
+        then:
+        serverSize instanceof ServerSize
+    }
+
+    def "serverSize with kwargs and config"() {
+        when:
+        def serverSize = serverSize SESSION: session, {}
+
+        then:
+        serverSize instanceof ServerSize
+    }
+
+    def "serverSize with kwargs and no config"() {
+        when:
+        def serverSize = serverSize SESSION: session
+
+        then:
+        serverSize instanceof ServerSize
+    }
+
     def "storageBackup builder"() {
         when:
         def storageBackup = storageBackup {}

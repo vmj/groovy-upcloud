@@ -5,6 +5,7 @@ import fi.linuxbox.upcloud.json.spi.JSON
 import fi.linuxbox.upcloud.resource.Firewall
 import fi.linuxbox.upcloud.resource.Plan
 import fi.linuxbox.upcloud.resource.ServerPlan_2xCPU_2GB
+import fi.linuxbox.upcloud.resource.ServerSize
 import fi.linuxbox.upcloud.resource.Zone
 import spock.lang.Specification
 
@@ -193,7 +194,6 @@ class ResponseFunctionalSpec extends Specification {
         resp.timezones[6] == 'UTC'
     }
 
-
     def "plans JSON to Plan list"() {
         when:
         def resp = load("""
@@ -226,5 +226,39 @@ class ResponseFunctionalSpec extends Specification {
         resp.plans.every { it instanceof Plan }
         resp.plans[0].name == '1xCPU-1GB'
         resp.plans[1].name == '2xCPU-2GB'
+    }
+
+    def "serverSizes JSON to ServerSize list"() {
+        when:
+        def resp = load("""
+            {
+              "server_sizes": {
+                "server_size": [
+                  {
+                    "core_number": "1",
+                    "memory_amount": "512"
+                  },
+                  {
+                    "core_number": "1",
+                    "memory_amount": "768"
+                  },
+                  {
+                    "core_number": "10",
+                    "memory_amount": "65024"
+                  },
+                  {
+                    "core_number": "10",
+                    "memory_amount": "65536"
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.serverSizes instanceof List
+        resp.serverSizes.every { it instanceof ServerSize }
+        resp.serverSizes[0].coreNumber == '1'
+        resp.serverSizes[3].coreNumber == '10'
     }
 }

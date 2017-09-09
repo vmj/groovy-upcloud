@@ -173,6 +173,15 @@ class Builder extends ResourceBuilder {
         serverPlan_2xCPU_2GB(EMPTY_MAP, closure)
     }
 
+    static ServerSize serverSize(Map kwargs,
+                                 @DelegatesTo(strategy = DELEGATE_ONLY, value = ServerSize) Closure closure = null) {
+        configure(new ServerSize(kwargs), closure)
+    }
+
+    static ServerSize serverSize(@DelegatesTo(strategy = DELEGATE_ONLY, value = ServerSize) Closure closure = null) {
+        serverSize(EMPTY_MAP, closure)
+    }
+
     static StorageBackup storageBackup(Map kwargs,
                                        @DelegatesTo(strategy = DELEGATE_ONLY, value = StorageBackup) Closure closure = null) {
         configure(new StorageBackup(kwargs), closure)

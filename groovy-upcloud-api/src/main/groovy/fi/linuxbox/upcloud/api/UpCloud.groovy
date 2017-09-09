@@ -137,6 +137,23 @@ class UpCloud {
         this.SESSION.GET('plan', *args)
     }
 
+    /**
+     * Fetch a of available server configurations.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.ServerSize} instances
+     *     in the {@code serverSizes} property.
+     * </p>
+     * <pre>
+     *     upcloud.serverSizes { resp, err ->
+     *         assert resp?.serverSizes instanceof List
+     *         assert rest.serverSizes.every { it instanceof ServerSize }
+     *     }
+     * </pre>
+     *
+     * @param args Request callbacks for the {@code GET /server_size} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#list-server-configurations" target="_top">UpCloud API docs for GET /server_size</a>
+     */
     def serverSizes(...args) {
         this.SESSION.GET('server_size', *args)
     }
