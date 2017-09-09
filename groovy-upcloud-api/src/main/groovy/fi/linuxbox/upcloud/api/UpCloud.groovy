@@ -56,6 +56,11 @@ class UpCloud {
      *         assert rest.prices.every { it instanceof Zone }
      *     }
      * </pre>
+     * <p>
+     *     When zones are listed via this API, they will <b>not</b> include
+     *     {@link fi.linuxbox.upcloud.resource.Zone#id} properties, but {@link fi.linuxbox.upcloud.resource.Zone#name}
+     *     properties instead.  They are the same.
+     * </p>
      *
      * @param args Request callbacks for the {@code GET /price} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
@@ -65,6 +70,28 @@ class UpCloud {
         this.SESSION.GET('price', *args)
     }
 
+    /**
+     * Fetch UpCloud zone list.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Zone} instances in
+     *     the {@code zones} property.
+     * </p>
+     * <pre>
+     *     upcloud.zones { resp, err ->
+     *         assert resp?.zones instanceof List
+     *         assert rest.zones.every { it instanceof Zone }
+     *     }
+     * </pre>
+     * <p>
+     *     When zones are listed via this API, they will <b>not</b> include
+     *     {@link fi.linuxbox.upcloud.resource.Zone#name} properties, but {@link fi.linuxbox.upcloud.resource.Zone#id}
+     *     properties instead.  They are the same.
+     * </p>
+     *
+     * @param args Request callbacks for the {@code GET /zone} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/5-zones/" target="_top">UpCloud API docs for GET /zone</a>
+     */
     def zones(...args) {
         this.SESSION.GET('zone', *args)
     }

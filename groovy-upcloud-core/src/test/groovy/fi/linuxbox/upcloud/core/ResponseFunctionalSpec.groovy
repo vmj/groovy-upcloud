@@ -132,4 +132,39 @@ class ResponseFunctionalSpec extends Specification {
         zone.serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
         zone.serverPlan_2xCPU_2GB.price.equals(2.976)
     }
+
+    def "zones JSON to Zone list"() {
+        when:
+        def resp = load("""
+            {
+              "zones": {
+                "zone": [
+                  {
+                    "id": "fi-hel1",
+                    "description": "Helsinki, Finland, zone 1"
+                  },
+                  {
+                    "id": "uk-lon1",
+                    "description": "London, United Kingdom, zone 1"
+                  },
+                  {
+                    "id" : "de-fra1",
+                    "description" : "Frankfurt, Germany, zone 1"
+                  },
+                  {
+                    "id" : "us-chi1",
+                    "description" : "Chicago, United States, zone 1"      
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.zones instanceof List
+        resp.zones.every { it.class.simpleName == 'Zone' }
+        resp.zones[0].id == 'fi-hel1'
+        resp.zones[3].id == 'us-chi1'
+    }
+
 }
