@@ -4,6 +4,7 @@ import fi.linuxbox.upcloud.json.gjson.GJSON
 import fi.linuxbox.upcloud.json.spi.JSON
 import fi.linuxbox.upcloud.resource.Firewall
 import fi.linuxbox.upcloud.resource.Plan
+import fi.linuxbox.upcloud.resource.Server
 import fi.linuxbox.upcloud.resource.ServerPlan_2xCPU_2GB
 import fi.linuxbox.upcloud.resource.ServerSize
 import fi.linuxbox.upcloud.resource.Zone
@@ -260,5 +261,57 @@ class ResponseFunctionalSpec extends Specification {
         resp.serverSizes.every { it instanceof ServerSize }
         resp.serverSizes[0].coreNumber == '1'
         resp.serverSizes[3].coreNumber == '10'
+    }
+
+    def "servers JSON to Server list"() {
+        when:
+        def resp = load("""
+            {
+              "servers": {
+                "server": [
+                  {
+                    "core_number": "1",
+                    "hostname": "fi.example.com",
+                    "licence" : 0,
+                    "memory_amount": "1024",
+                    "plan" : "1xCPU-1GB",
+                    "state": "started",
+                    "tags" : {
+                      "tag" : [
+                        "PROD",
+                        "CentOS"
+                      ]
+                    },
+                    "title": "Helsinki server",
+                    "uuid": "00798b85-efdc-41ca-8021-f6ef457b8531",
+                    "zone": "fi-hel1"
+                  },
+                  {
+                    "core_number": "1",
+                    "hostname": "uk.example.com",
+                    "licence" : 0,
+                    "memory_amount": "512",
+                    "plan" : "custom",
+                    "state": "stopped",
+                    "tags" : {
+                      "tag" : [
+                        "DEV",
+                        "Ubuntu"
+                      ]
+                    },
+                    "title": "London server",
+                    "uuid": "009d64ef-31d1-4684-a26b-c86c955cbf46",
+                    "zone": "uk-lon1"
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.servers instanceof List
+        resp.servers.every { it instanceof Server }
+        resp.servers[0].coreNumber == '1'
+        resp.servers[1].tags[1] == 'Ubuntu'
     }
 }

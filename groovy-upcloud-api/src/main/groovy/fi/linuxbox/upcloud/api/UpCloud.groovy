@@ -158,6 +158,21 @@ class UpCloud {
         this.SESSION.GET('server_size', *args)
     }
 
+    /**
+     * Fetch a list of all servers associated with this session.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Server} instances
+     *     in the {@code servers} property.
+     * </p>
+     * <p>
+     *     Only the servers' most relevant information is returned by this operation. Further details on individual
+     *     servers can be requested with the {@link Server#load(def)} API.
+     * </p>
+     *
+     * @param args Request callbacks for the {@code GET /server} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#list-servers" target="_top">UpCloud API docs for GET /server</a>
+     */
     def servers(...args) {
         this.SESSION.GET('server', *args)
     }
