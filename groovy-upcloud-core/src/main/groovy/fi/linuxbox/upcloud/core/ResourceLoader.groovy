@@ -2,6 +2,8 @@ package fi.linuxbox.upcloud.core
 
 import groovy.util.logging.Slf4j
 
+import java.lang.reflect.Constructor
+
 @Slf4j
 class ResourceLoader {
     private static final GroovyClassLoader gcl = new GroovyClassLoader(Resource.classLoader)
@@ -41,6 +43,11 @@ class ResourceLoader {
     }
 
     static Object instantiateResourceClass(final Class resourceClass, final Map kwargs = [:]) {
+        try {
+            resourceClass.getDeclaredConstructor(Map)
+        } catch (final NoSuchMethodException e) {
+            throw new IllegalArgumentException("Resource class ${resourceClass.simpleName} must declare contructor that takes a map", e)
+        }
         resourceClass.metaClass.invokeConstructor(kwargs)
     }
 
