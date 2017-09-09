@@ -167,4 +167,29 @@ class ResponseFunctionalSpec extends Specification {
         resp.zones[3].id == 'us-chi1'
     }
 
+    def "timeszones JSON to string list"() {
+        when:
+        def resp = load("""
+            {
+              "timezones": {
+                "timezone": [
+                  "Africa/Abidjan",
+                  "Africa/Accra",
+                  "Africa/Addis_Ababa",
+                  "Pacific/Truk",
+                  "Pacific/Wake",
+                  "Pacific/Wallis",
+                  "UTC"
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.timezones instanceof List
+        resp.timezones.every { it instanceof String }
+        resp.timezones[0] == 'Africa/Abidjan'
+        resp.timezones[6] == 'UTC'
+    }
+
 }

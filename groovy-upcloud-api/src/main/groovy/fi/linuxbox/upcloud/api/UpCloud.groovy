@@ -96,6 +96,22 @@ class UpCloud {
         this.SESSION.GET('zone', *args)
     }
 
+    /**
+     * Fetch a list of available timezones.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link String}s in the {@code timezones} property.
+     * </p>
+     * <pre>
+     *     upcloud.timezones { resp, err ->
+     *         assert resp?.timezones instanceof List
+     *         assert rest.timezones.every { it instanceof String }
+     *     }
+     * </pre>
+     *
+     * @param args Request callbacks for the {@code GET /timezone} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/6-timezones/" target="_top">UpCloud API docs for GET /timezone</a>
+     */
     def timezones(...args) {
         this.SESSION.GET('timezone', *args)
     }
