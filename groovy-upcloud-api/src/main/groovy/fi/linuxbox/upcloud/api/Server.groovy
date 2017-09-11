@@ -41,7 +41,7 @@ trait Server {
      *     requested with the {@link UpCloud#servers(def)} API.
      * </p>
      *
-     * @param args Request callbacks for the {@code GET /server/&#36;{server.uuid}} call.
+     * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#get-server-details" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}</a>
      */
@@ -57,16 +57,89 @@ trait Server {
         this.SESSION.DELETE(serverPath(), *args)
     }
 
+    /**
+     * Starts a stopped server.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre>
+     *     serverApi.start { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </pre>
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/start} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#start-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/start</a>
+     */
     def start(...args) {
         this.SESSION.POST(cmdPath('start'), null, *args)
     }
 
+    /**
+     * Stops a started server.
+     * <p>
+     *     By default, a soft stop is performed.  In soft stop, an ACPI signal is sent to the server.
+     *     Optionally, a {@code timeout} keyword argument can be added to specify the time in seconds after which
+     *     the server is hard stopped if it hasn't stopped by itself.  If no timeout is given, the server is not
+     *     stopped if doesn't stop by itself.
+     * </p>
+     * <p>
+     *     In hard stop, the server is basically just killed right away. An optional {@code stop_type: "hard"}
+     *     keyword argument can be used to perform the hard stop without first doing the soft stop.
+     * </p>
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.  Note that the {@link fi.linuxbox.upcloud.resource.Server#state} is still
+     *     {@code started} in the response, and will need to be polled until it changes to {@code stopped} once the
+     *     server has shut down.
+     * </p>
+     * <pre>
+     *     serverApi.stop timeout: "60" { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </pre>
+     * @param args.stop_type Either {@code soft} (default) or {@code hard}.
+     * @param args.timeout If, after soft stop, this many seconds pass and the server hasn't stopped, a hard stop is performed.
+     * @param args Stop type arguments and request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/stop} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#stop-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/stop</a>
+     */
     def stop(...args) {
         def stop = cmd('stop_server', ['stop_type', 'timeout'], args)
 
         this.SESSION.POST(cmdPath('stop'), stop, *args)
     }
 
+    /**
+     * Restarts a started server.
+     * <p>
+     *     By default, a soft stop is performed.  In soft stop, an ACPI signal is sent to the server. Keyword
+     *     arguments {@code timeout} and {@code timeout_action} can be used to configure what happens after the soft
+     *     stop attempt.  If the server stops before the timeout, it is started.  If the server has not stopped by
+     *     itself after {@code timeout} seconds, {@code timeout_action: "ignore"} can be used to cancel the restart
+     *     operation, and {@code timeout_action: "destroy"} can be used to hard stop the server before starting it.
+     * </p>
+     * <p>
+     *     Alternatively, keyword argument {@code stop_type: "hard"} can be used to basically kill the server and then
+     *     start it.
+     * </p>
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre>
+     *     serverApi.restart timeout: "60", timeout_action: "destroy" { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </pre>
+     * @param args.stop_type Either {@code soft} (default) or {@code hard}.
+     * @param args.timeout Number of seconds to wait for the server to shutdown after ACPI signal, before performing {@code timeout_action}.
+     * @param args.timeout_action Either {@code destroy} (hard stop and start) or {@code ignore} (do not restart).
+     * @param args Stop type arguments and request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/restart} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#restart-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/restart</a>
+     */
     def restart(...args) {
         def restart = cmd('restart_server', ['stop_type', 'timeout', 'timeout_action'], args)
 
