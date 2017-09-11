@@ -6,7 +6,7 @@ import groovy.transform.InheritConstructors
 /**
  * Preconfigured server plan.
  * <p>
- *     In addition to plans, server can be freely configured with "custom" plan which allows freely scalable
+ *     In addition to plans, server can be configured with {@code custom} plan which allows freely scalable
  *     CPU cores, memory amount and storage resources.
  * </p>
  * <p>

@@ -135,10 +135,31 @@ class Builder extends ResourceBuilder {
         publicIpv6BandwidthOut(EMPTY_MAP, closure)
     }
 
+    /**
+     * Builder method for a {@link fi.linuxbox.upcloud.resource.Server}.
+     * <p>
+     *     See {@link fi.linuxbox.upcloud.resource.Server} class documentation for information about server creation.
+     * </p>
+     * <p>
+     *     This overload allows passing additional keyword arguments.  See {@link fi.linuxbox.upcloud.core.Resource}
+     *     constructor for information about those.
+     * </p>
+     * @param kwargs Additional keyword arguments for {@link fi.linuxbox.upcloud.core.Resource} constructor.
+     * @param closure Server configuration closure
+     * @return A configured server resource.
+     */
     static Server server(Map kwargs, @DelegatesTo(strategy = DELEGATE_ONLY, value = Server) Closure closure = null) {
         configure(new Server(kwargs), closure)
     }
 
+    /**
+     * Builder method for a {@link fi.linuxbox.upcloud.resource.Server}.
+     * <p>
+     *     See {@link fi.linuxbox.upcloud.resource.Server} class documentation for information about server creation.
+     * </p>
+     * @param closure Server configuration closure
+     * @return A configured server resource.
+     */
     static Server server(@DelegatesTo(strategy = DELEGATE_ONLY, value = Server) Closure closure = null) {
         server(EMPTY_MAP, closure)
     }

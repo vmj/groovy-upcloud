@@ -138,7 +138,7 @@ class UpCloud {
     }
 
     /**
-     * Fetch a of available server configurations.
+     * Fetch a list of available server configurations.
      * <p>
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.ServerSize} instances
      *     in the {@code serverSizes} property.
@@ -199,6 +199,19 @@ class UpCloud {
             this.SESSION.GET("storage", *args)
     }
 
+    /**
+     * Create a resource.
+     * <p>
+     *     For {@link fi.linuxbox.upcloud.resource.Server} creation, a {@code 202 Accepted} response will include an
+     *     instance of {@link fi.linuxbox.upcloud.resource.Server} in the {@code server} property. The
+     *     {@link fi.linuxbox.upcloud.resource.Server#state} property will be {@code maintenance} since it will take
+     *     awhile to create the server.
+     * </p>
+     * @param resource Resource to create.
+     * @param args Request callbacks for the {@code POST} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#create-server" target="_top">UpCloud API docs for POST /server</a>
+     */
     def create(Resource resource, ...args) {
         this.SESSION.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
     }

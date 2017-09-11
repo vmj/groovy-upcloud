@@ -72,13 +72,13 @@ class ResourceBuilder {
 
     /**
      * (Re)configure a resource.
-     * <code>
+     * <pre>
      *     def resource = configure server, {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
      *     }
-     * </code>
+     * </pre>
      *
      * @param resource The existing resource to (re)configure.
      * @param closure A closure that will (re)configure the resource.
