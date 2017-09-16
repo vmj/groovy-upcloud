@@ -12,5 +12,5 @@ dependencies {
 
     // testRuntime relies on its own implementations of HTTP and JSON
     runtimeOnly project(':groovy-upcloud-http-ahc')
-    runtimeOnly project(':groovy-upcloud-json-jackson')
+    runtimeOnly project(':groovy-upcloud-json-gjson')
 }
