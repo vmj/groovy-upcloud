@@ -30,23 +30,23 @@ public interface Headers extends Iterable<Header> {
      * For example, given the following headers:
      * </p>
      *
-     * <pre>
+     * <pre><code class="http">
      *     Set-Cookie: cookie1=a; path=/; domain=localhost
      *     Set-Cookie: cookie2=b; path="/", cookie3=c; domain="localhost"
-     * </pre>
+     * </code></pre>
      *
      * <p>
      * This iterator will allow you to collect all the three cookies as if they were in three separate headers:
      * </p>
      *
-     * <pre>
+     * <pre><code class="groovy">
      *     headers['Set-Cookie'].each { cookie ->
      *         println "Cookie called ${cookie.name} has a value of ${cookie.value}"
      *         cookie.each { param ->
      *             println " - ${param.name} = ${param.value}
      *         }
      *     }
-     * </pre>
+     * </code></pre>
      * <p>
      *     Above would print:
      * </p>

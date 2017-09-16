@@ -31,11 +31,11 @@ trait Server {
      *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
      *     in the {@code server} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     serverApi.load { resp, err ->
      *         assert resp?.server instanceof Server
      *     }
-     * </pre>
+     * </code></pre>
      * <p>
      *     While this operation returns details of a single server, a less details list of all servers can be
      *     requested with the {@link UpCloud#servers(def)} API.
@@ -55,7 +55,7 @@ trait Server {
      *     A {@code 202 Accepted} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
      *     in the {@code server} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     import static fi.linuxbox.upcloud.resource.Builder.*
      *
      *     def web1 = server {
@@ -65,7 +65,7 @@ trait Server {
      *     serverApi.update web1 { resp, err ->
      *         assert resp?.server instanceof Server
      *     }
-     * </pre>
+     * </code></pre>
      * @param resource Updated server resource.
      * @param args Request callbacks for the {@code PUT /server/&#36;&#123;server.uuid&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
@@ -85,11 +85,11 @@ trait Server {
      *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
      *     in the {@code server} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     serverApi.start { resp, err ->
      *         assert resp?.server instanceof Server
      *     }
-     * </pre>
+     * </code></pre>
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/start} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#start-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/start</a>
@@ -116,11 +116,11 @@ trait Server {
      *     {@code started} in the response, and will need to be polled until it changes to {@code stopped} once the
      *     server has shut down.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     serverApi.stop timeout: "60" { resp, err ->
      *         assert resp?.server instanceof Server
      *     }
-     * </pre>
+     * </code></pre>
      * @param args.stop_type Either {@code soft} (default) or {@code hard}.
      * @param args.timeout If, after soft stop, this many seconds pass and the server hasn't stopped, a hard stop is performed.
      * @param args Stop type arguments and request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/stop} call.
@@ -150,11 +150,11 @@ trait Server {
      *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
      *     in the {@code server} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     serverApi.restart timeout: "60", timeout_action: "destroy" { resp, err ->
      *         assert resp?.server instanceof Server
      *     }
-     * </pre>
+     * </code></pre>
      * @param args.stop_type Either {@code soft} (default) or {@code hard}.
      * @param args.timeout Number of seconds to wait for the server to shutdown after ACPI signal, before performing {@code timeout_action}.
      * @param args.timeout_action Either {@code destroy} (hard stop and start) or {@code ignore} (do not restart).

@@ -16,7 +16,7 @@ package fi.linuxbox.upcloud.http.spi;
  * For example:
  * </p>
  *
- * <pre>
+ * <pre><code class="groovy">
  *     session.callback(
  *         server_error: { Resource response ->
  *             // Default callback (for any 5xx HTTP response).
@@ -34,7 +34,7 @@ package fi.linuxbox.upcloud.http.spi;
  *             //    1. non-null Resource and null ERROR, or
  *             //    2. null Resource and non-null ERROR
  *         })
- * </pre>
+ * </code></pre>
  *
  * <p>
  * Because the default callbacks and the additional request callbacks are by definition tied to HTTP response status

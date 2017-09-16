@@ -30,11 +30,11 @@ class UpCloud {
      *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Account} in the
      *     {@code account} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.account { resp, err ->
      *         assert resp?.account instanceof Account
      *     }
-     * </pre>
+     * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /account} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
@@ -50,12 +50,12 @@ class UpCloud {
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Zone} instances in
      *     the {@code prices} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.prices { resp, err ->
      *         assert resp?.prices instanceof List
      *         assert rest.prices.every { it instanceof Zone }
      *     }
-     * </pre>
+     * </code></pre>
      * <p>
      *     When zones are listed via this API, they will <b>not</b> include
      *     {@link fi.linuxbox.upcloud.resource.Zone#id} properties, but {@link fi.linuxbox.upcloud.resource.Zone#name}
@@ -76,12 +76,12 @@ class UpCloud {
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Zone} instances in
      *     the {@code zones} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.zones { resp, err ->
      *         assert resp?.zones instanceof List
      *         assert rest.zones.every { it instanceof Zone }
      *     }
-     * </pre>
+     * </code></pre>
      * <p>
      *     When zones are listed via this API, they will <b>not</b> include
      *     {@link fi.linuxbox.upcloud.resource.Zone#name} properties, but {@link fi.linuxbox.upcloud.resource.Zone#id}
@@ -101,12 +101,12 @@ class UpCloud {
      * <p>
      *     A {@code 200 OK} response will include a list of {@link String}s in the {@code timezones} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.timezones { resp, err ->
      *         assert resp?.timezones instanceof List
      *         assert rest.timezones.every { it instanceof String }
      *     }
-     * </pre>
+     * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /timezone} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
@@ -122,12 +122,12 @@ class UpCloud {
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Plan} instances in
      *     the {@code plans} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.plans { resp, err ->
      *         assert resp?.plans instanceof List
      *         assert rest.plans.every { it instanceof Plan }
      *     }
-     * </pre>
+     * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /plan} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
@@ -143,12 +143,12 @@ class UpCloud {
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.ServerSize} instances
      *     in the {@code serverSizes} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.serverSizes { resp, err ->
      *         assert resp?.serverSizes instanceof List
      *         assert rest.serverSizes.every { it instanceof ServerSize }
      *     }
-     * </pre>
+     * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /server_size} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
@@ -164,12 +164,12 @@ class UpCloud {
      *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Server} instances
      *     in the {@code servers} property.
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     upcloud.servers { resp, err ->
      *         assert resp?.servers instanceof List
      *         assert rest.servers.every { it instanceof Server }
      *     }
-     * </pre>
+     * </code></pre>
      * <p>
      *     Only the servers' most relevant information is returned by this operation. Further details on individual
      *     servers can be requested with the {@link Server#load(def)} API.

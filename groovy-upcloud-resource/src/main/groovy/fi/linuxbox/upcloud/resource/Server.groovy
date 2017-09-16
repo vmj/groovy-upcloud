@@ -23,7 +23,7 @@ import groovy.transform.InheritConstructors
  *     To create a server, the only required properties are {@link #hostname}, {@link #storageDevices},
  *     {@link #title}, and {@link #zone}.
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -34,7 +34,7 @@ import groovy.transform.InheritConstructors
  *         title = 'frontend server 1'
  *         zone = 'fi-hel1'
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     The contents of the {@link #storageDevices} list depends on whether the operating system (OS) disk of the
  *     server is going to be created
@@ -46,7 +46,7 @@ import groovy.transform.InheritConstructors
  * </p>
  * <p>
  *     Regardless, there are a lot of optional properties that can be set.
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -75,7 +75,7 @@ import groovy.transform.InheritConstructors
  *         vnc = 'off'
  *         vncPassword = 'password' // actual default is a random string
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     There are a few properties that can not be set when creating a server: {@link #host}, {@link #license},
  *     {@link #state}, {@link #tags}, {@link #uuid}, {@link #vncHost}, and {@link #vncPort}.  Most of these can not
@@ -99,7 +99,7 @@ import groovy.transform.InheritConstructors
  *     {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API} by specifying a keyword argument
  *     {@code type: "template"}. Below, a storage UUID of a Debian template is chosen.
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -117,7 +117,7 @@ import groovy.transform.InheritConstructors
  *             // specified here, each with action create or attach
  *         ]
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     Templates allows UpCloud to preconfigure the operating system at the time of server initialization.
  *     For example, UpCloud can apply the given {@link #hostname} to the OS configuration, and set the administrative
@@ -127,7 +127,7 @@ import groovy.transform.InheritConstructors
  *     Furthermore, if the template is a Linux template, UpCloud can create an additional user account on the server
  *     if our representation provides the optional {@link #loginUser} property.
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -142,12 +142,12 @@ import groovy.transform.InheritConstructors
  *              ]
  *         }
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     Another Linux template addition is the ability to execute an arbitrary provisioning script by means of the
  *     optional {@link #userData} property.
  * <p>
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -157,7 +157,7 @@ import groovy.transform.InheritConstructors
  *         grep webmaster /etc/* > $HOME/install.log
  *         """
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     See the property descriptions for more details.
  * </p>
@@ -168,7 +168,7 @@ import groovy.transform.InheritConstructors
  *     This use case provides a simple way to create identical servers.  Below, storage UUID of another storage that
  *     belongs to the same account and resides on the same zone is used as the source of the cloning.
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -183,7 +183,7 @@ import groovy.transform.InheritConstructors
  *             // specified here, each with action create or attach
  *         ]
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     This is different from cloning a template, since UpCloud has no way of knowing what's inside the storages, and
  *     no safe way to do any configuration.
@@ -197,7 +197,7 @@ import groovy.transform.InheritConstructors
  *     {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API} by specifying a keyword argument
  *     {@code type: "cdrom"}. Below, a storage UUID of a Debian CD-ROM is chosen.
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     import static fi.linuxbox.upcloud.resource.Builder.*
  *
  *     def web1 = server {
@@ -219,7 +219,7 @@ import groovy.transform.InheritConstructors
  *             // specified here, each with action create or attach
  *         ]
  *     }
- * </pre>
+ * </code></pre>
  * <p>
  *     One would typically use VNC to connect to the server for stepping through the installation.
  * </p>

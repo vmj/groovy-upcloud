@@ -44,12 +44,12 @@ import org.slf4j.*
  *     As said, the HTTP methods are typically called indirectly.  For example, to create a server, one could do as
  *     follows:
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     def server = createMyServerResource()
  *     server.create({ response ->
  *         // Do something with the response object.
  *     })
- * </pre>
+ * </code></pre>
  * <p>
  *     Above <code>server.create(...)</code> will call <code>session.POST(..., Closure&lt;Void&gt; cb)</code>.
  * </p>
@@ -72,7 +72,7 @@ import org.slf4j.*
  *     For example, to handle the case where the user name or password is mistyped, or they get revoked, one might write
  *     the server creation code like this:
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     def server = createMyServerResource()
  *     server.create(
  *         401: { response ->
@@ -81,7 +81,7 @@ import org.slf4j.*
  *         { response ->
  *             // Handle all the other cases here.
  *         })
- * </pre>
+ * </code></pre>
  * <p>
  *     Above code snippet is taking advantage of the way Groovy deals with keyword arguments: it collects them to one
  *     <code>Map</code> and puts that <code>map</code> at the beginning of the argument list before calling the method.
@@ -106,9 +106,9 @@ import org.slf4j.*
  * <p>
  *     For example, the above 401 response can be handled once and for all like this:
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     session.callback 401: { log.fatal("configuration error: the username/password is no good") }
- * </pre>
+ * </code></pre>
  * <p>
  *     From that point on, all the requests made through this <code>Session</code> instance would have that callback in
  *     their set of callbacks.
@@ -135,10 +135,10 @@ import org.slf4j.*
  *     far as I know, at the time of this writing, the UpCloud API never responds with <code>info</code> or
  *     <code>redirect</code> type of status codes.  So, I might recommend adding this to the beginning of scripts:
  * </p>
- * <pre>
+ * <pre><code class="groovy">
  *     session.callback info: { log.fatal("oh my, assumptions are all broken" },
  *                  redirect: { log.fatal("dear dear, but I don't want to go elsewhere") }
- * </pre>
+ * </code></pre>
  * <p>
  *     Of course, in reality, one would log some details from the passed in {@link Resource} instance.
  * </p>
@@ -347,7 +347,7 @@ class Session {
      *     To be exact, the Map argument can exists anywhere, and it is moved to the beginning of the argument list.
      *     This is to allow the Groovy style of keyword arguments:
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     session.GET('some-resource',
      *                 error: {
      *                     // handle error
@@ -355,21 +355,21 @@ class Session {
      *                 {
      *                     // handle all the other cases
      *                 })
-     * </pre>
+     * </code></pre>
      * <p>
      *     This implementation (mainly the move operation of the map) also enables the following higher level APIs:
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     class Server extends Resource {
      *         def create(...args) {
      *             this.SESSION.POST('server', this.wrapper(), *args)
      *         }
      *     }
-     * </pre>
+     * </code></pre>
      * <p>
      *     Which can still be called like this:
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     server.create \
      *         400: {
      *             // handle bad request
@@ -377,11 +377,11 @@ class Session {
      *         {
      *             // handle all the other cases
      *         }
-     * </pre>
+     * </code></pre>
      * <p>
      *     Or like this:
      * </p>
-     * <pre>
+     * <pre><code class="groovy">
      *     server.create(
      *         { response ->
      *         },
@@ -389,7 +389,7 @@ class Session {
      *         },
      *         500: {
      *         })
-     * </pre>
+     * </code></pre>
      *
      * @param name The HTTP request method (verb).
      * @param args The rest of the arguments.

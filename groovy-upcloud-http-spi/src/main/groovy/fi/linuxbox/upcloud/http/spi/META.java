@@ -9,7 +9,7 @@ package fi.linuxbox.upcloud.http.spi;
  * given the following odd response from the server:
  * </p>
  *
- * <pre>
+ * <pre><code class="http">
  *     HTTP1.1 200 OK
  *     Content-Type: application/json; charset=UTF-8
  *
@@ -19,11 +19,11 @@ package fi.linuxbox.upcloud.http.spi;
  *             "error_message": "The value of foo cannot be bar"
  *         }
  *     }
- * </pre>
+ * </code></pre>
  *
  * The application callback will be called with an instance of {@link fi.linuxbox.upcloud.core.Resource} as the first parameter:
  *
- * <pre>
+ * <pre><code class="groovy">
  *     { response ->
  *       assert response instanceof fi.linuxbox.upcloud.core.Resource
  *       assert response.META.status == 200
@@ -32,7 +32,7 @@ package fi.linuxbox.upcloud.http.spi;
  *       assert response.error.errorCode == "BAD_REQUEST"
  *       assert response.error.errorMessage == "The value of foo cannot be bar"
  *     }
- * </pre>
+ * </code></pre>
  */
 public class META {
     private final Integer status;

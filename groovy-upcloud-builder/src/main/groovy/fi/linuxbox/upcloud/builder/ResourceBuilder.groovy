@@ -20,7 +20,7 @@ class ResourceBuilder {
      * <p>
      *     This allows for following code:
      * </p>
-     * <code>
+     * <pre><code class="groovy">
      *     ResourceBuilder builder = new ResourceBuilder()
      *
      *     def dockerImage = builder.dockerImage {
@@ -31,11 +31,11 @@ class ResourceBuilder {
      *
      *     def rancherAgent = builder.RangerAgent()
      *     assert rancherAgent.class.simpleName == 'RancherAgent'
-     * </code>
+     * </code></pre>
      * <p>
      *     This also supports passing the keyword arguments:
      * </p>
-     * <code>
+     * <pre><code class="groovy">
      *     ResourceBuilder builder = new ResourceBuilder()
      *
      *     def dockerImage = builder.dockerImage SESSION: mySession, {
@@ -43,7 +43,7 @@ class ResourceBuilder {
      *     }
      *
      *     def rancherAgent = builder.RangerAgent SESSION: mySession
-     * </code>
+     * </code></pre>
      * <p>
      *     If possible, use the static build method instead.
      * </p>
@@ -72,13 +72,13 @@ class ResourceBuilder {
 
     /**
      * (Re)configure a resource.
-     * <pre>
+     * <pre><code class="groovy">
      *     def resource = configure server, {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
      *     }
-     * </pre>
+     * </code></pre>
      *
      * @param resource The existing resource to (re)configure.
      * @param closure A closure that will (re)configure the resource.
@@ -102,21 +102,21 @@ class ResourceBuilder {
 
     /**
      * Build a new named resource.
-     * <code>
+     * <pre><code class="groovy">
      *     def resource = build 'Server', {
      *         hostname = 'server1.example.com'
      *         coreNumber = '1'
      *         memoryAmount = '2048'
      *     }
-     * </code>
+     * </code></pre>
      * <p>
      *     This also supports passing the keyword arguments:
      * </p>
-     * <code>
+     * <pre><code class="groovy">
      *     def resource = build 'Server', SESSION: mySession, {
      *         ...
      *     }
-     * </code>
+     * </code></pre>
      *
      * @param resourceClassName Type of the resource to create (simple class name, possibly with first letter in lowercase)
      * @param closure Optional keyword arguments and closure that will configure the new resource
