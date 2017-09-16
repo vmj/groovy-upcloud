@@ -1,23 +1,22 @@
 package fi.linuxbox.upcloud.resource
 
+import fi.linuxbox.upcloud.core.Resource
 import groovy.transform.InheritConstructors
 
-import fi.linuxbox.upcloud.core.*
-
 /**
- * Server details.
+ * Server representation.
  * <p>
- *     A list of these, with the most relevant information, is typically fetched from
+ *     A list of servers, with the most relevant information, is typically fetched from
  *     {@link fi.linuxbox.upcloud.api.UpCloud#servers(def) Servers API}.  A more detailed
  *     information about a specific server can be fetched from
- *     {@link fi.linuxbox.upcloud.api.Server#load(def) Server API}.
+ *     {@link fi.linuxbox.upcloud.api.Server#load(def) Server details API}.
  * </p>
  * <p>
  *     When creating a server, one would typically use
- *     {@link fi.linuxbox.upcloud.resource.Builder#server(groovy.lang.Closure)} to define an instance of server, and
- *     then pass it to
- *     {@link fi.linuxbox.upcloud.api.UpCloud#create(fi.linuxbox.upcloud.core.Resource, def)} to actually create the
- *     server.
+ *     {@link fi.linuxbox.upcloud.resource.Builder#server(groovy.lang.Closure) Builder API} to define an instance of
+ *     a server, and then pass it to
+ *     {@link fi.linuxbox.upcloud.api.UpCloud#create(fi.linuxbox.upcloud.core.Resource, def) Resource creation API}
+ *     to actually create the server.
  * </p>
  * <h4>Creating a server</h4>
  * <p>
@@ -37,11 +36,13 @@ import fi.linuxbox.upcloud.core.*
  *     }
  * </pre>
  * <p>
- *     The contents of the {@link #storageDevices} list depends on whether the operating system disk of the server is
- *     going to be created
- *     by <a href="#clone_from_template">cloning from a template</a>,
- *     or by <a href="#clone_from_server">cloning the OS disk of another server</a>,
- *     or by <a href="#install_from_cdrom">creating a blank disk and installing from a CD-ROM</a>.
+ *     The contents of the {@link #storageDevices} list depends on whether the operating system (OS) disk of the
+ *     server is going to be created
+ *     <ul>
+ *       <li>by <a href="#clone_from_template">cloning from an OS template</a>, or</li>
+ *       <li>by <a href="#clone_from_server">cloning the disk(s) of another server</a>, or</li>
+ *       <li>by <a href="#install_from_cdrom">creating a blank disk and installing from a CD-ROM</a>.</li>
+ *     </ul>
  * </p>
  * <p>
  *     Regardless, there are a lot of optional properties that can be set.
@@ -76,20 +77,27 @@ import fi.linuxbox.upcloud.core.*
  *     }
  * </pre>
  * <p>
- *     Note that there are a few properties that can not be set when creating a server: {@link #host},
- *     {@link #license}, {@link #state}, {@link #tags}, {@link #uuid}, {@link #vncHost}, and {@link #vncPort}.
- *     Most of these can not be manipulated from client side at all, but {@link #tags} must first be created via
- *     {@link fi.linuxbox.upcloud.api.UpCloud#create(fi.linuxbox.upcloud.core.Resource, def) Resource creation API}
- *     and then assigned to an existing server via
- *     {@link fi.linuxbox.upcloud.api.Server#addTags(def, def) Server tagging API}.
+ *     There are a few properties that can not be set when creating a server: {@link #host}, {@link #license},
+ *     {@link #state}, {@link #tags}, {@link #uuid}, {@link #vncHost}, and {@link #vncPort}.  Most of these can not
+ *     be manipulated from client side at all.
  * </p>
+ * <p>
+ *     While storages and IP addresses can be created with the server, they can not be modified with the server.
+ *     See {@link Storage} and {@link IpAddress} class documentation for information on how to add and remove those
+ *     resources from an existing server.
+ * </p>
+ * <p>
+ *     Tags can not be created with the server.  See {@link Tag} class documentation for information on how to create
+ *     and manage tags.
+ * </p>
+ *
  * <a name="clone_from_template">&nbsp;</a>
- * <h5>Creating a server from template</h5>
+ * <h5>Creating a server OS disk by cloning from an OS template</h5>
  * <p>
  *     UpCloud provides templates for various operating systems.  To clone the operating system disk from such a
  *     template, the template UUID would be fetched from
  *     {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API} by specifying a keyword argument
- *     {@code type: "template"}. Below, a Debian template is chosen.
+ *     {@code type: "template"}. Below, a storage UUID of a Debian template is chosen.
  * </p>
  * <pre>
  *     import static fi.linuxbox.upcloud.resource.Builder.*
@@ -112,11 +120,12 @@ import fi.linuxbox.upcloud.core.*
  * </pre>
  * <p>
  *     Templates allows UpCloud to preconfigure the operating system at the time of server initialization.
- *     For example, UpCloud can apply the given hostname to the OS configuration, and set the administrative account
- *     password.
+ *     For example, UpCloud can apply the given {@link #hostname} to the OS configuration, and set the administrative
+ *     account password (which would then be delivered according to {@link #passwordDelivery} property).
  * </p>
  * <p>
- *     Furthermore, if the template is a Linux template, UpCloud can create an additional user account on the server.
+ *     Furthermore, if the template is a Linux template, UpCloud can create an additional user account on the server
+ *     if our representation provides the optional {@link #loginUser} property.
  * </p>
  * <pre>
  *     import static fi.linuxbox.upcloud.resource.Builder.*
@@ -135,7 +144,8 @@ import fi.linuxbox.upcloud.core.*
  *     }
  * </pre>
  * <p>
- *     Another Linux template addition is the ability to execute an arbitrary provisioning script.
+ *     Another Linux template addition is the ability to execute an arbitrary provisioning script by means of the
+ *     optional {@link #userData} property.
  * <p>
  * <pre>
  *     import static fi.linuxbox.upcloud.resource.Builder.*
@@ -149,12 +159,14 @@ import fi.linuxbox.upcloud.core.*
  *     }
  * </pre>
  * <p>
- *     Note that the {@link #userData} script will be executed with {@code root} privileges.
+ *     See the property descriptions for more details.
  * </p>
+ *
  * <a name="clone_from_server">&nbsp;</a>
- * <h5>Creating a server by cloning another server</h5>
+ * <h5>Creating server storage devices by cloning the disk(s) of another server</h5>
  * <p>
- *     asd
+ *     This use case provides a simple way to create identical servers.  Below, storage UUID of another storage that
+ *     belongs to the same account and resides on the same zone is used as the source of the cloning.
  * </p>
  * <pre>
  *     import static fi.linuxbox.upcloud.resource.Builder.*
@@ -176,13 +188,14 @@ import fi.linuxbox.upcloud.core.*
  *     This is different from cloning a template, since UpCloud has no way of knowing what's inside the storages, and
  *     no safe way to do any configuration.
  * </p>
+ *
  * <a name="install_from_cdrom">&nbsp;</a>
- * <h5>Creating a server by installing from a CD-ROM</h5>
+ * <h5>Creating a server OS disk by creating a blank disk and installing from a CD-ROM</h5>
  * <p>
  *     UpCloud provides installation CD-ROMs for various operating systems.  To install the operating system from
  *     such a CD-ROM, the CD-ROM UUID would be fetched from
  *     {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API} by specifying a keyword argument
- *     {@code type: "cdrom"}. Below, a Debian CD-ROM is chosen.
+ *     {@code type: "cdrom"}. Below, a storage UUID of a Debian CD-ROM is chosen.
  * </p>
  * <pre>
  *     import static fi.linuxbox.upcloud.resource.Builder.*
@@ -217,7 +230,7 @@ class Server extends Resource {
      * The storage device boot order: {@code disk}, {@code cdrom}, {@code disk,cdrom}, or {@code cdrom,disk}.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code disk}.
+     *     this defaults to {@code disk}.  This can also be modified without stopping the server.
      * </p>
      */
     String bootOrder
@@ -225,9 +238,12 @@ class Server extends Resource {
      * Number of CPU cores on this server.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to a smallest possible value.  If set when creating a server, this has to be a valid
-     *     combination with {@link #memoryAmount} (see {@link fi.linuxbox.upcloud.api.UpCloud#serverSizes(def)}).
-     *     If {@link #plan} is also set, then this must match with the selected plan.
+     *     this defaults to a smallest possible value.  If modified, the server must be stopped.
+     * </p>
+     * <p>
+     *     If set when creating or modifying a server, this has to be a valid combination with {@link #memoryAmount}
+     *     (see {@link fi.linuxbox.upcloud.api.UpCloud#serverSizes(def)}).  If {@link #plan} is also set, then this
+     *     must match with the selected plan.
      * </p>
      */
     String coreNumber
@@ -235,21 +251,33 @@ class Server extends Resource {
      * Whether the firewall is enabled for this server: {@code on} or {@code off}.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code on}.
+     *     this defaults to {@code on}.  This can also be modified without stopping the server.
      * </p>
      */
     String firewall
     /**
      * Host ID that hosts this virtual machine.
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      */
     Long host
     /**
      * Hostname of this server.
      * <p>
-     *     This is available in the server details and list responses, and must be set when creating a server.
+     *     This is available in the server details and list responses.
+     * </p>
+     * <p>
+     *     This must be set when creating a server.  When creating the server OS disk by cloning from a template,
+     *     this hostname will be reflected in the configuration files on the OS disk.  When creating the server in any
+     *     other way, this hostname will <strong>not</strong> automatically be set in the OS configuration.
+     * </p>
+     * <p>
+     *     This hostname can also be modified without stopping the server, but the modification will
+     *     <strong>not</strong> automatically be changed to the configuration files on the OS disk.
+     * </p>
+     * <p>
+     *     This has to look like a DNS hostname or label, but this is not automatically added to any DNS server.
      * </p>
      */
     String hostname
@@ -257,7 +285,10 @@ class Server extends Resource {
      * IP addresses of this server.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to one {@code IPv4} and one {@code IPv6} address (both {@code public}).
+     *     this defaults to one {@code IPv4} and one {@code IPv6} address (both {@code public}).  Modifying these
+     *     after server creation needs to go through
+     *     {@link fi.linuxbox.upcloud.api.UpCloud#create(fi.linuxbox.upcloud.core.Resource, def) Resource creation} and
+     *     {@link fi.linuxbox.upcloud.api.IpAddress IP address management} APIs.
      * </p>
      */
     List<IpAddress> ipAddresses
@@ -267,7 +298,7 @@ class Server extends Resource {
      *     This property is the sum of all the attached storages' license properties.
      * </p>
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      */
     Integer license
@@ -275,9 +306,12 @@ class Server extends Resource {
      * Amount of main memory in megabytes on this server.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to a smallest possible value.  If set when creating a server, this has to be a valid
-     *     combination with {@link #coreNumber} (see {@link fi.linuxbox.upcloud.api.UpCloud#serverSizes(def)}).
-     *     If {@link #plan} is also set, then this must match with the selected plan.
+     *     this defaults to a smallest possible value.  If modified, the server must be stopped.
+     * </p>
+     * <p>
+     *     If set when creating or modifying a server, this has to be a valid combination with {@link #coreNumber}
+     *     (see {@link fi.linuxbox.upcloud.api.UpCloud#serverSizes(def)}).  If {@link #plan} is also set, then this
+     *     must match with the selected plan.
      * </p>
      */
     String memoryAmount
@@ -285,7 +319,7 @@ class Server extends Resource {
      * Type of network interface card on this server: {@code e1000}, {@code virtio}, or {@code rtl8139}.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code e1000}.
+     *     this defaults to {@code e1000}.  This can also be modified without stopping the server.
      * </p>
      */
     String nicModel
@@ -293,16 +327,19 @@ class Server extends Resource {
      * Name of the preconfigured server plan, or {@code custom}, for this server.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code custom}.  If this is set to something else than {@code custom}, this must match
-     *     a valid plan name from {@link fi.linuxbox.upcloud.api.UpCloud#plans(def)}.  If {@link #coreNumber} and/or
-     *     {@link #memoryAmount} are also set, they must match the selected plan.
+     *     this defaults to {@code custom}.  This can also be modified without stopping the server.
+     * </p>
+     * <p>
+     *     If this is set to something else than {@code custom}, this must match a valid plan name from
+     *     {@link fi.linuxbox.upcloud.api.UpCloud#plans(def)}.  If {@link #coreNumber} and/or {@link #memoryAmount}
+     *     are also set, they must match the selected plan.
      * </p>
      */
     String plan
     /**
      * Server state.
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#server-states" target="_top">UpCloud API docs for server states</a>
      */
@@ -311,14 +348,16 @@ class Server extends Resource {
      * Storage devices attached to this server.
      * <p>
      *     This is available in the server details response, and must be set to 1-4 storage devices when creating a
-     *     server.
+     *     server.  Modifying these after server creation needs to go through
+     *     {@link fi.linuxbox.upcloud.api.UpCloud#create(fi.linuxbox.upcloud.core.Resource, def) Resource creation} and
+     *     {@link fi.linuxbox.upcloud.api.Storage Storage management} APIs.
      * </p>
      */
     List<StorageDevice> storageDevices
     /**
      * Tags assigned to this server.
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      */
     List<String> tags
@@ -326,8 +365,10 @@ class Server extends Resource {
      * The hardware clock timezone for this server.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code UTC}.  If set, must be a valid timezone identifier (see
-     *     {@link fi.linuxbox.upcloud.api.UpCloud#timezones(def)}).
+     *     this defaults to {@code UTC}.  This can also be modified without stopping the server.
+     * </p>
+     * <p>
+     *     If set, must be a valid timezone identifier (see {@link fi.linuxbox.upcloud.api.UpCloud#timezones(def)}).
      * </p>
      */
     String timezone
@@ -335,13 +376,14 @@ class Server extends Resource {
      * Title of this server.
      * <p>
      *     This is available in the server details response, and must be set when creating a server.
+     *     This can also be modified without stopping the server.
      * </p>
      */
     String title
     /**
      * Unique identifier of this server.
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      */
     String uuid
@@ -349,7 +391,7 @@ class Server extends Resource {
      * Type of video card attached to this server: {@code vga} or {@code cirrus}.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code vga}.
+     *     this defaults to {@code vga}.  This can also be modified without stopping the server.
      * </p>
      */
     String videoModel
@@ -357,14 +399,14 @@ class Server extends Resource {
      * Whether VNC is enabled on this server: {@code on} or {@code off}.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to {@code off}.
+     *     this defaults to {@code off}.  This can also be modified without stopping the server.
      * </p>
      */
     String vnc
     /**
      * Hostname where VNC is available for this server.
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      */
     String vncHost
@@ -372,15 +414,17 @@ class Server extends Resource {
      * VNC password.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to a randomly generated string.  If set, must be 8-32 alphanumeric characters
-     *     ({@code a-zA-Z0-9}).
+     *     this defaults to a randomly generated string.  This can also be modified without stopping the server.
+     * </p>
+     * <p>
+     *     If set, must be 8-32 alphanumeric characters ({@code a-zA-Z0-9}).
      * </p>
      */
     String vncPassword
     /**
      * TCP port number on {@link #vncHost} where the VNC server is listening for this server.
      * <p>
-     *     This is available in the server details response, and can not be set when creating a server.
+     *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
      */
     String vncPort
@@ -388,7 +432,7 @@ class Server extends Resource {
      * Zone ID where this server is located.
      * <p>
      *     This is available in the server details response, and must be set when creating a server.
-     *     See {@link fi.linuxbox.upcloud.api.UpCloud#zones(def)}.
+     *     See {@link fi.linuxbox.upcloud.api.UpCloud#zones(def)}.  This can not be modified.
      * </p>
      */
     String zone
@@ -396,7 +440,7 @@ class Server extends Resource {
      * Administrative account to create.
      * <p>
      *     This can be set when creating a server from template.  This is not available in server detail or list
-     *     responses.
+     *     responses, and can not be modified after server creation.
      * </p>
      */
     LoginUser loginUser
@@ -404,7 +448,7 @@ class Server extends Resource {
      * Delivery method for administrative accounts' password: {@code none}, {@code email}, or {@code sms}.
      * <p>
      *     This can optionally be set when creating a server, and defaults to {@code email}.
-     *     This is not available in server detail or list responses.
+     *     This is not available in server detail or list responses, and can not be modified after server creation.
      * </p>
      */
     String passwordDelivery
@@ -415,7 +459,7 @@ class Server extends Resource {
      *     High Availability -environment.
      * </p>
      * <p>
-     *     This is not available in the server detail or list response.
+     *     This is not available in the server detail or list response, and can not be modified after server creation.
      * </p>
      */
     String avoidHost
@@ -423,7 +467,8 @@ class Server extends Resource {
      * A valid URL or the contents of a Bash script.
      * <p>
      *     When creating a server from a Linux template, this can be set and it will be executed with root privileges
-     *     upon server initialization.  Pay special attention to verifying it.
+     *     upon server initialization.  Pay special attention to verifying it.  This has no meaning after server
+     *     creation.
      * </p>
      */
     String userData

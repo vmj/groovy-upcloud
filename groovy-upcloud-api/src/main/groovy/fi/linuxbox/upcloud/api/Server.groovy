@@ -49,6 +49,28 @@ trait Server {
         this.SESSION.GET(serverPath(), *args)
     }
 
+    /**
+     * Modifies the configuration of an existing server.
+     * <p>
+     *     A {@code 202 Accepted} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre>
+     *     import static fi.linuxbox.upcloud.resource.Builder.*
+     *
+     *     def web1 = server {
+     *         firewall = "on"
+     *     }
+     *
+     *     serverApi.update web1 { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </pre>
+     * @param resource Updated server resource.
+     * @param args Request callbacks for the {@code PUT /server/&#36;&#123;server.uuid&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#modify-server" target="_top">UpCloud API docs for PUT /server/&#36;{server.uuid}</a>
+     */
     def update(Resource resource, ...args) {
         this.SESSION.PUT(serverPath(), resource.wrapper(), *args)
     }
