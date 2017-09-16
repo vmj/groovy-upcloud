@@ -23,6 +23,18 @@ dependencies {
     implementation "org.slf4j:slf4j-api:${versions.slf4j}"
 }
 
+// Augment groovydoc with highlightjs
+task highlightjs(type: Copy) {
+    from "${projectDir}/../gradle/highlightjs/highlight.pack.js"
+    into "${buildDir}/docs/groovydoc/highlightjs"
+}
+task highlightstyle(type: Copy) {
+    from "${projectDir}/../gradle/highlightjs/styles/foundation.css"
+    into "${buildDir}/docs/groovydoc/highlightjs/styles"
+}
+groovydoc.dependsOn highlightjs
+groovydoc.dependsOn highlightstyle
+
 groovydoc {
     // Java SE 8 APIs
     link("https://docs.oracle.com/javase/8/docs/api/", "java.io", "java.lang", "java.util")
@@ -38,6 +50,15 @@ groovydoc {
         def packageName = "fi.linuxbox.upcloud.${it.replace('-', '.')}"
         link(onlineUrl, packageName)
     }
+
+    // Add highlightjs to every page footer
+    //def localUrl = "file:///Users/vmj/src/groovy-upcloud/${project.name}/build/docs/groovydoc/"
+    def onlineUrl = "http://www.javadoc.io/page/${project.group}/${project.name}/${project.version}/"
+    footer = """
+<link rel="stylesheet" href="${onlineUrl}/highlightjs/styles/foundation.css">
+<script src="${onlineUrl}/highlightjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+"""
 }
 
 modifyPom {
