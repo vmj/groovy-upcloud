@@ -444,7 +444,11 @@ class ResponseFunctionalSpec extends Specification {
             {
               "storage": {
                 "access": "private",
-                "backup_rule": "",
+                "backup_rule": {
+                  "interval": "daily",
+                  "time": "0430",
+                  "retention": "365"
+                },
                 "backups": {
                   "backup": []
                 },
@@ -468,6 +472,7 @@ class ResponseFunctionalSpec extends Specification {
         then:
         resp?.storage instanceof Storage
         resp.storage.access == "private"
+        resp.storage.backupRule.time == '0430'
         resp.storage.backups instanceof List
         resp.storage.backups.isEmpty()
         resp.storage.servers instanceof List

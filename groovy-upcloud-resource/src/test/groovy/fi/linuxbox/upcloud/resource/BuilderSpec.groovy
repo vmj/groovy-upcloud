@@ -46,6 +46,38 @@ class BuilderSpec extends Specification {
         account instanceof Account
     }
 
+    def "backupRule builder"() {
+        when:
+        def backupRule = backupRule {}
+
+        then:
+        backupRule instanceof BackupRule
+    }
+
+    def "backupRule without config"() {
+        when:
+        def backupRule = backupRule()
+
+        then:
+        backupRule instanceof BackupRule
+    }
+
+    def "backupRule with kwargs and config"() {
+        when:
+        def backupRule = backupRule SESSION: session, {}
+
+        then:
+        backupRule instanceof BackupRule
+    }
+
+    def "backupRule with kwargs and no config"() {
+        when:
+        def backupRule = backupRule SESSION: session
+
+        then:
+        backupRule instanceof BackupRule
+    }
+
     def "ioRequestBackup builder"() {
         when:
         def ioRequestBackup = ioRequestBackup {}

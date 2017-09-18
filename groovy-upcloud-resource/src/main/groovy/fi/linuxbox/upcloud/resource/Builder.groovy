@@ -20,6 +20,15 @@ class Builder extends ResourceBuilder {
         account(EMPTY_MAP, closure)
     }
 
+    static BackupRule backupRule(Map kwargs,
+                                 @DelegatesTo(strategy = DELEGATE_ONLY, value = BackupRule) Closure closure = null) {
+        configure(new BackupRule(kwargs), closure)
+    }
+
+    static BackupRule backupRule(@DelegatesTo(strategy = DELEGATE_ONLY, value = BackupRule) Closure closure = null) {
+        backupRule(EMPTY_MAP, closure)
+    }
+
     static Firewall firewall(Map kwargs, @DelegatesTo(strategy = DELEGATE_ONLY, value = Firewall) Closure closure = null) {
         configure(new Firewall(kwargs), closure)
     }

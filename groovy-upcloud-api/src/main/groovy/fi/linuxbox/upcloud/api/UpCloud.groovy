@@ -239,10 +239,15 @@ class UpCloud {
      *     {@link fi.linuxbox.upcloud.resource.Server#state} property will be {@code maintenance} since it will take
      *     awhile to create the server.
      * </p>
+     * <p>
+     *     For {@link fi.linuxbox.upcloud.resource.Storage} creation, a {@code 201 Created} response will include an
+     *     instance of {@link fi.linuxbox.upcloud.resource.Storage} in the {@code storage} property.
+     * </p>
      * @param resource Resource to create.
      * @param args Request callbacks for the {@code POST} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#create-server" target="_top">UpCloud API docs for POST /server</a>
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#create-storage" target="_top">UpCloud API docs for POST /storage</a>
      */
     def create(Resource resource, ...args) {
         this.SESSION.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
