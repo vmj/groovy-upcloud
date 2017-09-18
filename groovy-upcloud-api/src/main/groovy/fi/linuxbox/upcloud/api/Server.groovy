@@ -75,6 +75,21 @@ trait Server {
         this.SESSION.PUT(serverPath(), resource.wrapper(), *args)
     }
 
+    /**
+     * Deletes an existing server.
+     * <p>
+     *     A {@code 204 No Content} response will signify that the server is deleted.
+     * </p>
+     * <p>
+     *     The {@link fi.linuxbox.upcloud.resource.Server#state} of the server must be {@code stopped}.
+     * <p>
+     * <p>
+     *     The storage devices of the server are automatically detached, and IP addresses are released.
+     * </p>
+     * @param args Request callbacks for the {@code DELETE /server/&#36;&#123;server.uuid&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#delete-server" target="_top">UpCloud API docs for DELETE /server/&#36;{server.uuid}</a>
+     */
     def delete(...args) {
         this.SESSION.DELETE(serverPath(), *args)
     }
