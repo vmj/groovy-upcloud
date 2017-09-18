@@ -438,4 +438,41 @@ class ResponseFunctionalSpec extends Specification {
         resp.storages[1].tier == 'maxiops'
     }
 
+    def "storage JSON to Storage"() {
+        when:
+        def resp = load("""
+            {
+              "storage": {
+                "access": "private",
+                "backup_rule": "",
+                "backups": {
+                  "backup": []
+                },
+                "license": 0,
+                "servers": {
+                  "server": [
+                    "00798b85-efdc-41ca-8021-f6ef457b8531"
+                  ]
+                },
+                "size": 10,
+                "state": "online",
+                "tier": "maxiops",
+                "title": "Operating system disk",
+                "type": "normal",
+                "uuid": "01d4fcd4-e446-433b-8a9c-551a1284952e",
+                "zone": "fi-hel1"
+              }
+            }
+            """)
+
+        then:
+        resp?.storage instanceof Storage
+        resp.storage.access == "private"
+        resp.storage.backups instanceof List
+        resp.storage.backups.isEmpty()
+        resp.storage.servers instanceof List
+        resp.storage.servers.every { it instanceof String }
+        resp.storage.servers[0] == '00798b85-efdc-41ca-8021-f6ef457b8531'
+    }
+
 }

@@ -212,12 +212,16 @@ class UpCloud {
      *     upcloud.storages type: "template" { resp, err ->
      *     }
      * </code></pre>
+     * <p>
+     *     Only the storages' most relevant information is returned by this operation. Further details on individual
+     *     storage can be requested with the {@link Storage#load(def)} API.
+     * </p>
      *
      * @param args.type Optional filter for storages: {@code public}, {@code private}, {@code normal}, {@code backup},
      * {@code cdrom}, {@code template}, or {@code favorite}.
-     * @param args Request callbacks for the {@code GET /server} call.
+     * @param args Request callbacks for the {@code GET /storage} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#list-servers" target="_top">UpCloud API docs for GET /server</a>
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#list-storages" target="_top">UpCloud API docs for GET /storage</a>
      */
     def storages(...args) {
         def type = args.find { it instanceof Map } ?.remove('type')

@@ -24,6 +24,26 @@ import fi.linuxbox.upcloud.core.*
  */
 trait Storage {
 
+    /**
+     * Fetch detailed information about a specific {@link fi.linuxbox.upcloud.resource.Storage}.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Storage}
+     *     in the {@code storage} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     storageApi.load { resp, err ->
+     *         assert resp?.storage instanceof Storage
+     *     }
+     * </code></pre>
+     * <p>
+     *     While this operation returns details of a single storage, a less details list of all storages can be
+     *     requested with the {@link UpCloud#storages(def)} API.
+     * </p>
+     *
+     * @param args Request callbacks for the {@code GET /storage/&#36;&#123;storage.uuid&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#get-storage-details" target="_top">UpCloud API docs for GET /storage/&#36;{storage.uuid}</a>
+     */
     def load(...args) {
         this.SESSION.GET(storagePath(), *args)
     }
