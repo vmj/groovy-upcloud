@@ -8,6 +8,7 @@ import fi.linuxbox.upcloud.resource.Plan
 import fi.linuxbox.upcloud.resource.Server
 import fi.linuxbox.upcloud.resource.ServerPlan_2xCPU_2GB
 import fi.linuxbox.upcloud.resource.ServerSize
+import fi.linuxbox.upcloud.resource.Storage
 import fi.linuxbox.upcloud.resource.StorageDevice
 import fi.linuxbox.upcloud.resource.Zone
 import spock.lang.Specification
@@ -395,4 +396,46 @@ class ResponseFunctionalSpec extends Specification {
         resp.server.tags.every { it instanceof String }
         resp.server.tags[1] == 'Ubuntu'
     }
+
+    def "storages JSON to Storage list"() {
+        when:
+        def resp = load("""
+            {
+              "storages": {
+                "storage": [
+                  {
+                    "access": "private",
+                    "license": 0,
+                    "size": 10,
+                    "state": "online",
+                    "tier": "hdd",
+                    "title": "Operating system disk",
+                    "type": "normal",
+                    "uuid": "01eff7ad-168e-413e-83b0-054f6a28fa23",
+                    "zone": "uk-lon1",
+                  },
+                  {
+                    "access": "private",
+                    "license": 0,
+                    "part_of_plan": "yes",
+                    "size": 50,
+                    "state": "online",
+                    "tier": "maxiops",
+                    "title": "Databases",
+                    "type": "normal",
+                    "uuid": "01f3286c-a5ea-4670-8121-d0b9767d625b",
+                    "zone": "fi-hel1"
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.storages instanceof List
+        resp.storages.every { it instanceof Storage }
+        resp.storages[0].size == 10
+        resp.storages[1].tier == 'maxiops'
+    }
+
 }

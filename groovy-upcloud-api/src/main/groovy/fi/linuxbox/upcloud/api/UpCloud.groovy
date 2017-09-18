@@ -191,6 +191,34 @@ class UpCloud {
         this.SESSION.GET('tag', *args)
     }
 
+    /**
+     * Fetch a list of all storages.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Storage} instances
+     *     in the {@code storages} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     upcloud.storages { resp, err ->
+     *         assert resp?.storages instanceof List
+     *         assert resp.storages.every { it instanceof Storage }
+     *     }
+     * </code></pre>
+     * <p>
+     *     A keyword argument {@code type} can be used to narrow down the list. The type can be access type
+     *     ({@code public} or {@code private}), or storage type ({@code normal}, {@code backup}, {@code cdrom}, or
+     *     {@code template}), or {@code favorite}.
+     * </p>
+     * <pre><code class="groovy">
+     *     upcloud.storages type: "template" { resp, err ->
+     *     }
+     * </code></pre>
+     *
+     * @param args.type Optional filter for storages: {@code public}, {@code private}, {@code normal}, {@code backup},
+     * {@code cdrom}, {@code template}, or {@code favorite}.
+     * @param args Request callbacks for the {@code GET /server} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#list-servers" target="_top">UpCloud API docs for GET /server</a>
+     */
     def storages(...args) {
         def type = args.find { it instanceof Map } ?.remove('type')
         if (type)

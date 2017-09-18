@@ -592,6 +592,38 @@ class BuilderSpec extends Specification {
         serverSize instanceof ServerSize
     }
 
+    def "storage builder"() {
+        when:
+        def storage = storage {}
+
+        then:
+        storage instanceof Storage
+    }
+
+    def "storage without config"() {
+        when:
+        def storage = storage()
+
+        then:
+        storage instanceof Storage
+    }
+
+    def "storage with kwargs and config"() {
+        when:
+        def storage = storage SESSION: session, {}
+
+        then:
+        storage instanceof Storage
+    }
+
+    def "storage with kwargs and no config"() {
+        when:
+        def storage = storage SESSION: session
+
+        then:
+        storage instanceof Storage
+    }
+
     def "storageBackup builder"() {
         when:
         def storageBackup = storageBackup {}

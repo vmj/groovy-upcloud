@@ -212,6 +212,15 @@ class Builder extends ResourceBuilder {
         serverSize(EMPTY_MAP, closure)
     }
 
+    static Storage storage(Map kwargs,
+                           @DelegatesTo(strategy = DELEGATE_ONLY, value = Storage) Closure closure = null) {
+        configure(new Storage(kwargs), closure)
+    }
+
+    static Storage storage(@DelegatesTo(strategy = DELEGATE_ONLY, value = Storage) Closure closure = null) {
+        storage(EMPTY_MAP, closure)
+    }
+
     static StorageBackup storageBackup(Map kwargs,
                                        @DelegatesTo(strategy = DELEGATE_ONLY, value = StorageBackup) Closure closure = null) {
         configure(new StorageBackup(kwargs), closure)
