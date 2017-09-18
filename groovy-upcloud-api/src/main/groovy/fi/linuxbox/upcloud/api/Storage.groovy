@@ -48,6 +48,29 @@ trait Storage {
         this.SESSION.GET(storagePath(), *args)
     }
 
+    /**
+     * Modifies the configuration of an existing storage.
+     * <p>
+     *     A {@code 202 Accepted} response will include an instance of {@link fi.linuxbox.upcloud.resource.Storage}
+     *     in the {@code storage} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.*
+     *
+     *     def staticFiles = storage {
+     *         size = 20
+     *         title = 'A larger storage'
+     *     }
+     *
+     *     storageApi.update staticFiles { resp, err ->
+     *         assert resp?.storage instanceof Storage
+     *     }
+     * </code></pre>
+     * @param resource Updated storage resource.
+     * @param args Request callbacks for the {@code PUT /storage/&#36;&#123;storage.uuid&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#modify-storage" target="_top">UpCloud API docs for PUT /storage/&#36;{storage.uuid}</a>
+     */
     def update(Resource resource, ...args) {
         this.SESSION.PUT(storagePath(), resource.wrapper(), *args)
     }
