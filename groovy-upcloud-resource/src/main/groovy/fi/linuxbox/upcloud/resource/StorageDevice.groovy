@@ -9,14 +9,21 @@ import groovy.transform.InheritConstructors
  *     A list of these is available in the {@link Server#storageDevices} property when fetching the detailed server
  *     information from the {@link fi.linuxbox.upcloud.api.Server#load(def)} API.
  * </p>
+ * <p>
+ *     When attaching a normal storage or a CD-ROM device to a server, one would typically use
+ *     {@link fi.linuxbox.upcloud.resource.Builder#storageDevice(groovy.lang.Closure) Builder API} to define the
+ *     storage device, and then
+ *     {@link fi.linuxbox.upcloud.api.Server#attach(fi.linuxbox.upcloud.core.Resource, def) attach} that device to a
+ *     server.
+ * </p>
  */
 @InheritConstructors
 class StorageDevice extends Resource {
     /**
      * Hardware address where the storage is attached on the server.
      * <p>
-     *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to next available slot.
+     *     This is available in the server details response, and can optionally be set when creating a server or when
+     *     attaching a new storage device to a server, where this defaults to next available slot.
      * </p>
      * <p>
      *     Possible values are:
@@ -48,7 +55,8 @@ class StorageDevice extends Resource {
     /**
      * Whether the storage is included in fixed plan price of the server ({@code yes}).
      * <p>
-     *     This is available on a server details response. This can not be set when creating a server.
+     *     This is available on a server details response. This can not be set when creating a server or when
+     *     attaching a new storage device to a server.
      * </p>
      */
     String partOfPlan
@@ -63,13 +71,19 @@ class StorageDevice extends Resource {
      *     to the template or server disk that is to be cloned.  The new clone UUID will be returned in the response.
      *     For attaching, this would correspond to the CD-ROM UUID.
      * </p>
+     * <p>
+     *     When attaching a new storage device to a server, and using {@link #type} of {@code disk}, this must be
+     *     provided and corresponds to the storage that is to be attached.  When attaching a CD-ROM device
+     *     ({@link #type} {@code cdrom}), this is optional.
+     * </p>
      */
     String storage
     /**
      * Storage size in gigabytes.
      * <p>
      *     This is available on a server details response. When creating a server from template or by installing it
-     *     from a CD-ROM, use {@link #size} property instead.
+     *     from a CD-ROM, use {@link #size} property instead.  This can not be used when attaching a storage to a
+     *     server.
      * </p>
      */
     Integer storageSize
@@ -77,7 +91,7 @@ class StorageDevice extends Resource {
      * Storage title.
      * <p>
      *     This is available on a server details response. When creating a server, use {@link #title} property
-     *     instead.
+     *     instead.  This can not be used when attaching a storage to a server.
      * </p>
      */
     String storageTitle
@@ -86,7 +100,8 @@ class StorageDevice extends Resource {
      * <p>
      *     This is available on a server details response. This should not be used when creating a server from
      *     template or by cloning another server.  When creating a server by installing it from a CD-ROM, this
-     *     can be set to {@code cdrom} on the storage device that attaches the CD-ROM.
+     *     can be set to {@code cdrom} on the storage device that attaches the CD-ROM.  When attaching a new storage
+     *     device to a server, this can be specified and defaults to {@code disk}.
      * </p>
      */
     String type
@@ -103,13 +118,17 @@ class StorageDevice extends Resource {
      *     this set to {@code create} (and no {@link #storage}), and another storage device (the CD-ROM) should have
      *     this set to {@code attach} (and {@link #storage} set to the {@link Storage#uuid} of the CD-ROM}).
      * </p>
+     * <p>
+     *     This can not be used when attaching a storage device to a server.
+     * </p>
      */
     String action
     /**
      * Title of the created storage.
      * <p>
      *     This can optionally be set when creating storage(s) for a new server (where {@code action} is either
-     *     {@code clone} or {@code create}), instead of {@link #storageTitle}.
+     *     {@code clone} or {@code create}), instead of {@link #storageTitle}.  This can not be used when attaching
+     *     a storage device to a server.
      * </p>
      */
     String title
@@ -120,6 +139,9 @@ class StorageDevice extends Resource {
      *     size.  When creating a new storage, this must be set.  The newly created storage size will be returned in
      *     the {@link #storageSize} property in the server details response.
      * </p>
+     * <p>
+     *     This can not be used when attaching a storage device to a server.
+     * </p>
      */
     Integer size // FIXME: String in "create from CD-ROM" use case; does it matter?
     /**
@@ -127,6 +149,9 @@ class StorageDevice extends Resource {
      * <p>
      *     This can optionally be set when creating storage(s) for a new server (where {@code action} is either
      *     {@code clone} or {@code create}), and defaults to {@code hdd}.
+     * </p>
+     * <p>
+     *     This can not be used when attaching a storage device to a server.
      * </p>
      */
     String tier

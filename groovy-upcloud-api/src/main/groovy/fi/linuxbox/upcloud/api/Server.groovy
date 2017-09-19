@@ -183,6 +183,38 @@ trait Server {
         this.SESSION.POST(cmdPath('restart'), restart, *args)
     }
 
+    /**
+     * Attaches a storage as a device to a server.
+     * <p>
+     *     SCSI and virtio devices can be attached to a running server, but for IDE devices the server must be
+     *     stopped.
+     * </p>
+     * <p>
+     *     When attaching a CD-ROM device (with or without a storage), the server must be stopped.  Storage can then
+     *     be {@link #insert(fi.linuxbox.upcloud.core.Resource, def) inserted} and {@link #eject(def) ejected} while
+     *     the server is running.
+     * </p>
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.storageDevice
+     *
+     *     def dataDisk = storageDevice {
+     *         type = 'disk'
+     *         address = 'scsi:0:0'
+     *         storage = '00798b85-efdc-41ca-8021-f6ef457b8531'
+     *     }
+     *     serverApi.attach dataDisk, { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </code></pre>
+     * @param storageDevice Storage device to attach
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/storage/attach} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#attach-storage" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/storage/attach</a>
+     */
     def attach(Resource storageDevice, ...args) {
         this.SESSION.POST(storagePath('attach'), storageDevice.wrapper(), *args)
     }
