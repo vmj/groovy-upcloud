@@ -79,6 +79,30 @@ trait Storage {
         this.SESSION.DELETE(storagePath(), *args)
     }
 
+    /**
+     * Creates an exact copy of an existing storage resource.
+     * <p>
+     *     A {@code 201 Created} response will include an instance of {@link fi.linuxbox.upcloud.resource.Storage}
+     *     in the {@code storage} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.*
+     *
+     *     def cloneOfOsDisk = storage {
+     *         zone = 'fi-hel1'
+     *         tier = 'maxiops'
+     *         title = 'Clone of operating system disk'
+     *     }
+     *
+     *     storageApi.clone cloneOfOsDisk { resp, err ->
+     *         assert resp?.storage instanceof Storage
+     *     }
+     * </code></pre>
+     * @param resource Specification of the clone
+     * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/clone} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#clone-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/clone</a>
+     */
     def clone(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('clone'), resource.wrapper(), *args)
     }
