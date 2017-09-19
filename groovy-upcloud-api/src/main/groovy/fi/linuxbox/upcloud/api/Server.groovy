@@ -219,6 +219,30 @@ trait Server {
         this.SESSION.POST(storagePath('attach'), storageDevice.wrapper(), *args)
     }
 
+    /**
+     * Detaches a storage device from a server.
+     * <p>
+     *     For IDE devices, the server must be stopped.
+     * </p>
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.storageDevice
+     *
+     *     def dataDisk = storageDevice {
+     *         address = 'scsi:0:0'
+     *     }
+     *     serverApi.detach dataDisk, { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </code></pre>
+     * @param storageDevice Storage device to detach
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/storage/detach} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#detach-storage" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/storage/detach</a>
+     */
     def detach(Resource storageDevice, ...args) {
         this.SESSION.POST(storagePath('detach'), storageDevice.wrapper(), *args)
     }
