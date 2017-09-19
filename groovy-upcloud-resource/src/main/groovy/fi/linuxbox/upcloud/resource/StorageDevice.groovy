@@ -14,9 +14,16 @@ import groovy.transform.InheritConstructors
  *     {@link fi.linuxbox.upcloud.resource.Builder#storageDevice(groovy.lang.Closure) Builder API} to define the
  *     storage device, and then either
  *     {@link fi.linuxbox.upcloud.api.Server#attach(fi.linuxbox.upcloud.core.Resource, def) attach} or
- *     {@link fi.linuxbox.upcloud.api.Server#detach(fi.linuxbox.upcloud.core.Resource, def) attach} that device
+ *     {@link fi.linuxbox.upcloud.api.Server#detach(fi.linuxbox.upcloud.core.Resource, def) detach} that device
  *     to/from a server.
  * </p>
+ * <p>
+ *     Similarly, when inserting or ejecting a CD-ROM into/from the CD-ROM device, one would typically use
+ *     {@link fi.linuxbox.upcloud.resource.Builder#storageDevice(groovy.lang.Closure) Builder API} to define the
+ *     storage device, and then either
+ *     {@link fi.linuxbox.upcloud.api.Server#insert(fi.linuxbox.upcloud.core.Resource, def) insert} or
+ *     {@link fi.linuxbox.upcloud.api.Server#eject(fi.linuxbox.upcloud.core.Resource, def) eject} that device
+ *     to/from a server.
  */
 @InheritConstructors
 class StorageDevice extends Resource {
@@ -25,7 +32,8 @@ class StorageDevice extends Resource {
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server or when
      *     attaching a new storage device to a server, where this defaults to next available slot.  When detaching
-     *     a storage device from a server, this is the only allowed property.
+     *     a storage device from a server, this is the only allowed property.  This can not be specified when
+     *     inserting a CD-ROM to a CD-ROM device.
      * </p>
      * <p>
      *     Possible values are:
@@ -58,7 +66,8 @@ class StorageDevice extends Resource {
      * Whether the storage is included in fixed plan price of the server ({@code yes}).
      * <p>
      *     This is available on a server details response. This can not be set when creating a server or when
-     *     attaching or detaching a storage device from a server.
+     *     attaching or detaching a storage device from a server.  This can not be specified when
+     *     inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     String partOfPlan
@@ -79,6 +88,9 @@ class StorageDevice extends Resource {
      *     ({@link #type} {@code cdrom}), this is optional.  This can not be specified when detaching a storage device
      *     from a server.
      * </p>
+     * <p>
+     *     When inserting a storage as a CD-ROM to a CD-ROM device, this is the only allowed property.
+     * </p>
      */
     String storage
     /**
@@ -86,7 +98,7 @@ class StorageDevice extends Resource {
      * <p>
      *     This is available on a server details response. When creating a server from template or by installing it
      *     from a CD-ROM, use {@link #size} property instead.  This can not be used when attaching or detaching
-     *     storage from a server.
+     *     storage from a server.  This can not be specified when inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     Integer storageSize
@@ -94,7 +106,8 @@ class StorageDevice extends Resource {
      * Storage title.
      * <p>
      *     This is available on a server details response. When creating a server, use {@link #title} property
-     *     instead.  This can not be used when attaching or detaching storage from a server.
+     *     instead.  This can not be used when attaching or detaching storage from a server.  This can not be
+     *     specified when inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     String storageTitle
@@ -105,7 +118,7 @@ class StorageDevice extends Resource {
      *     template or by cloning another server.  When creating a server by installing it from a CD-ROM, this
      *     can be set to {@code cdrom} on the storage device that attaches the CD-ROM.  When attaching a new storage
      *     device to a server, this can be specified and defaults to {@code disk}.  This can not be specified when
-     *     detaching a storage from a server.
+     *     detaching a storage from a server.  This can not be specified when inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     String type
@@ -123,7 +136,8 @@ class StorageDevice extends Resource {
      *     this set to {@code attach} (and {@link #storage} set to the {@link Storage#uuid} of the CD-ROM}).
      * </p>
      * <p>
-     *     This can not be used when attaching or detaching storage device from a server.
+     *     This can not be used when attaching or detaching storage device from a server.  This can not be specified
+     *     when inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     String action
@@ -132,7 +146,8 @@ class StorageDevice extends Resource {
      * <p>
      *     This can optionally be set when creating storage(s) for a new server (where {@code action} is either
      *     {@code clone} or {@code create}), instead of {@link #storageTitle}.  This can not be used when attaching
-     *     or detaching storage device from a server.
+     *     or detaching storage device from a server.  This can not be specified when inserting a CD-ROM to a CD-ROM
+     *     device.
      * </p>
      */
     String title
@@ -144,7 +159,8 @@ class StorageDevice extends Resource {
      *     the {@link #storageSize} property in the server details response.
      * </p>
      * <p>
-     *     This can not be used when attaching or detaching storage device from a server.
+     *     This can not be used when attaching or detaching storage device from a server.  This can not be specified
+     *     when inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     Integer size // FIXME: String in "create from CD-ROM" use case; does it matter?
@@ -155,7 +171,8 @@ class StorageDevice extends Resource {
      *     {@code clone} or {@code create}), and defaults to {@code hdd}.
      * </p>
      * <p>
-     *     This can not be used when attaching or detaching storage device from a server.
+     *     This can not be used when attaching or detaching storage device from a server.  This can not be specified
+     *     when inserting a CD-ROM to a CD-ROM device.
      * </p>
      */
     String tier

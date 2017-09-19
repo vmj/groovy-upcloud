@@ -247,10 +247,48 @@ trait Server {
         this.SESSION.POST(storagePath('detach'), storageDevice.wrapper(), *args)
     }
 
+    /**
+     * Loads a storage as a CD-ROM in the CD-ROM device of a server.
+     * <p>
+     *     This requires that the CD-ROM device is already
+     *     {@link #insert(fi.linuxbox.upcloud.core.Resource, def) attached} to the server.
+     * </p>
+     * <p>
+     *     Storages of type {@code normal}, {@code cdrom}, and {@code backup} can be inserted as CD-ROMs.
+     * </p>
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.storageDevice
+     *
+     *     def knoppixInstallCD = storageDevice {
+     *         storage = '01000000-0000-4000-8000-000060010101'
+     *     }
+     *     serverApi.insert knoppixInstallCD, { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </code></pre>
+     * @param storageDevice Storage device to insert as CD-ROM
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/cdrom/load} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#load-cd-rom" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cdrom/load</a>
+     */
     def insert(Resource storageDevice, ...args) {
         this.SESSION.POST(cdromPath('load'), storageDevice.wrapper(), *args)
     }
 
+    /**
+     * Ejects the storage from the CD-ROM device of a server.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/cdrom/eject} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#eject-cd-rom" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cdrom/eject</a>
+     */
     def eject(...args) {
         this.SESSION.POST(cdromPath('eject'), null, *args)
     }
