@@ -78,6 +78,70 @@ class BuilderSpec extends Specification {
         backupRule instanceof BackupRule
     }
 
+    def "firewall builder"() {
+        when:
+        def firewall = firewall {}
+
+        then:
+        firewall instanceof Firewall
+    }
+
+    def "firewall without config"() {
+        when:
+        def firewall = firewall()
+
+        then:
+        firewall instanceof Firewall
+    }
+
+    def "firewall with kwargs and config"() {
+        when:
+        def firewall = firewall SESSION: session, {}
+
+        then:
+        firewall instanceof Firewall
+    }
+
+    def "firewall with kwargs and no config"() {
+        when:
+        def firewall = firewall SESSION: session
+
+        then:
+        firewall instanceof Firewall
+    }
+
+    def "firewallRule builder"() {
+        when:
+        def firewallRule = firewallRule {}
+
+        then:
+        firewallRule instanceof FirewallRule
+    }
+
+    def "firewallRule without config"() {
+        when:
+        def firewallRule = firewallRule()
+
+        then:
+        firewallRule instanceof FirewallRule
+    }
+
+    def "firewallRule with kwargs and config"() {
+        when:
+        def firewallRule = firewallRule SESSION: session, {}
+
+        then:
+        firewallRule instanceof FirewallRule
+    }
+
+    def "firewallRule with kwargs and no config"() {
+        when:
+        def firewallRule = firewallRule SESSION: session
+
+        then:
+        firewallRule instanceof FirewallRule
+    }
+
     def "ioRequestBackup builder"() {
         when:
         def ioRequestBackup = ioRequestBackup {}
@@ -270,6 +334,38 @@ class BuilderSpec extends Specification {
         ipv6Address instanceof Ipv6Address
     }
 
+    def "loginUser builder"() {
+        when:
+        def loginUser = loginUser {}
+
+        then:
+        loginUser instanceof LoginUser
+    }
+
+    def "loginUser without config"() {
+        when:
+        def loginUser = loginUser()
+
+        then:
+        loginUser instanceof LoginUser
+    }
+
+    def "loginUser with kwargs and config"() {
+        when:
+        def loginUser = loginUser SESSION: session, {}
+
+        then:
+        loginUser instanceof LoginUser
+    }
+
+    def "loginUser with kwargs and no config"() {
+        when:
+        def loginUser = loginUser SESSION: session
+
+        then:
+        loginUser instanceof LoginUser
+    }
+
     def "plan builder"() {
         when:
         def plan = plan {}
@@ -277,7 +373,6 @@ class BuilderSpec extends Specification {
         then:
         plan instanceof Plan
     }
-
 
     def "plan without config"() {
         when:
@@ -686,6 +781,38 @@ class BuilderSpec extends Specification {
 
         then:
         storageBackup instanceof StorageBackup
+    }
+
+    def "storageDevice builder"() {
+        when:
+        def storageDevice = storageDevice {}
+
+        then:
+        storageDevice instanceof StorageDevice
+    }
+
+    def "storageDevice without config"() {
+        when:
+        def storageDevice = storageDevice()
+
+        then:
+        storageDevice instanceof StorageDevice
+    }
+
+    def "storageDevice with kwargs and config"() {
+        when:
+        def storageDevice = storageDevice SESSION: session, {}
+
+        then:
+        storageDevice instanceof StorageDevice
+    }
+
+    def "storageDevice with kwargs and no config"() {
+        when:
+        def storageDevice = storageDevice SESSION: session
+
+        then:
+        storageDevice instanceof StorageDevice
     }
 
     def "storageHdd builder"() {

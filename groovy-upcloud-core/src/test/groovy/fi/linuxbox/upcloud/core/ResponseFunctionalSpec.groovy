@@ -3,6 +3,7 @@ package fi.linuxbox.upcloud.core
 import fi.linuxbox.upcloud.json.gjson.GJSON
 import fi.linuxbox.upcloud.json.spi.JSON
 import fi.linuxbox.upcloud.resource.Firewall
+import fi.linuxbox.upcloud.resource.FirewallRule
 import fi.linuxbox.upcloud.resource.IpAddress
 import fi.linuxbox.upcloud.resource.Plan
 import fi.linuxbox.upcloud.resource.Server
@@ -546,5 +547,137 @@ class ResponseFunctionalSpec extends Specification {
         then:
         resp?.ipAddress instanceof IpAddress
         resp.ipAddress.server == "009d64ef-31d1-4684-a26b-c86c955cbf46"
+    }
+
+    def "firewallRules JSON to FirewallRule list"() {
+        when:
+        def resp = load("""
+            {
+              "firewall_rules": {
+                "firewall_rule": [
+                  {
+                    "action": "accept",
+                    "comment": "Alow HTTP from anywhere",
+                    "destination_address_end": "",
+                    "destination_address_start": "",
+                    "destination_port_end": "80",
+                    "destination_port_start": "80",
+                    "direction": "in",
+                    "family": "IPv4",
+                    "icmp_type": "",
+                    "position": "1",
+                    "protocol": "",
+                    "source_address_end": "",
+                    "source_address_start": "",
+                    "source_port_end": "",
+                    "source_port_start": ""
+                  },
+                  {
+                    "action": "accept",
+                    "comment": "Allow SSH from a specific network only",
+                    "destination_address_end": "",
+                    "destination_address_start": "",
+                    "destination_port_end": "22",
+                    "destination_port_start": "22",
+                    "direction": "in",
+                    "family": "IPv4",
+                    "icmp_type": "",
+                    "position": "2",
+                    "protocol": "tcp",
+                    "source_address_end": "192.168.1.255",
+                    "source_address_start": "192.168.1.1",
+                    "source_port_end": "",
+                    "source_port_start": ""
+                  },
+                  {
+                    "action": "accept",
+                    "comment": "Allow SSH over IPv6 from this range",
+                    "destination_address_end": "",
+                    "destination_address_start": "",
+                    "destination_port_end": "22",
+                    "destination_port_start": "22",
+                    "direction": "in",
+                    "family": "IPv6",
+                    "icmp_type": "",
+                    "position": "3",
+                    "protocol": "tcp",
+                    "source_address_end": "2a04:3540:1000:aaaa:bbbb:cccc:d001",
+                    "source_address_start": "2a04:3540:1000:aaaa:bbbb:cccc:d001",
+                    "source_port_end": "",
+                    "source_port_start": ""
+                  },
+                  {
+                    "action": "accept",
+                    "comment": "Allow ICMP echo request (ping)",
+                    "destination_address_end": "",
+                    "destination_address_start": "",
+                    "destination_port_end": "",
+                    "destination_port_start": "",
+                    "direction": "in",
+                    "family": "IPv4",
+                    "icmp_type": "8",
+                    "position": "4",
+                    "protocol": "icmp",
+                    "source_address_end": "",
+                    "source_address_start": "",
+                    "source_port_end": "",
+                    "source_port_start": "",
+                  },
+                  {
+                    "action": "drop",
+                    "comment": "",
+                    "destination_address_end": "",
+                    "destination_address_start": "",
+                    "destination_port_end": "",
+                    "destination_port_start": "",
+                    "direction": "in",
+                    "family": "",
+                    "icmp_type": "",
+                    "position": "5",
+                    "protocol": "",
+                    "source_address_end": "",
+                    "source_address_start": "",
+                    "source_port_end": "",
+                    "source_port_start": ""
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.firewallRules instanceof List
+        resp.firewallRules.every { it instanceof FirewallRule }
+        resp.firewallRules[0].comment == 'Alow HTTP from anywhere'
+        resp.firewallRules[4].position == '5'
+    }
+
+    def "firewallRule JSON to FirewallRule"() {
+        when:
+        def resp = load("""
+            {
+              "firewall_rule": {
+                "action": "accept",
+                "comment": "Allow HTTP from anywhere",
+                "destination_address_end": "",
+                "destination_address_start": "",
+                "destination_port_end": "80",
+                "destination_port_start": "80",
+                "direction": "in",
+                "family": "IPv4",
+                "icmp_type": "",
+                "position": "1",
+                "protocol": "",
+                "source_address_end": "",
+                "source_address_start": "",
+                "source_port_end": "",
+                "source_port_start": ""
+              }
+            }
+            """)
+
+        then:
+        resp?.firewallRule instanceof FirewallRule
+        resp.firewallRule.position == '1'
     }
 }

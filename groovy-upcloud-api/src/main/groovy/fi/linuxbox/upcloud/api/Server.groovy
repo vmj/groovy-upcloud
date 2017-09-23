@@ -293,18 +293,98 @@ trait Server {
         this.SESSION.POST(cdromPath('eject'), null, *args)
     }
 
+    /**
+     * Fetch firewall rules for a server.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.FirewallRule}
+     *     instances in the {@code firewallRules} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     serverApi.firewallRules { resp, err ->
+     *         assert resp?.firewallRules instanceof List
+     *         assert resp.firewallRules.every { it instanceof FirewallRule }
+     *     }
+     * </code></pre>
+     * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;/firewall_rule} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/11-firewall/#list-firewall-rules" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}/firewall_rule</a>
+     */
     def firewallRules(...args) {
         this.SESSION.GET(firewallRulesPath(), *args)
     }
 
+    /**
+     * Create a firewall rule for a server.
+     * <p>
+     *     If a {@link fi.linuxbox.upcloud.resource.FirewallRule#position position} property is not set in the given
+     *     firewall rule, then the rule is appended to the list of firewall rules.  If the position property is set,
+     *     then the rule is inserted at that position in the rule list, and the position properties of any following
+     *     rules are increased by one.
+     * </p>
+     * <p>
+     *     A {@code 201 Created} response will include an instance of {@link fi.linuxbox.upcloud.resource.FirewallRule}
+     *     in the {@code firewallRule} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.firewallRule
+     *
+     *     def acceptHttp = firewallRule {
+     *         action = 'accept'
+     *         comment = 'Allow HTTP from anywhere'
+     *         destinationPortEnd = '80'
+     *         destinationPortStart = '80'
+     *         direction = 'in'
+     *         family = 'IPv4'
+     *         protocol = 'tcp'
+     *     }
+     *
+     *     serverApi.createFirewallRule acceptHttp, { resp, err ->
+     *         assert resp?.firewallRule instanceof FirewallRule
+     *     }
+     * </code></pre>
+     * @param firewallRule Description of the firewall rule
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/firewall_rule} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/11-firewall/#create-firewall-rule" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/firewall_rule</a>
+     */
     def createFirewallRule(Resource firewallRule, ...args) {
         this.SESSION.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
     }
 
+    /**
+     * Fetch detailed information about a specific firewall rule.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.FirewallRule}
+     *     in the {@code firewallRule} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     serverApi.loadFirewallRule 1, { resp, err ->
+     *         assert resp?.firewallRule instanceof FirewallRule
+     *     }
+     * </code></pre>
+     * @param position The position number of the rule in the firewall rules list
+     * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;/firewall_rule/&#36;position} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/11-firewall/#get-firewall-rule-details" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}/firewall_rule/&#36;position</a>
+     */
     def loadFirewallRule(def position, ...args) {
         this.SESSION.GET(firewallRulePath(position), *args)
     }
 
+    /**
+     * Removes a firewall rule from a server.
+     * <p>
+     *     The {@link fi.linuxbox.upcloud.resource.FirewallRule#position position} properties of any following rules
+     *     are decreased by one.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     * @param position The position number of the rule in the firewall rules list
+     * @param args Request callbacks for the {@code DELETE /server/&#36;&#123;server.uuid&#125;/firewall_rule/&#36;position} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/11-firewall/#remove-firewall-rule" target="_top">UpCloud API docs for DELETE /server/&#36;{server.uuid}/firewall_rule/&#36;position</a>
+     */
     def deleteFirewallRule(def position, ...args) {
         this.SESSION.DELETE(firewallRulePath(position), *args)
     }

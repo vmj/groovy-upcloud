@@ -37,6 +37,16 @@ class Builder extends ResourceBuilder {
         firewall(EMPTY_MAP, closure)
     }
 
+    static FirewallRule firewallRule(Map kwargs,
+                                     @DelegatesTo(strategy = DELEGATE_ONLY, value = FirewallRule) Closure closure = null) {
+        configure(new FirewallRule(kwargs), closure)
+    }
+
+    static FirewallRule firewallRule(
+            @DelegatesTo(strategy = DELEGATE_ONLY, value = FirewallRule) Closure closure = null) {
+        firewallRule(EMPTY_MAP, closure)
+    }
+
     static IoRequestBackup ioRequestBackup(Map kwargs,
                                            @DelegatesTo(strategy = DELEGATE_ONLY, value = IoRequestBackup) Closure closure = null) {
         configure(new IoRequestBackup(kwargs), closure)
@@ -94,6 +104,15 @@ class Builder extends ResourceBuilder {
     static Ipv6Address ipv6Address(
             @DelegatesTo(strategy = DELEGATE_ONLY, value = Ipv6Address) Closure closure = null) {
         ipv6Address(EMPTY_MAP, closure)
+    }
+
+    static LoginUser loginUser(Map kwargs,
+                               @DelegatesTo(strategy = DELEGATE_ONLY, value = LoginUser) Closure closure = null) {
+        configure(new LoginUser(kwargs), closure)
+    }
+
+    static LoginUser loginUser(@DelegatesTo(strategy = DELEGATE_ONLY, value = LoginUser) Closure closure = null) {
+        loginUser(EMPTY_MAP, closure)
     }
 
     static Plan plan(Map kwargs, @DelegatesTo(strategy = DELEGATE_ONLY, value = Plan) Closure closure = null) {
@@ -238,6 +257,16 @@ class Builder extends ResourceBuilder {
     static StorageBackup storageBackup(
             @DelegatesTo(strategy = DELEGATE_ONLY, value = StorageBackup) Closure closure = null) {
         storageBackup(EMPTY_MAP, closure)
+    }
+
+    static StorageDevice storageDevice(Map kwargs,
+                                       @DelegatesTo(strategy = DELEGATE_ONLY, value = StorageDevice) Closure closure = null) {
+        configure(new StorageDevice(kwargs), closure)
+    }
+
+    static StorageDevice storageDevice(
+            @DelegatesTo(strategy = DELEGATE_ONLY, value = StorageDevice) Closure closure = null) {
+        storageDevice(EMPTY_MAP, closure)
     }
 
     static StorageHdd storageHdd(Map kwargs,
