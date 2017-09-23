@@ -11,6 +11,7 @@ import fi.linuxbox.upcloud.resource.ServerPlan_2xCPU_2GB
 import fi.linuxbox.upcloud.resource.ServerSize
 import fi.linuxbox.upcloud.resource.Storage
 import fi.linuxbox.upcloud.resource.StorageDevice
+import fi.linuxbox.upcloud.resource.Tag
 import fi.linuxbox.upcloud.resource.Zone
 import spock.lang.Specification
 
@@ -679,5 +680,69 @@ class ResponseFunctionalSpec extends Specification {
         then:
         resp?.firewallRule instanceof FirewallRule
         resp.firewallRule.position == '1'
+    }
+
+    def "tags JSON to Tag list"() {
+        when:
+        def resp = load("""
+            {
+              "tags": {
+                "tag": [
+                  {
+                    "description": "Development servers",
+                    "name": "DEV",
+                    "servers": {
+                      "server": [
+                        "0077fa3d-32db-4b09-9f5f-30d9e9afb565"
+                      ]
+                    }
+                  },
+                  {
+                    "description": "My own servers",
+                    "name": "private",
+                    "servers": {
+                      "server": []
+                    }
+                  },
+                  {
+                    "description": "Production servers",
+                    "name": "PROD",
+                    "servers": {
+                      "server": []
+                    }
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.tags instanceof List
+        resp.tags.every { it instanceof Tag }
+        resp.tags[0].description == 'Development servers'
+        resp.tags[0].servers[0] == '0077fa3d-32db-4b09-9f5f-30d9e9afb565'
+        resp.tags[2].name == 'PROD'
+        resp.tags[2].servers.isEmpty()
+    }
+
+    def "tag JSON to Tag"() {
+        when:
+        def resp = load("""
+            {
+              "tag": {
+                "name": "DEV",
+                "description": "Development servers",
+                "servers": {
+                  "server": [
+                    "0077fa3d-32db-4b09-9f5f-30d9e9afb565"
+                  ]
+                }
+              }
+            }
+            """)
+
+        then:
+        resp?.tag instanceof Tag
+        resp.tag.servers[0] == '0077fa3d-32db-4b09-9f5f-30d9e9afb565'
     }
 }

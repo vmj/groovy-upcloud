@@ -7,7 +7,7 @@ import fi.linuxbox.upcloud.core.*
  * <p>
  *     This class provides following APIs:
  * </p>
- * <lu>
+ * <ul>
  *     <li>modifying and deleting tags</li>
  * </ul>
  * <p>
@@ -20,10 +20,33 @@ import fi.linuxbox.upcloud.core.*
  */
 trait Tag {
 
+    /**
+     * Changes properties of an existing tag.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Tag} in the
+     *     {@code tag} property.
+     * </p>
+     * @param resource Description of the updated tag
+     * @param args Request callbacks for the {@code PUT /tag/&#36;&#123;tag.name&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#modify-existing-tag" target="_top">UpCloud API docs for PUT /tag/&#36;{tag.name}</a>
+     */
     def update(Resource resource, ...args) {
         this.SESSION.PUT(tagPath(), resource.wrapper(), *args)
     }
 
+    /**
+     * Delete an existing tag.
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     * <p>
+     *     Deleting a tag will automatically remove that tag from any servers.
+     * </p>
+     * @param args Request callbacks for the {@code DELETE /tag/&#36;&#123;tag.name&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#delete-tag" target="_top">UpCloud API docs for DELETE /tag/&#36;{tag.name}</a>
+     */
     def delete(...args) {
         this.SESSION.DELETE(tagPath(), *args)
     }

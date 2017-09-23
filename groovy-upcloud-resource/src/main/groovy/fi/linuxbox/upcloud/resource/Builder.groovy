@@ -288,6 +288,14 @@ class Builder extends ResourceBuilder {
         storageMaxiops(EMPTY_MAP, closure)
     }
 
+    static Tag tag(Map kwargs, @DelegatesTo(strategy = DELEGATE_ONLY, value = Tag) Closure closure = null) {
+        configure(new Tag(kwargs), closure)
+    }
+
+    static Tag tag(@DelegatesTo(strategy = DELEGATE_ONLY, value = Tag) Closure closure = null) {
+        tag(EMPTY_MAP, closure)
+    }
+
     static Zone zone(Map kwargs, @DelegatesTo(strategy = DELEGATE_ONLY, value = Zone) Closure closure = null) {
         configure(new Zone(kwargs), closure)
     }

@@ -203,6 +203,22 @@ class UpCloud {
         this.SESSION.GET('ip_address', *args)
     }
 
+    /**
+     * Fetch a list of all tags associated with this account.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Tag} instances in the
+     *     {@code tags} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     upcloud.tags { resp, err ->
+     *         assert resp?.tags instanceof List
+     *         assert resp.tags.every { it instanceof Tag }
+     *     }
+     * </code></pre>
+     * @param args Request callbacks for the {@code GET /tag} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#list-existing-tags" target="_top">UpCloud API docs for GET /tag</a>
+     */
     def tags(...args) {
         this.SESSION.GET('tag', *args)
     }
@@ -263,12 +279,17 @@ class UpCloud {
      *     For {@link fi.linuxbox.upcloud.resource.IpAddress} creation, a {@code 201 Created} response will include an
      *     instance of {@link fi.linuxbox.upcloud.resource.IpAddress} in the {@code ipAddress} property.
      * </p>
+     * <p>
+     *     For {@link fi.linuxbox.upcloud.resource.Tag} creation, a {@code 200 OK} response will include an instance
+     *     of {@link fi.linuxbox.upcloud.resource.Tag} in the {@code tag} property.
+     * </p>
      * @param resource Resource to create.
      * @param args Request callbacks for the {@code POST} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#create-server" target="_top">UpCloud API docs for POST /server</a>
      * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#create-storage" target="_top">UpCloud API docs for POST /storage</a>
      * @see <a href="https://www.upcloud.com/api/1.2.4/10-ip-addresses/#assign-ip-address" target="_top">UpCloud API docs for POST /ip_address</a>
+     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#create-a-new-tag" target="_top">UpCloud API docs for POST /tag</a>
      */
     def create(Resource resource, ...args) {
         this.SESSION.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)

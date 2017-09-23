@@ -12,9 +12,9 @@ class ServerTagSpec extends ServerSpecification {
             requestIs 'POST', '/server/fake-uuid/tag/DEV,private,RHEL'
     }
 
-    def "deleteTag: POST /server/fake-uuid/untag/private"() {
+    def "deleteTags: POST /server/fake-uuid/untag/private"() {
         when:
-            server.deleteTag 'private', {}
+            server.deleteTags(['private']) {}
 
         then:
             requestIs 'POST', '/server/fake-uuid/untag/private'

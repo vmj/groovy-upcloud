@@ -879,6 +879,38 @@ class BuilderSpec extends Specification {
         storageMaxiops instanceof StorageMaxiops
     }
 
+    def "tag builder"() {
+        when:
+        def tag = tag {}
+
+        then:
+        tag instanceof Tag
+    }
+
+    def "tag without config"() {
+        when:
+        def tag = tag()
+
+        then:
+        tag instanceof Tag
+    }
+
+    def "tag with kwargs and config"() {
+        when:
+        def tag = tag SESSION: session, {}
+
+        then:
+        tag instanceof Tag
+    }
+
+    def "tag with kwargs and no config"() {
+        when:
+        def tag = tag SESSION: session
+
+        then:
+        tag instanceof Tag
+    }
+
     def "zone builder"() {
         when:
         def zone = zone {}

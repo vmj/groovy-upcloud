@@ -389,12 +389,44 @@ trait Server {
         this.SESSION.DELETE(firewallRulePath(position), *args)
     }
 
+    /**
+     * Assigns existing tags to an existing server.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     serverApi.addTags(['DEV','private','RHEL']) { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </code></pre>
+     * @param tags List of tags to assign
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/tag/&#36;&#123;tags.join(',')&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#assign-tag-to-a-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/tag/&#36;{tags.join(',')}</a>
+     */
     def addTags(def tags, ...args) {
         this.SESSION.POST(tagPath(tags), null, *args)
     }
 
-    def deleteTag(def tag, ...args) {
-        this.SESSION.POST(untagPath(tag), null, *args)
+    /**
+     * Removes existing tags from an existing server.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}
+     *     in the {@code server} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     serverApi.deleteTags(['DEV','private','RHEL']) { resp, err ->
+     *         assert resp?.server instanceof Server
+     *     }
+     * </code></pre>
+     * @param tags List of tags to remove
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/untag/&#36;&#123;tags.join(',')&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#remove-tag-from-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/untag/&#36;{tags.join(',')}</a>
+     */
+    def deleteTags(def tags, ...args) {
+        this.SESSION.POST(untagPath(tags), null, *args)
     }
 
 
@@ -416,5 +448,5 @@ trait Server {
     private String firewallRulesPath()     { "${serverPath()}/firewall_rule" }
     private String firewallRulePath(def position) { "${firewallRulesPath()}/$position" }
     private String tagPath(def tags) { "${serverPath()}/tag/${tags.join(',')}" }
-    private String untagPath(def tag) { "${serverPath()}/untag/$tag" }
+    private String untagPath(def tags) { "${serverPath()}/untag/${tags.join(',')}" }
 }
