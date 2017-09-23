@@ -168,6 +168,19 @@ trait Storage {
         this.SESSION.POST(cmdPath('backup'), resource.wrapper(), *args)
     }
 
+    /**
+     * Restores the origin storage from this backup.
+     * <p>
+     *     If the origin storage is attached to a server, the server must first be stopped or the storage has to be
+     *     detached.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/restore} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#restore-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/restore</a>
+     */
     def restore(...args) {
         this.SESSION.POST(cmdPath('restore'), null, *args)
     }
