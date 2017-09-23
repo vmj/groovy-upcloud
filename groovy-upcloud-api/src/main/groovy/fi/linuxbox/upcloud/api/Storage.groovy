@@ -75,6 +75,22 @@ trait Storage {
         this.SESSION.PUT(storagePath(), resource.wrapper(), *args)
     }
 
+    /**
+     * Delete an existing storage resource.
+     * <p>
+     *     The storage can not be attached to any server.
+     * </p>
+     * <p>
+     *     Any backups, clones, or templates created from this storage are not deleted.  Restoring a backup will
+     *     recreate this storage.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     * @param args Request callbacks for the {@code DELETE /storage/&#36;&#123;storage.uuid&#125;} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#delete-storage" target="_top">UpCloud API docs for DELETE /storage/&#36;{storage.uuid}</a>
+     */
     def delete(...args) {
         this.SESSION.DELETE(storagePath(), *args)
     }
