@@ -183,6 +183,22 @@ class UpCloud {
         this.SESSION.GET('server', *args)
     }
 
+    /**
+     * Fetch a list of all IP addresses associated with this session.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.IpAddress} instances
+     *     in the {@code ipAddresses} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     upcloud.ipAddresses { resp, err ->
+     *         assert resp?.ipAddresses instanceof List
+     *         assert rest.ipAddresses.every { it instanceof IpAddress }
+     *     }
+     * </code></pre>
+     * @param args Request callbacks for the {@code GET /ip_address} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/10-ip-addresses/#list-ip-addresses" target="_top">UpCloud API docs for GET /ip_address</a>
+     */
     def ipAddresses(...args) {
         this.SESSION.GET('ip_address', *args)
     }
@@ -243,11 +259,16 @@ class UpCloud {
      *     For {@link fi.linuxbox.upcloud.resource.Storage} creation, a {@code 201 Created} response will include an
      *     instance of {@link fi.linuxbox.upcloud.resource.Storage} in the {@code storage} property.
      * </p>
+     * <p>
+     *     For {@link fi.linuxbox.upcloud.resource.IpAddress} creation, a {@code 201 Created} response will include an
+     *     instance of {@link fi.linuxbox.upcloud.resource.IpAddress} in the {@code ipAddress} property.
+     * </p>
      * @param resource Resource to create.
      * @param args Request callbacks for the {@code POST} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#create-server" target="_top">UpCloud API docs for POST /server</a>
      * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#create-storage" target="_top">UpCloud API docs for POST /storage</a>
+     * @see <a href="https://www.upcloud.com/api/1.2.4/10-ip-addresses/#assign-ip-address" target="_top">UpCloud API docs for POST /ip_address</a>
      */
     def create(Resource resource, ...args) {
         this.SESSION.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)

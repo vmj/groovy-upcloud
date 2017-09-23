@@ -285,10 +285,8 @@ class Server extends Resource {
      * IP addresses of this server.
      * <p>
      *     This is available in the server details response, and can optionally be set when creating a server where
-     *     this defaults to one {@code IPv4} and one {@code IPv6} address (both {@code public}).  Modifying these
-     *     after server creation needs to go through
-     *     {@link fi.linuxbox.upcloud.api.UpCloud#create(fi.linuxbox.upcloud.core.Resource, def) Resource creation} and
-     *     {@link fi.linuxbox.upcloud.api.IpAddress IP address management} APIs.
+     *     this defaults to one {@code IPv4} and one {@code IPv6} address (both {@code public}).
+     *     See {@link IpAddress} class documentation for information about managing these after server creation.
      * </p>
      */
     List<IpAddress> ipAddresses

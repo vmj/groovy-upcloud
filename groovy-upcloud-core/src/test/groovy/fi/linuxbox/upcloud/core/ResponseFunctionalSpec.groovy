@@ -480,4 +480,71 @@ class ResponseFunctionalSpec extends Specification {
         resp.storage.servers[0] == '00798b85-efdc-41ca-8021-f6ef457b8531'
     }
 
+    def "ipAddresses JSON to IpAddress list"() {
+        when:
+        def resp = load("""
+            {
+              "ip_addresses": {
+                "ip_address": [
+                  {
+                    "access": "private",
+                    "address": "10.0.0.0",
+                    "family": "IPv4",
+                    "ptr_record": "",
+                    "server": "0053cd80-5945-4105-9081-11192806a8f7"
+                  },
+                  {
+                    "access": "private",
+                    "address": "10.0.0.1",
+                    "family": "IPv4",
+                    "ptr_record": "",
+                    "server": "006b6701-55d2-4374-ac40-56cc1501037f"
+                  },
+                  {
+                    "access": "public",
+                    "address": "x.x.x.x",
+                    "family": "IPv4",
+                    "part_of_plan": "yes",
+                    "ptr_record": "x.x.x.x.zone.host.upcloud.com",
+                    "server": "0053cd80-5945-4105-9081-11192806a8f7"
+                  },
+                  {
+                    "access": "public",
+                    "address": "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx",
+                    "family": "IPv6",
+                    "ptr_record": "xxxx-xxxx-xxxx-xxxx.v6.zone.host.upcloud.com",
+                    "server": "006b6701-55d2-4374-ac40-56cc1501037f"
+                  }
+                ]
+              }
+            }
+            """)
+
+        then:
+        resp?.ipAddresses instanceof List
+        resp.ipAddresses.every { it instanceof IpAddress }
+        resp.ipAddresses[0].address == "10.0.0.0"
+        resp.ipAddresses[2].ptrRecord == "x.x.x.x.zone.host.upcloud.com"
+        resp.ipAddresses[3].family == "IPv6"
+    }
+
+    def "ipAddress JSON to IpAddress"() {
+        when:
+        def resp = load("""
+            {
+              "ip_address": {
+                "access": "public",
+                "address": "0.0.0.0",
+                "family": "IPv4",
+                "part_of_plan": "yes",
+                "ptr_record": "test.example.com",
+                "server": "009d64ef-31d1-4684-a26b-c86c955cbf46",
+              }
+            }
+            """)
+
+        then:
+        resp?.ipAddress instanceof IpAddress
+        resp.ipAddress.server == "009d64ef-31d1-4684-a26b-c86c955cbf46"
+    }
 }
