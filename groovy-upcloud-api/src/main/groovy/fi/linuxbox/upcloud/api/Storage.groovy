@@ -107,6 +107,37 @@ trait Storage {
         this.SESSION.POST(cmdPath('clone'), resource.wrapper(), *args)
     }
 
+    /**
+     * Creates an exact copy of an existing storage resource.
+     * <p>
+     *     Only storage resources on the {code maxiops} {#link fi.linuxbox.upcloud.resource.Storage#tier} can be
+     *     templatized.
+     * </p>
+     * <p>
+     *     The differences between {@link #clone(fi.linuxbox.upcloud.core.Resource, def) cloning} and templatizing a
+     *     resource are that any storage tier can be cloned and cloning can happen across zones, but only templates
+     *     can be used when creating a server OS disk from a template.
+     * </p>
+     * <p>
+     *     A {@code 201 Created} response will include an instance of {@link fi.linuxbox.upcloud.resource.Storage}
+     *     in the {@code storage} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.*
+     *
+     *     def myTemplate = storage {
+     *         title = 'My server template'
+     *     }
+     *
+     *     storageApi.clone myTemplate { resp, err ->
+     *         assert resp?.storage instanceof Storage
+     *     }
+     * </code></pre>
+     * @param resource Specification of the template
+     * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/templatize} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#templatize-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/templatize</a>
+     */
     def templatize(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('templatize'), resource.wrapper(), *args)
     }
