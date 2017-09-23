@@ -110,7 +110,7 @@ trait Storage {
     /**
      * Creates an exact copy of an existing storage resource.
      * <p>
-     *     Only storage resources on the {code maxiops} {#link fi.linuxbox.upcloud.resource.Storage#tier} can be
+     *     Only storage resources on the {@code maxiops} {@link fi.linuxbox.upcloud.resource.Storage#tier} can be
      *     templatized.
      * </p>
      * <p>
@@ -129,7 +129,7 @@ trait Storage {
      *         title = 'My server template'
      *     }
      *
-     *     storageApi.clone myTemplate { resp, err ->
+     *     storageApi.templatize myTemplate { resp, err ->
      *         assert resp?.storage instanceof Storage
      *     }
      * </code></pre>
@@ -142,6 +142,28 @@ trait Storage {
         this.SESSION.POST(cmdPath('templatize'), resource.wrapper(), *args)
     }
 
+    /**
+     * Creates a backup of an existing storage resource.
+     * <p>
+     *     A {@code 201 Created} response will include an instance of {@link fi.linuxbox.upcloud.resource.Storage}
+     *     in the {@code storage} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import static fi.linuxbox.upcloud.resource.Builder.*
+     *
+     *     def myBackup = storage {
+     *         title = 'Manually created backup'
+     *     }
+     *
+     *     storageApi.backup myBackup { resp, err ->
+     *         assert resp?.storage instanceof Storage
+     *     }
+     * </code></pre>
+     * @param resource Specification of the backup
+     * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/backup} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#create-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/backup</a>
+     */
     def backup(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('backup'), resource.wrapper(), *args)
     }
