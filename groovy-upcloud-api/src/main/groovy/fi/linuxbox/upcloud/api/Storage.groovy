@@ -185,10 +185,42 @@ trait Storage {
         this.SESSION.POST(cmdPath('restore'), null, *args)
     }
 
+    /**
+     * Adds the storage to the favorites.
+     * <p>
+     *     This operation succeeds even if the storage already is a favorite.
+     * </p>
+     * <p>
+     *     Favorite storages can be listed with {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API},
+     *     by specifying a keyword argument {@code type: "favorite"}.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/favorite} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#add-storage-to-favorites" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/favorite</a>
+     */
     def favor(...args) {
         this.SESSION.POST(cmdPath('favorite'), null, *args)
     }
 
+    /**
+     * Removes the storage from the favorites.
+     * <p>
+     *     This operation succeeds even if the storage is not a favorite.
+     * </p>
+     * <p>
+     *     Favorite storages can be listed with {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API},
+     *     by specifying a keyword argument {@code type: "favorite"}.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     * @param args Request callbacks for the {@code DELETE /storage/&#36;&#123;storage.uuid&#125;/favorite} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#remove-storage-from-favorites" target="_top">UpCloud API docs for DELETE /storage/&#36;{storage.uuid}/favorite</a>
+     */
     def unfavor(...args) {
         this.SESSION.DELETE(cmdPath('favorite'), *args)
     }
