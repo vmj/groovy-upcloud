@@ -14,6 +14,46 @@ class BuilderSpec extends Specification {
 
     Session session = new Session(Mock(HTTP), null, null, null)
 
+    def "builder inside list"() {
+        when:
+        def firewallRules = [
+                firewallRule {
+                    position = "1"
+                },
+                firewallRule {
+                    position = "2"
+                }
+        ]
+
+        then:
+        firewallRules instanceof List
+        firewallRules.size() == 2
+        firewallRules.every { it instanceof FirewallRule }
+        firewallRules[0].position == "1"
+        firewallRules[1].position == "2"
+    }
+
+    def "builder inside builder"() {
+        when:
+        def server = server {
+            storageDevices = [
+                    storageDevice {
+                        tier = "maxiops"
+                    },
+                    storageDevice {
+                        tier = "hdd"
+                    }
+            ]
+        }
+
+        then:
+        server instanceof Server
+        server.storageDevices instanceof List
+        server.storageDevices.every { it instanceof StorageDevice }
+        server.storageDevices[0].tier == 'maxiops'
+        server.storageDevices[1].tier == 'hdd'
+    }
+
     def "account builder"() {
         when:
         def account = account {}
