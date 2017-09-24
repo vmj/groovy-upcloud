@@ -43,20 +43,19 @@ groovydoc {
     // Groovy APIs
     link("http://docs.groovy-lang.org/docs/groovy-${versions.groovy}/html/gapi/", "groovy.lang")
 
-    ['api', 'app', 'builder', 'core', 'http-ahc', 'http-spi', 'json-jackson', 'json-spi', 'resource', 'script'].each {
-        // Local link for development purposes
-        //def localUrl = "file:///Users/vmj/src/groovy-upcloud/groovy-upcloud-$it/build/docs/groovydoc/"
-        def onlineUrl = "http://www.javadoc.io/page/${project.group}/groovy-upcloud-${it}/${project.version}/"
+    ['api', 'app', 'builder', 'core', 'http-ahc', 'http-spi', 'json-gjson', 'json-jackson', 'json-spi', 'resource', 'script'].each {
+        //def url = "file:///Users/vmj/src/groovy-upcloud/groovy-upcloud-$it/build/docs/groovydoc/"
+        def url = "http://www.javadoc.io/page/${project.group}/groovy-upcloud-${it}/${project.version}/"
         def packageName = "fi.linuxbox.upcloud.${it.replace('-', '.')}"
-        link(onlineUrl, packageName)
+        link(url, packageName)
     }
 
     // Add highlightjs to every page footer
-    //def localUrl = "file:///Users/vmj/src/groovy-upcloud/${project.name}/build/docs/groovydoc/"
-    def onlineUrl = "http://www.javadoc.io/page/${project.group}/${project.name}/${project.version}/"
+    //def url = "file:///Users/vmj/src/groovy-upcloud/${project.name}/build/docs/groovydoc/"
+    def url = "http://www.javadoc.io/page/${project.group}/${project.name}/${project.version}/"
     footer = """
-<link rel="stylesheet" href="${onlineUrl}/highlightjs/styles/foundation.css">
-<script src="${onlineUrl}/highlightjs/highlight.pack.js"></script>
+<link rel="stylesheet" href="${url}/highlightjs/styles/foundation.css">
+<script src="${url}/highlightjs/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 """
 }

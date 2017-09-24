@@ -1,6 +1,6 @@
 image:https://travis-ci.org/vmj/groovy-upcloud.svg?branch=master["Build Status", link="https://travis-ci.org/vmj/groovy-upcloud"]
-
 image:https://maven-badges.herokuapp.com/maven-central/fi.linuxbox.upcloud/groovy-upcloud-core/badge.svg["Release", link="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22fi.linuxbox.upcloud%22"]
+image:https://www.javadoc.io/badge/fi.linuxbox.upcloud/groovy-upcloud-resource.svg["Javadoc", link="https://www.javadoc.io/doc/fi.linuxbox.upcloud/groovy-upcloud-resource"]
 
 # Groovy UpCloud
 
@@ -16,23 +16,7 @@ When used as a base for Groovy scripting, UpCloud Groovy provides a script base 
 deal with the concurrent nature: the top-level code and all the callbacks are executed in a dedicated thread, separate
 from the IO thread pool.
 
-Groovy UpCloud library has support for following UpCloud APIs:
-
- * getting account information
- * listing prices, zones, timezones, plans, and server sizes
- * listing and creating servers, IP addresses, tags, and storage devices
- * loading, modifying, and deleting  servers
- * starting, stopping, and restarting a server, including soft and hard stops
- * attaching and detaching storage devices to a server
- * inserting and ejecting CD-roms
- * managing firewall rules for a server (list rules, getting details, adding, and deletion of individual rules)
- * adding and removing tags from a server
- * loading, modifying, and deleting storage devices
- * cloning and templatize storage devices
- * creating and restoring backups
- * adding and removing storage devices from favorites
- * modifying and deleting tags
- * loading, modifying, and deleting IP addresses
+Groovy UpCloud library has full support for UpCloud API version 1.2.4 (current as of Sep 2017):
 
 ## Requirements
 
@@ -41,4 +25,10 @@ http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22fi.linuxbox.upcloud%22[The Cen
 
 ## API Documentation
 
-API documentation is hosted at http://www.javadoc.io/[javadoc.io].
+The main resources managed in UpCloud are the
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Server.html[Server],
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/IpAddress.html[IpAddress],
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Storage.html[Storage],
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/FirewallRule.html[Firewall], and
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Tag.html[Tag].
+You might want to start with those.
