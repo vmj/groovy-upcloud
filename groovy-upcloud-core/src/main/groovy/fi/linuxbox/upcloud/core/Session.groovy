@@ -244,7 +244,7 @@ class Session {
             'Authorization': 'Basic ',
             'Content-Type' : 'application/json',
             'Host'         : 'api.upcloud.com',
-            'User-Agent'   : 'Groovy UpCloud/0.0.6-SNAPSHOT ',
+            'User-Agent'   : 'Groovy UpCloud/0.0.6 ',
     ]
     /**
      * Session callbacks.
