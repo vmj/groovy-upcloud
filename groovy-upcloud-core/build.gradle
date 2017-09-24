@@ -7,6 +7,16 @@ modifyPom {
     }
 }
 
+groovydoc {
+    overviewText = resources.text.fromString """
+<p>The central here classes are</p>
+<ul>
+    <li><a href="fi/linuxbox/upcloud/core/Session.html">Session</a></li>
+    <li><a href="fi/linuxbox/upcloud/core/Resource.html">Resource</a></li>
+</ul>
+"""
+}
+
 dependencies {
     api project(':groovy-upcloud-http-spi')
     api project(':groovy-upcloud-json-spi')

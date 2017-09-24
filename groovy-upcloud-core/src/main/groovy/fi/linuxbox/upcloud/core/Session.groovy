@@ -25,16 +25,17 @@ import org.slf4j.*
  *     Basically, this class provides a method for each of the HTTP "verbs" that the server side knows about:
  * </p>
  * <ul>
- *     <li><code>GET(...)</code> for fetching information about something.</li>
- *     <li><code>DELETE(...)</code> for deleting something.</li>
- *     <li><code>POST(...)</code> for creating new things.</li>
- *     <li><code>PUT(...)</code> for updating those things.</li>
+ *     <li>{@code GET(...)} for fetching information about something.</li>
+ *     <li>{@code DELETE(...)} for deleting something.</li>
+ *     <li>{@code POST(...)} for creating new things.</li>
+ *     <li>{@code PUT(...)} for updating those things.</li>
  * </ul>
  * <p>
- *     The arguments above are shown as <code>...</code> because the interfaces are somewhat flexible.  This is Groovy
+ *     The arguments above are shown as {@code ...} because the interfaces are somewhat flexible.  This is Groovy
  *     after all.  We'll unravel them bit by bit below.
  * </p>
- * <h1>Default request callback</h1>
+ *
+ * <h4>Default request callback</h4>
  * <p>
  *     There's one argument that is most prominent and must always be provided by the application: the default request
  *     callback.  When sending a request to the server, it is sent asynchronously, and a callback is invoked when the
@@ -46,12 +47,12 @@ import org.slf4j.*
  * </p>
  * <pre><code class="groovy">
  *     def server = createMyServerResource()
- *     server.create({ response ->
+ *     upcloud.create server, { response ->
  *         // Do something with the response object.
- *     })
+ *     }
  * </code></pre>
  * <p>
- *     Above <code>server.create(...)</code> will call <code>session.POST(..., Closure&lt;Void&gt; cb)</code>.
+ *     Above {@code upcloud.create(...)} will call {@code session.POST(..., Closure&lt;Void&gt; cb)}.
  * </p>
  * <p>
  *     The default request callback is a {@link groovy.lang.Closure Closure} that doesn't return anything.  All of
@@ -59,22 +60,24 @@ import org.slf4j.*
  * </p>
  * <p>
  *     The response object above is an instance of {@link Resource} class.  You can read about it later, but for example,
- *     to inspect the actual HTTP response status code, one could use the <code>response.META.status</code> property.
+ *     to inspect the actual HTTP response status code, one could use the
+ *     {@link fi.linuxbox.upcloud.http.spi.META#getStatus() response.META.status} property.
  *     But that is not typically necessary because there's a better way.
  * </p>
- * <h1>Additional request callbacks</h1>
+ *
+ * <h4>Additional request callbacks</h4>
  * <p>
  *     As the name "default request callback" might imply, there are other callbacks that can be attached to the HTTP
  *     exchange: additional request callbacks.  This is a {@link java.util.Map Map} that maps HTTP status codes to
  *     callbacks.
  * </p>
  * <p>
- *     For example, to handle the case where the user name or password is mistyped, or they get revoked, one might write
+ *     For example, to handle the case where the username or password is mistyped, or they get revoked, one might write
  *     the server creation code like this:
  * </p>
  * <pre><code class="groovy">
  *     def server = createMyServerResource()
- *     server.create(
+ *     upcloud.create(server,
  *         401: { response ->
  *             // The username/password pair were bogus.  Deal with it here.
  *         },
@@ -84,24 +87,25 @@ import org.slf4j.*
  * </code></pre>
  * <p>
  *     Above code snippet is taking advantage of the way Groovy deals with keyword arguments: it collects them to one
- *     <code>Map</code> and puts that <code>map</code> at the beginning of the argument list before calling the method.
+ *     {@link java.util.Map Map} and puts that {@code map} at the beginning of the argument list before calling the method.
  *     In other words, the default request callback doesn't actually have to be the last argument, it can be followed
  *     by keyword arguments.
  * </p>
  * <p>
  *     Additional request callbacks are similar to default request callback: they are
- *     {@link groovy.lang.Closure Closures} with <code>void</code> return type.  They get called with one argument, the
- *     {@link Resource} instance representing the HTTP response.  All of those HTTP methods mentioned above (<code>GET</code>,
- *     <code>POST</code>, and so on) take the <code>Map</code> of additional request callbacks as their first argument.
+ *     {@link groovy.lang.Closure Closures} with {@code void} return type.  They get called with one argument, the
+ *     {@link Resource} instance representing the HTTP response.  All of those HTTP methods mentioned above ({@code GET},
+ *     {@code POST}, and so on) take the {@link java.util.Map Map} of additional request callbacks as their first argument.
  * </p>
  * <p>
  *     Dealing with common HTTP error responses like above can get boring after awhile.  Worry not, there's another way.
  * </p>
- * <h1>Sessions callbacks</h1>
+ *
+ * <h4>Sessions callbacks</h4>
  * <p>
- *     One can attach session callbacks to the <code>Session</code> instance.  These are just like additional request
+ *     One can attach session callbacks to the {@code Session} instance.  These are just like additional request
  *     callbacks, except that these are considered for all future HTTP requests made through this instance of the
- *     <code>Session</code>.
+ *     {@code Session}.
  * </p>
  * <p>
  *     For example, the above 401 response can be handled once and for all like this:
@@ -110,39 +114,41 @@ import org.slf4j.*
  *     session.callback 401: { log.fatal("configuration error: the username/password is no good") }
  * </code></pre>
  * <p>
- *     From that point on, all the requests made through this <code>Session</code> instance would have that callback in
+ *     From that point on, all the requests made through this {@code Session} instance would have that callback in
  *     their set of callbacks.
  * </p>
- * <h1>HTTP response status categories</h1>
+ *
+ * <h4>HTTP response status categories</h4>
  * <p>
  *     As you may know, all the HTTP response status codes are three digit numbers and can be divided into five
  *     categories.  The categories by range of status codes are listed below, with category names as known by this
  *     library:
  * </p>
  * <ul>
- *     <li>100-199: <code>info</code></li>
- *     <li>200-299: <code>success</code></li>
- *     <li>300-399: <code>redirect</code></li>
- *     <li>400-499: <code>client_error</code></li>
- *     <li>500-599: <code>server_error</code></li>
+ *     <li>100-199: {@code info}</li>
+ *     <li>200-299: {@code success}</li>
+ *     <li>300-399: {@code redirect}</li>
+ *     <li>400-499: {@code client_error}</li>
+ *     <li>500-599: {@code server_error}</li>
  * </ul>
  * <p>
- *     This library also knows about <code>error</code> category, which is just more generic and covers both
- *     <code>client_error</code> and <code>server_error</code> categories, i.e. status codes 400-599.
+ *     This library also knows about {@code error} category, which is just more generic and covers both
+ *     {@code client_error} and {@code server_error} categories, i.e. status codes 400-599.
  * </p>
  * <p>
  *     These categories are useful when one wants to deal with a range of responses in the same way.  For example, as
- *     far as I know, at the time of this writing, the UpCloud API never responds with <code>info</code> or
- *     <code>redirect</code> type of status codes.  So, I might recommend adding this to the beginning of scripts:
+ *     far as I know, at the time of this writing, the UpCloud API never responds with {@code info} or
+ *     {@code redirect} type of status codes.  So, I might recommend adding this to the beginning of scripts:
  * </p>
  * <pre><code class="groovy">
- *     session.callback info: { log.fatal("oh my, assumptions are all broken" },
- *                  redirect: { log.fatal("dear dear, but I don't want to go elsewhere") }
+ *     session.callback info: { log.fatal "oh my, assumptions are all broken" },
+ *                  redirect: { log.fatal "dear dear, but I don't want to go elsewhere" }
  * </code></pre>
  * <p>
  *     Of course, in reality, one would log some details from the passed in {@link Resource} instance.
  * </p>
- * <h1>Callback resolution order</h1>
+ *
+ * <h4>Callback resolution order</h4>
  * <p>
  *     Since each HTTP exchange may have multiple sources of callbacks, this library chooses the callback in the
  *     following way:
@@ -150,47 +156,48 @@ import org.slf4j.*
  * <ol>
  *     <li>An exact match to the status code is tried first</li>
  *     <li>The status code category is tried, if exact match is not found</li>
- *     <li>If the response is in the more generic <code>error</code> category, it is tried last</li>
+ *     <li>If the response is in the more generic {@code error} category, it is tried last</li>
  *     <li>If nothing else is found, the default request callback is invoked</li>
  * </ol>
  * <p>
- *     For example, if the server responds with a "200 OK", the resolution path looks like this:
+ *     For example, if the server responds with a {@code 200 OK}, the resolution path looks like this:
  * </p>
  * <ol>
- *     <li>If there's an additional request callback for "200", that is invoked</li>
- *     <li>If there's a session callback for "200" attached to the <code>Session</code> instance, that is invoked</li>
- *     <li>If there's an additional request callback for "info", that is invoked</li>
- *     <li>If there's a session callback for "info" attached to the <code>Session</code> instance, that is invoked</li>
+ *     <li>If there's an additional request callback for {@code 200}, that is invoked</li>
+ *     <li>If there's a session callback for {@code 200} attached to the {@code Session} instance, that is invoked</li>
+ *     <li>If there's an additional request callback for {@code info}, that is invoked</li>
+ *     <li>If there's a session callback for {@code info} attached to the {@code Session} instance, that is invoked</li>
  *     <li>Failing all above, the default request callback is invoked</li>
  * </ol>
  * <p>
- *     On the other hand, for an HTTP response "400 Bad Request", the resolution path is a bit longer due to the more
- *     generic <code>error</code> category:
+ *     On the other hand, for an HTTP response {@code 400 Bad Request}, the resolution path is a bit longer due to the more
+ *     generic {@code error} category:
  * </p>
  * <ol>
- *     <li>request callback for "400"</li>
- *     <li>session callback for "400"</li>
- *     <li>request callback for "client_error"</li>
- *     <li>session callback for "client_error"</li>
- *     <li>request callback for "error"</li>
- *     <li>session callback for "error"</li>
+ *     <li>request callback for {@code 400}</li>
+ *     <li>session callback for {@code 400}</li>
+ *     <li>request callback for {@code client_error}</li>
+ *     <li>session callback for {@code client_error}</li>
+ *     <li>request callback for {@code error}</li>
+ *     <li>session callback for {@code error}</li>
  *     <li>default request callback</li>
  * </ol>
  * <p>
  *     In all examples above, remember that only one callback is invoked for one HTTP exchange: the first one that
  *     matches.
  * </p>
- * <h1>Network error handling</h1>
+ *
+ * <h4>Network error handling</h4>
  * <p>
- *     The additional request callbacks and the session callbacks attached to the <code>Session</code> instance, are all by
+ *     The additional request callbacks and the session callbacks attached to the {@code Session} instance, are all by
  *     definition tied to the HTTP response status code or the status category.  However, networks are unreliable and
  *     the communication with the server may not always work.  This is where the special nature, and the importance, of
  *     the default request callback comes apparent.
  * </p>
  * <p>
  *     The default request callback takes a second optional argument: an instance of {@link ERROR} class.  This is
- *     <code>null</code> whenever the response from the server is available, even if the response represents an error,
- *     and <code>non-null</code> if the server is, for example, unreachable or there's a I/O error talking to the
+ *     {@code null} whenever the response from the server is available, even if the response represents an error,
+ *     and non-{@code null} if the server is, for example, unreachable or there's a I/O error talking to the
  *     server.  Read more about that in the {@link ERROR} class documentation.
  * </p>
  */

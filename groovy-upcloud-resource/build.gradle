@@ -6,6 +6,20 @@ modifyPom {
         description 'Groovy UpCloud resource provides convenience resource representations'
     }
 }
+
+groovydoc {
+    overviewText = resources.text.fromString """
+<p>The central here classes are</p>
+<ul>
+    <li><a href="fi/linuxbox/upcloud/resource/Server.html">Server</a></li>
+    <li><a href="fi/linuxbox/upcloud/resource/Storage.html">Storage</a></li>
+    <li><a href="fi/linuxbox/upcloud/resource/IpAddress.html">IpAddress</a></li>
+    <li><a href="fi/linuxbox/upcloud/resource/Tag.html">Tag</a></li>
+    <li><a href="fi/linuxbox/upcloud/resource/FirewallRule.html">FirewallRule</a></li>
+</ul>
+"""
+}
+
 dependencies {
     api project(':groovy-upcloud-core')
     api project(':groovy-upcloud-builder')

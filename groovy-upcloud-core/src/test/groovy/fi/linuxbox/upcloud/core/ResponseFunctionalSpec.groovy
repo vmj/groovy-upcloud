@@ -2,6 +2,7 @@ package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.json.gjson.GJSON
 import fi.linuxbox.upcloud.json.spi.JSON
+import fi.linuxbox.upcloud.resource.Account
 import fi.linuxbox.upcloud.resource.Firewall
 import fi.linuxbox.upcloud.resource.FirewallRule
 import fi.linuxbox.upcloud.resource.IpAddress
@@ -32,6 +33,22 @@ class ResponseFunctionalSpec extends Specification {
         new Resource(repr: r)
     }
 
+    def "error JSON to Error"() {
+        when:
+        def resp = load("""
+            {
+              "error" : {
+                "error_message" : "The server 00af0f73-7082-4283-b925-811d1585774b does not exist.",
+                "error_code" : "SERVER_NOT_FOUND"
+              }
+            }
+            """)
+
+        then:
+        resp?.error instanceof fi.linuxbox.upcloud.resource.Error
+        resp.error.errorCode == 'SERVER_NOT_FOUND'
+    }
+
     def "account JSON to Account"() {
         when:
         def resp = load("""
@@ -44,7 +61,7 @@ class ResponseFunctionalSpec extends Specification {
             """)
 
         then:
-        resp?.account.class.simpleName == 'Account'
+        resp?.account instanceof Account
     }
 
     def "prices JSON to Zone list"() {
@@ -131,7 +148,7 @@ class ResponseFunctionalSpec extends Specification {
 
         then:
         resp?.prices instanceof List
-        resp.prices.every { it.class.simpleName == 'Zone' }
+        resp.prices.every { it instanceof Zone }
         Zone zone = resp.prices[0]
         zone.name == 'fi-hel1'
         zone.firewall instanceof Firewall
@@ -170,7 +187,7 @@ class ResponseFunctionalSpec extends Specification {
 
         then:
         resp?.zones instanceof List
-        resp.zones.every { it.class.simpleName == 'Zone' }
+        resp.zones.every { it instanceof Zone }
         resp.zones[0].id == 'fi-hel1'
         resp.zones[3].id == 'us-chi1'
     }

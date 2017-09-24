@@ -32,3 +32,7 @@ https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/f
 https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/FirewallRule.html[Firewall], and
 https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Tag.html[Tag].
 You might want to start with those.
+
+Also, in order to understand how the library works, you might want to dive into
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-core/latest/fi/linuxbox/upcloud/core/Session.html[Session], and
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-core/latest/fi/linuxbox/upcloud/core/Resource.html[Resource].
