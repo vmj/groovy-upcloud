@@ -51,8 +51,8 @@ groovydoc {
     }
 
     // Add highlightjs to every page footer
-    //def url = "file:///Users/vmj/src/groovy-upcloud/${project.name}/build/docs/groovydoc/"
-    def url = "http://www.javadoc.io/page/${project.group}/${project.name}/${project.version}/"
+    //def url = "file:///Users/vmj/src/groovy-upcloud/${project.name}/build/docs/groovydoc"
+    def url = "https://static.javadoc.io/${project.group}/${project.name}/${project.version}"
     footer = """
 <link rel="stylesheet" href="${url}/highlightjs/styles/foundation.css">
 <script src="${url}/highlightjs/highlight.pack.js"></script>
