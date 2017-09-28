@@ -26,12 +26,12 @@ https://bintray.com/search?sort=last_updated&query=fi.linuxbox.upcloud%3Agroovy-
 
 ## API Documentation
 
-The main resources managed in UpCloud are the
-https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Server.html[Server],
-https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/IpAddress.html[IpAddress],
-https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Storage.html[Storage],
-https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/FirewallRule.html[Firewall], and
-https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Tag.html[Tag].
+The main resources managed in UpCloud are
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Server.html[servers],
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/IpAddress.html[IP addresses],
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Storage.html[storages],
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/FirewallRule.html[firewall rules], and
+https://www.javadoc.io/page/fi.linuxbox.upcloud/groovy-upcloud-resource/latest/fi/linuxbox/upcloud/resource/Tag.html[tags].
 You might want to start with those.
 
 Also, in order to understand how the library works, you might want to dive into
