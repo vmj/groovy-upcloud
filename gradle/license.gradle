@@ -8,4 +8,6 @@ license {
         java = 'SLASHSTAR_STYLE'
         groovy = 'SLASHSTAR_STYLE'
     }
+
+    exclude "**/META-INF/services/**"
 }
