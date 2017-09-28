@@ -1,0 +1,17 @@
+apply plugin: 'java-library'
+apply plugin: 'idea'
+
+group = 'fi.linuxbox.upcloud'
+version = '0.0.7-SNAPSHOT'
+
+// Java 8
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Dependency injections are marked with standard API
+    implementation 'javax.inject:javax.inject:1'
+}

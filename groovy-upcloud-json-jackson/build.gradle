@@ -1,4 +1,12 @@
-apply from: '../gradle/groovy-upcloud-lib.gradle'
+apply from: '../gradle/versions.gradle'
+apply from: '../gradle/java-library.gradle'
+apply from: '../gradle/groovy.gradle'
+apply from: '../gradle/groovydoc.gradle'
+apply from: '../gradle/spock.gradle'
+apply from: '../gradle/cobertura.gradle'
+apply from: '../gradle/nexus.gradle'
+
+apply from: '../gradle/logging.gradle'
 
 modifyPom {
     project {
@@ -9,12 +17,12 @@ modifyPom {
 dependencies {
     api project(':groovy-upcloud-json-spi')
 
-    implementation "com.fasterxml.jackson.core:jackson-core:2.9.1"
-    api "com.fasterxml.jackson.core:jackson-databind:2.9.1"
+    implementation "com.fasterxml.jackson.core:jackson-core:${versions.jackson}"
+    api "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
 
-    testImplementation "com.jayway.jsonpath:json-path-assert:2.4.0"
+    testImplementation "com.jayway.jsonpath:json-path-assert:${versions.jsonpath}"
 }
 
 groovydoc {
-    link("https://fasterxml.github.io/jackson-databind/javadoc/2.9/", 'com.fasterxml.jackson')
+    link("https://fasterxml.github.io/jackson-databind/javadoc/${versions.jackson_api}/", 'com.fasterxml.jackson')
 }

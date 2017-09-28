@@ -1,0 +1,29 @@
+apply plugin: 'com.bmuschko.nexus'
+
+modifyPom {
+    project {
+        url 'https://github.com/vmj/groovy-upcloud'
+
+        licenses {
+            license {
+                name 'GNU General Public License, version 3'
+                url 'http://www.gnu.org/licenses/gpl-3.0.html'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'vmj'
+                name 'Mikko Värri'
+                email 'mikko@varri.fi'
+            }
+        }
+
+        scm {
+            url 'https://github.com/vmj/groovy-upcloud'
+            connection 'scm:https://github.com/vmj/groovy-upcloud.git'
+            developerConnection 'scm:git@github.com:vmj/groovy-upcloud.git'
+        }
+    }
+}

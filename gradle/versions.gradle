@@ -1,0 +1,19 @@
+ext.versions = [
+        groovy: '2.4.12',
+        logback: '1.2.3',
+        slf4j: '1.7.25',
+        spock: '1.1-groovy-2.4',
+
+        // AHC
+        httpasyncclient: '4.1.3',
+        cglib: '2.2',
+
+        // gjson and jackson
+        jsonpath: '2.4.0',
+
+        // jackson
+        jackson: '2.9.1',
+        jackson_api: '2.9',
+
+        // gradle plugin versions are in ../build.gradle
+]

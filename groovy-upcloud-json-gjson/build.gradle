@@ -1,4 +1,12 @@
-apply from: '../gradle/groovy-upcloud-lib.gradle'
+apply from: '../gradle/versions.gradle'
+apply from: '../gradle/java-library.gradle'
+apply from: '../gradle/groovy.gradle'
+apply from: '../gradle/groovydoc.gradle'
+apply from: '../gradle/spock.gradle'
+apply from: '../gradle/cobertura.gradle'
+apply from: '../gradle/nexus.gradle'
+
+apply from: '../gradle/logging.gradle'
 
 modifyPom {
     project {
@@ -13,5 +21,5 @@ dependencies {
         exclude module: 'groovy' // non-indy
     }
 
-    testImplementation "com.jayway.jsonpath:json-path-assert:2.4.0"
+    testImplementation "com.jayway.jsonpath:json-path-assert:${versions.jsonpath}"
 }
