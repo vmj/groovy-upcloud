@@ -1,0 +1,11 @@
+apply plugin: "com.github.hierynomus.license"
+
+license {
+    ext.year = Calendar.getInstance().get(Calendar.YEAR)
+    ext.email = 'mikko@varri.fi'
+
+    mapping {
+        java = 'SLASHSTAR_STYLE'
+        groovy = 'SLASHSTAR_STYLE'
+    }
+}
