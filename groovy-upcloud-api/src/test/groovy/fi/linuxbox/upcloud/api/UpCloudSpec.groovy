@@ -205,6 +205,7 @@ class UpCloudSpec extends ApiSpecification {
 
         where:
             className   | urlPathSegment
+            'RESOURCE'  | 'resource'
             'IpAddress' | 'ip_address'
             'Server'    | 'server'
             'Storage'   | 'storage'
