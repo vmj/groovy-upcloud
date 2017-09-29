@@ -18,3 +18,19 @@ buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
 }
+
+//
+// merge coverage reports of subprojects after check
+//
+apply plugin: 'net.saliman.cobertura'
+repositories {
+    jcenter() // required to fetch the cobertura dependencies
+}
+cobertura {
+    coverageEncoding = 'UTF-8'
+    coverageMergeDatafiles = subprojects.collect {
+        // cobertura plugin does not have a constant for this
+        file("${it.buildDir.path}/cobertura/cobertura.ser")
+    }
+}
+check.finalizedBy(project.tasks.cobertura)

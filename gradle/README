@@ -1,6 +1,5 @@
 versions
 
-cobertura
 nexus
 
 java-library    adds dependency (inject)
@@ -9,3 +8,5 @@ groovy          versions, java-library (soft), adds dependency (groovy)
 groovydoc       versions, groovy (soft)
 logging         adds dependencies (slf4j, logback(test))
 spock           adds dependencies (groovy (test), spock(test))
+
+cobertura       no deps but recommended to apply after java/groovy plugins
