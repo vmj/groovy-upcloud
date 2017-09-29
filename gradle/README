@@ -1,10 +1,10 @@
 versions
-license
 
 cobertura
 nexus
 
 java-library    adds dependency (inject)
+license         versions, java-library (soft)
 groovy          versions, java-library (soft), adds dependency (groovy)
 groovydoc       versions, groovy (soft)
 logging         adds dependencies (slf4j, logback(test))

@@ -1,7 +1,7 @@
 apply plugin: "com.github.hierynomus.license"
 
 license {
-    ext.year = Calendar.getInstance().get(Calendar.YEAR)
+    ext.year = Calendar.instance.get(Calendar.YEAR)
     ext.email = 'mikko@varri.fi'
 
     mapping {
@@ -10,4 +10,22 @@ license {
     }
 
     exclude "**/META-INF/services/**"
+
+    encoding = 'UTF-8'
+}
+
+downloadLicenses {
+    includeProjectDependencies = true
+
+    ext.gpl3 = license('GNU General Public License, Version 3', 'https://www.gnu.org/licenses/gpl.txt')
+    ext.apache2 = license('Apache License, Version 2.0', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+
+    aliases = [
+            (apache2): ['The Apache Software License, Version 2.0',]
+    ]
+
+    licenses = [
+            (group(project.group)): gpl3,
+            ("org.apache.httpcomponents:httpasyncclient:${versions.httpasyncclient}".toString()): apache2
+    ]
 }
