@@ -19,9 +19,12 @@ package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.HTTP
+import fi.linuxbox.upcloud.http.spi.HeaderElement
 import fi.linuxbox.upcloud.http.spi.Headers
 import fi.linuxbox.upcloud.http.spi.META
+import fi.linuxbox.upcloud.http.spi.Parameter
 import fi.linuxbox.upcloud.json.spi.JSON
+import org.codehaus.groovy.runtime.metaclass.MethodSelectionException
 import spock.lang.*
 
 /**
@@ -374,13 +377,10 @@ class SessionSpec extends Specification {
     def "Response body decoding success"() {
         given: "correct headers"
             Headers headers = Mock()
-            1 * headers.getAt('Content-Type') >> [
-                    // list of HeaderElements; our elements are just maps
-                    [name: 'application/json', parameters: [
-                            // list of Parameters; our parameters are just maps
-                            [name: 'charset', value: 'UTF-8']
-                    ]]
-            ].iterator()
+            HeaderElement headerElement = Mock()
+            1 * headers.getAt('Content-Type') >> [headerElement].iterator()
+            1 * headerElement.name >> 'application/json'
+            1 * headerElement.parameters >> [new Parameter('charset', 'UTF-8')].iterator()
 
         and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
             1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, headers), body, null)
@@ -404,13 +404,10 @@ class SessionSpec extends Specification {
     def "Response body decoding exception"() {
         given: "correct headers"
             Headers headers = Mock()
-            1 * headers.getAt('Content-Type') >> [
-                    // list of HeaderElements; our elements are just maps
-                    [name: 'application/json', parameters: [
-                            // list of Parameters; our parameters are just maps
-                            [name: 'charset', value: 'UTF-8']
-                    ]]
-            ].iterator()
+            HeaderElement headerElement = Mock()
+            1 * headers.getAt('Content-Type') >> [headerElement].iterator()
+            1 * headerElement.name >> 'application/json'
+            1 * headerElement.parameters >> [new Parameter('charset', 'UTF-8')].iterator()
 
         and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
             1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, headers), body, null)
@@ -443,7 +440,7 @@ class SessionSpec extends Specification {
             session.GET()
 
         then:
-            thrown(MissingMethodException)
+            thrown(MethodSelectionException) // FIXME: Why not MissingMethodException?
     }
 
     def "Read method with one argument"() {

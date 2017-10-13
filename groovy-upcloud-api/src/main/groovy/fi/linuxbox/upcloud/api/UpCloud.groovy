@@ -34,7 +34,7 @@ import fi.linuxbox.upcloud.core.*
  * </ul>
  */
 class UpCloud {
-    private final Session SESSION
+    private final AbstractSession SESSION
 
     @Inject
     UpCloud(final Session SESSION) {

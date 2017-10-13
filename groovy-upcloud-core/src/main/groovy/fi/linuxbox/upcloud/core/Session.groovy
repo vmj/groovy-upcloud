@@ -20,6 +20,8 @@ package fi.linuxbox.upcloud.core
 import fi.linuxbox.upcloud.core.callback.RequestCallback
 import fi.linuxbox.upcloud.core.callback.SessionCallbacks
 import fi.linuxbox.upcloud.http.spi.ERROR
+import fi.linuxbox.upcloud.http.spi.HeaderElement
+import fi.linuxbox.upcloud.http.spi.Parameter
 import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Headers
@@ -218,7 +220,8 @@ import org.slf4j.*
  *     server.  Read more about that in the {@link ERROR} class documentation.
  * </p>
  */
-class Session {
+@CompileStatic
+class Session extends AbstractSession<Object> {
     private final Logger log = LoggerFactory.getLogger(Session)
 
     /**
@@ -230,20 +233,6 @@ class Session {
      */
     private static final String API_VERSION = '/1.2/'
 
-    /**
-     * HTTP method descriptions.
-     *
-     * <p>
-     * These are used to create the HTTP methods dynamically.  The values are the range of how many method arguments
-     * they take, and the boolean describes whether the method takes an entity body or not.
-     * </p>
-     */
-    private final static Map<String, Tuple2<IntRange, Boolean>> HTTP_METHODS = [
-            GET   : new Tuple2((2..3), true),
-            DELETE: new Tuple2((2..3), true),
-            PUT   : new Tuple2((3..4), false),
-            POST  : new Tuple2((3..4), false)
-    ]
     /**
      * HTTP request headers.
      *
@@ -332,6 +321,7 @@ class Session {
      * @param cb Default request callback.
      * @return Whatever is returned by the HTTP implementation for starting an asynchronous request.
      */
+    @Override
     def request(
             final Map<?, Closure<Void>> cbs = [ : ],
             final String method, final String path, final Resource resource,
@@ -353,106 +343,6 @@ class Session {
                     body?.close()
                     requestCallback.accept(m, err)
                 }
-    }
-
-    /**
-     * MOP method for HTTP request methods.
-     *
-     * <p>
-     *     This implementation adds the following methods:
-     * </p>
-     * <ul>
-     *     <li>GET(Map cbs = [:], String path, Closure<Void> cb)</li>
-     *     <li>DELETE(Map cbs = [:], String path, Closure<Void> cb)</li>
-     *     <li>PUT(Map cbs = [:], String path, Resource resource, Closure<Void> cb)</li>
-     *     <li>POST(Map cbs = [:], String path, Resource resource, Closure<Void> cb)</li>
-     * </ul>
-     * <p>
-     *     To be exact, the Map argument can exists anywhere, and it is moved to the beginning of the argument list.
-     *     This is to allow the Groovy style of keyword arguments:
-     * </p>
-     * <pre><code class="groovy">
-     *     session.GET('some-resource',
-     *                 error: {
-     *                     // handle error
-     *                 },
-     *                 {
-     *                     // handle all the other cases
-     *                 })
-     * </code></pre>
-     * <p>
-     *     This implementation (mainly the move operation of the map) also enables the following higher level APIs:
-     * </p>
-     * <pre><code class="groovy">
-     *     class Server extends Resource {
-     *         def create(...args) {
-     *             this.SESSION.POST('server', this.wrapper(), *args)
-     *         }
-     *     }
-     * </code></pre>
-     * <p>
-     *     Which can still be called like this:
-     * </p>
-     * <pre><code class="groovy">
-     *     server.create \
-     *         400: {
-     *             // handle bad request
-     *         },
-     *         {
-     *             // handle all the other cases
-     *         }
-     * </code></pre>
-     * <p>
-     *     Or like this:
-     * </p>
-     * <pre><code class="groovy">
-     *     server.create(
-     *         { response ->
-     *         },
-     *         400: {
-     *         },
-     *         500: {
-     *         })
-     * </code></pre>
-     *
-     * @param name The HTTP request method (verb).
-     * @param args The rest of the arguments.
-     * @return Whatever the HTTP implementation returns as a result of starting an asynchronous operation.
-     */
-    def methodMissing(final String name, final args) {
-        def method = HTTP_METHODS[name]
-        if (method && args.length in method.first) {
-            def ARGV = [ *args ]
-
-            // The first argument (Map of request callbacks) may be missing
-            int i = ARGV.findIndexOf { it instanceof Map<?, Closure<Void>> }
-            if (i == -1) {
-                ARGV.add(0, [ : ])
-            } else if (i != 0) {
-                ARGV.add(0, ARGV.removeAt(i))
-            }
-
-            // Force the second argument to be the HTTP method
-            ARGV.add(1, name)
-
-            // The third argument (second or first from caller perspective) must be a string
-            //if (!(ARGV[2] instanceof String))
-            //    throw new MissingMethodException(name, this.class, args)
-
-            // If this is a GET or DELETE, force the fourth argument be null resource
-            if (method.second)
-                ARGV.add(3, null)
-            //else if (!(ARGV[3] instanceof Resource))
-            //    throw new MissingMethodException(name, this.class, args)
-
-            // The final argument is the mandatory default request callback
-            //if (!(ARGV[4] instanceof Closure<Void>))
-            //    throw new MissingMethodException(name, this.class, args)
-
-            // Make the call!
-            return request(*ARGV)
-        }
-        throw new MissingMethodException(name, this.class, args)
     }
 
     /**
@@ -490,8 +380,10 @@ class Session {
      */
     private Map<String, Object> decode(final Headers headers, final InputStream body) {
         if (headers && body) {
-            def isUTF8Json = headers.getAt('Content-Type').find {
-                it.name == 'application/json' && it.parameters.find { it.name == 'charset' && it.value == 'UTF-8' }
+            def isUTF8Json = headers.getAt('Content-Type').find { final HeaderElement headerElement ->
+                headerElement.name == 'application/json' && headerElement.parameters.find { final Parameter param ->
+                    param.name == 'charset' && param.value == 'UTF-8'
+                }
             }
 
             if (isUTF8Json) {
