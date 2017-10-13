@@ -21,8 +21,6 @@ import fi.linuxbox.upcloud.http.spi.META
 import groovy.transform.PackageScope
 import org.slf4j.*
 
-import static fi.linuxbox.upcloud.core.Resource.ListWrapper.getElementClassName
-import static fi.linuxbox.upcloud.core.Resource.ListWrapper.getElements
 import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
 
 /**
@@ -137,8 +135,8 @@ class Resource {
             Object propertyValue
             switch (value) {
                 case ListWrapper:
-                    final String className = getElementClassName(value)
-                    propertyValue = getElements(value) collect {
+                    final String className = className(ListWrapper.getKey(value))
+                    propertyValue = ListWrapper.getElements(value) collect {
                         if (it instanceof Map<String, ?>)
                             instantiateResourceClass(className, [*:kwargs, repr: it])
                         else
@@ -468,31 +466,26 @@ class Resource {
          * @return {@code true} if candidate looks like a list wrapper,
          * {@code false} otherwise
          */
-        static Boolean isCase(final Object value) {
+        private static Boolean isCase(final Object value) {
             value instanceof Map<String, ?> && value.size() == 1 && value.values()[0] instanceof List
         }
         /**
-         * Returns the simple class name of the elements.
          *
          * @param self
          * @return
          */
-        static String getElementClassName(final Map<String, ?> self) {
-            assert isCase(self)
-            className(getKey(self))
-        }
-        static List getElements(final Map<String, ?> self) {
-            assert isCase(self)
-            (List) self.get(getKey(self))
+        private static List getElements(final Object self) {
+            final String key = getKey(self)
+            (List) ((Map)self).get(key)
         }
         /**
          *
          * @param self
          * @return
          */
-        static String getKey(final Map<String, ?> self) {
+        private static String getKey(final Object self) {
             assert isCase(self)
-            self.keySet()[0]
+            ((Map)self).keySet()[0]
         }
     }
 }
