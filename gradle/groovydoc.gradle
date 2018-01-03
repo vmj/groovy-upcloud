@@ -1,11 +1,18 @@
 // Augment groovydoc with highlightjs
-task highlightjs(type: Copy) {
-    from "${projectDir}/../gradle/highlightjs/highlight.pack.js"
+task highlightjs(type: org.gradle.api.tasks.Copy) {
+    from "${rootProject.rootDir}/gradle/highlightjs/highlight.pack.js"
     into "${buildDir}/docs/groovydoc/highlightjs"
 }
-task highlightstyle(type: Copy) {
-    from "${projectDir}/../gradle/highlightjs/styles/foundation.css"
+task highlightstyle(type: org.gradle.api.tasks.Copy) {
+    from "${rootProject.rootDir}/gradle/highlightjs/styles/foundation.css"
     into "${buildDir}/docs/groovydoc/highlightjs/styles"
+}
+sourceSets {
+    highlightjs {
+        resources {
+            srcDir "${rootProject.rootDir}/gradle/groovydoc"
+        }
+    }
 }
 groovydoc.dependsOn highlightjs
 groovydoc.dependsOn highlightstyle
@@ -19,18 +26,11 @@ groovydoc {
     link("http://docs.groovy-lang.org/docs/groovy-${versions.groovy}/html/gapi/", "groovy.lang")
 
     ['api', 'app', 'builder', 'core', 'http-ahc', 'http-spi', 'json-gjson', 'json-jackson', 'json-spi', 'resource', 'script'].each {
-        //def url = "file:///Users/vmj/src/groovy-upcloud/groovy-upcloud-$it/build/docs/groovydoc/"
+        //def url = "${rootProject.rootDir}/groovy-upcloud-$it/build/docs/groovydoc/"
         def url = "http://www.javadoc.io/page/${project.group}/groovy-upcloud-${it}/${project.version}/"
         def packageName = "fi.linuxbox.upcloud.${it.replace('-', '.')}"
         link(url, packageName)
     }
 
-    // Add highlightjs to every page footer
-    //def url = "file:///Users/vmj/src/groovy-upcloud/${project.name}/build/docs/groovydoc"
-    def url = "https://static.javadoc.io/${project.group}/${project.name}/${project.version}"
-    footer = """
-<link rel="stylesheet" href="${url}/highlightjs/styles/foundation.css">
-<script src="${url}/highlightjs/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-"""
+    classpath = sourceSets.highlightjs.output + classpath
 }
