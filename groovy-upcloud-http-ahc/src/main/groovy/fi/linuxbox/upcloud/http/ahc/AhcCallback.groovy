@@ -20,6 +20,7 @@ package fi.linuxbox.upcloud.http.ahc
 import fi.linuxbox.upcloud.http.spi.CompletionCallback
 import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.META
+import fi.linuxbox.upcloud.http.spi.Request
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.apache.http.HttpResponse
@@ -32,9 +33,11 @@ import org.apache.http.concurrent.FutureCallback
 @CompileStatic
 @Slf4j
 class AhcCallback implements FutureCallback<HttpResponse> {
-    private CompletionCallback cb
+    private final Request req
+    private final CompletionCallback cb
 
-    AhcCallback(final CompletionCallback cb) {
+    AhcCallback(final Request req, final CompletionCallback cb) {
+        this.req = req
         this.cb = cb
     }
 
@@ -42,24 +45,24 @@ class AhcCallback implements FutureCallback<HttpResponse> {
     void completed(final HttpResponse response) {
         final StatusLine status = response?.statusLine
         if (status == null) {
-            failed(new IllegalStateException("invalid response (null or no status line)"))
+            failed(new IllegalStateException("null response or null status line"))
             return
         }
 
-        META meta = new META(status.statusCode, status.reasonPhrase, new AhcHeaders(response))
+        final META meta = new META(status.statusCode, status.reasonPhrase, new AhcHeaders(response), req)
 
         cb.completed(meta, response.entity?.content, null)
     }
 
     @Override
     void failed(final Exception ex) {
-        log.warn("failed to finish HTTP exchange", ex)
+        log.warn("failed to finish HTTP exchange ($req)", ex)
         cb.completed(null, null, new ERROR("failed", ex))
     }
 
     @Override
     void cancelled() {
-        log.info("cancelled HTTP exchange")
+        log.info("cancelled HTTP exchange ($req)")
         cb.completed(null, null, new ERROR("cancelled"))
     }
 }

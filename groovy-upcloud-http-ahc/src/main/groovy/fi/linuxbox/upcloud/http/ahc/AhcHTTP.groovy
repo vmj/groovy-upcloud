@@ -97,7 +97,7 @@ class AhcHTTP implements HTTP {
             req
         }
 
-        client.execute(HttpHost.create(request.host), req, new AhcCallback(cb))
+        client.execute(HttpHost.create(request.host), req, new AhcCallback(request, cb))
     }
 
     private HttpRequest toHttpRequest(final Request request, final InputStream body) {
