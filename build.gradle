@@ -14,6 +14,9 @@ plugins {
     id 'com.gradle.build-scan' version '1.9'
 }
 
+// groovydoc depends on subprojects
+evaluationDependsOnChildren()
+
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
@@ -34,3 +37,32 @@ cobertura {
     }
 }
 check.finalizedBy(project.tasks.cobertura)
+
+//
+// generate one set of groovydocs for the whole project
+//
+apply plugin: 'groovy'
+apply from: 'gradle/versions.gradle'
+
+dependencies {
+    compileOnly "org.codehaus.groovy:groovy:${versions.groovy}:indy"
+}
+
+groovydoc {
+    subprojects.each { sp ->
+        //if (source)
+            source += sp.groovydoc.source
+        //else
+        //    source = sp.groovydoc.source
+        //if (classpath)
+            classpath += sp.groovydoc.classpath
+        //else
+        //    classpath = sp.groovydoc.classpath
+        //if (groovyClasspath)
+            groovyClasspath += sp.groovydoc.groovyClasspath
+        //else
+        //    groovyClasspath = sp.groovydoc.groovyClasspath
+    }
+}
+apply from: 'gradle/groovydoc-highlightjs.gradle'
+apply from: 'gradle/groovydoc-links.gradle'
