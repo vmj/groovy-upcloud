@@ -49,14 +49,13 @@ class AhcHTTPSpec extends Specification {
                         'Authorization' : 'Basic 1234',
                         'Content-Type'  : 'application/json',
                         'User-Agent'    : 'Groovy Upcloud/1.0'
-                ]),
-                body: null
+                ])
         )
     }
 
     def "Client arguments"() {
         when: "the HTTP implementation is invoked"
-            http.execute(request, {})
+            http.execute(request, null, {})
 
         then: "it passes the host, method, resource, headers, and a callback to the real client"
             1 * client.execute({ HttpHost host -> host != null  },
@@ -103,7 +102,7 @@ class AhcHTTPSpec extends Specification {
             }
 
         when:
-            http.execute(request, cb)
+            http.execute(request, null, cb)
 
         then:
             ok
@@ -126,7 +125,7 @@ class AhcHTTPSpec extends Specification {
             Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(request, cb)
+            http.execute(request, null, cb)
 
         then:
             ok
@@ -145,7 +144,7 @@ class AhcHTTPSpec extends Specification {
             Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(request, cb)
+            http.execute(request, null, cb)
 
         then:
             ok
@@ -162,7 +161,7 @@ class AhcHTTPSpec extends Specification {
             Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
 
         when:
-            http.execute(request, cb)
+            http.execute(request, null, cb)
 
         then:
             ok

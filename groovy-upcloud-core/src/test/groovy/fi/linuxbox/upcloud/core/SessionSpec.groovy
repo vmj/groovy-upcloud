@@ -48,7 +48,7 @@ class SessionSpec extends Specification {
             session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation is called with GET"
-            1 * http.execute({ it.method == 'GET' }, _)
+            1 * http.execute({ it.method == 'GET' }, _, _)
     }
 
     def "Request URI"() {
@@ -56,7 +56,7 @@ class SessionSpec extends Specification {
             session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives both the host and full resource path"
-            1 * http.execute({ it.host =~ '^https?://[^/]+$' && it.resource =~ '^/1.[1-9]/some-resource$' }, _)
+            1 * http.execute({ it.host =~ '^https?://[^/]+$' && it.resource =~ '^/1.[1-9]/some-resource$' }, _, _)
     }
 
     def "Request headers"() {
@@ -89,7 +89,7 @@ class SessionSpec extends Specification {
                     }
                 }
                 ok
-            }, _)
+            }, _, _)
     }
 
     def "Request body null"() {
@@ -97,7 +97,7 @@ class SessionSpec extends Specification {
             session.request('GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives null entity body"
-            1 * http.execute({ it.body == null }, _)
+            1 * http.execute(_, null, _)
     }
 
     def "Request body non-null"() {
@@ -108,7 +108,7 @@ class SessionSpec extends Specification {
             session.request('GET', 'some-resource', new Resource(), {})
 
         then: "the HTTP implementation receives the serialized resource"
-            1 * http.execute({ it.body == body }, _)
+            1 * http.execute(_, body, _)
     }
 
     def "Request with additional callbacks"() {
@@ -120,8 +120,8 @@ class SessionSpec extends Specification {
 
         then: "the HTTP implementation is still called as before"
             1 * http.execute({
-                it.method == 'GET' && it.resource =~ '/some-resource$' && it.body == null
-            }, _)
+                it.method == 'GET' && it.resource =~ '/some-resource$'
+            }, null, _)
     }
 
     def "POST request"() {
@@ -129,7 +129,7 @@ class SessionSpec extends Specification {
             session.request('POST', 'other/resource', null, {})
 
         then: "the HTTP implementation is called with POST"
-            1 * http.execute({ it.method == 'POST' && it.resource =~ '/other/resource$' }, _)
+            1 * http.execute({ it.method == 'POST' && it.resource =~ '/other/resource$' }, null, _)
     }
 
     def "Convenience GET method"() {
@@ -137,7 +137,7 @@ class SessionSpec extends Specification {
             session.GET('something') {}
 
         then: "the HTTP implementation is called with GET and null body"
-            1 * http.execute({ it.method == 'GET' && it.resource =~ '/something$' && it.body == null }, _)
+            1 * http.execute({ it.method == 'GET' && it.resource =~ '/something$' }, null, _)
     }
 
     def "Convenience GET method with additional callbacks"() {
@@ -145,7 +145,7 @@ class SessionSpec extends Specification {
             session.GET('something', 404: {}) {}
 
         then: "the HTTP implementation is called with GET and null body"
-            1 * http.execute({ it.method == 'GET' && it.resource =~ '/something$' && it.body == null }, _)
+            1 * http.execute({ it.method == 'GET' && it.resource =~ '/something$' }, null, _)
     }
 
 
@@ -154,7 +154,7 @@ class SessionSpec extends Specification {
             session.DELETE('something') {}
 
         then: "the HTTP implementation is called with DELETE and null body"
-            1 * http.execute({ it.method == 'DELETE' && it.resource =~ '/something$' && it.body == null }, _)
+            1 * http.execute({ it.method == 'DELETE' && it.resource =~ '/something$' }, null, _)
     }
 
     def "Convenience DELETE method with additional callbacks"() {
@@ -162,7 +162,7 @@ class SessionSpec extends Specification {
             session.DELETE('something', 404: {}) {}
 
         then: "the HTTP implementation is called with DELETE and null body"
-            1 * http.execute({ it.method == 'DELETE' && it.resource =~ '/something$' && it.body == null }, _)
+            1 * http.execute({ it.method == 'DELETE' && it.resource =~ '/something$' }, null, _)
     }
 
     def "Convenience PUT method"() {
@@ -173,7 +173,7 @@ class SessionSpec extends Specification {
             session.PUT('something', new Resource()) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
-            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == body }, _)
+            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' }, body, _)
     }
 
     def "Convenience PUT method with additional callbacks"() {
@@ -184,7 +184,7 @@ class SessionSpec extends Specification {
             session.PUT('something', new Resource(), 404: {}) {}
 
         then: "the HTTP implementation is called with PUT and non-null body"
-            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' && it.body == body }, _)
+            1 * http.execute({ it.method == 'PUT' && it.resource =~ '/something$' }, body, _)
     }
 
     def "Convenience POST method"() {
@@ -195,7 +195,7 @@ class SessionSpec extends Specification {
             session.POST('something', new Resource()) {}
 
         then: "the HTTP implementation is called with POST and non-null body"
-            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == body }, _)
+            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' }, body, _)
     }
 
     def "Convenience POST method with additional callbacks"() {
@@ -206,7 +206,7 @@ class SessionSpec extends Specification {
             session.POST('something', new Resource(), 404: {}, {})
 
         then: "the HTTP implementation is called with POST and non-null body"
-            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' && it.body == body }, _)
+            1 * http.execute({ it.method == 'POST' && it.resource =~ '/something$' }, body, _)
     }
 
     def "Default callback"() {
@@ -214,7 +214,7 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         and: "an HTTP implementation that calls the Session callback"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(404, null), null, null) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(404, null), null, null) }
 
         when: "Session is invoked with one callback"
             session.request(null, null, null) { ok = true }
@@ -229,7 +229,7 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         and: "an HTTP implementation that calls the Session callback"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(status, null), null, null) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(status, null), null, null) }
 
         when: "Session is invoked with additional callbacks"
             session.request(null, null, null, (cbname): { ok = true }) {}
@@ -256,7 +256,7 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         and: "an HTTP implementation that calls the Session callback"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(status, null), null, null) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(status, null), null, null) }
 
         when: "Session is invoked with generic error handler and more specific error handler"
             session.request(null, null, null, error: {}, (error): { ok = true }) {}
@@ -285,7 +285,7 @@ class SessionSpec extends Specification {
     @Unroll
     def "Global callback #cbname is called for 101"() {
         given: "an HTTP implementation that calls the Session callback with 101 status"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(101, null), null, null) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(101, null), null, null) }
 
         and: "a global callback"
             boolean ok = false
@@ -304,7 +304,7 @@ class SessionSpec extends Specification {
     @Unroll
     def "Global callback for #cbname is not called when overridden"() {
         given: "an HTTP implementation that calls the Session callback with status 101"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(101, null), null, null) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(101, null), null, null) }
 
         and: "a global callback"
             boolean ok = false
@@ -334,7 +334,7 @@ class SessionSpec extends Specification {
 
     def "Default request callback with one parameter and error case"() {
         given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(null, null, new ERROR("foo")) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new ERROR("foo")) }
 
         and: "a success flag"
             boolean ok = false
@@ -348,7 +348,7 @@ class SessionSpec extends Specification {
 
     def "Default request callback with two parameters and error case"() {
         given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(null, null, new ERROR("foo")) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new ERROR("foo")) }
 
         and: "a success flag"
             boolean ok = false
@@ -362,7 +362,7 @@ class SessionSpec extends Specification {
 
     def "Default request callback with two parameters and success case"() {
         given: "an HTTP implementation that calls the Session callback with non-null META and null ERROR"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, null), null, null) }
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(200, null), null, null) }
 
         and: "a success flag"
             boolean ok = false
@@ -383,7 +383,7 @@ class SessionSpec extends Specification {
             1 * headerElement.parameters >> [new Parameter('charset', 'UTF-8')].iterator()
 
         and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, headers), body, null)
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(200, headers), body, null)
             }
 
         and: "a JSON implementation that parses the fake input"
@@ -410,7 +410,7 @@ class SessionSpec extends Specification {
             1 * headerElement.parameters >> [new Parameter('charset', 'UTF-8')].iterator()
 
         and: "an HTTP implementation that calls the Session callback with those headers and a non-null entity body"
-            1 * http.execute(*_) >> { _, cb -> cb.completed(new META(200, headers), body, null)
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(200, headers), body, null)
             }
 
         and: "a JSON implementation that fails to parse the input"

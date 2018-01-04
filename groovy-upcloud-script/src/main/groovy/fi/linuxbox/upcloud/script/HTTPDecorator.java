@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
@@ -46,9 +47,9 @@ public class HTTPDecorator implements HTTP {
     }
 
     @Override
-    public void execute(final Request request, final CompletionCallback cb) {
+    public void execute(final Request request, final InputStream body, final CompletionCallback cb) {
         // We are in script thread initiating a request
-        http.execute(request, (meta, entity, error) -> {
+        http.execute(request, body, (meta, entity, error) -> {
             // We are in HTTP IO thread receiving the response
             try {
                 executorService.submit(() -> {

@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.http.spi;
 
 import java.io.Closeable;
+import java.io.InputStream;
 
 /**
  * An interface which is implemented by the HTTP implementation.
@@ -32,9 +33,13 @@ public interface HTTP extends Closeable {
 
     /**
      * Execute the HTTP exchange asynchronously.
+     * <p>
+     *     The HTTP implementation is responsible for closing the input stream when done with it.
+     * <p>
      *
      * @param request HTTP request to execute.
+     * @param body Request entity, or <code>null</code>.
      * @param cb Completion callback to call when the response is received.
      */
-    void execute(final Request request, final CompletionCallback cb);
+    void execute(final Request request, final InputStream body, final CompletionCallback cb);
 }

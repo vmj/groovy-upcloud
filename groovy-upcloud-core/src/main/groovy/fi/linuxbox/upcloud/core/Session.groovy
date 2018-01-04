@@ -333,8 +333,8 @@ class Session extends AbstractSession<Object> {
                 host: HOST,
                 method: method,
                 resource: API_VERSION + path,
-                headers: new SimpleHeaders(requestHeaders),
-                body: resource ? json.encode(resource as Map) : null),
+                headers: new SimpleHeaders(requestHeaders)),
+                resource ? json.encode(resource as Map) : null,
                 { final META meta,
                       final InputStream body, final ERROR err ->
                     // Contract is that either resource is non-null, or err

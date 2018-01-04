@@ -34,10 +34,11 @@ abstract class ApiSpecification extends Specification {
     JSON json = Mock()
     Session session = new Session(http, json, null, null)
     Request req
+    InputStream body
 
     def setup() {
         // given an HTTP implementation that just saves the Request
-        (_..1) * http.execute(*_) >> { req = it[0] }
+        (_..1) * http.execute(*_) >> { req = it[0]; body = it[1] }
         // and a JSON implementation that wraps the repr in an InputStream
         (_..1) * json.encode(_) >> { new MockInputStream(it[0]) }
     }
@@ -47,6 +48,6 @@ abstract class ApiSpecification extends Specification {
         assert req?.method == method
         assert req.resource.endsWith(resource)
         // and the repr in the MockInputStream is as expected
-        assert req.body?.repr == repr
+        assert body?.repr == repr
     }
 }

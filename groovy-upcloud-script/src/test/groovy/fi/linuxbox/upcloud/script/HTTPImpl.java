@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,7 +43,7 @@ public class HTTPImpl implements HTTP {
     }
 
     @Override
-    public void execute(Request request, CompletionCallback cb) {
+    public void execute(Request request, InputStream body, CompletionCallback cb) {
         try {
             ioThreads.submit(() -> {
                 // In reality, we would fire an HTTP request here, and

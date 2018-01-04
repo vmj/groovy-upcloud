@@ -28,7 +28,7 @@ import groovy.transform.Immutable
  * </p>
  */
 @CompileStatic
-@Immutable(knownImmutableClasses = [Headers.class, InputStream])
+@Immutable(knownImmutableClasses = [Headers.class])
 class Request {
     /**
      * Target host of the HTTP request.
@@ -52,11 +52,4 @@ class Request {
      * Headers to include in the request.
      */
     final Headers headers
-    /**
-     * Request entity, or <code>null</code>.
-     * <p>
-     *     The HTTP implementation is responsible for closing this input stream when done with it.
-     * <p>
-     */
-    final InputStream body
 }

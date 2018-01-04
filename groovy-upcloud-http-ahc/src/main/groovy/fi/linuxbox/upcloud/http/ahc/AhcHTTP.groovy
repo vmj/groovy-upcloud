@@ -71,7 +71,7 @@ class AhcHTTP implements HTTP {
     }
 
     @Override
-    void execute(final Request request, final CompletionCallback cb) {
+    void execute(final Request request, final InputStream body, final CompletionCallback cb) {
         if (client == null)
             throw new IllegalStateException("no client provided")
         if (request == null)
@@ -80,19 +80,19 @@ class AhcHTTP implements HTTP {
             throw new IllegalArgumentException("cb is null")
 
         try {
-            doExecute(request, cb)
+            doExecute(request, body, cb)
         } catch (final Exception e) {
             log.warn("failed to start HTTP exchange", e)
             cb.completed(null, null, new ERROR("failed to start HTTP exchange", e))
         }
     }
 
-    private void doExecute(final Request request, final CompletionCallback cb) {
+    private void doExecute(final Request request, final InputStream body, final CompletionCallback cb) {
         // isRunning() and start() are only available in this CloseableHAC API :/
         if (!client.running)
             client.start()
 
-        HttpRequest req = request.headers.inject(toHttpRequest(request)) { HttpRequest req, Header header ->
+        HttpRequest req = request.headers.inject(toHttpRequest(request, body)) { HttpRequest req, Header header ->
             req.addHeader(header.name, header.value)
             req
         }
@@ -100,13 +100,13 @@ class AhcHTTP implements HTTP {
         client.execute(HttpHost.create(request.host), req, new AhcCallback(cb))
     }
 
-    private HttpRequest toHttpRequest(final Request request) {
+    private HttpRequest toHttpRequest(final Request request, final InputStream body) {
         final RequestLine rl = new BasicRequestLine(request.method, request.resource, HTTP_1_1)
 
-        if (request.body) {
+        if (body) {
             // BasicHTTPEntity will close the content when done with it
             BasicHttpEntity entity = new BasicHttpEntity()
-            entity.content = request.body
+            entity.content = body
 
             BasicHttpEntityEnclosingRequest req = new BasicHttpEntityEnclosingRequest(rl)
             req.entity = entity
