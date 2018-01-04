@@ -98,14 +98,13 @@ import groovy.transform.InheritConstructors
 @InheritConstructors
 class FirewallRule extends Resource {
     /**
-     * Action to take if a network packet matches this firewall rule: {@code accept}, {@code reject}, or {@code drop}.
+     * Action to take if a network packet matches this firewall rule: {@code accept}, or {@code drop}.
      * <p>
      *     This is available in all firewall rule responses, and must be set when creating firewall rules.
      * </p>
      * <p>
-     *     Action {@code accept} lets the packet through.  Action {@code reject} blocks the packet and sends an ICMP
-     *     error message to the source IP address of the packet.  Action {@code drop} blocks the packet without
-     *     sending an error.
+     *     Action {@code accept} lets the packet through.  Action {@code drop} blocks the packet without sending an
+     *     error.
      * </p>
      */
     String action
