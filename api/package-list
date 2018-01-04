@@ -1,0 +1,13 @@
+fi.linuxbox.upcloud.api
+fi.linuxbox.upcloud.app
+fi.linuxbox.upcloud.builder
+fi.linuxbox.upcloud.core
+fi.linuxbox.upcloud.core.callback
+fi.linuxbox.upcloud.core.http.simple
+fi.linuxbox.upcloud.http.ahc
+fi.linuxbox.upcloud.http.spi
+fi.linuxbox.upcloud.json.gjson
+fi.linuxbox.upcloud.json.jackson
+fi.linuxbox.upcloud.json.spi
+fi.linuxbox.upcloud.resource
+fi.linuxbox.upcloud.script
