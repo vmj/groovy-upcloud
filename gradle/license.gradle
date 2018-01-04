@@ -1,7 +1,9 @@
 apply plugin: "com.github.hierynomus.license"
 
 license {
-    ext.year = Calendar.instance.get(Calendar.YEAR)
+    // licence headers with any other year than this will fail the check
+    // https://github.com/hierynomus/license-gradle-plugin/issues/101
+    //ext.year = '2017'//Calendar.instance.get(Calendar.YEAR)
     ext.email = 'mikko@varri.fi'
 
     mapping {
@@ -10,6 +12,7 @@ license {
     }
 
     exclude "**/META-INF/services/**"
+    exclude "**/gstringTemplates/**"
 
     encoding = 'UTF-8'
 }

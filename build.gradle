@@ -31,9 +31,13 @@ repositories {
 }
 cobertura {
     coverageEncoding = 'UTF-8'
-    coverageMergeDatafiles = subprojects.collect {
-        // cobertura plugin does not have a constant for this
-        file("${it.buildDir.path}/cobertura/cobertura.ser")
+    subprojects.each { sp ->
+        if (sp.name != 'manual') {
+            if (coverageMergeDatafiles)
+                coverageMergeDatafiles += file("${sp.buildDir.path}/cobertura/cobertura.ser")
+            else
+                coverageMergeDatafiles = [file("${sp.buildDir.path}/cobertura/cobertura.ser")]
+        }
     }
 }
 check.finalizedBy(project.tasks.cobertura)
@@ -50,18 +54,11 @@ dependencies {
 
 groovydoc {
     subprojects.each { sp ->
-        //if (source)
+        if (sp.name != 'manual') {
             source += sp.groovydoc.source
-        //else
-        //    source = sp.groovydoc.source
-        //if (classpath)
             classpath += sp.groovydoc.classpath
-        //else
-        //    classpath = sp.groovydoc.classpath
-        //if (groovyClasspath)
             groovyClasspath += sp.groovydoc.groovyClasspath
-        //else
-        //    groovyClasspath = sp.groovydoc.groovyClasspath
+        }
     }
 }
 apply from: 'gradle/groovydoc-highlightjs.gradle'
