@@ -44,6 +44,14 @@ class StorageCommandSpec extends StorageSpecification {
                     ]
     }
 
+    def "cancel: POST /storage/fake-uuid/cancel"() {
+        when:
+        storage.cancel {}
+
+        then:
+        requestIs 'POST',  '/storage/fake-uuid/cancel'
+    }
+
     def "templatize: POST /storage/fake-uuid/templatize"() {
         given:
             def template = build 'Storage', {

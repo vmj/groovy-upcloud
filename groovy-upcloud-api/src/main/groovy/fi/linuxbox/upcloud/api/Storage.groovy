@@ -28,6 +28,7 @@ import fi.linuxbox.upcloud.core.*
  * <ul>
  *     <li>loading, modifying, and deleting storages</li>
  *     <li>cloning and templatizing storages</li>
+ *     <li>cancelling the cloning operation</li>
  *     <li>creating and restoring backups</li>
  *     <li>adding and removing storages from favorites</li>
  * </ul>
@@ -138,6 +139,24 @@ trait Storage {
      */
     def clone(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('clone'), resource.wrapper(), *args)
+    }
+
+    /**
+     * Cancels an incomplete cloning operation.
+     * <p>
+     *     Cancelling the cloning will stop the cloning operation, remove the incomplete new storage and return the
+     *     source storage back to online state.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     *
+     * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/cancel} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/9-storages/#cancel-storage-operation" target="_top">UpCloud API docs for POSt /storage/&#36;{storage.uuid}/cancel</a>
+     */
+    def cancel(...args) {
+        this.SESSION.POST(cmdPath('cancel'), null, *args)
     }
 
     /**
