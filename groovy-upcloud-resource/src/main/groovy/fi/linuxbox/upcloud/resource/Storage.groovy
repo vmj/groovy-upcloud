@@ -75,7 +75,7 @@ class Storage extends Resource {
      *     This is available in the storage list and details responses.  This can not be specified when creating,
      *     modifying, or cloning a storage, since all user created storages are private.
      * </p>
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#storage-access-types" target="_top">UpCloud API docs for storage access types</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#storage-access-types" target="_top">UpCloud API docs for storage access types</a>
      */
     String access
     /**
@@ -135,7 +135,7 @@ class Storage extends Resource {
      *     This is available in the storage list and details responses.  This can not be specified when creating,
      *     modifying, or cloning a storage.
      * </p>
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#storage-states" target="_top">UpCloud API docs for storage states</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#storage-states" target="_top">UpCloud API docs for storage states</a>
      */
     String state
     /**
@@ -144,7 +144,7 @@ class Storage extends Resource {
      *     This is available in the storage list and details responses.  This can optionally be specified when
      *     creating or cloning a storage, where this defaults to {@code hdd}.  This can not be modified.
      * </p>
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#storage-tiers" target="_top">UpCloud API docs for storage tiers</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#storage-tiers" target="_top">UpCloud API docs for storage tiers</a>
      */
     String tier
     /**
@@ -167,7 +167,7 @@ class Storage extends Resource {
      *     can be created via
      *     {@link fi.linuxbox.upcloud.api.Storage#backup(fi.linuxbox.upcloud.core.Resource, def)} API.
      * </p>
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#storage-types" target="_top">UpCloud API docs for storage types</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#storage-types" target="_top">UpCloud API docs for storage types</a>
      */
     String type
     /**

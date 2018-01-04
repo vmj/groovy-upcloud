@@ -370,7 +370,7 @@ class Server extends Resource {
      * <p>
      *     This is available in the server details response, and can not be set when creating or modifying a server.
      * </p>
-     * @see <a href="https://www.upcloud.com/api/1.2.4/8-servers/#server-states" target="_top">UpCloud API docs for server states</a>
+     * @see <a href="https://www.upcloud.com/api/8-servers/#server-states" target="_top">UpCloud API docs for server states</a>
      */
     String state
     /**

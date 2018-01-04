@@ -60,7 +60,7 @@ trait Storage {
      *
      * @param args Request callbacks for the {@code GET /storage/&#36;&#123;storage.uuid&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#get-storage-details" target="_top">UpCloud API docs for GET /storage/&#36;{storage.uuid}</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#get-storage-details" target="_top">UpCloud API docs for GET /storage/&#36;{storage.uuid}</a>
      */
     def load(...args) {
         this.SESSION.GET(storagePath(), *args)
@@ -87,7 +87,7 @@ trait Storage {
      * @param resource Updated storage resource.
      * @param args Request callbacks for the {@code PUT /storage/&#36;&#123;storage.uuid&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#modify-storage" target="_top">UpCloud API docs for PUT /storage/&#36;{storage.uuid}</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#modify-storage" target="_top">UpCloud API docs for PUT /storage/&#36;{storage.uuid}</a>
      */
     def update(Resource resource, ...args) {
         this.SESSION.PUT(storagePath(), resource.wrapper(), *args)
@@ -107,7 +107,7 @@ trait Storage {
      * </p>
      * @param args Request callbacks for the {@code DELETE /storage/&#36;&#123;storage.uuid&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#delete-storage" target="_top">UpCloud API docs for DELETE /storage/&#36;{storage.uuid}</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#delete-storage" target="_top">UpCloud API docs for DELETE /storage/&#36;{storage.uuid}</a>
      */
     def delete(...args) {
         this.SESSION.DELETE(storagePath(), *args)
@@ -135,7 +135,7 @@ trait Storage {
      * @param resource Specification of the clone
      * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/clone} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#clone-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/clone</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#clone-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/clone</a>
      */
     def clone(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('clone'), resource.wrapper(), *args)
@@ -188,7 +188,7 @@ trait Storage {
      * @param resource Specification of the template
      * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/templatize} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#templatize-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/templatize</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#templatize-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/templatize</a>
      */
     def templatize(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('templatize'), resource.wrapper(), *args)
@@ -214,7 +214,7 @@ trait Storage {
      * @param resource Specification of the backup
      * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/backup} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#create-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/backup</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#create-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/backup</a>
      */
     def backup(Resource resource, ...args) {
         this.SESSION.POST(cmdPath('backup'), resource.wrapper(), *args)
@@ -231,7 +231,7 @@ trait Storage {
      * </p>
      * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/restore} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#restore-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/restore</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#restore-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/restore</a>
      */
     def restore(...args) {
         this.SESSION.POST(cmdPath('restore'), null, *args)
@@ -251,7 +251,7 @@ trait Storage {
      * </p>
      * @param args Request callbacks for the {@code POST /storage/&#36;&#123;storage.uuid&#125;/favorite} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#add-storage-to-favorites" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/favorite</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#add-storage-to-favorites" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/favorite</a>
      */
     def favor(...args) {
         this.SESSION.POST(cmdPath('favorite'), null, *args)
@@ -271,7 +271,7 @@ trait Storage {
      * </p>
      * @param args Request callbacks for the {@code DELETE /storage/&#36;&#123;storage.uuid&#125;/favorite} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/9-storages/#remove-storage-from-favorites" target="_top">UpCloud API docs for DELETE /storage/&#36;{storage.uuid}/favorite</a>
+     * @see <a href="https://www.upcloud.com/api/9-storages/#remove-storage-from-favorites" target="_top">UpCloud API docs for DELETE /storage/&#36;{storage.uuid}/favorite</a>
      */
     def unfavor(...args) {
         this.SESSION.DELETE(cmdPath('favorite'), *args)

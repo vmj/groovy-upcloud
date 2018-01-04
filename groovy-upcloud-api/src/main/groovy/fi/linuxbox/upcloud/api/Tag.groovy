@@ -46,7 +46,7 @@ trait Tag {
      * @param resource Description of the updated tag
      * @param args Request callbacks for the {@code PUT /tag/&#36;&#123;tag.name&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#modify-existing-tag" target="_top">UpCloud API docs for PUT /tag/&#36;{tag.name}</a>
+     * @see <a href="https://www.upcloud.com/api/12-tags/#modify-existing-tag" target="_top">UpCloud API docs for PUT /tag/&#36;{tag.name}</a>
      */
     def update(Resource resource, ...args) {
         this.SESSION.PUT(tagPath(), resource.wrapper(), *args)
@@ -62,7 +62,7 @@ trait Tag {
      * </p>
      * @param args Request callbacks for the {@code DELETE /tag/&#36;&#123;tag.name&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
-     * @see <a href="https://www.upcloud.com/api/1.2.4/12-tags/#delete-tag" target="_top">UpCloud API docs for DELETE /tag/&#36;{tag.name}</a>
+     * @see <a href="https://www.upcloud.com/api/12-tags/#delete-tag" target="_top">UpCloud API docs for DELETE /tag/&#36;{tag.name}</a>
      */
     def delete(...args) {
         this.SESSION.DELETE(tagPath(), *args)

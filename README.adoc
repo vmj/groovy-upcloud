@@ -16,7 +16,7 @@ When used as a base for Groovy scripting, UpCloud Groovy provides a script base 
 deal with the concurrent nature: the top-level code and all the callbacks are executed in a dedicated thread, separate
 from the IO thread pool.
 
-Groovy UpCloud library has full support for UpCloud API version 1.2.4 (current as of Sep 2017).
+Groovy UpCloud library has full support for UpCloud API version 1.2.6 (current as of Jan 2018).
 
 ## Requirements
 
