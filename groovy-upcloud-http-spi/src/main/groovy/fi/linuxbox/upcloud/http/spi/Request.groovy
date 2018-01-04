@@ -52,4 +52,14 @@ class Request {
      * Headers to include in the request.
      */
     final Headers headers
+
+    /**
+     * Returns a string representation of this instance.
+     *
+     * @return A string representation.
+     */
+    @Override
+    String toString() {
+        "$method $resource"
+    }
 }
