@@ -352,6 +352,20 @@ class Server extends Resource {
      */
     String plan
     /**
+     * Number of bytes of IPv4 traffic included in the plan.
+     * <p>
+     *     This is available in the server listing and server details responses.  This can not be modified.
+     * </p>
+     */
+    String planIpv4Bytes
+    /**
+     * Number of bytes of IPv6 traffic included in the plan.
+     * <p>
+     *     This is available in the server listing and server details responses.  This can not be modified.
+     * </p>
+     */
+    String planIpv6Bytes
+    /**
      * Server state.
      * <p>
      *     This is available in the server details response, and can not be set when creating or modifying a server.

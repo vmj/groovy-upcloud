@@ -314,6 +314,8 @@ class ResponseFunctionalSpec extends Specification {
                     "licence" : 0,
                     "memory_amount": "1024",
                     "plan" : "1xCPU-1GB",
+                    "plan_ipv4_bytes" : "34253332",
+                    "plan_ipv6_bytes" :  "0",
                     "state": "started",
                     "tags" : {
                       "tag" : [
@@ -351,7 +353,11 @@ class ResponseFunctionalSpec extends Specification {
         resp?.servers instanceof List
         resp.servers.every { it instanceof Server }
         resp.servers[0].coreNumber == '1'
+        resp.servers[0].planIpv4Bytes == '34253332'
+        resp.servers[0].planIpv6Bytes == '0'
         resp.servers[1].tags[1] == 'Ubuntu'
+        resp.servers[1].planIpv4Bytes == null
+        resp.servers[1].planIpv6Bytes == null
     }
 
     def "server JSON to Server"() {
@@ -387,6 +393,8 @@ class ResponseFunctionalSpec extends Specification {
                 "memory_amount": "1024",
                 "nic_model": "virtio",
                 "plan" : "1xCPU-1GB",
+                "plan_ipv4_bytes": "3565675343",
+                "plan_ipv6_bytes": "4534432",
                 "state": "started",
                 "storage_devices": {
                   "storage_device": [
@@ -425,6 +433,8 @@ class ResponseFunctionalSpec extends Specification {
         resp.server.ipAddresses instanceof List
         resp.server.ipAddresses.every { it instanceof IpAddress }
         resp.server.ipAddresses[2].family == 'IPv6'
+        resp.server.planIpv4Bytes == '3565675343'
+        resp.server.planIpv6Bytes == '4534432'
         resp.server.storageDevices instanceof List
         resp.server.storageDevices.every { it instanceof StorageDevice }
         resp.server.storageDevices[0].storageSize == 20
