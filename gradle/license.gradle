@@ -13,8 +13,7 @@ license {
 
     exclude "**/META-INF/services/**"
     exclude "**/gstringTemplates/**"
-    exclude "**/*Spec.groovy"
-    exclude "**/LogbackConfigurator.java"
+    exclude "**/src/test/**"
 
     encoding = 'UTF-8'
 }
