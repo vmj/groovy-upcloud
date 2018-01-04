@@ -22,4 +22,4 @@ cobertura {
     ]
 }
 // Fail the check if coverage is not
-check.dependsOn coberturaCheck
+check.dependsOn tasks.cobertura
