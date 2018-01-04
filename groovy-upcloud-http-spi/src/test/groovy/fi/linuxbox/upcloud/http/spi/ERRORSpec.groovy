@@ -1,5 +1,5 @@
 /*
- * Groovy UpCloud library - Core Module
+ * Groovy UpCloud library - HTTP SPI Module
  * Copyright (C) 2018  <mikko@varri.fi>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
  */
 package fi.linuxbox.upcloud.http.spi
 
-import fi.linuxbox.upcloud.http.spi.ERROR
 import spock.lang.Specification
 
 class ERRORSpec extends Specification {
