@@ -3,15 +3,15 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'net.saliman:gradle-cobertura-plugin:2.5.0'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.5.3'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.6'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.7'
         classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0"
     }
 }
 
 plugins {
-    id 'com.gradle.build-scan' version '1.9'
+    id 'com.gradle.build-scan' version '1.11'
 }
 
 // groovydoc depends on subprojects
