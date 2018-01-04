@@ -13,7 +13,6 @@ license {
 
     exclude "**/META-INF/services/**"
     exclude "**/gstringTemplates/**"
-    exclude "**/src/test/**"
 
     encoding = 'UTF-8'
 }
