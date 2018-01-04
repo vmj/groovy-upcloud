@@ -55,32 +55,55 @@ public class META {
     private final Integer status;
     private final String message;
     private final Headers headers;
+    private final Request request;
 
     /**
      * Designated constructor.
      *
-     * @param status The HTTP status code.  This must not be null.
-     * @param message The HTTP status phrase.  May be null.
-     * @param headers The HTTP headers.
+     * @param status The HTTP response status code.  This must not be null.
+     * @param message The HTTP response status phrase.  May be null.
+     * @param headers The HTTP response headers.
+     * @param request The original HTTP request, without any entity body.
      */
-    public META(final int status, final String message, final Headers headers) {
+    public META(final int status, final String message, final Headers headers, final Request request) {
         this.status = status;
         this.message = message;
         this.headers = headers;
+        this.request = request;
     }
 
     /**
-     * Constructor that sets the message to null.
+     * Constructor that sets the request to null.
      *
-     * @param status The HTTP status code.  This must not be null.
+     * @param status The HTTP response status code.  This must not be null.
+     * @param message The HTTP response status phrase.  May be null.
+     * @param headers The HTTP response headers.
+     */
+    public META(final int status, final String message, final Headers headers) {
+        this(status, message, headers, null);
+    }
+
+    /**
+     * Constructor that sets the message and the request to null.
+     *
+     * @param status The HTTP response status code.  This must not be null.
      * @param headers The HTTP headers.
      */
     public META(final int status, final Headers headers) {
-        this(status, null, headers);
+        this(status, null, headers, null);
     }
 
     /**
-     * The HTTP status code.
+     * Constructor that sets the message, the headers, and the request to null.
+     *
+     * @param status The HTTP response status code.  This must not be null.
+     */
+    public META(final int status) {
+        this(status, null, null, null);
+    }
+
+    /**
+     * The HTTP response status code.
      *
      * <p>
      * This is never null.
@@ -91,7 +114,7 @@ public class META {
     }
 
     /**
-     * The HTTP reason phrase.
+     * The HTTP response status phrase.
      *
      * <p>
      * This may be null.
@@ -102,10 +125,17 @@ public class META {
     }
 
     /**
-     * The HTTP headers.
+     * The HTTP response headers.
      */
     public Headers getHeaders() {
         return headers;
+    }
+
+    /**
+     * The original HTTP request, without any entity body.
+     */
+    public Request getRequest() {
+        return request;
     }
 
     /**
@@ -115,6 +145,13 @@ public class META {
      */
     @Override
     public String toString() {
-        return status + ": " + message;
+        return new StringBuilder()
+                .append(status)
+                .append(" ")
+                .append(message)
+                .append(" (")
+                .append(request)
+                .append(")")
+                .toString();
     }
 }

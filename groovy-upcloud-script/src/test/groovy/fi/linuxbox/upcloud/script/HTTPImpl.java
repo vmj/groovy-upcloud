@@ -58,7 +58,7 @@ public class HTTPImpl implements HTTP {
                 }
 
                 // This is what we would get from the wire.
-                META meta = new META(200, "OK", null);
+                META meta = new META(200);
 
 
                 // Pass it to whoever is listening for this HTTP transaction
