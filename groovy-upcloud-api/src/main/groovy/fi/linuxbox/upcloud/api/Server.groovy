@@ -112,6 +112,23 @@ trait Server {
     }
 
     /**
+     * Cancels a running server operation.
+     * <p>
+     *     The server must be in {@code maintenance} state.
+     * </p>
+     * <p>
+     *     A {@code 204 No Content} response signifies success.
+     * </p>
+     *
+     * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/cancel} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/8-servers/#cancel-server-operation" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cancel</a>
+     */
+    def cancel(...args) {
+        this.SESSION.POST(cmdPath('cancel'), null, *args)
+    }
+
+    /**
      * Starts a stopped server.
      * <p>
      *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Server}

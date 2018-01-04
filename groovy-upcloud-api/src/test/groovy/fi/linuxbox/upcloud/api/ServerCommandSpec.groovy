@@ -21,6 +21,14 @@ import fi.linuxbox.upcloud.api.spec.ServerSpecification
 
 class ServerCommandSpec extends ServerSpecification {
 
+    def "cancel: POST /server/fake-uuid/cancel"() {
+        when:
+        server.cancel {}
+
+        then:
+        requestIs 'POST',  '/server/fake-uuid/cancel'
+    }
+
     def "start: POST /server/fake-uuid/start"() {
         when:
             server.start {}
