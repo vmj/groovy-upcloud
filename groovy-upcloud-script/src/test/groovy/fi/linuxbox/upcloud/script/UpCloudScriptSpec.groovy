@@ -33,6 +33,7 @@ class UpCloudScriptSpec extends Specification {
         when: "a "
             groovyShell.evaluate("""
                 def session = newSession("username", "p4ssw0rd")
+                session.callback network_error: {}
     
                 def names = ['Alice', 'Bob', 'Clive', 'Dylan']
                 def count = 0

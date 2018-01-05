@@ -71,9 +71,16 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
     RequestCallback(final SessionCallbacks sessionCallbacks,
                     final Map<?, Closure<Void>> requestCallbacks,
                     final Closure<Void> defaultRequestCallback) {
+
         this.callbacks = unmodifiableMap(
                 sessionCallbacks.asUnmodifiableMap() + internalize(requestCallbacks))
         this.defaultRequestCallback = defaultRequestCallback
+
+        if (defaultRequestCallback.maximumNumberOfParameters != 2) {
+            if (callbacks[NETWORK_ERROR] == null) {
+                throw new IllegalArgumentException('Network error handler missing')
+            }
+        }
     }
 
     /**
@@ -84,8 +91,7 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
      */
     @Override
     void accept(final Resource resource, final ERROR error) {
-        final Integer status = resource?.META?.status
-        final Closure<Void> callback = chooseCallback(status)
+        final Closure<Void> callback = chooseCallback(resource?.META?.status, error)
         callApp(callback, resource, error)
     }
 
@@ -105,7 +111,7 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
             if (callback.maximumNumberOfParameters == 2)
                 callback(resource, err)
             else
-                callback(resource)
+                callback(resource ?: err)
         } catch (final MissingMethodException e) {
             // this is error because we couldn't reach the app
             log.error("application callback has wrong signature", e)
@@ -126,9 +132,12 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
      * @param requestCallbacks The request callbacks.
      * @return A callback corresponding to the response status.
      */
-    private Closure<Void> chooseCallback(final Integer statusCode) {
-        if (!statusCode)
-            return defaultRequestCallback
+    private Closure<Void> chooseCallback(final Integer statusCode, final ERROR error) {
+        if (error) {
+            if (defaultRequestCallback.maximumNumberOfParameters == 2)
+                return defaultRequestCallback
+            return callbacks[NETWORK_ERROR]
+        }
 
         // Try exact match to the status code first
         Closure<Void> callback = callbacks[statusCode.toString()]

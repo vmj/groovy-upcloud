@@ -17,6 +17,8 @@
  */
 package fi.linuxbox.upcloud.core.callback
 
+import fi.linuxbox.upcloud.core.Resource
+import fi.linuxbox.upcloud.http.spi.ERROR
 import groovy.transform.CompileStatic
 
 /**
@@ -24,6 +26,10 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 abstract class Callbacks {
+    /**
+     * Callback category for network error.
+     */
+    protected static final String NETWORK_ERROR = 'network_error'
     /**
      * HTTP response status categories.
      */
@@ -85,10 +91,10 @@ abstract class Callbacks {
                     "HTTP status code must be in range (${HTTP_STATUS_CODE_RANGE.inspect()}): $status")
         }
 
-        if (statusString in HTTP_STATUS_CATEGORY_NAMES)
+        if (statusString in HTTP_STATUS_CATEGORY_NAMES || NETWORK_ERROR == statusString)
             return statusString
         throw new IllegalArgumentException(
-                "HTTP status category must be one of ${HTTP_STATUS_CATEGORY_NAMES}: $status")
+                "HTTP status category must be one of ${HTTP_STATUS_CATEGORY_NAMES} or $NETWORK_ERROR: $status")
     }
 
     /**
@@ -107,5 +113,39 @@ abstract class Callbacks {
         } catch (final NumberFormatException ignored) {
             return null
         }
+    }
+
+    private Closure<Void> internalizeCallback(final String status, final Closure<Void> callback) {
+        if (status == null) { // default request callback
+            if (!isValidDefaultRequestCallback(callback))
+                throw new IllegalArgumentException('Default request callback must accept Resource (or subclass) as the first argument, and optionally ERROR (or subclass) as second argument')
+        }
+        else if (callback == null) {
+            // setting additional request callback to null disables session callback
+        }
+        else if (NETWORK_ERROR == status) {
+            if (!isValidNetworkErrorCallback(callback))
+                throw new IllegalArgumentException("Network error callback must accept ERROR (or subclass) as the sole argument")
+        }
+        else {
+            if (!isValidAdditionalRequestCallback(callback))
+                throw new IllegalArgumentException("Additional request callback must accept Resource (or subclass) as the sole argument")
+        }
+        return callback
+    }
+
+    private boolean isValidDefaultRequestCallback(final Closure<Void> cb) {
+        final int argc = cb.maximumNumberOfParameters
+        final Class[] argv = cb.parameterTypes
+        return argc >= 1 && argv[0].isAssignableFrom(Resource) &&
+                (argc == 1 || (argc == 2 && argv[1].isAssignableFrom(ERROR)))
+    }
+
+    private boolean isValidAdditionalRequestCallback(final Closure<Void> cb) {
+        return cb.maximumNumberOfParameters == 1 && cb.parameterTypes[0].isAssignableFrom(Resource)
+    }
+
+    private boolean isValidNetworkErrorCallback(final Closure<Void> cb) {
+        return cb.maximumNumberOfParameters == 1 && cb.parameterTypes[0].isAssignableFrom(ERROR)
     }
 }

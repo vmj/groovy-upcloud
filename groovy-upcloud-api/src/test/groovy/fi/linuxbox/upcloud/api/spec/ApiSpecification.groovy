@@ -37,6 +37,9 @@ abstract class ApiSpecification extends Specification {
     InputStream body
 
     def setup() {
+        // allow default request callback to take only one argument
+        session.callback network_error: {}
+
         // given an HTTP implementation that just saves the Request
         (_..1) * http.execute(*_) >> { req = it[0]; body = it[1] }
         // and a JSON implementation that wraps the repr in an InputStream

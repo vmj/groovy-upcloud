@@ -41,11 +41,12 @@ class SessionSpec extends Specification {
 
     def setup() {
         session = new Session(http, json, "open", "sesame")
+        session.callback network_error: {}
     }
 
     def "Request method"() {
         when: "calling the Session request method with GET"
-            session.request('GET', 'some-resource', null, {})
+            session.request([:], 'GET', 'some-resource', null, {})
 
         then: "the HTTP implementation is called with GET"
             1 * http.execute({ it.method == 'GET' }, _, _)
@@ -53,7 +54,7 @@ class SessionSpec extends Specification {
 
     def "Request URI"() {
         when: "calling the Session request method with a resource"
-            session.request('GET', 'some-resource', null, {})
+            session.request([:], 'GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives both the host and full resource path"
             1 * http.execute({ it.host =~ '^https?://[^/]+$' && it.resource =~ '^/1.[1-9]/some-resource$' }, _, _)
@@ -61,7 +62,7 @@ class SessionSpec extends Specification {
 
     def "Request headers"() {
         when: "calling the Session request method"
-            session.request('GET', 'some-resource', null, {})
+            session.request([:], 'GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives the correct headers"
             1 * http.execute({
@@ -94,7 +95,7 @@ class SessionSpec extends Specification {
 
     def "Request body null"() {
         when: "calling the Session request method with null resource"
-            session.request('GET', 'some-resource', null, {})
+            session.request([:], 'GET', 'some-resource', null, {})
 
         then: "the HTTP implementation receives null entity body"
             1 * http.execute(_, null, _)
@@ -105,7 +106,7 @@ class SessionSpec extends Specification {
             1 * json.encode(_) >> body
 
         when: "calling the Session request method with non-null resource"
-            session.request('GET', 'some-resource', new Resource(), {})
+            session.request([:], 'GET', 'some-resource', new Resource(), {})
 
         then: "the HTTP implementation receives the serialized resource"
             1 * http.execute(_, body, _)
@@ -126,7 +127,7 @@ class SessionSpec extends Specification {
 
     def "POST request"() {
         when: "calling the Session request method with POST"
-            session.request('POST', 'other/resource', null, {})
+            session.request([:], 'POST', 'other/resource', null, {})
 
         then: "the HTTP implementation is called with POST"
             1 * http.execute({ it.method == 'POST' && it.resource =~ '/other/resource$' }, null, _)
@@ -217,7 +218,7 @@ class SessionSpec extends Specification {
             1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(404), null, null) }
 
         when: "Session is invoked with one callback"
-            session.request(null, null, null) { ok = true }
+            session.request(null, null, null, null) { ok = true }
 
         then: "the Session invokes that callback"
             ok
@@ -292,7 +293,7 @@ class SessionSpec extends Specification {
             session.callback([(cbname): { ok = true } ])
 
         when: "the Session is invoked without a callback for 101"
-            session.request(null, null, null) {}
+            session.request(null, null, null, null) {}
 
         then: "the Session invokes the global callback"
             ok
@@ -340,7 +341,8 @@ class SessionSpec extends Specification {
             boolean ok = false
 
         when: "Session is invoked with a default request callback that takes only one argument"
-            session.request(null, null, null, null) { resource -> ok = resource == null }
+            session.callback network_error: { error -> ok = error != null }
+            session.request(null, null, null, null) { resource -> }
 
         then: "the default request callback is called with null META"
             ok

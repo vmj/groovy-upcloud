@@ -221,7 +221,7 @@ import org.slf4j.*
  * </p>
  */
 @CompileStatic
-class Session extends AbstractSession<Object> {
+class Session extends AbstractSession<Void> {
     private final Logger log = LoggerFactory.getLogger(Session)
 
     /**
@@ -322,10 +322,11 @@ class Session extends AbstractSession<Object> {
      * @return Whatever is returned by the HTTP implementation for starting an asynchronous request.
      */
     @Override
-    def request(
-            final Map<?, Closure<Void>> cbs = [ : ],
-            final String method, final String path, final Resource resource,
-            final Closure<Void> cb) {
+    Void request(final Map<?, Closure<Void>> cbs,
+                 final String method,
+                 final String path,
+                 final Resource resource,
+                 final Closure<Void> cb) {
         final RequestCallback requestCallback =
                 new RequestCallback(sessionCallbacks, cbs, cb)
 
@@ -335,9 +336,8 @@ class Session extends AbstractSession<Object> {
                 resource: API_VERSION + path,
                 headers: new SimpleHeaders(requestHeaders)),
                 resource ? json.encode(resource as Map) : null,
-                { final META meta,
-                      final InputStream body, final ERROR err ->
-                    // Contract is that either resource is non-null, or err
+                { final META meta, final InputStream body, final ERROR err ->
+                    // Contract is that either meta is non-null, or err
                     // is non-null.  Never both nulls and never both non-nulls.
                     final Resource m = err ? null : decode(meta, body)
                     body?.close()
@@ -357,7 +357,7 @@ class Session extends AbstractSession<Object> {
      * @return Resource, never null.
      */
     private Resource decode(final META meta, final InputStream body) {
-        final Map<String, Object> repr = decode(meta?.headers, body)
+        final Map<String, Object> repr = decode(meta.headers, body)
         return new Resource(repr: repr, SESSION: this, META: meta)
     }
 
