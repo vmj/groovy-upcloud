@@ -193,4 +193,21 @@ class StorageDevice extends Resource {
      * </p>
      */
     String tier
+    /**
+     * Whether to use this storage device as a boot disk.
+     * <p>
+     *     This defaults to {@code 0} which means that this storage device will not be used as boot disk.
+     * </p>
+     * <p>
+     *     This is available on a server details response.
+     * <p>
+     *     This can optionally be set to {@code 1} when attaching storage device to a server, or when creating a server.
+     *     This has no meaning when detaching a storage device from a server or when inserting a CD-ROM to a CD-ROM device.
+     * </p>
+     * <p>
+     *     A server can have only one boot disk.  This setting can be overridden with the server
+     *     {@link Server#bootOrder} attribute.
+     * </p>
+     */
+    String bootDisk
 }

@@ -29,6 +29,7 @@ class ServerStorageSpec extends ServerSpecification {
                 type = "disk"
                 address = "virtio:0"
                 storage = "storage-uuid"
+                bootDisk = "1"
             }
 
         when:
@@ -39,7 +40,8 @@ class ServerStorageSpec extends ServerSpecification {
                     [ "storage_device": [
                             "type": "disk",
                             "address": "virtio:0",
-                            "storage": "storage-uuid"
+                            "storage": "storage-uuid",
+                            "boot_disk": "1"
                     ] ]
     }
 
