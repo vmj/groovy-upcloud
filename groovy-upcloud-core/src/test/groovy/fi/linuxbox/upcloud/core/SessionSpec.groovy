@@ -17,7 +17,6 @@
  */
 package fi.linuxbox.upcloud.core
 
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.HeaderElement
 import fi.linuxbox.upcloud.http.spi.Headers
@@ -333,37 +332,54 @@ class SessionSpec extends Specification {
             cbname << ['099', 600, 'foo']
     }
 
-    def "Default request callback with one parameter and error case"() {
-        given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
-            1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new ERROR("foo")) }
+    def "Default request callback with one parameter and network_error callback"() {
+        given: "an HTTP implementation that calls the Session callback with null META and non-null error"
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new Throwable()) }
 
         and: "a success flag"
             boolean ok = false
 
         when: "Session is invoked with a default request callback that takes only one argument"
             session.callback network_error: { error -> ok = error != null }
-            session.request(null, null, null, null) { resource -> }
+            session.request(null, null, null, null) { resource -> ok = false }
 
-        then: "the default request callback is called with null META"
+        then: "the network error callback is called"
             ok
     }
 
     def "Default request callback with two parameters and error case"() {
-        given: "an HTTP implementation that calls the Session callback with null META and non-null ERROR"
-            1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new ERROR("foo")) }
+        given: "an HTTP implementation that calls the Session callback with null META and non-null error"
+            1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new Throwable()) }
 
         and: "a success flag"
             boolean ok = false
 
         when: "Session is invoked with a default request callback that takes two arguments"
+            session.callback network_error: null
             session.request(null, null, null, null) { resource, err -> ok = resource == null && err != null }
 
-        then: "the default request callback is called with null META"
+        then: "the default request callback is called"
             ok
     }
 
+
+    def "Default request callback with two parameters and network_error callback"() {
+        given: "an HTTP implementation that calls the Session callback with null META and non-null error"
+        1 * http.execute(*_) >> { a, b, cb -> cb.completed(null, null, new Throwable()) }
+
+        and: "a success flag"
+        boolean ok = false
+
+        when: "Session is invoked with a default request callback that takes two arguments"
+        session.callback network_error: { error -> ok = error != null }
+        session.request(null, null, null, null) { resource, err -> ok = false }
+
+        then: "the network error callback is called"
+        ok
+    }
+
     def "Default request callback with two parameters and success case"() {
-        given: "an HTTP implementation that calls the Session callback with non-null META and null ERROR"
+        given: "an HTTP implementation that calls the Session callback with non-null META and null error"
             1 * http.execute(*_) >> { a, b, cb -> cb.completed(new META(200), null, null) }
 
         and: "a success flag"

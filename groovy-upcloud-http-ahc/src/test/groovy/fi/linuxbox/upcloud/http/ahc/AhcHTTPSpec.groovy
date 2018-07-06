@@ -17,7 +17,6 @@
  */
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
@@ -26,6 +25,9 @@ import org.apache.http.entity.BasicHttpEntity
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
 import org.apache.http.message.BasicStatusLine
 import spock.lang.*
+
+import java.util.concurrent.CancellationException
+import java.util.concurrent.CompletionException
 
 class AhcHTTPSpec extends Specification {
 
@@ -112,7 +114,7 @@ class AhcHTTPSpec extends Specification {
     //  - when !client.running, calls client.start
     //  - when closed, closes client
 
-    def "Execution exception reported as ERROR"() {
+    def "Execution exception reported as RuntimeException"() {
         given:
             1 * client.execute(*_) >> {
                 Exception e =  new IllegalArgumentException("TEST EXCEPTION; THIS IS DELIBERATE; DO NOT PANIC")
@@ -122,7 +124,7 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof RuntimeException }
 
         when:
             http.execute(request, null, cb)
@@ -131,7 +133,7 @@ class AhcHTTPSpec extends Specification {
             ok
     }
 
-    def "Background failure reported as ERROR"() {
+    def "Background failure reported as CompletionException"() {
         given:
             1 * client.execute(*_) >> { args ->
                 Exception e =  new IllegalArgumentException("TEST EXCEPTION; THIS IS DELIBERATE; DO NOT PANIC")
@@ -141,7 +143,7 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof CompletionException }
 
         when:
             http.execute(request, null, cb)
@@ -150,7 +152,7 @@ class AhcHTTPSpec extends Specification {
             ok
     }
 
-    def "Cancellation reported as ERROR"() {
+    def "Cancellation reported as CancellationException"() {
         given:
             1 * client.execute(*_) >> { args ->
                 args[2].cancelled()
@@ -158,7 +160,7 @@ class AhcHTTPSpec extends Specification {
 
         and:
             boolean ok = false
-            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof ERROR }
+            Closure<Void> cb = { def meta, def body, def err -> ok = meta == null && err instanceof CancellationException }
 
         when:
             http.execute(request, null, cb)

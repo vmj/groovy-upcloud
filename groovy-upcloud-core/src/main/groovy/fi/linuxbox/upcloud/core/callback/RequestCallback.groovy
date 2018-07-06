@@ -18,13 +18,12 @@
 package fi.linuxbox.upcloud.core.callback
 
 import fi.linuxbox.upcloud.core.Resource
-import fi.linuxbox.upcloud.http.spi.ERROR
 import groovy.transform.CompileStatic
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 
 import java.util.function.BiConsumer
 
+import static fi.linuxbox.upcloud.core.callback.CallbackChecks.NETWORK_ERROR
 import static fi.linuxbox.upcloud.core.callback.CallbackChecks.internalize
 import static fi.linuxbox.upcloud.core.callback.CallbackChecks.internalizeCallback
 import static fi.linuxbox.upcloud.core.callback.CallbackChecks.HTTP_STATUS_CATEGORIES
@@ -36,9 +35,8 @@ import static java.util.Collections.unmodifiableMap
  * of them based on HTTP response status code.
  */
 @CompileStatic
-class RequestCallback implements BiConsumer<Resource, ERROR> {
-    private final Logger log = LoggerFactory.getLogger(RequestCallback)
-
+@Slf4j
+class RequestCallback implements BiConsumer<Resource, Throwable> {
     /**
      * An unmodifiable copy of the callbacks.
      * <p>
@@ -92,7 +90,7 @@ class RequestCallback implements BiConsumer<Resource, ERROR> {
      * @param error Error to pass to the callback (or null)
      */
     @Override
-    void accept(final Resource resource, final ERROR error) {
+    void accept(final Resource resource, final Throwable error) {
         final Closure<Void> callback = chooseCallback(resource?.META?.status, error)
         callApp(callback, resource, error)
     }
@@ -106,9 +104,9 @@ class RequestCallback implements BiConsumer<Resource, ERROR> {
      *
      * @param callback Selected callback.
      * @param resource HTTP response or <code>null</code>
-     * @param err ERROR or <code>null</code>
+     * @param err Exception or <code>null</code>
      */
-    private void callApp(final Closure<Void> callback, final Resource resource, final ERROR err) {
+    private void callApp(final Closure<Void> callback, final Resource resource, final Throwable err) {
         try {
             if (callback.maximumNumberOfParameters == 2)
                 callback(resource, err)
@@ -134,12 +132,9 @@ class RequestCallback implements BiConsumer<Resource, ERROR> {
      * @param requestCallbacks The request callbacks.
      * @return A callback corresponding to the response status.
      */
-    private Closure<Void> chooseCallback(final Integer statusCode, final ERROR error) {
-        if (error) {
-            if (defaultRequestCallback.maximumNumberOfParameters == 2)
-                return defaultRequestCallback
-            return callbacks[NETWORK_ERROR]
-        }
+    private Closure<Void> chooseCallback(final Integer statusCode, final Throwable error) {
+        if (error)
+            return callbacks[NETWORK_ERROR] ?: defaultRequestCallback
 
         // Try exact match to the status code first
         Closure<Void> callback = callbacks[statusCode.toString()]

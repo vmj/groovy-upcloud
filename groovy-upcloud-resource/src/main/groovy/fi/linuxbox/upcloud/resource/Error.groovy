@@ -25,33 +25,30 @@ import groovy.transform.InheritConstructors
  * <p>
  *     Whenever there's a problem with the API, it will respond with HTTP status in the range {@code 400}-{@code 599},
  *     and an instance of this class in the {@code error} property of the passed in {@link Resource}.
- *     This is different from {@link fi.linuxbox.upcloud.http.spi.ERROR network errors}, which do not have HTTP status
- *     codes.
+ *     This is different from network errors, which do not have HTTP status codes: they come back to the application
+ *     as {@link Throwable}s.
  * </p>
  * <pre><code class="groovy">
  *     import fi.linuxbox.upcloud.core.Resource
- *     import fi.linuxbox.upcloud.http.spi.ERROR
  *     import fi.linuxbox.upcloud.resource.Error
  *
- *     upcloud.account(
- *         error: { Resource resp ->
+ *     upcloud.account { Resource resp, Throwable err ->
+ *         if (err) {
+ *             // The err.message is something like:
+ *             //   - "failed to start http exchange (GET /1.2/account)"
+ *             //   - "failed to finish http exchange (GET /1.2/account)"
+ *             //   - "cancelled http exchange (GET /1.2/account)"
+ *             log.fatal("Network error", err)
+ *         } else if (resp.error) {
+ *             // "HTTP error: 401 Unauthorized (GET /1.2/account)"
  *             log.error "HTTP error: ${resp.META}"
- *             log.error "Details: ${resp.error.errorCode}: ${resp.error.errorMessage}"
- *         },
- *         { Resource resp, ERROR err ->
- *             if (err) {
- *                 log.fatal "Network error: ${err.message}"
- *                 Throwable cause = err.cause
- *                 while (cause != null) {
- *                     log.fatal "Caused by: ${cause.class.simpleName}: ${cause.message}"
- *                     if (cause == cause.cause)
- *                         break
- *                     cause = cause.cause
- *                 }
- *             } else {
- *
- *             }
- *         })
+ *             // "Details: Error(errorCode: xxx, errorMessage: yyy)"
+ *             log.error "Details: ${resp.error}"
+ *         } else {
+ *             // "Got: Resource(account: Account(...))"
+ *             log.info "Got: ${resp}"
+ *         }
+ *     })
  * </code></pre>
  */
 @InheritConstructors

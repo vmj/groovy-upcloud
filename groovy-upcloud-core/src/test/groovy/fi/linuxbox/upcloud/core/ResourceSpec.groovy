@@ -18,7 +18,6 @@
 package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaderIterator
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.json.spi.JSON
@@ -307,11 +306,11 @@ class ResourceSpec extends Specification {
         Resource.propertyName(klass) == propertyName
 
         where:
-        klass                  | propertyName
-        ERROR                  | 'error'
-        Resource               | 'resource'
-        ResourceLoader         | 'resourceLoader'
-        SimpleHeaderIterator   | 'simpleHeaderIterator'
+        klass                | propertyName
+        HTTP                 | 'http'
+        Resource             | 'resource'
+        ResourceLoader       | 'resourceLoader'
+        SimpleHeaderIterator | 'simpleHeaderIterator'
     }
 
     @Unroll

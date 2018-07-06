@@ -18,7 +18,6 @@
 package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.CompletionCallback
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Header
@@ -83,7 +82,7 @@ class AhcHTTP implements HTTP {
             doExecute(request, body, cb)
         } catch (final Exception e) {
             log.warn("failed to start HTTP exchange", e)
-            cb.completed(null, null, new ERROR("failed to start HTTP exchange", e))
+            cb.completed(null, null, new RuntimeException("failed to start HTTP exchange ($request)", e))
         }
     }
 

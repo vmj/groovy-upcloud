@@ -18,7 +18,6 @@
 package fi.linuxbox.upcloud.http.ahc
 
 import fi.linuxbox.upcloud.http.spi.CompletionCallback
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.http.spi.Request
 import groovy.transform.CompileStatic
@@ -26,6 +25,9 @@ import groovy.util.logging.Slf4j
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine
 import org.apache.http.concurrent.FutureCallback
+
+import java.util.concurrent.CancellationException
+import java.util.concurrent.CompletionException
 
 /**
  *
@@ -56,13 +58,15 @@ class AhcCallback implements FutureCallback<HttpResponse> {
 
     @Override
     void failed(final Exception ex) {
-        log.warn("failed to finish HTTP exchange ($req)", ex)
-        cb.completed(null, null, new ERROR("failed", ex))
+        final msg = "failed to finish HTTP exchange ($req)"
+        log.warn(msg, ex)
+        cb.completed(null, null, new CompletionException(msg, ex))
     }
 
     @Override
     void cancelled() {
-        log.info("cancelled HTTP exchange ($req)")
-        cb.completed(null, null, new ERROR("cancelled"))
+        final msg = "cancelled HTTP exchange ($req)"
+        log.info(msg)
+        cb.completed(null, null, new CancellationException(msg))
     }
 }

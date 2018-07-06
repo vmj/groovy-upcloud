@@ -19,7 +19,6 @@ package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.core.callback.RequestCallback
 import fi.linuxbox.upcloud.core.callback.SessionCallbacks
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.HeaderElement
 import fi.linuxbox.upcloud.http.spi.Parameter
 import fi.linuxbox.upcloud.http.spi.Request
@@ -188,8 +187,8 @@ import static fi.linuxbox.upcloud.core.UpCloudContract.requestHeaders
  * <ol>
  *     <li>If there's an additional request callback for {@code 200}, that is invoked</li>
  *     <li>If there's a session callback for {@code 200} attached to the {@code Session} instance, that is invoked</li>
- *     <li>If there's an additional request callback for {@code info}, that is invoked</li>
- *     <li>If there's a session callback for {@code info} attached to the {@code Session} instance, that is invoked</li>
+ *     <li>If there's an additional request callback for {@code success}, that is invoked</li>
+ *     <li>If there's a session callback for {@code success} attached to the {@code Session} instance, that is invoked</li>
  *     <li>Failing all above, the default request callback is invoked</li>
  * </ol>
  * <p>
@@ -214,14 +213,48 @@ import static fi.linuxbox.upcloud.core.UpCloudContract.requestHeaders
  * <p>
  *     The additional request callbacks and the session callbacks attached to the {@code Session} instance, are all by
  *     definition tied to the HTTP response status code or the status category.  However, networks are unreliable and
- *     the communication with the server may not always work.  This is where the special nature, and the importance, of
- *     the default request callback comes apparent.
+ *     the communication with the server may not always work.  The server might be unreachable, or there might be an
+ *     I/O error talking to the server, or the request might be cancelled.
  * </p>
  * <p>
- *     The default request callback takes a second optional argument: an instance of {@link ERROR} class.  This is
- *     {@code null} whenever the response from the server is available, even if the response represents an error,
- *     and non-{@code null} if the server is, for example, unreachable or there's a I/O error talking to the
- *     server.  Read more about that in the {@link ERROR} class documentation.
+ *     The default request callback can take a second optional argument: an instance of {@link Throwable} class.
+ *     This is {@code null} whenever a response from the server is available, even if the response represents an error,
+ *     and non-{@code null} when the communication fails:
+ * </p>
+ * <pre><code class="groovy">
+ *     def server = createMyServerResource()
+ *     upcloud.create server, { response, error ->
+ *          if (error) {
+ *             // Handle the network error here.
+ *             assert error instanceof Throwable
+ *             assert response == null
+ *         } else {
+ *             // Handle all the other cases here.
+ *             assert response instanceof Resource
+ *             assert error == null
+ *         })
+ * </code></pre>
+ * <p>
+ *     Alternatively, one can use {@code network_error} category for a callback.  This callback is different from
+ *     additional request callbacks in that it takes an instance of {@link Throwable} instead of a {@link Resource}
+ *     instance as their only parameter. Otherwise it is the same: {@link groovy.lang.Closure Closures} with
+ *     {@code void} return type.
+ * </p>
+ * <pre><code class="groovy">
+ *     def server = createMyServerResource()
+ *     upcloud.create(server,
+ *         network_error: { error ->
+ *             // Handle the network error here.
+ *             assert error instanceof Throwable
+ *         },
+ *         { response ->
+ *             // Handle all the other cases here.
+ *         })
+ * </code></pre>
+ * <p>
+ *     Naturally, the {@code network_error} callback can be attached to the {@code Session} instance, too.
+ *     Also, similar to additional request callbacks, it takes precedence over default request callback (in case the
+ *     default request callback would take two arguments).
  * </p>
  */
 @CompileStatic
@@ -324,7 +357,7 @@ class Session extends AbstractSession<Void> {
                 resource: API_VERSION + path,
                 headers: requestHeaders),
                 resource ? json.encode(resource as Map) : null,
-                { final META meta, final InputStream body, final ERROR err ->
+                { final META meta, final InputStream body, final Throwable err ->
                     // Contract is that either meta is non-null, or err
                     // is non-null.  Never both nulls and never both non-nulls.
                     final Resource m = err ? null : decode(meta, body)

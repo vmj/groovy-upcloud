@@ -17,7 +17,6 @@
  */
 package fi.linuxbox.upcloud.http.ahc
 
-import fi.linuxbox.upcloud.http.spi.ERROR
 import fi.linuxbox.upcloud.http.spi.Request
 import fi.linuxbox.upcloud.http.spi.META
 
@@ -54,7 +53,7 @@ class AhcHTTP8Spec extends Specification {
                         resource: '/',
                         headers: new SimpleHeaders([ 'X-Test': 'Yes' ])),
                         null,
-                        { META meta, InputStream body, ERROR err ->
+                        { META meta, InputStream body, Throwable err ->
                             if (meta.status == 200)
                                 cv.countDown()
                         }

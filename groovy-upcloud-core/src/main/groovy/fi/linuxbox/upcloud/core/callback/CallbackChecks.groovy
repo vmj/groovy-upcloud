@@ -18,7 +18,6 @@
 package fi.linuxbox.upcloud.core.callback
 
 import fi.linuxbox.upcloud.core.Resource
-import fi.linuxbox.upcloud.http.spi.ERROR
 import groovy.transform.CompileStatic
 
 /**
@@ -119,14 +118,14 @@ abstract class CallbackChecks {
     static Closure<Void> internalizeCallback(final String status, final Closure<Void> callback) {
         if (status == null) { // default request callback
             if (!isValidDefaultRequestCallback(callback))
-                throw new IllegalArgumentException('Default request callback must accept Resource (or subclass) as the first argument, and optionally ERROR (or subclass) as second argument')
+                throw new IllegalArgumentException('Default request callback must accept Resource (or subclass) as the first argument, and optionally Throwable (or subclass) as second argument')
         }
         else if (callback == null) {
             // setting additional request callback to null disables session callback
         }
         else if (NETWORK_ERROR == status) {
             if (!isValidNetworkErrorCallback(callback))
-                throw new IllegalArgumentException("Network error callback must accept ERROR (or subclass) as the sole argument")
+                throw new IllegalArgumentException("Network error callback must accept Throwable (or subclass) as the sole argument")
         }
         else {
             if (!isValidAdditionalRequestCallback(callback))
@@ -139,7 +138,7 @@ abstract class CallbackChecks {
         final int argc = cb.maximumNumberOfParameters
         final Class[] argv = cb.parameterTypes
         return argc >= 1 && argv[0].isAssignableFrom(Resource) &&
-                (argc == 1 || (argc == 2 && argv[1].isAssignableFrom(ERROR)))
+                (argc == 1 || (argc == 2 && argv[1].isAssignableFrom(Throwable)))
     }
 
     private static boolean isValidAdditionalRequestCallback(final Closure<Void> cb) {
@@ -147,6 +146,6 @@ abstract class CallbackChecks {
     }
 
     private static boolean isValidNetworkErrorCallback(final Closure<Void> cb) {
-        return cb.maximumNumberOfParameters == 1 && cb.parameterTypes[0].isAssignableFrom(ERROR)
+        return cb.maximumNumberOfParameters == 1 && cb.parameterTypes[0].isAssignableFrom(Throwable)
     }
 }
