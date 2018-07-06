@@ -19,11 +19,13 @@ package fi.linuxbox.upcloud.core.callback
 
 import groovy.transform.CompileStatic
 
+import static fi.linuxbox.upcloud.core.callback.CallbackChecks.internalize
+
 /**
  * A helper class for a mutable map of callbacks.
  */
 @CompileStatic
-class SessionCallbacks extends Callbacks {
+class SessionCallbacks {
     /**
      * Session callbacks.
      *

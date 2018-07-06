@@ -22,18 +22,18 @@ import fi.linuxbox.upcloud.http.spi.ERROR
 import groovy.transform.CompileStatic
 
 /**
- * A helper base class for managing callbacks.
+ * A helper class for checking callbacks.
  */
 @CompileStatic
-abstract class Callbacks {
+abstract class CallbackChecks {
     /**
      * Callback category for network error.
      */
-    protected static final String NETWORK_ERROR = 'network_error'
+    static final String NETWORK_ERROR = 'network_error'
     /**
      * HTTP response status categories.
      */
-    protected static final List<Tuple2<IntRange, String>> HTTP_STATUS_CATEGORIES = [
+    static final List<Tuple2<IntRange, String>> HTTP_STATUS_CATEGORIES = [
             new Tuple2((100..199), 'info'),
             new Tuple2((200..299), 'success'),
             new Tuple2((300..399), 'redirect'),
@@ -60,11 +60,12 @@ abstract class Callbacks {
      * @return Internalized and sanitized map of callbacks.
      * @throws IllegalArgumentException if the cleanup fails.
      */
-    protected Map<String, Closure<Void>> internalize(final Map<?, Closure<Void>> cbs) {
-        if (!cbs) return [:]
-        cbs.inject(new LinkedHashMap<String, Closure<Void>>()) { Map callbacks, Map.Entry<?, Closure<Void>> cb ->
+    static Map<String, Closure<Void>> internalize(final Map<?, Closure<Void>> cbs) {
+        final result = new LinkedHashMap<String, Closure<Void>>()
+        if (!cbs) return result
+        return cbs.inject(result) { Map<String, Closure<Void>> callbacks, Map.Entry<?, Closure<Void>> cb ->
             final String status = internalizeStatus(cb.key)
-            callbacks[status] = cb.value
+            callbacks[status] = internalizeCallback(status, cb.value)
             callbacks
         }
     }
@@ -76,7 +77,7 @@ abstract class Callbacks {
      * @return Internal representation of the callback name (key to the map of callbacks)
      * @throws IllegalArgumentException if the interpretation fails.
      */
-    private String internalizeStatus(final Object status) {
+    private static String internalizeStatus(final Object status) {
         if (status == null)
             throw new IllegalArgumentException("HTTP status must be non-null")
 
@@ -105,7 +106,7 @@ abstract class Callbacks {
      * @param status Object to interpret.
      * @return The integral number, or <code>null</code> it the object doesn't look like an integral number.
      */
-    private BigInteger internalizeStatusCode(final String status) {
+    private static BigInteger internalizeStatusCode(final String status) {
         try {
             // ".valueOf()" and "as BigInteger" both parse the beginning of the string and accept anything at the end.
             // new BigInteger(string) however rejects any junk at the end.
@@ -115,7 +116,7 @@ abstract class Callbacks {
         }
     }
 
-    private Closure<Void> internalizeCallback(final String status, final Closure<Void> callback) {
+    static Closure<Void> internalizeCallback(final String status, final Closure<Void> callback) {
         if (status == null) { // default request callback
             if (!isValidDefaultRequestCallback(callback))
                 throw new IllegalArgumentException('Default request callback must accept Resource (or subclass) as the first argument, and optionally ERROR (or subclass) as second argument')
@@ -134,18 +135,18 @@ abstract class Callbacks {
         return callback
     }
 
-    private boolean isValidDefaultRequestCallback(final Closure<Void> cb) {
+    private static boolean isValidDefaultRequestCallback(final Closure<Void> cb) {
         final int argc = cb.maximumNumberOfParameters
         final Class[] argv = cb.parameterTypes
         return argc >= 1 && argv[0].isAssignableFrom(Resource) &&
                 (argc == 1 || (argc == 2 && argv[1].isAssignableFrom(ERROR)))
     }
 
-    private boolean isValidAdditionalRequestCallback(final Closure<Void> cb) {
+    private static boolean isValidAdditionalRequestCallback(final Closure<Void> cb) {
         return cb.maximumNumberOfParameters == 1 && cb.parameterTypes[0].isAssignableFrom(Resource)
     }
 
-    private boolean isValidNetworkErrorCallback(final Closure<Void> cb) {
+    private static boolean isValidNetworkErrorCallback(final Closure<Void> cb) {
         return cb.maximumNumberOfParameters == 1 && cb.parameterTypes[0].isAssignableFrom(ERROR)
     }
 }

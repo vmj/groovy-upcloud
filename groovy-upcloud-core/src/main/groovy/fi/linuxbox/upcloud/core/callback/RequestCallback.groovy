@@ -25,6 +25,10 @@ import org.slf4j.LoggerFactory
 
 import java.util.function.BiConsumer
 
+import static fi.linuxbox.upcloud.core.callback.CallbackChecks.internalize
+import static fi.linuxbox.upcloud.core.callback.CallbackChecks.internalizeCallback
+import static fi.linuxbox.upcloud.core.callback.CallbackChecks.HTTP_STATUS_CATEGORIES
+import static fi.linuxbox.upcloud.core.callback.CallbackChecks.NETWORK_ERROR
 import static java.util.Collections.unmodifiableMap
 
 /**
@@ -32,7 +36,7 @@ import static java.util.Collections.unmodifiableMap
  * of them based on HTTP response status code.
  */
 @CompileStatic
-class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
+class RequestCallback implements BiConsumer<Resource, ERROR> {
     private final Logger log = LoggerFactory.getLogger(RequestCallback)
 
     /**
@@ -74,12 +78,10 @@ class RequestCallback extends Callbacks implements BiConsumer<Resource, ERROR> {
 
         this.callbacks = unmodifiableMap(
                 sessionCallbacks.asUnmodifiableMap() + internalize(requestCallbacks))
-        this.defaultRequestCallback = defaultRequestCallback
+        this.defaultRequestCallback = internalizeCallback(null, defaultRequestCallback)
 
-        if (defaultRequestCallback.maximumNumberOfParameters != 2) {
-            if (callbacks[NETWORK_ERROR] == null) {
-                throw new IllegalArgumentException('Network error handler missing')
-            }
+        if (defaultRequestCallback.maximumNumberOfParameters != 2 && callbacks[NETWORK_ERROR] == null) {
+            throw new IllegalArgumentException('Network error handler missing')
         }
     }
 
