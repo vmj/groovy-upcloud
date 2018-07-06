@@ -41,6 +41,6 @@ class METASpec extends Specification {
 
     def "ToString: null request"() {
         expect:
-        new META(200).toString() == '200 null (null)'
+        new META(status: 200).toString() == '200 null (null)'
     }
 }

@@ -67,7 +67,7 @@ class ResourceSpec extends Specification {
 
     def "Resource can be created with nested resource property"() {
         given:
-        def meta = new META(200)
+        def meta = new META(status: 200)
         def session = new Session(Mock(HTTP), Mock(JSON), "foo", "bar")
 
         when:
