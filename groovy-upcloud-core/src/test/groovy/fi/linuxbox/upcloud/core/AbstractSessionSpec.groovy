@@ -34,7 +34,7 @@ class AbstractSessionSpec extends Specification {
         Closure<Void> cb
 
         @Override
-        protected Integer request(Map<?, Closure<Void>> cbs, String method, String path, Resource resource, Closure<Void> cb) {
+        Integer request(Map<?, Closure<Void>> cbs, String method, String path, Resource resource, Closure<Void> cb) {
             this.cbs = cbs
             this.method = method
             this.path = path

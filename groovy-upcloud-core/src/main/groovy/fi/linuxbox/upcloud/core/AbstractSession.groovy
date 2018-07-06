@@ -194,11 +194,11 @@ abstract class AbstractSession<T> {
      * @param cb Default request callback.
      * @return Whatever is returned by a concrete subclass.
      */
-    abstract protected T request(final Map<?, Closure<Void>> cbs,
-                                 final String method,
-                                 final String path,
-                                 final Resource resource,
-                                 final Closure<Void> cb)
+    abstract T request(final Map<?, Closure<Void>> cbs,
+                       final String method,
+                       final String path,
+                       final Resource resource,
+                       final Closure<Void> cb)
 
     /**
      * Calls {@code GET} with an empty map as additional request callbacks.

@@ -37,7 +37,7 @@ class UpCloud {
     private final AbstractSession SESSION
 
     @Inject
-    UpCloud(final Session SESSION) {
+    UpCloud(final AbstractSession SESSION) {
         this.SESSION = SESSION
     }
 
