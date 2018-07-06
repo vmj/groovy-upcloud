@@ -29,9 +29,13 @@ import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
 import fi.linuxbox.upcloud.json.spi.JSON
 import groovy.transform.*
+import groovy.util.logging.Slf4j
 
 import javax.inject.*
-import org.slf4j.*
+
+import static fi.linuxbox.upcloud.core.UpCloudContract.API_VERSION
+import static fi.linuxbox.upcloud.core.UpCloudContract.HOST
+import static fi.linuxbox.upcloud.core.UpCloudContract.requestHeaders
 
 /**
  * The API for all the things managed in UpCloud.
@@ -221,18 +225,8 @@ import org.slf4j.*
  * </p>
  */
 @CompileStatic
+@Slf4j
 class Session extends AbstractSession<Void> {
-    private final Logger log = LoggerFactory.getLogger(Session)
-
-    /**
-     * UpCloud API host.
-     */
-    private static final String HOST = 'https://api.upcloud.com'
-    /**
-     * UpCloud API context path.
-     */
-    private static final String API_VERSION = '/1.2/'
-
     /**
      * HTTP request headers.
      *
@@ -245,13 +239,8 @@ class Session extends AbstractSession<Void> {
      *     default, but it would add the ":443" port there, too.  The UpCloud server doesn't like that.
      * </p>
      */
-    private final Map<String, String> requestHeaders = [
-            'Accept'       : 'application/json; charset=UTF-8',
-            'Authorization': 'Basic ',
-            'Content-Type' : 'application/json',
-            'Host'         : 'api.upcloud.com',
-            'User-Agent'   : 'Groovy UpCloud/0.0.7-SNAPSHOT ',
-    ]
+    private final SimpleHeaders requestHeaders
+
     /**
      * Session callbacks.
      *
@@ -281,8 +270,7 @@ class Session extends AbstractSession<Void> {
     Session(HTTP http, JSON json, @Named("username") String username, @Named("password") String password) {
         this.http = http
         this.json = json
-        requestHeaders['Authorization'] += "$username:$password".bytes.encodeBase64().toString()
-        requestHeaders['User-Agent'] += http.userAgent
+        this.requestHeaders = requestHeaders(username, password, http.userAgent)
     }
 
     /**
@@ -334,7 +322,7 @@ class Session extends AbstractSession<Void> {
                 host: HOST,
                 method: method,
                 resource: API_VERSION + path,
-                headers: new SimpleHeaders(requestHeaders)),
+                headers: requestHeaders),
                 resource ? json.encode(resource as Map) : null,
                 { final META meta, final InputStream body, final ERROR err ->
                     // Contract is that either meta is non-null, or err
