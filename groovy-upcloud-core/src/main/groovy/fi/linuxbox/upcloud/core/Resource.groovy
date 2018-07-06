@@ -115,6 +115,9 @@ class Resource {
     final Session SESSION
     final META META
 
+    // TODO: Remove when all references to SESSION property are cleaned up
+    AbstractSession<?> getHTTP() { SESSION }
+
     /**
      * Designated, and only, constructor.
      *

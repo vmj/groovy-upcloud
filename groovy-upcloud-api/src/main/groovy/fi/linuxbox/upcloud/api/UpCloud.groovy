@@ -34,11 +34,11 @@ import fi.linuxbox.upcloud.core.*
  * </ul>
  */
 class UpCloud {
-    private final AbstractSession SESSION
+    private final AbstractSession<?> HTTP
 
     @Inject
     UpCloud(final AbstractSession SESSION) {
-        this.SESSION = SESSION
+        HTTP = SESSION
     }
 
     /**
@@ -54,11 +54,11 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /account} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/3-accounts/#get-account-information" target="_top">UpCloud API docs for GET /account</a>
      */
     def account(...args) {
-        this.SESSION.GET('account', *args)
+        HTTP.GET('account', *args)
     }
 
     /**
@@ -80,11 +80,11 @@ class UpCloud {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /price} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/4-pricing/" target="_top">UpCloud API docs for GET /price</a>
      */
     def prices(...args) {
-        this.SESSION.GET('price', *args)
+        HTTP.GET('price', *args)
     }
 
     /**
@@ -106,11 +106,11 @@ class UpCloud {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /zone} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/5-zones/" target="_top">UpCloud API docs for GET /zone</a>
      */
     def zones(...args) {
-        this.SESSION.GET('zone', *args)
+        HTTP.GET('zone', *args)
     }
 
     /**
@@ -126,11 +126,11 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /timezone} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/6-timezones/" target="_top">UpCloud API docs for GET /timezone</a>
      */
     def timezones(...args) {
-        this.SESSION.GET('timezone', *args)
+        HTTP.GET('timezone', *args)
     }
 
     /**
@@ -147,11 +147,11 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /plan} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/7-plans/" target="_top">UpCloud API docs for GET /plan</a>
      */
     def plans(...args) {
-        this.SESSION.GET('plan', *args)
+        HTTP.GET('plan', *args)
     }
 
     /**
@@ -168,11 +168,11 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /server_size} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#list-server-configurations" target="_top">UpCloud API docs for GET /server_size</a>
      */
     def serverSizes(...args) {
-        this.SESSION.GET('server_size', *args)
+        HTTP.GET('server_size', *args)
     }
 
     /**
@@ -193,11 +193,11 @@ class UpCloud {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /server} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#list-servers" target="_top">UpCloud API docs for GET /server</a>
      */
     def servers(...args) {
-        this.SESSION.GET('server', *args)
+        HTTP.GET('server', *args)
     }
 
     /**
@@ -213,11 +213,11 @@ class UpCloud {
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code GET /ip_address} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/10-ip-addresses/#list-ip-addresses" target="_top">UpCloud API docs for GET /ip_address</a>
      */
     def ipAddresses(...args) {
-        this.SESSION.GET('ip_address', *args)
+        HTTP.GET('ip_address', *args)
     }
 
     /**
@@ -233,11 +233,11 @@ class UpCloud {
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code GET /tag} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/12-tags/#list-existing-tags" target="_top">UpCloud API docs for GET /tag</a>
      */
     def tags(...args) {
-        this.SESSION.GET('tag', *args)
+        HTTP.GET('tag', *args)
     }
 
     /**
@@ -269,15 +269,15 @@ class UpCloud {
      * @param args.type Optional filter for storages: {@code public}, {@code private}, {@code normal}, {@code backup},
      * {@code cdrom}, {@code template}, or {@code favorite}.
      * @param args Request callbacks for the {@code GET /storage} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/9-storages/#list-storages" target="_top">UpCloud API docs for GET /storage</a>
      */
     def storages(...args) {
         def type = args.find { it instanceof Map } ?.remove('type')
         if (type)
-            this.SESSION.GET("storage/$type", *args)
+            HTTP.GET("storage/$type", *args)
         else
-            this.SESSION.GET("storage", *args)
+            HTTP.GET("storage", *args)
     }
 
     /**
@@ -302,14 +302,14 @@ class UpCloud {
      * </p>
      * @param resource Resource to create.
      * @param args Request callbacks for the {@code POST} call.
-     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#create-server" target="_top">UpCloud API docs for POST /server</a>
      * @see <a href="https://www.upcloud.com/api/9-storages/#create-storage" target="_top">UpCloud API docs for POST /storage</a>
      * @see <a href="https://www.upcloud.com/api/10-ip-addresses/#assign-ip-address" target="_top">UpCloud API docs for POST /ip_address</a>
      * @see <a href="https://www.upcloud.com/api/12-tags/#create-a-new-tag" target="_top">UpCloud API docs for POST /tag</a>
      */
     def create(Resource resource, ...args) {
-        this.SESSION.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
+        HTTP.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
     }
 
     /**
