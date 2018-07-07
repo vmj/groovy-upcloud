@@ -28,7 +28,7 @@ import groovy.transform.Immutable
  * </p>
  */
 @CompileStatic
-@Immutable(knownImmutableClasses = [Headers.class])
+@Immutable
 class Request {
     /**
      * Target host of the HTTP request.

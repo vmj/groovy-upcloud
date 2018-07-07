@@ -55,7 +55,7 @@ import groovy.transform.Immutable
  * </code></pre>
  */
 @CompileStatic
-@Immutable(knownImmutableClasses = [Headers.class])
+@Immutable
 class META {
     Integer status
     String message

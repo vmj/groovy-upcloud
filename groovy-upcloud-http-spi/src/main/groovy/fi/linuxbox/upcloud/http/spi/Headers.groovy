@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.http.spi;
+package fi.linuxbox.upcloud.http.spi
 
-import java.util.Iterator;
+import groovy.transform.KnownImmutable
 
 /**
  * An iterable over a collection of HTTP message headers.
@@ -35,7 +35,8 @@ import java.util.Iterator;
  *     meaning of the headers doesn't really matter.  E.g. when copying the headers from one place to another.
  * </p>
  */
-public interface Headers extends Iterable<Header> {
+@KnownImmutable
+interface Headers extends Iterable<Header> {
     /**
      * An iterator over all HTTP header value elements of all headers with the given name in this collection.
      *
@@ -84,5 +85,5 @@ public interface Headers extends Iterable<Header> {
      * @param name Case-insensitive header name.
      * @return Iterator over value elements of headers with the given name.
      */
-    Iterator<HeaderElement> getAt(final String name);
+    Iterator<HeaderElement> getAt(final String name)
 }
