@@ -1,5 +1,8 @@
 apply plugin: 'com.bmuschko.nexus'
 
+// maven plugin is not mapping the runtimeOnly to pom scopes?
+conf2ScopeMappings.addMapping(200, configurations.runtimeOnly, "runtime")
+
 modifyPom {
     project {
         url 'https://github.com/vmj/groovy-upcloud'
