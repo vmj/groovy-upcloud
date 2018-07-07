@@ -51,6 +51,7 @@ public abstract class UpCloudScript extends Script {
 
     @Override
     public Object run() {
+        log.debug("Initializing");
         try {
             executorService.submit(() -> runScript());
         } catch (final RejectedExecutionException e) {
@@ -58,26 +59,30 @@ public abstract class UpCloudScript extends Script {
             log.error("Unable to start the script", e);
         }
 
-        log.info("Initialization complete.");
+        log.debug("Initialization complete");
         boolean ok = false;
         try {
             // TODO: make this maximum runtime configurable
-            ok = executorService.awaitTermination(20, TimeUnit.SECONDS);
+            int timeout = 20;
+            log.debug("Waiting for termination (" + timeout +" seconds)");
+            ok = executorService.awaitTermination(timeout, TimeUnit.SECONDS);
         } catch (final InterruptedException e) {
             log.warn("Executor service interrupted", e);
         }
-        if (ok)
-            log.info("Shutting down.");
-        else
+        if (ok) {
+            log.debug("Terminated normally");
+        } else {
+            log.debug("Script timed out");
             throw new RuntimeException(new TimeoutException("Script timed out"));
+        }
         return null;
     }
 
     public void runScript() {
         try {
-            log.debug("Script execution beginning.");
+            log.debug("Script execution beginning");
             runUpCloudScript();
-            log.debug("Script top-level code finished.");
+            log.debug("Script top-level code finished");
         } catch (final InterruptedException e) {
             // Script called close() from the top level code
             log.info("runUpCloudScript interrupted; exiting");
@@ -93,11 +98,13 @@ public abstract class UpCloudScript extends Script {
         // This is executed in the script thread
         shutdownExecutorService();
         closeHttp();
+        log.debug("Shutting down");
         throw new InterruptedException("shutting down");
     }
 
     private void closeHttp() {
         try {
+            log.debug("Closing HTTP implementation");
             http.close();
         } catch (final IOException e) {
             log.warn("Unable to close HTTP", e);
@@ -105,7 +112,9 @@ public abstract class UpCloudScript extends Script {
     }
 
     private void shutdownExecutorService() {
-        executorService.shutdown(); // Disable new tasks from being submitted
-        executorService.shutdownNow(); // Cancel currently executing task (which is this thread!)
+        log.debug("Disabling new tasks from being submitted");
+        executorService.shutdown();
+        log.debug("Cancelling currently executing task");
+        executorService.shutdownNow();
     }
 }
