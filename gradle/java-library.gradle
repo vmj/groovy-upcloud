@@ -8,8 +8,10 @@ version = '0.0.8-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    jcenter()
-}
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+}   }
 
 dependencies {
     // Dependency injections are marked with standard API
