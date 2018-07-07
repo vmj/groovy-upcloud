@@ -21,8 +21,6 @@ import fi.linuxbox.upcloud.core.Resource
 import fi.linuxbox.upcloud.core.ResourceLoader
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.FirstParam
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import static groovy.lang.Closure.DELEGATE_FIRST
 
@@ -30,8 +28,6 @@ import static groovy.lang.Closure.DELEGATE_FIRST
  *
  */
 class ResourceBuilder {
-    private final Logger log = LoggerFactory.getLogger(ResourceBuilder)
-
     /**
      * MOP method to allow custom Resource creation.
      * <p>

@@ -110,8 +110,6 @@ import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
  * </p>
  */
 class Resource {
-    private final Logger log = LoggerFactory.getLogger(Resource)
-
     final Session SESSION
     final META META
 

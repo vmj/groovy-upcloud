@@ -17,8 +17,9 @@
  */
 package fi.linuxbox.upcloud.app
 
+import groovy.util.logging.Slf4j
+
 import java.util.concurrent.*
-import org.slf4j.*
 
 import fi.linuxbox.upcloud.script.*
 
@@ -27,14 +28,13 @@ import static java.util.concurrent.TimeUnit.*
 /**
  *
  */
+@Slf4j
 class App implements Closeable {
-    private final Logger log = LoggerFactory.getLogger(App)
-
     private CountDownLatch cv = null
     private UpCloudScriptContext ctx = null
     private boolean running = false
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         new App(args).run().close()
     }
 
@@ -79,7 +79,7 @@ class App implements Closeable {
     }
 
     @Override
-    void close() throws IOException {
+    void close() {
         if (running) {
             log.info("Closing...")
             ctx.close()
@@ -88,6 +88,6 @@ class App implements Closeable {
     }
 
     boolean isRunning() {
-        return running
+        running
     }
 }
