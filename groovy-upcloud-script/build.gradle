@@ -21,6 +21,14 @@ dependencies {
     api project(':groovy-upcloud-api')
     api project(':groovy-upcloud-resource')
 
+    // FIXME: scripts require SLF4J API to be available *at compile time*
+    //        but somehow this isn't working
+    //        (api and implementation configurations are not working either):
+    //        grape insists on grabbing something called
+    //        "org.slf4j#slf4j-api;1.7.25!slf4j-api.jar(test-jar)"
+    // For now, scripts will need to @Grab("org.slf4j:slf4j-api:1.7.25") explicitly
+    //compile "org.slf4j:slf4j-api:${versions.slf4j}"
+
     // testRuntime relies on its own implementations of HTTP and JSON
     runtimeOnly project(':groovy-upcloud-http-ahc')
     runtimeOnly project(':groovy-upcloud-json-gjson')
