@@ -36,22 +36,22 @@ class Request {
      * This must contain the protocol, and the port if needed, but must not end in a slash.
      * </p>
      */
-    final String host
+    String host
     /**
      * HTTP method to use in the request.
      */
-    final String method
+    String method
     /**
      * The resource ID.
      * <p>
      * This must be the full path to the resource, starting with the slash.
      * </p>
      */
-    final String resource
+    String resource
     /**
      * Headers to include in the request.
      */
-    final Headers headers
+    Headers headers
 
     /**
      * Returns a string representation of this instance.

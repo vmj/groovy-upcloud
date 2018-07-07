@@ -17,6 +17,7 @@
  */
 package fi.linuxbox.upcloud.http.spi
 
+import groovy.transform.CompileStatic
 import groovy.transform.KnownImmutable
 
 /**
@@ -35,6 +36,7 @@ import groovy.transform.KnownImmutable
  *     meaning of the headers doesn't really matter.  E.g. when copying the headers from one place to another.
  * </p>
  */
+@CompileStatic
 @KnownImmutable
 interface Headers extends Iterable<Header> {
     /**

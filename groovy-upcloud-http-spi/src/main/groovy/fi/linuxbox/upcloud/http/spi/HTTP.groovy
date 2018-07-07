@@ -15,21 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.http.spi;
+package fi.linuxbox.upcloud.http.spi
 
-import java.io.Closeable;
-import java.io.InputStream;
+import groovy.transform.CompileStatic
 
 /**
  * An interface which is implemented by the HTTP implementation.
  */
-public interface HTTP extends Closeable {
+@CompileStatic
+interface HTTP extends Closeable {
     /**
      * Returns the User-Agent string for this implementation.
      *
      * @return User-Agent string for this implementation.
      */
-    String getUserAgent();
+    String getUserAgent()
 
     /**
      * Execute the HTTP exchange asynchronously.
@@ -41,5 +41,5 @@ public interface HTTP extends Closeable {
      * @param body Request entity, or <code>null</code>.
      * @param cb Completion callback to call when the response is received.
      */
-    void execute(final Request request, final InputStream body, final CompletionCallback cb);
+    void execute(final Request request, final InputStream body, final CompletionCallback cb)
 }

@@ -15,14 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.http.spi;
+package fi.linuxbox.upcloud.http.spi
 
-import java.io.InputStream;
+import groovy.transform.CompileStatic
 
 /**
  * HTTP completion callback.
  */
-public interface CompletionCallback {
+@CompileStatic
+interface CompletionCallback {
     /**
      * Method to invoke when the HTTP exchange is finished.
      * <p>
@@ -41,5 +42,5 @@ public interface CompletionCallback {
      * @param error information about failure to talk to the server, or <code>null</code>
      * @throws InterruptedException in case the caller is shutting down
      */
-    void completed(final META meta, final InputStream entity, final Throwable error) throws InterruptedException;
+    void completed(final META meta, final InputStream entity, final Throwable error) throws InterruptedException
 }

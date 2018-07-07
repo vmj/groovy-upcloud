@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.http.spi;
+package fi.linuxbox.upcloud.http.spi
 
-import groovy.lang.Tuple2;
+import groovy.transform.CompileStatic
 
 /**
  * An HTTP header parameter.
@@ -26,16 +26,15 @@ import groovy.lang.Tuple2;
  * HTTP header parameters are a list of name value pairs, and part of the header value.
  * </p>
  */
-public class Parameter extends Tuple2<String, String> {
+@CompileStatic
+class Parameter extends Tuple2<String, String> {
     /**
      * The sole constructor.
      *
      * @param name Name of the parameter.  E.g. "charset" in a header "Accept: application/json; charset=UTF-8"
      * @param value value of the parameter.  E.g. "UTF-8" in a header "Accept: application/json; charset=UTF-8"
      */
-    public Parameter(final String name, final String value) {
-        super(name, value);
-    }
+    Parameter(final String name, final String value) { super(name, value) }
 
     /**
      * Name of this HTTP header parameter.
@@ -46,7 +45,7 @@ public class Parameter extends Tuple2<String, String> {
      *
      * @return The name of this HTTP header parameter.
      */
-    public String getName() { return getFirst(); }
+    String getName() { getFirst() }
 
     /**
      * Value of this HTTP header parameter.
@@ -57,5 +56,5 @@ public class Parameter extends Tuple2<String, String> {
      *
      * @return The value of this HTTP header parameter.
      */
-    public String getValue() { return getSecond(); }
+    String getValue() { getSecond() }
 }
