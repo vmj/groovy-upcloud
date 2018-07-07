@@ -15,20 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.script;
+package fi.linuxbox.upcloud.script
 
-import fi.linuxbox.upcloud.http.spi.HTTP;
+import fi.linuxbox.upcloud.json.spi.JSON
 
-import java.util.ServiceLoader;
-
-public class HTTPFactory {
-    public static HTTP create() {
-        final ServiceLoader<HTTP> httpServiceLoader = ServiceLoader.load(HTTP.class);
-        for (final HTTP http : httpServiceLoader) {
-            if (http != null) {
-                return http;
-            }
-        }
-        return null;
+class JSONFactory {
+    static JSON create() {
+        ServiceLoader.load(JSON).find { it != null } as JSON
     }
 }

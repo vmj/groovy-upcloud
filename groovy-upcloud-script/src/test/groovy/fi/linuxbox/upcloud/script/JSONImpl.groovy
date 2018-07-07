@@ -15,19 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.script;
+package fi.linuxbox.upcloud.script
 
-import fi.linuxbox.upcloud.json.spi.JSON;
+import fi.linuxbox.upcloud.json.spi.JSON
 
-import java.util.ServiceLoader;
+class JSONImpl implements JSON {
+    @Override
+    Map<String, Object> decode(final InputStream data) {
+        return null
+    }
 
-public class JSONFactory {
-    public static JSON create() {
-        for (final JSON json : ServiceLoader.load(JSON.class)) {
-            if (json != null) {
-                return json;
-            }
-        }
-        return null;
+    @Override
+    InputStream encode(final Map<String, Object> repr) {
+        return null
     }
 }
