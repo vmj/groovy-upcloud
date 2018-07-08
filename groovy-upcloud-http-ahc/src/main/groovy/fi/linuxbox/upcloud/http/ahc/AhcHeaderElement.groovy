@@ -41,7 +41,7 @@ class AhcHeaderElement implements HeaderElement {
     String getValue() { element.value }
 
     @Override
-    Iterator<Parameter> iterator() {
+    Iterator<Parameter> getParameters() {
         new AhcHeaderParameterIterator(element.parameters.iterator())
     }
 

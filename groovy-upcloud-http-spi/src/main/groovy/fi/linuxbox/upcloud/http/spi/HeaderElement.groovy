@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.http.spi;
+package fi.linuxbox.upcloud.http.spi
 
-import java.util.Iterator;
+import groovy.transform.CompileStatic
 
 /**
  * An HTTP header value element.
@@ -26,7 +26,8 @@ import java.util.Iterator;
  * An HTTP header value element can have a semicolon separated list of parameters.
  * </p>
  */
-public interface HeaderElement extends Iterable<Parameter> {
+@CompileStatic
+interface HeaderElement {
     /**
      * Name of this HTTP header value element.
      *
@@ -36,7 +37,7 @@ public interface HeaderElement extends Iterable<Parameter> {
      *
      * @return Name of this element.
      */
-    String getName();
+    String getName()
 
     /**
      * Value of this HTTP header value element.
@@ -47,12 +48,12 @@ public interface HeaderElement extends Iterable<Parameter> {
      *
      * @return Value of this element.
      */
-    String getValue();
+    String getValue()
 
     /**
      * Iterator over the parameters of this HTTP header value element.
      *
      * @return Iterator over parameters of this element.
      */
-    default Iterator<Parameter> getParameters() { return iterator(); }
+    Iterator<Parameter> getParameters()
 }

@@ -53,7 +53,7 @@ class AhcHeadersSpec extends Specification {
             header.elements.each { HeaderElement headerElement ->
                 println "${header.name}: ${header.value} (HeaderName: HeaderValue)"
                 println "  ${headerElement.name} = ${headerElement.value} (ElementName = ElementValue)"
-                headerElement.each { Parameter parameter ->
+                headerElement.parameters.each { Parameter parameter ->
                     println "    ${parameter.first} = ${parameter.second} (ParameterName = ParameterValue)"
                 }
             }
@@ -67,7 +67,7 @@ class AhcHeadersSpec extends Specification {
         when:
         headers['Set-Cookie'].each { cookie ->
             println "Cookie ${cookie.name} has a value of ${cookie.value}"
-            cookie.each { param ->
+            cookie.parameters.each { param ->
                 println " - ${param.name} = ${param.value}"
             }
         }
