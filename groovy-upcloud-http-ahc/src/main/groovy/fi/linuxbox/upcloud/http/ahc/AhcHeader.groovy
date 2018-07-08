@@ -45,7 +45,7 @@ class AhcHeader implements Header {
     }
 
     @Override
-    Iterator<HeaderElement> iterator() {
+    Iterator<HeaderElement> getElements() {
         new AhcHeaderElementIterator(header.elements.iterator())
     }
 

@@ -50,7 +50,7 @@ class AhcHeadersSpec extends Specification {
     def "test"() {
         when:
         headers.each { Header header ->
-            header.each { HeaderElement headerElement ->
+            header.elements.each { HeaderElement headerElement ->
                 println "${header.name}: ${header.value} (HeaderName: HeaderValue)"
                 println "  ${headerElement.name} = ${headerElement.value} (ElementName = ElementValue)"
                 headerElement.each { Parameter parameter ->
