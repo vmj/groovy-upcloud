@@ -20,7 +20,7 @@ Groovy UpCloud library has full support for UpCloud API version 1.2.7 (current a
 
 ## Requirements
 
-Groovy UpCloud is built on Groovy (2.4) and Java 8.  This library is available at
+Groovy UpCloud is built on Groovy 2.5 and Java 8.  This library is available at
 http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22fi.linuxbox.upcloud%22[The Central Repository] and
 https://bintray.com/search?sort=last_updated&query=fi.linuxbox.upcloud%3Agroovy-upcloud-*[jcenter]
 
