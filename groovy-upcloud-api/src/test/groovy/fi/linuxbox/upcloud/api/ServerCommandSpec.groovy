@@ -17,9 +17,10 @@
  */
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.ServerSpecification
 
-class ServerCommandSpec extends ServerSpecification {
+import fi.linuxbox.upcloud.api.spec.ServerApiSpecification
+
+class ServerCommandSpec extends ServerApiSpecification {
 
     def "cancel: POST /server/fake-uuid/cancel"() {
         when:

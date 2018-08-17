@@ -17,9 +17,10 @@
  */
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.ServerSpecification
 
-class ServerTagSpec extends ServerSpecification {
+import fi.linuxbox.upcloud.api.spec.ServerApiSpecification
+
+class ServerTagSpec extends ServerApiSpecification {
 
     def "addTags: POST /server/fake-uuid/tag/DEV,private,RHEL"() {
         when:

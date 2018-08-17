@@ -21,7 +21,7 @@ import fi.linuxbox.upcloud.api.spec.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class ServerCRUDSpec extends ServerSpecification {
+class ServerCRUDSpec extends ServerApiSpecification {
 
     def "load: GET /server/fake-uuid"() {
         when:

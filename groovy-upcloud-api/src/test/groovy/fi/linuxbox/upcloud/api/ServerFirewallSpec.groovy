@@ -17,11 +17,12 @@
  */
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.ServerSpecification
+
+import fi.linuxbox.upcloud.api.spec.ServerApiSpecification
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class ServerFirewallSpec extends ServerSpecification {
+class ServerFirewallSpec extends ServerApiSpecification {
 
     def "filewallRules: GET /server/fake-uuid/firewall_rule"() {
         when:

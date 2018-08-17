@@ -189,7 +189,7 @@ class UpCloud {
      * </code></pre>
      * <p>
      *     Only the servers' most relevant information is returned by this operation. Further details on individual
-     *     servers can be requested with the {@link Server#load(def)} API.
+     *     servers can be requested with the {@link ServerApi#load(def)} API.
      * </p>
      *
      * @param args Request callbacks for the {@code GET /server} call.

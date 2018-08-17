@@ -17,11 +17,12 @@
  */
 package fi.linuxbox.upcloud.api
 
-import fi.linuxbox.upcloud.api.spec.ServerSpecification
+
+import fi.linuxbox.upcloud.api.spec.ServerApiSpecification
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class ServerStorageSpec extends ServerSpecification {
+class ServerStorageSpec extends ServerApiSpecification {
 
     def "attach: POST /server/fake-uuid/storage/attach"() {
         given:

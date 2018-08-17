@@ -24,7 +24,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 /**
  * Base class for Server API specifications.
  */
-abstract class ServerSpecification extends ApiSpecification {
-    // build minimal class that works for the Server trait: HTTP and uuid
-    Server server = build 'Server', HTTP: session, { uuid = 'fake-uuid' } withTraits Server
+abstract class ServerApiSpecification extends ApiSpecification {
+    // build minimal class that works for the ServerApi trait: HTTP and uuid
+    def server = build 'Server', HTTP: session, { uuid = 'fake-uuid' } withTraits ServerApi
 }
