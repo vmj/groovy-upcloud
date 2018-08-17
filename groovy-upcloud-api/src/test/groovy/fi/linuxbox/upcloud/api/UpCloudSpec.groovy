@@ -25,7 +25,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class UpCloudSpec extends ApiSpecification {
 
-    UpCloudApi upCloud = new UpCloudApi(session)
+    def upCloud = session.withTraits(UpCloudApi)
 
     def "storages type: 'favorite' does GET .../storage/favorite"() {
         when:

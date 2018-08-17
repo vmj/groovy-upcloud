@@ -34,14 +34,15 @@ import static fi.linuxbox.upcloud.core.NamingContract.javaClassToPathSegment
  *     <li>listing prices, zones, timezones, plans, and server sizes</li>
  *     <li>listing and creating servers, IP addresses, tags, and storages</li>
  * </ul>
+ * <p>
+ *     This trait can be implemented by any class that has
+ * </p>
+ * <ul>
+ *     <li>non-null HTTP property, which can be read-only</li>
+ * </ul>
  */
-class UpCloudApi {
-    private final HTTPFacade<?> HTTP
-
-    @Inject
-    UpCloudApi(final HTTPFacade SESSION) {
-        HTTP = SESSION
-    }
+trait UpCloudApi {
+    abstract HTTPFacade<?> getHTTP()
 
     /**
      * Fetch UpCloud API account information for the session.

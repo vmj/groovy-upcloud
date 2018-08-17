@@ -368,6 +368,15 @@ abstract class Session<T> extends HTTPFacade<T> {
     abstract protected BiConsumer<Resource, Throwable> promiseResolver(final T unresolvedPromise)
 
     /**
+     * Allow session to act as HTTP provider.
+     *
+     * @return this
+     */
+    HTTPFacade<T> getHTTP() {
+        this
+    }
+
+    /**
      * Decodes the entity {@param body}, if it is valid UTF-8 JSON.
      * <p>
      *     Even in case it is not, an empty <code>Resource</code> is

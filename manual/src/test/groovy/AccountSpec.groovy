@@ -35,7 +35,7 @@ class AccountSpec extends Specification {
 import fi.linuxbox.upcloud.api.UpCloudApi
 
 def session = newSession("foo", "bar")
-def upCloud = new UpCloudApi(session)
+def upCloud = session.withTraits(UpCloudApi)
 
 // Add a session wide auth error callback
 session.callback(401: { resp ->

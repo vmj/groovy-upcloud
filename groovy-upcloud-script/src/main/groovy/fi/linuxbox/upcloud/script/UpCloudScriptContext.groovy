@@ -46,7 +46,7 @@ class UpCloudScriptContext implements Closeable {
 
         session = new SimpleSession(http, json, username, password)
 
-        upCloud = new UpCloudApi(session)
+        upCloud = session.withTraits(UpCloudApi)
 
         builder = new ResourceBuilder()
     }
