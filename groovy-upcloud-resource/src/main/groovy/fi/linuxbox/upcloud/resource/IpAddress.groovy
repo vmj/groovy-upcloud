@@ -45,11 +45,11 @@ import fi.linuxbox.upcloud.core.*
  * <h4>Listing IP addresses</h4>
  * <p>
  *     A list of all IP addresses associated with an UpCloud API user account is available via
- *     {@link fi.linuxbox.upcloud.api.UpCloud#ipAddresses(def) IP Addresses} API.
+ *     {@link fi.linuxbox.upcloud.api.UpCloudApi#ipAddresses(def) IP Addresses} API.
  * </p>
  * <p>
  *     A list of IP addresses associated with a specific server is available in the {@link Server#ipAddresses}
- *     property when using the {@link fi.linuxbox.upcloud.api.Server#load(def) Server details} API.
+ *     property when using the {@link fi.linuxbox.upcloud.api.ServerApi#load(def) Server details} API.
  * </p>
  *
  * <h4>Creating IP addresses</h4>
@@ -68,7 +68,7 @@ import fi.linuxbox.upcloud.core.*
  *                  access = 'public' // mandatory
  *                  family = 'IPv4' // mandatory
  *                  // partOfPlan not allowed
- *                  // ptrRecond not allowed???
+ *                  // ptrRecord not allowed???
  *                  // server not allowed
  *              },
  *              ipAddress {
@@ -96,7 +96,7 @@ import fi.linuxbox.upcloud.core.*
  *         // access not allowed, since only public addresses can be added
  *         family = 'IPv4' // mandatory
  *         // partOfPlan not allowed
- *         // ptrRecond not allowed???
+ *         // ptrRecord not allowed???
  *         server = existingServer.uuid // mandatory
  *     }
  *
@@ -110,14 +110,14 @@ import fi.linuxbox.upcloud.core.*
  *     The only property of an IP address that can be modified is the reverse DNS PTR record.
  * </p>
  * <pre><code class="groovy">
- *     import fi.linuxbox.upcloud.api.IpAddress
+ *     import fi.linuxbox.upcloud.api.IpAddressApi
  *     import static fi.linuxbox.upcloud.resource.Builder.ipAddress
  *
  *     def ptrRecord = ipAddress {
  *         ptrRecord = 'hostname.example.com'
  *     }
  *
- *     def ipAddressApi = someIpAddress.withTraits(IpAddress)
+ *     def ipAddressApi = someIpAddress.withTraits(IpAddressApi)
  *
  *     ipAddressApi.update ptrRecord { resp, err ->
  *         ...
@@ -126,18 +126,18 @@ import fi.linuxbox.upcloud.core.*
  *
  * <h4>Deleting IP addresses</h4>
  * <p>
- *     While IP addresses of a server are released automatically when a server deleted, IP addresses can also be
+ *     While IP addresses of a server are released automatically when a server is deleted, IP addresses can also be
  *     released one by one (from whatever server they were assigned to).
  * </p>
  * <pre><code class="groovy">
- *     import fi.linuxbox.upcloud.api.IpAddress
+ *     import fi.linuxbox.upcloud.api.IpAddressApi
  *     import static fi.linuxbox.upcloud.resource.Builder.ipAddress
  *
- *     def unneededAddress = ipAddress SESSION: session {
+ *     def unneededAddress = ipAddress HTTP: session {
  *         address = '10.0.0.1'
  *     }
  *
- *     def ipAddressApi = unneededAddress.withTraits(IPAddress)
+ *     def ipAddressApi = unneededAddress.withTraits(IpAddressApi)
  *
  *     ipAddressApi.delete { resp, err ->
  *         assert !err // resp contains headers but not much more

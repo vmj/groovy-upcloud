@@ -157,7 +157,7 @@ class Resource {
      *
      * <p>
      * This method skips GroovyObject properties (every Groovy object has a 'class' property), meta resource properties
-     * (every Resource has 'META' and 'SESSION' properties), and properties whose value is <code>null</code>.
+     * (every Resource has 'META' and 'HTTP' properties), and properties whose value is <code>null</code>.
      * </p>
      *
      * @return Properties of this resource.
