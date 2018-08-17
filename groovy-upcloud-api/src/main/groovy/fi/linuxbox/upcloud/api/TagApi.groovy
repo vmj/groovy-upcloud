@@ -35,7 +35,7 @@ import fi.linuxbox.upcloud.core.*
  *     <li>non-null name property, which can be read-only</li>
  * </ul>
  */
-trait Tag {
+trait TagApi {
     abstract HTTPFacade<?> getHTTP()
     abstract String getName()
 
