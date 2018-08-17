@@ -24,7 +24,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 /**
  * Base class for Storage API specifications.
  */
-abstract class StorageSpecification extends ApiSpecification {
-    // build minimal class that works for the Storage trait: HTTP and uuid
-    Storage storage = build 'Storage', HTTP: session, { uuid = 'fake-uuid' } withTraits Storage
+abstract class StorageApiSpecification extends ApiSpecification {
+    // build minimal class that works for the StorageApi trait: HTTP and uuid
+    def storage = build 'Storage', HTTP: session, { uuid = 'fake-uuid' } withTraits StorageApi
 }

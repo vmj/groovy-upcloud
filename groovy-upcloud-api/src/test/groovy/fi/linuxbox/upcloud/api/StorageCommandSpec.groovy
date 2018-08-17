@@ -21,7 +21,7 @@ import fi.linuxbox.upcloud.api.spec.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class StorageCommandSpec extends StorageSpecification {
+class StorageCommandSpec extends StorageApiSpecification {
 
     def "clone: POST /storage/fake-uuid/clone"() {
         given:

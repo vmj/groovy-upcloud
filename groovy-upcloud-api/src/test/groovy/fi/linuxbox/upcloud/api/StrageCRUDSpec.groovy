@@ -21,7 +21,7 @@ import fi.linuxbox.upcloud.api.spec.*
 
 import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
-class StrageCRUDSpec extends StorageSpecification {
+class StrageCRUDSpec extends StorageApiSpecification {
 
     def "load: GET /storage/fake-uuid"() {
         when:

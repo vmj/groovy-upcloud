@@ -40,7 +40,7 @@ import fi.linuxbox.upcloud.core.*
  *     <li>non-null uuid property, which can be read-only</li>
  * </ul>
  */
-trait Storage {
+trait StorageApi {
     abstract HTTPFacade<?> getHTTP()
     abstract String getUuid()
 

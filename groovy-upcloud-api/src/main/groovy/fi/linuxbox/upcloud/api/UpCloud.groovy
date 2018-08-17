@@ -263,7 +263,7 @@ class UpCloud {
      * </code></pre>
      * <p>
      *     Only the storages' most relevant information is returned by this operation. Further details on individual
-     *     storage can be requested with the {@link Storage#load(def)} API.
+     *     storage can be requested with the {@link StorageApi#load(def)} API.
      * </p>
      *
      * @param args.type Optional filter for storages: {@code public}, {@code private}, {@code normal}, {@code backup},
