@@ -25,7 +25,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class UpCloudSpec extends ApiSpecification {
 
-    UpCloud upCloud = new UpCloud(session)
+    UpCloudApi upCloud = new UpCloudApi(session)
 
     def "storages type: 'favorite' does GET .../storage/favorite"() {
         when:
@@ -201,7 +201,7 @@ class UpCloudSpec extends ApiSpecification {
     @Unroll
     def "Name juggling: #className -> #urlPathSegment"() {
         expect:
-            UpCloud.url_path_segment(className) == urlPathSegment
+            UpCloudApi.url_path_segment(className) == urlPathSegment
 
         where:
             className   | urlPathSegment

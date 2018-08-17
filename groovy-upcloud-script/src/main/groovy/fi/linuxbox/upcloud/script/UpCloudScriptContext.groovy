@@ -17,7 +17,8 @@
  */
 package fi.linuxbox.upcloud.script
 
-import fi.linuxbox.upcloud.api.UpCloud
+
+import fi.linuxbox.upcloud.api.UpCloudApi
 import fi.linuxbox.upcloud.builder.ResourceBuilder
 import fi.linuxbox.upcloud.core.SimpleSession
 import fi.linuxbox.upcloud.http.spi.HTTP
@@ -35,7 +36,7 @@ class UpCloudScriptContext implements Closeable {
 
     final SimpleSession session
 
-    final UpCloud upCloud
+    final UpCloudApi upCloud
 
     final ResourceBuilder builder
 
@@ -45,7 +46,7 @@ class UpCloudScriptContext implements Closeable {
 
         session = new SimpleSession(http, json, username, password)
 
-        upCloud = new UpCloud(session)
+        upCloud = new UpCloudApi(session)
 
         builder = new ResourceBuilder()
     }

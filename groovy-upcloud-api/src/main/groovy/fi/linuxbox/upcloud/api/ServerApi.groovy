@@ -57,7 +57,7 @@ trait ServerApi {
      * </code></pre>
      * <p>
      *     While this operation returns details of a single server, a less details list of all servers can be
-     *     requested with the {@link UpCloud#servers(def)} API.
+     *     requested with the {@link UpCloudApi#servers(def)} API.
      * </p>
      *
      * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;} call.

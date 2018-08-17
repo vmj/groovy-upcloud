@@ -57,7 +57,7 @@ trait StorageApi {
      * </code></pre>
      * <p>
      *     While this operation returns details of a single storage, a less details list of all storages can be
-     *     requested with the {@link UpCloud#storages(def)} API.
+     *     requested with the {@link UpCloudApi#storages(def)} API.
      * </p>
      *
      * @param args Request callbacks for the {@code GET /storage/&#36;&#123;storage.uuid&#125;} call.
@@ -245,7 +245,7 @@ trait StorageApi {
      *     This operation succeeds even if the storage already is a favorite.
      * </p>
      * <p>
-     *     Favorite storages can be listed with {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API},
+     *     Favorite storages can be listed with {@link UpCloudApi#storages(def) Storages API},
      *     by specifying a keyword argument {@code type: "favorite"}.
      * </p>
      * <p>
@@ -265,7 +265,7 @@ trait StorageApi {
      *     This operation succeeds even if the storage is not a favorite.
      * </p>
      * <p>
-     *     Favorite storages can be listed with {@link fi.linuxbox.upcloud.api.UpCloud#storages(def) Storages API},
+     *     Favorite storages can be listed with {@link UpCloudApi#storages(def) Storages API},
      *     by specifying a keyword argument {@code type: "favorite"}.
      * </p>
      * <p>

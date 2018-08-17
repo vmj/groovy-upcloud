@@ -33,11 +33,11 @@ import fi.linuxbox.upcloud.core.*
  *     <li>listing and creating servers, IP addresses, tags, and storages</li>
  * </ul>
  */
-class UpCloud {
+class UpCloudApi {
     private final HTTPFacade<?> HTTP
 
     @Inject
-    UpCloud(final HTTPFacade SESSION) {
+    UpCloudApi(final HTTPFacade SESSION) {
         HTTP = SESSION
     }
 

@@ -32,10 +32,10 @@ class AccountSpec extends Specification {
 
         when:
             shell.evaluate("""
-import fi.linuxbox.upcloud.api.UpCloud
+import fi.linuxbox.upcloud.api.UpCloudApi
 
 def session = newSession("foo", "bar")
-def upCloud = new UpCloud(session)
+def upCloud = new UpCloudApi(session)
 
 // Add a session wide auth error callback
 session.callback(401: { resp ->
