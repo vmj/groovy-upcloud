@@ -39,7 +39,7 @@ class SessionSpec extends Specification {
     Session session
 
     def setup() {
-        session = new Session(http, json, "open", "sesame")
+        session = new SimpleSession(http, json, "open", "sesame")
         session.callback network_error: {}
     }
 

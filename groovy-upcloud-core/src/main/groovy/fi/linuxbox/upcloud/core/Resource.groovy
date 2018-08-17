@@ -19,7 +19,6 @@ package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.http.spi.META
 import groovy.transform.PackageScope
-import org.slf4j.*
 
 import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
 
@@ -110,7 +109,7 @@ import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
  * </p>
  */
 class Resource {
-    final Session SESSION
+    final AbstractSession<?> SESSION
     final META META
 
     // TODO: Remove when all references to SESSION property are cleaned up
@@ -119,7 +118,7 @@ class Resource {
     /**
      * Designated, and only, constructor.
      *
-     * @param kwargs.SESSION The Session instance.  This is used by the resource specific API wrappers, not directly by this class.
+     * @param kwargs.SESSION The AbstractSession instance.  This is used by the resource specific API wrappers, not directly by this class.
      * @param kwargs.META The META instance.  This is received from the HTTP implementation.
      * @param kwargs.repr The Map<String, Object> intermediary representation from the JSON implementations.
      */

@@ -17,7 +17,6 @@
  */
 package fi.linuxbox.upcloud.script
 
-import fi.linuxbox.upcloud.core.Session
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.json.spi.JSON
 import groovy.transform.CompileStatic
@@ -45,8 +44,8 @@ abstract class UpCloudScript extends Script {
         this.json = JSONFactory.create()
     }
 
-    Session newSession(final String username, final String password) {
-        new Session(http, json, username, password)
+    CompletableFutureSession newSession(final String username, final String password) {
+        new CompletableFutureSession(http, json, username, password)
     }
 
     @Override

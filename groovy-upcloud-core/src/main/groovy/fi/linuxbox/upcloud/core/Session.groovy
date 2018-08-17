@@ -19,22 +19,15 @@ package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.core.callback.RequestCallback
 import fi.linuxbox.upcloud.core.callback.SessionCallbacks
-import fi.linuxbox.upcloud.http.spi.HeaderElement
-import fi.linuxbox.upcloud.http.spi.Parameter
-import fi.linuxbox.upcloud.http.spi.Request
-import fi.linuxbox.upcloud.http.spi.HTTP
-import fi.linuxbox.upcloud.http.spi.Headers
-import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.core.http.simple.SimpleHeaders
+import fi.linuxbox.upcloud.http.spi.*
 import fi.linuxbox.upcloud.json.spi.JSON
-import groovy.transform.*
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
-import javax.inject.*
+import java.util.function.BiConsumer
 
-import static fi.linuxbox.upcloud.core.UpCloudContract.API_VERSION
-import static fi.linuxbox.upcloud.core.UpCloudContract.HOST
-import static fi.linuxbox.upcloud.core.UpCloudContract.requestHeaders
+import static fi.linuxbox.upcloud.core.UpCloudContract.*
 
 /**
  * The API for all the things managed in UpCloud.
@@ -259,7 +252,7 @@ import static fi.linuxbox.upcloud.core.UpCloudContract.requestHeaders
  */
 @CompileStatic
 @Slf4j
-class Session extends AbstractSession<Void> {
+abstract class Session<T> extends AbstractSession<T> {
     /**
      * HTTP request headers.
      *
@@ -299,8 +292,7 @@ class Session extends AbstractSession<Void> {
      * @param username UpCloud API username.  This is not the one you use to login to the control panel.
      * @param password UpCloud API password.  This is not the one you use to login to the control panel.
      */
-    @Inject
-    Session(HTTP http, JSON json, @Named("username") String username, @Named("password") String password) {
+    Session(HTTP http, JSON json, String username, String password) {
         this.http = http
         this.json = json
         this.requestHeaders = requestHeaders(username, password, http.userAgent)
@@ -343,13 +335,16 @@ class Session extends AbstractSession<Void> {
      * @return Whatever is returned by the HTTP implementation for starting an asynchronous request.
      */
     @Override
-    Void request(final Map<?, Closure<Void>> cbs,
+    T request(final Map<?, Closure<Void>> cbs,
                  final String method,
                  final String path,
                  final Resource resource,
                  final Closure<Void> cb) {
         final RequestCallback requestCallback =
                 new RequestCallback(sessionCallbacks, cbs, cb)
+
+        final T promise = unresolvedPromise()
+        final BiConsumer<Resource, Throwable> resolver = promiseResolver(promise)
 
         http.execute new Request(
                 host: HOST,
@@ -360,11 +355,17 @@ class Session extends AbstractSession<Void> {
                 { final META meta, final InputStream body, final Throwable err ->
                     // Contract is that either meta is non-null, or err
                     // is non-null.  Never both nulls and never both non-nulls.
-                    final Resource m = err ? null : decode(meta, body)
+                    final Resource resp = err ? null : decode(meta, body)
                     body?.close()
-                    requestCallback.accept(m, err)
+                    requestCallback.accept(resp, err)
+                    resolver?.accept(resp, err)
                 }
+
+        promise
     }
+
+    abstract protected T unresolvedPromise()
+    abstract protected BiConsumer<Resource, Throwable> promiseResolver(final T unresolvedPromise)
 
     /**
      * Decodes the entity {@param body}, if it is valid UTF-8 JSON.
