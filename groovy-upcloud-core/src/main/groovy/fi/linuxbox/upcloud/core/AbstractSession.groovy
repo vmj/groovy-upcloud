@@ -20,7 +20,6 @@ package fi.linuxbox.upcloud.core
 import groovy.transform.CompileStatic
 
 import static java.util.Collections.emptyMap
-import static java.util.Collections.unmodifiableMap
 
 /**
  *
@@ -29,7 +28,8 @@ import static java.util.Collections.unmodifiableMap
  */
 @CompileStatic
 abstract class AbstractSession<T> {
-    private static final Map<?, Closure<Void>> EMPTY_CBS = unmodifiableMap(emptyMap())
+    private static final Map<?, Closure<Void>> EMPTY_CBS = emptyMap().asUnmodifiable()
+
 
     /**
      * Performs a HTTP GET method.
