@@ -20,9 +20,7 @@ modifyPom {
 dependencies {
     api project(':groovy-upcloud-json-spi')
 
-    implementation "org.codehaus.groovy:groovy-json:${versions.groovy}:indy", {
-        exclude module: 'groovy' // non-indy
-    }
+    implementation "org.codehaus.groovy:groovy-json:${versions.groovy}"
 
     testImplementation "com.jayway.jsonpath:json-path-assert:${versions.jsonpath}"
 }

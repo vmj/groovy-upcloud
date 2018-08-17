@@ -14,5 +14,5 @@ configurations {
 
 dependencies {
     // Runtime code is written in Groovy
-    implementation "org.codehaus.groovy:groovy:${versions.groovy}:indy"
+    implementation "org.codehaus.groovy:groovy:${versions.groovy}"
 }

@@ -5,7 +5,7 @@ buildscript {
     dependencies {
         classpath 'net.saliman:gradle-cobertura-plugin:2.5.4'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.8'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.8.1'
         classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.14.0"
         classpath 'org.ajoberstar:gradle-git-publish:1.0.1'
     }
@@ -50,7 +50,7 @@ apply plugin: 'groovy'
 apply from: 'gradle/versions.gradle'
 
 dependencies {
-    compileOnly "org.codehaus.groovy:groovy:${versions.groovy}:indy"
+    compileOnly "org.codehaus.groovy:groovy:${versions.groovy}"
 }
 
 groovydoc {

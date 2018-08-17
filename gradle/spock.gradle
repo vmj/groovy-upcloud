@@ -1,9 +1,7 @@
 dependencies {
     // Tests are written in Groovy
-    testImplementation "org.codehaus.groovy:groovy:${versions.groovy}:indy"
+    testImplementation "org.codehaus.groovy:groovy:${versions.groovy}"
 
     // Tests are written in Spock
-    testImplementation "org.spockframework:spock-core:${versions.spock}", {
-        exclude module: 'groovy-all'
-    }
+    testImplementation "org.spockframework:spock-core:${versions.spock}"
 }
