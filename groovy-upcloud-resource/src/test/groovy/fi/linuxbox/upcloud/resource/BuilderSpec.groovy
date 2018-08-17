@@ -89,18 +89,20 @@ class BuilderSpec extends Specification {
 
     def "account with kwargs and config"() {
         when:
-        def account = account SESSION: session, {}
+        def account = account HTTP: session, {}
 
         then:
         account instanceof Account
+        account.HTTP == session
     }
 
     def "account with kwargs and no config"() {
         when:
-        def account = account SESSION: session
+        def account = account HTTP: session
 
         then:
         account instanceof Account
+        account.HTTP == session
     }
 
     def "backupRule builder"() {
@@ -121,18 +123,20 @@ class BuilderSpec extends Specification {
 
     def "backupRule with kwargs and config"() {
         when:
-        def backupRule = backupRule SESSION: session, {}
+        def backupRule = backupRule HTTP: session, {}
 
         then:
         backupRule instanceof BackupRule
+        backupRule.HTTP == session
     }
 
     def "backupRule with kwargs and no config"() {
         when:
-        def backupRule = backupRule SESSION: session
+        def backupRule = backupRule HTTP: session
 
         then:
         backupRule instanceof BackupRule
+        backupRule.HTTP == session
     }
 
     def "firewall builder"() {
@@ -153,18 +157,20 @@ class BuilderSpec extends Specification {
 
     def "firewall with kwargs and config"() {
         when:
-        def firewall = firewall SESSION: session, {}
+        def firewall = firewall HTTP: session, {}
 
         then:
         firewall instanceof Firewall
+        firewall.HTTP == session
     }
 
     def "firewall with kwargs and no config"() {
         when:
-        def firewall = firewall SESSION: session
+        def firewall = firewall HTTP: session
 
         then:
         firewall instanceof Firewall
+        firewall.HTTP == session
     }
 
     def "firewallRule builder"() {
@@ -185,18 +191,20 @@ class BuilderSpec extends Specification {
 
     def "firewallRule with kwargs and config"() {
         when:
-        def firewallRule = firewallRule SESSION: session, {}
+        def firewallRule = firewallRule HTTP: session, {}
 
         then:
         firewallRule instanceof FirewallRule
+        firewallRule.HTTP == session
     }
 
     def "firewallRule with kwargs and no config"() {
         when:
-        def firewallRule = firewallRule SESSION: session
+        def firewallRule = firewallRule HTTP: session
 
         then:
         firewallRule instanceof FirewallRule
+        firewallRule.HTTP == session
     }
 
     def "ioRequestBackup builder"() {
@@ -217,18 +225,20 @@ class BuilderSpec extends Specification {
 
     def "ioRequestBackup with kwargs and config"() {
         when:
-        def ioRequestBackup = ioRequestBackup SESSION: session, {}
+        def ioRequestBackup = ioRequestBackup HTTP: session, {}
 
         then:
         ioRequestBackup instanceof IoRequestBackup
+        ioRequestBackup.HTTP == session
     }
 
     def "ioRequestBackup with kwargs and no config"() {
         when:
-        def ioRequestBackup = ioRequestBackup SESSION: session
+        def ioRequestBackup = ioRequestBackup HTTP: session
 
         then:
         ioRequestBackup instanceof IoRequestBackup
+        ioRequestBackup.HTTP == session
     }
 
     def "ioRequestHdd builder"() {
@@ -249,18 +259,20 @@ class BuilderSpec extends Specification {
 
     def "ioRequestHdd with kwargs and config"() {
         when:
-        def ioRequestHdd = ioRequestHdd SESSION: session, {}
+        def ioRequestHdd = ioRequestHdd HTTP: session, {}
 
         then:
         ioRequestHdd instanceof IoRequestHdd
+        ioRequestHdd.HTTP == session
     }
 
     def "ioRequestHdd with kwargs and no config"() {
         when:
-        def ioRequestHdd = ioRequestHdd SESSION: session
+        def ioRequestHdd = ioRequestHdd HTTP: session
 
         then:
         ioRequestHdd instanceof IoRequestHdd
+        ioRequestHdd.HTTP == session
     }
 
     def "ioRequestMaxiops builder"() {
@@ -281,18 +293,20 @@ class BuilderSpec extends Specification {
 
     def "ioRequestMaxiops with kwargs and config"() {
         when:
-        def ioRequestMaxiops = ioRequestMaxiops SESSION: session, {}
+        def ioRequestMaxiops = ioRequestMaxiops HTTP: session, {}
 
         then:
         ioRequestMaxiops instanceof IoRequestMaxiops
+        ioRequestMaxiops.HTTP == session
     }
 
     def "ioRequestMaxiops with kwargs and no config"() {
         when:
-        def ioRequestMaxiops = ioRequestMaxiops SESSION: session
+        def ioRequestMaxiops = ioRequestMaxiops HTTP: session
 
         then:
         ioRequestMaxiops instanceof IoRequestMaxiops
+        ioRequestMaxiops.HTTP == session
     }
 
     def "ipAddress builder"() {
@@ -313,18 +327,20 @@ class BuilderSpec extends Specification {
 
     def "ipAddress with kwargs and config"() {
         when:
-        def ipAddress = ipAddress SESSION: session, {}
+        def ipAddress = ipAddress HTTP: session, {}
 
         then:
         ipAddress instanceof IpAddress
+        ipAddress.HTTP == session
     }
 
     def "ipAddress with kwargs and no config"() {
         when:
-        def ipAddress = ipAddress SESSION: session
+        def ipAddress = ipAddress HTTP: session
 
         then:
         ipAddress instanceof IpAddress
+        ipAddress.HTTP == session
     }
 
     def "ipv4Address builder"() {
@@ -345,18 +361,20 @@ class BuilderSpec extends Specification {
 
     def "ipv4Address with kwargs and config"() {
         when:
-        def ipv4Address = ipv4Address SESSION: session, {}
+        def ipv4Address = ipv4Address HTTP: session, {}
 
         then:
         ipv4Address instanceof Ipv4Address
+        ipv4Address.HTTP == session
     }
 
     def "ipv4Address with kwargs and no config"() {
         when:
-        def ipv4Address = ipv4Address SESSION: session
+        def ipv4Address = ipv4Address HTTP: session
 
         then:
         ipv4Address instanceof Ipv4Address
+        ipv4Address.HTTP == session
     }
 
     def "ipv6Address builder"() {
@@ -377,18 +395,20 @@ class BuilderSpec extends Specification {
 
     def "ipv6Address with kwargs and config"() {
         when:
-        def ipv6Address = ipv6Address SESSION: session, {}
+        def ipv6Address = ipv6Address HTTP: session, {}
 
         then:
         ipv6Address instanceof Ipv6Address
+        ipv6Address.HTTP == session
     }
 
     def "ipv6Address with kwargs and no config"() {
         when:
-        def ipv6Address = ipv6Address SESSION: session
+        def ipv6Address = ipv6Address HTTP: session
 
         then:
         ipv6Address instanceof Ipv6Address
+        ipv6Address.HTTP == session
     }
 
     def "loginUser builder"() {
@@ -409,18 +429,20 @@ class BuilderSpec extends Specification {
 
     def "loginUser with kwargs and config"() {
         when:
-        def loginUser = loginUser SESSION: session, {}
+        def loginUser = loginUser HTTP: session, {}
 
         then:
         loginUser instanceof LoginUser
+        loginUser.HTTP == session
     }
 
     def "loginUser with kwargs and no config"() {
         when:
-        def loginUser = loginUser SESSION: session
+        def loginUser = loginUser HTTP: session
 
         then:
         loginUser instanceof LoginUser
+        loginUser.HTTP == session
     }
 
     def "plan builder"() {
@@ -441,18 +463,20 @@ class BuilderSpec extends Specification {
 
     def "plan with kwargs and config"() {
         when:
-        def plan = plan SESSION: session, {}
+        def plan = plan HTTP: session, {}
 
         then:
         plan instanceof Plan
+        plan.HTTP == session
     }
 
     def "plan with kwargs and no config"() {
         when:
-        def plan = plan SESSION: session
+        def plan = plan HTTP: session
 
         then:
         plan instanceof Plan
+        plan.HTTP == session
     }
 
     def "publicIpv4BandwidthIn builder"() {
@@ -473,18 +497,20 @@ class BuilderSpec extends Specification {
 
     def "publicIpv4BandwidthIn with kwargs and config"() {
         when:
-        def publicIpv4BandwidthIn = publicIpv4BandwidthIn SESSION: session, {}
+        def publicIpv4BandwidthIn = publicIpv4BandwidthIn HTTP: session, {}
 
         then:
         publicIpv4BandwidthIn instanceof PublicIpv4BandwidthIn
+        publicIpv4BandwidthIn.HTTP == session
     }
 
     def "publicIpv4BandwidthIn with kwargs and no config"() {
         when:
-        def publicIpv4BandwidthIn = publicIpv4BandwidthIn SESSION: session
+        def publicIpv4BandwidthIn = publicIpv4BandwidthIn HTTP: session
 
         then:
         publicIpv4BandwidthIn instanceof PublicIpv4BandwidthIn
+        publicIpv4BandwidthIn.HTTP == session
     }
 
     def "publicIpv4BandwidthOut builder"() {
@@ -505,18 +531,20 @@ class BuilderSpec extends Specification {
 
     def "publicIpv4BandwidthOut with kwargs and config"() {
         when:
-        def publicIpv4BandwidthOut = publicIpv4BandwidthOut SESSION: session, {}
+        def publicIpv4BandwidthOut = publicIpv4BandwidthOut HTTP: session, {}
 
         then:
         publicIpv4BandwidthOut instanceof PublicIpv4BandwidthOut
+        publicIpv4BandwidthOut.HTTP == session
     }
 
     def "publicIpv4BandwidthOut with kwargs and no config"() {
         when:
-        def publicIpv4BandwidthOut = publicIpv4BandwidthOut SESSION: session
+        def publicIpv4BandwidthOut = publicIpv4BandwidthOut HTTP: session
 
         then:
         publicIpv4BandwidthOut instanceof PublicIpv4BandwidthOut
+        publicIpv4BandwidthOut.HTTP == session
     }
 
     def "publicIpv6BandwidthIn builder"() {
@@ -537,18 +565,20 @@ class BuilderSpec extends Specification {
 
     def "publicIpv6BandwidthIn with kwargs and config"() {
         when:
-        def publicIpv6BandwidthIn = publicIpv6BandwidthIn SESSION: session, {}
+        def publicIpv6BandwidthIn = publicIpv6BandwidthIn HTTP: session, {}
 
         then:
         publicIpv6BandwidthIn instanceof PublicIpv6BandwidthIn
+        publicIpv6BandwidthIn.HTTP == session
     }
 
     def "publicIpv6BandwidthIn with kwargs and no config"() {
         when:
-        def publicIpv6BandwidthIn = publicIpv6BandwidthIn SESSION: session
+        def publicIpv6BandwidthIn = publicIpv6BandwidthIn HTTP: session
 
         then:
         publicIpv6BandwidthIn instanceof PublicIpv6BandwidthIn
+        publicIpv6BandwidthIn.HTTP == session
     }
 
     def "publicIpv6BandwidthOut builder"() {
@@ -569,18 +599,20 @@ class BuilderSpec extends Specification {
 
     def "publicIpv6BandwidthOut with kwargs and config"() {
         when:
-        def publicIpv6BandwidthOut = publicIpv6BandwidthOut SESSION: session, {}
+        def publicIpv6BandwidthOut = publicIpv6BandwidthOut HTTP: session, {}
 
         then:
         publicIpv6BandwidthOut instanceof PublicIpv6BandwidthOut
+        publicIpv6BandwidthOut.HTTP == session
     }
 
     def "publicIpv6BandwidthOut with kwargs and no config"() {
         when:
-        def publicIpv6BandwidthOut = publicIpv6BandwidthOut SESSION: session
+        def publicIpv6BandwidthOut = publicIpv6BandwidthOut HTTP: session
 
         then:
         publicIpv6BandwidthOut instanceof PublicIpv6BandwidthOut
+        publicIpv6BandwidthOut.HTTP == session
     }
 
     def "server builder"() {
@@ -601,18 +633,20 @@ class BuilderSpec extends Specification {
 
     def "server with kwargs and config"() {
         when:
-        def server = server SESSION: session, {}
+        def server = server HTTP: session, {}
 
         then:
         server instanceof Server
+        server.HTTP == session
     }
 
     def "server with kwargs and no config"() {
         when:
-        def server = server SESSION: session
+        def server = server HTTP: session
 
         then:
         server instanceof Server
+        server.HTTP == session
     }
 
     def "serverCore builder"() {
@@ -633,18 +667,20 @@ class BuilderSpec extends Specification {
 
     def "serverCore with kwargs and config"() {
         when:
-        def serverCore = serverCore SESSION: session, {}
+        def serverCore = serverCore HTTP: session, {}
 
         then:
         serverCore instanceof ServerCore
+        serverCore.HTTP == session
     }
 
     def "serverCore with kwargs and no config"() {
         when:
-        def serverCore = serverCore SESSION: session
+        def serverCore = serverCore HTTP: session
 
         then:
         serverCore instanceof ServerCore
+        serverCore.HTTP == session
     }
 
     def "serverMemory builder"() {
@@ -665,18 +701,20 @@ class BuilderSpec extends Specification {
 
     def "serverMemory with kwargs and config"() {
         when:
-        def serverMemory = serverMemory SESSION: session, {}
+        def serverMemory = serverMemory HTTP: session, {}
 
         then:
         serverMemory instanceof ServerMemory
+        serverMemory.HTTP == session
     }
 
     def "serverMemory with kwargs and no config"() {
         when:
-        def serverMemory = serverMemory SESSION: session
+        def serverMemory = serverMemory HTTP: session
 
         then:
         serverMemory instanceof ServerMemory
+        serverMemory.HTTP == session
     }
 
     def "serverPlan_1xCPU_1GB builder"() {
@@ -697,18 +735,20 @@ class BuilderSpec extends Specification {
 
     def "serverPlan_1xCPU_1GB with kwargs and config"() {
         when:
-        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB SESSION: session, {}
+        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB HTTP: session, {}
 
         then:
         serverPlan_1xCPU_1GB instanceof ServerPlan_1xCPU_1GB
+        serverPlan_1xCPU_1GB.HTTP == session
     }
 
     def "serverPlan_1xCPU_1GB with kwargs and no config"() {
         when:
-        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB SESSION: session
+        def serverPlan_1xCPU_1GB = serverPlan_1xCPU_1GB HTTP: session
 
         then:
         serverPlan_1xCPU_1GB instanceof ServerPlan_1xCPU_1GB
+        serverPlan_1xCPU_1GB.HTTP == session
     }
 
     def "serverPlan_2xCPU_2GB builder"() {
@@ -729,18 +769,20 @@ class BuilderSpec extends Specification {
 
     def "serverPlan_2xCPU_2GB with kwargs and config"() {
         when:
-        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB SESSION: session, {}
+        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB HTTP: session, {}
 
         then:
         serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
+        serverPlan_2xCPU_2GB.HTTP == session
     }
 
     def "serverPlan_2xCPU_2GB with kwargs and no config"() {
         when:
-        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB SESSION: session
+        def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB HTTP: session
 
         then:
         serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
+        serverPlan_2xCPU_2GB.HTTP == session
     }
 
     def "serverSize builder"() {
@@ -762,18 +804,20 @@ class BuilderSpec extends Specification {
 
     def "serverSize with kwargs and config"() {
         when:
-        def serverSize = serverSize SESSION: session, {}
+        def serverSize = serverSize HTTP: session, {}
 
         then:
         serverSize instanceof ServerSize
+        serverSize.HTTP == session
     }
 
     def "serverSize with kwargs and no config"() {
         when:
-        def serverSize = serverSize SESSION: session
+        def serverSize = serverSize HTTP: session
 
         then:
         serverSize instanceof ServerSize
+        serverSize.HTTP == session
     }
 
     def "storage builder"() {
@@ -794,18 +838,20 @@ class BuilderSpec extends Specification {
 
     def "storage with kwargs and config"() {
         when:
-        def storage = storage SESSION: session, {}
+        def storage = storage HTTP: session, {}
 
         then:
         storage instanceof Storage
+        storage.HTTP == session
     }
 
     def "storage with kwargs and no config"() {
         when:
-        def storage = storage SESSION: session
+        def storage = storage HTTP: session
 
         then:
         storage instanceof Storage
+        storage.HTTP == session
     }
 
     def "storageBackup builder"() {
@@ -826,18 +872,20 @@ class BuilderSpec extends Specification {
 
     def "storageBackup with kwargs and config"() {
         when:
-        def storageBackup = storageBackup SESSION: session, {}
+        def storageBackup = storageBackup HTTP: session, {}
 
         then:
         storageBackup instanceof StorageBackup
+        storageBackup.HTTP == session
     }
 
     def "storageBackup with kwargs and no config"() {
         when:
-        def storageBackup = storageBackup SESSION: session
+        def storageBackup = storageBackup HTTP: session
 
         then:
         storageBackup instanceof StorageBackup
+        storageBackup.HTTP == session
     }
 
     def "storageDevice builder"() {
@@ -858,18 +906,20 @@ class BuilderSpec extends Specification {
 
     def "storageDevice with kwargs and config"() {
         when:
-        def storageDevice = storageDevice SESSION: session, {}
+        def storageDevice = storageDevice HTTP: session, {}
 
         then:
         storageDevice instanceof StorageDevice
+        storageDevice.HTTP == session
     }
 
     def "storageDevice with kwargs and no config"() {
         when:
-        def storageDevice = storageDevice SESSION: session
+        def storageDevice = storageDevice HTTP: session
 
         then:
         storageDevice instanceof StorageDevice
+        storageDevice.HTTP == session
     }
 
     def "storageHdd builder"() {
@@ -890,18 +940,20 @@ class BuilderSpec extends Specification {
 
     def "storageHdd with kwargs and config"() {
         when:
-        def storageHdd = storageHdd SESSION: session, {}
+        def storageHdd = storageHdd HTTP: session, {}
 
         then:
         storageHdd instanceof StorageHdd
+        storageHdd.HTTP == session
     }
 
     def "storageHdd with kwargs and no config"() {
         when:
-        def storageHdd = storageHdd SESSION: session
+        def storageHdd = storageHdd HTTP: session
 
         then:
         storageHdd instanceof StorageHdd
+        storageHdd.HTTP == session
     }
 
     def "storageMaxiops builder"() {
@@ -922,18 +974,20 @@ class BuilderSpec extends Specification {
 
     def "storageMaxiops with kwargs and config"() {
         when:
-        def storageMaxiops = storageMaxiops SESSION: session, {}
+        def storageMaxiops = storageMaxiops HTTP: session, {}
 
         then:
         storageMaxiops instanceof StorageMaxiops
+        storageMaxiops.HTTP == session
     }
 
     def "storageMaxiops with kwargs and no config"() {
         when:
-        def storageMaxiops = storageMaxiops SESSION: session
+        def storageMaxiops = storageMaxiops HTTP: session
 
         then:
         storageMaxiops instanceof StorageMaxiops
+        storageMaxiops.HTTP == session
     }
 
     def "tag builder"() {
@@ -954,18 +1008,20 @@ class BuilderSpec extends Specification {
 
     def "tag with kwargs and config"() {
         when:
-        def tag = tag SESSION: session, {}
+        def tag = tag HTTP: session, {}
 
         then:
         tag instanceof Tag
+        tag.HTTP == session
     }
 
     def "tag with kwargs and no config"() {
         when:
-        def tag = tag SESSION: session
+        def tag = tag HTTP: session
 
         then:
         tag instanceof Tag
+        tag.HTTP == session
     }
 
     def "zone builder"() {
@@ -986,17 +1042,19 @@ class BuilderSpec extends Specification {
 
     def "zone with kwargs and config"() {
         when:
-        def zone = zone SESSION: session, {}
+        def zone = zone HTTP: session, {}
 
         then:
         zone instanceof Zone
+        zone.HTTP == session
     }
 
     def "zone with kwargs and no config"() {
         when:
-        def zone = zone SESSION: session
+        def zone = zone HTTP: session
 
         then:
         zone instanceof Zone
+        zone.HTTP == session
     }
 }
