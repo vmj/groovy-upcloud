@@ -197,18 +197,4 @@ class UpCloudSpec extends ApiSpecification {
                             ]
                     ]
     }
-
-    @Unroll
-    def "Name juggling: #className -> #urlPathSegment"() {
-        expect:
-            UpCloudApi.url_path_segment(className) == urlPathSegment
-
-        where:
-            className   | urlPathSegment
-            'RESOURCE'  | 'resource'
-            'IpAddress' | 'ip_address'
-            'Server'    | 'server'
-            'Storage'   | 'storage'
-            'Tag'       | 'tag'
-    }
 }

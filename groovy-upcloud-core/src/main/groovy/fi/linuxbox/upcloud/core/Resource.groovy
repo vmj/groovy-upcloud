@@ -18,8 +18,11 @@
 package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.http.spi.META
-import groovy.transform.PackageScope
 
+import static fi.linuxbox.upcloud.core.NamingContract.javaClassOrPropertyToJsonProperty
+import static fi.linuxbox.upcloud.core.NamingContract.javaClassToJavaProperty
+import static fi.linuxbox.upcloud.core.NamingContract.jsonPropertyToJavaClass
+import static fi.linuxbox.upcloud.core.NamingContract.jsonPropertyToJavaProperty
 import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
 
 /**
@@ -132,7 +135,7 @@ class Resource {
             Object propertyValue
             switch (value) {
                 case ListWrapper:
-                    final String className = className(ListWrapper.getKey(value))
+                    final String className = jsonPropertyToJavaClass(ListWrapper.getKey(value))
                     propertyValue = ListWrapper.getElements(value) collect {
                         if (it instanceof Map<String, ?>)
                             instantiateResourceClass(className, [*:kwargs, repr: it])
@@ -141,14 +144,14 @@ class Resource {
                     }
                     break
                 case Map/*<String, ?>*/: // groovy cannot handle the generics syntax here
-                    final String className = className(key)
+                    final String className = jsonPropertyToJavaClass(key)
                     propertyValue = instantiateResourceClass(className, [*:kwargs, repr: value])
                     break
                 default:
                     propertyValue = value
                     break
             }
-            this.metaClass.setProperty(this, propertyName(key), propertyValue)
+            this.metaClass.setProperty(this, jsonPropertyToJavaProperty(key), propertyValue)
         }
     }
 
@@ -198,7 +201,7 @@ class Resource {
      */
     Object asType(Class clazz) {
         resourceProperties().collectEntries { final String key, final Object value ->
-            final String property_name = type_name(key)
+            final String property_name = javaClassOrPropertyToJsonProperty(key)
             [(property_name): value.with {
                 switch (it) {
                     case { it instanceof List && !it.isEmpty() }: // non-empty List
@@ -212,7 +215,7 @@ class Resource {
                                 // map[prices] = [ zone: [ [:], ... ] ]
                                 // this.timezones = [ "asd", "dsa", ... ]
                                 // map[timezones] = [ timezone: [ "asd", "dsa", ... ] ]
-                                type_name_str = type_name(firstElement.class.simpleName)
+                                type_name_str = javaClassOrPropertyToJsonProperty(firstElement.class.simpleName)
                                 mapper = { it as Map }
                                 break
                             case String:
@@ -250,7 +253,7 @@ class Resource {
      * @return A wrapped resource whose sole property is this resource.
      */
     def wrapper() {
-        final String propertyName = propertyName(this.class)
+        final String propertyName = javaClassToJavaProperty(this.class)
         new Resource(HTTP: HTTP, META: META)."$propertyName"(this)
     }
 
@@ -344,77 +347,6 @@ class Resource {
      */
     def propertyMissing(final String name, final arg) {
         this.metaClass."$name" = arg
-    }
-
-
-    /**
-     * Converts Class name to a Java style property name.
-     *
-     * @param clazz Simple class name, i.e. name without the package.
-     * @return Java style property name.
-     */
-    @PackageScope
-    static String propertyName(final Class clazz) {
-        clazz.simpleName.replaceAll(/([A-Z])([A-Z]+)/, {
-            it[1] + it[2].toLowerCase() // RESOURCE -> Resource
-        }) replaceFirst(/^([A-Z])/, {
-            it[0].toLowerCase() // Server -> server
-        })
-    }
-
-    /**
-     * Converts a JSON property name to a Java style property name.
-     *
-     * <p>
-     * For example, 'storage_device' becomes 'storageDevice'.
-     * </p>
-     *
-     * @param type_name JSON style property name.
-     * @return Java style property name.
-     */
-    @PackageScope
-    static String propertyName(final String type_name) {
-        type_name.replaceAll(/_([a-z])/, {
-            it[1].toUpperCase() // type_name -> typeName
-        }) replaceAll(/-/, '_') // typeName-1CPU-1GB -> typeName_1CPU_1GB
-    }
-
-    /**
-     * Converts a JSON property name to a class name.
-     *
-     * <p>
-     * For example, 'storage_device' becomes 'StorageDevice'.
-     * </p>
-     *
-     * @param type_name JSON style property name.
-     * @return Simple class name, i.e. name without the package.
-     */
-    @PackageScope
-    static String className(final String type_name) {
-        type_name.replaceAll(/(?:^|_)([a-z])/, {
-            it[1].toUpperCase() // type_name -> TypeName
-        }) replaceAll(/-/, '_') // TypeName-1CPU-1GB -> TypeName_1CPU_1GB
-    }
-
-    /**
-     * Converts a class name or a Java property name to a JSON property name.
-     *
-     * <p>
-     * For example, 'StorageDevice' becomes 'storage_device'.
-     * </p>
-     *
-     * @param className Simple name of a class, i.e. name without the package.
-     * @return JSON style property name.
-     */
-    @PackageScope
-    static String type_name(final String className) {
-        className.replaceAll(/([A-Z])([A-Z]+)/, {
-            it[1] + it[2].toLowerCase() // RESOURCE -> Resource
-        }) replaceFirst(/^([A-Z])/, {
-            it[0].toLowerCase() // Server -> server
-        }) replaceAll(/([A-Z])/, {
-            '_' + it[0].toLowerCase() // storageDevice -> storage_device
-        })
     }
 
     /**

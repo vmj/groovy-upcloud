@@ -17,10 +17,12 @@
  */
 package fi.linuxbox.upcloud.api
 
-import groovy.transform.PackageScope
+
 import javax.inject.*
 
 import fi.linuxbox.upcloud.core.*
+
+import static fi.linuxbox.upcloud.core.NamingContract.javaClassToPathSegment
 
 /**
  * Top-level APIs.
@@ -309,23 +311,8 @@ class UpCloudApi {
      * @see <a href="https://www.upcloud.com/api/12-tags/#create-a-new-tag" target="_top">UpCloud API docs for POST /tag</a>
      */
     def create(Resource resource, ...args) {
-        HTTP.POST(url_path_segment(resource.class.simpleName), resource.wrapper(), *args)
+        HTTP.POST(javaClassToPathSegment(resource.class.simpleName), resource.wrapper(), *args)
     }
 
-    /**
-     * Converts a class name to a URL path segment.
-     *
-     * <p>
-     * For example, 'IpAddress' becomes 'ip_address'.
-     * </p>
-     *
-     * @param className Simple name of a class, i.e. name without the package.
-     * @return URL path style segment.
-     */
-    @PackageScope
-    static String url_path_segment(final String className) {
-        className.replaceAll(/([A-Z])([A-Z]+)/, { it[1] + it[2].toLowerCase() }) // RESOURCE -> Resource
-                .replaceFirst(/^([A-Z])/, { it[0].toLowerCase() }) // Server -> server
-                .replaceAll(/([A-Z])/, { '_' + it[0].toLowerCase() }) // storageDevice -> storage_device
-    }
+
 }
