@@ -23,8 +23,8 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class TagCRUDSpec extends ApiSpecification {
 
-    // build minimal class that works for the Tag trait: SESSION and name
-    Tag tag = build 'Tag', SESSION: session, { name = 'DEV' } withTraits Tag
+    // build minimal class that works for the Tag trait: HTTP and name
+    Tag tag = build 'Tag', HTTP: session, { name = 'DEV' } withTraits Tag
 
     def "update: PUT /tag/DEV"() {
         given:

@@ -71,7 +71,7 @@ class ResourceSpec extends Specification {
         def session = new SimpleSession(Mock(HTTP), Mock(JSON), "foo", "bar")
 
         when:
-        def resource = new Resource(SESSION: session, META: meta, repr: [
+        def resource = new Resource(HTTP: session, META: meta, repr: [
                 error: [
                         error_code: 'SOME_ERROR',
                         error_message: 'Something went wrong'
@@ -79,11 +79,11 @@ class ResourceSpec extends Specification {
         ])
 
         then:
-        resource.SESSION == session
+        resource.HTTP == session
         resource.META == meta
         resource.error instanceof Resource
         resource.error.class.name == 'fi.linuxbox.upcloud.resource.Error'
-        resource.error.SESSION == session
+        resource.error.HTTP == session
         resource.error.META == meta
         resource.error.errorCode == 'SOME_ERROR'
         resource.error.errorMessage == 'Something went wrong'

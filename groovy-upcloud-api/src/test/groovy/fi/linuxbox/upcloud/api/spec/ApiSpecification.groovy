@@ -32,7 +32,7 @@ abstract class ApiSpecification extends Specification {
 
     HTTP http = Mock()
     JSON json = Mock()
-    HTTPFacade<?> session = new SimpleSession(http, json, null, null)
+    Session<?> session = new SimpleSession(http, json, null, null)
     Request req
     InputStream body
 

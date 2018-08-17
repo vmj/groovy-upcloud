@@ -51,11 +51,11 @@ class ResourceBuilder {
      * <pre><code class="groovy">
      *     ResourceBuilder builder = new ResourceBuilder()
      *
-     *     def dockerImage = builder.dockerImage SESSION: mySession, {
+     *     def dockerImage = builder.dockerImage HTTP: mySession, {
      *         ...
      *     }
      *
-     *     def rancherAgent = builder.RangerAgent SESSION: mySession
+     *     def rancherAgent = builder.RangerAgent HTTP: mySession
      * </code></pre>
      * <p>
      *     If possible, use the static build method instead.
@@ -126,7 +126,7 @@ class ResourceBuilder {
      *     This also supports passing the keyword arguments:
      * </p>
      * <pre><code class="groovy">
-     *     def resource = build 'Server', SESSION: mySession, {
+     *     def resource = build 'Server', HTTP: mySession, {
      *         ...
      *     }
      * </code></pre>

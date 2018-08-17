@@ -138,21 +138,21 @@ class ResourceBuilderSpec extends Specification{
 
     def "Named resource creation with kwargs and config"() {
         when:
-            def resource = build 'Tag', SESSION: session, {
+            def resource = build 'Tag', HTTP: session, {
                 name = 'DEV'
             }
 
         then:
-            resource?.SESSION != null
+            resource?.HTTP != null
             resource.name == 'DEV'
     }
 
     def "Named resource creation with kwargs and no config"() {
         when:
-            def resource = build 'Tag', SESSION: session
+            def resource = build 'Tag', HTTP: session
 
         then:
-            resource?.SESSION != null
+            resource?.HTTP != null
     }
 
     def "Custom resource creation and configuration"() {
@@ -187,12 +187,12 @@ class ResourceBuilderSpec extends Specification{
             def builder = new ResourceBuilder()
 
         when:
-            def resource = builder.dockerImage SESSION: session, {
+            def resource = builder.dockerImage HTTP: session, {
                 image = 'nginx:stable'
             }
 
         then:
-            resource?.SESSION != null
+            resource?.HTTP != null
             resource.image == 'nginx:stable'
     }
 
@@ -201,9 +201,9 @@ class ResourceBuilderSpec extends Specification{
             def builder = new ResourceBuilder()
 
         when:
-            def resource = builder.RancherAgent SESSION: session
+            def resource = builder.RancherAgent HTTP: session
 
         then:
-            resource?.SESSION != null
+            resource?.HTTP != null
     }
 }

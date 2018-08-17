@@ -109,16 +109,13 @@ import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
  * </p>
  */
 class Resource {
-    final HTTPFacade<?> SESSION
+    final HTTPFacade<?> HTTP
     final META META
-
-    // TODO: Remove when all references to SESSION property are cleaned up
-    HTTPFacade<?> getHTTP() { SESSION }
 
     /**
      * Designated, and only, constructor.
      *
-     * @param kwargs.SESSION The {@link HTTPFacade} instance.  This is used by the resource specific API wrappers, not directly by this class.
+     * @param kwargs.HTTP The {@link HTTPFacade} instance.  This is used by the resource specific API wrappers, not directly by this class.
      * @param kwargs.META The META instance.  This is received from the HTTP implementation.
      * @param kwargs.repr The Map<String, Object> intermediary representation from the JSON implementations.
      */
@@ -127,7 +124,7 @@ class Resource {
         metaClass = new ExpandoMetaClass(this.class, false, true)
         metaClass.initialize()
 
-        SESSION = kwargs.SESSION
+        HTTP = kwargs.HTTP
         META = kwargs.META
 
         final Map<String, ?> map = kwargs.remove('repr') as Map<String, ?>
@@ -254,7 +251,7 @@ class Resource {
      */
     def wrapper() {
         final String propertyName = propertyName(this.class)
-        new Resource(SESSION: SESSION, META: META)."$propertyName"(this)
+        new Resource(HTTP: HTTP, META: META)."$propertyName"(this)
     }
 
     /**
@@ -274,7 +271,7 @@ class Resource {
      */
     def proj(final List<String> properties) {
         resourceProperties().grep { it.key in properties }
-                .inject ((Resource)this.metaClass.invokeConstructor(SESSION: SESSION, META: META)) {
+                .inject ((Resource)this.metaClass.invokeConstructor(HTTP: HTTP, META: META)) {
             final Resource resource, final Map.Entry<String, Object> property -> resource."${property.key}"(property.value)
         }
     }
