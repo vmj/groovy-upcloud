@@ -380,7 +380,7 @@ abstract class Session<T> extends HTTPFacade<T> {
      */
     private Resource decode(final META meta, final InputStream body) {
         final Map<String, Object> repr = decode(meta.headers, body)
-        return new Resource(repr: repr, SESSION: this, META: meta)
+        return new Resource(repr: repr, HTTP: this, META: meta)
     }
 
     /**

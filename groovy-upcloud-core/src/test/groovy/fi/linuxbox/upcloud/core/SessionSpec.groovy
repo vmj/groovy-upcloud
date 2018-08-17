@@ -412,7 +412,7 @@ class SessionSpec extends Specification {
 
         when: "invoking the Session with a callback"
             session.request(null, null, null, null) { resp ->
-                ok = resp?.server == "ok"
+                ok = resp?.server == "ok" && resp.META != null && resp.HTTP == session
             }
 
         then: "the callback is called with the resource whose server property is ok"
@@ -446,7 +446,7 @@ class SessionSpec extends Specification {
 
         when: "invoking the Session with a callback"
             session.request(null, null, null, null) { resp ->
-                ok = resp != null
+                ok = resp != null && resp.META != null && resp.HTTP == session
             }
 
         then: "the callback is called with a non-null resource"
