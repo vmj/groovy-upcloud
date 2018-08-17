@@ -29,7 +29,7 @@ import static fi.linuxbox.upcloud.resource.Builder.*
  */
 class BuilderSpec extends Specification {
 
-    AbstractSession<?> session = new SimpleSession(Mock(HTTP), null, null, null)
+    HTTPFacade<?> session = new SimpleSession(Mock(HTTP), null, null, null)
 
     def "builder inside list"() {
         when:

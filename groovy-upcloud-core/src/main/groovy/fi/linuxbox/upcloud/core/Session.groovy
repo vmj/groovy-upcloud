@@ -252,7 +252,7 @@ import static fi.linuxbox.upcloud.core.UpCloudContract.*
  */
 @CompileStatic
 @Slf4j
-abstract class Session<T> extends AbstractSession<T> {
+abstract class Session<T> extends HTTPFacade<T> {
     /**
      * HTTP request headers.
      *

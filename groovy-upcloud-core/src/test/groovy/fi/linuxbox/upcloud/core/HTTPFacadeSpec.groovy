@@ -19,14 +19,14 @@ package fi.linuxbox.upcloud.core
 
 import spock.lang.Specification
 
-class AbstractSessionSpec extends Specification {
+class HTTPFacadeSpec extends Specification {
     private final static Integer SUCCESS = Integer.MAX_VALUE
     private final static Map<?, Closure<Void>> CBS = ["200": {}]
     private final static String PATH = "/some/resource"
     private final static Resource RESOURCE = new Resource()
     private final static Closure<Void> CB = {}
 
-    private static class MySession extends AbstractSession<Integer> {
+    private static class MySession extends HTTPFacade<Integer> {
         Map<?, Closure<Void>> cbs
         String method
         String path

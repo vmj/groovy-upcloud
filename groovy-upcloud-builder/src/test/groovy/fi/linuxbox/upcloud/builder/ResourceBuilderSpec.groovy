@@ -29,7 +29,7 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
  */
 class ResourceBuilderSpec extends Specification{
 
-    AbstractSession<?> session = new SimpleSession(Mock(HTTP), null, null, null)
+    HTTPFacade<?> session = new SimpleSession(Mock(HTTP), null, null, null)
 
     private static class Mother {
         def prop = 'prop'

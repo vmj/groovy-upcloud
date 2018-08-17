@@ -41,7 +41,7 @@ import fi.linuxbox.upcloud.core.*
  * </ul>
  */
 trait Server {
-    abstract AbstractSession<?> getHTTP()
+    abstract HTTPFacade<?> getHTTP()
     abstract String getUuid()
 
     /**
@@ -61,7 +61,7 @@ trait Server {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#get-server-details" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}</a>
      */
     def load(...args) {
@@ -87,7 +87,7 @@ trait Server {
      * </code></pre>
      * @param resource Updated server resource.
      * @param args Request callbacks for the {@code PUT /server/&#36;&#123;server.uuid&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#modify-server" target="_top">UpCloud API docs for PUT /server/&#36;{server.uuid}</a>
      */
     def update(Resource resource, ...args) {
@@ -106,7 +106,7 @@ trait Server {
      *     The storage devices of the server are automatically detached, and IP addresses are released.
      * </p>
      * @param args Request callbacks for the {@code DELETE /server/&#36;&#123;server.uuid&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#delete-server" target="_top">UpCloud API docs for DELETE /server/&#36;{server.uuid}</a>
      */
     def delete(...args) {
@@ -123,7 +123,7 @@ trait Server {
      * </p>
      *
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/cancel} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#cancel-server-operation" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cancel</a>
      */
     def cancel(...args) {
@@ -142,7 +142,7 @@ trait Server {
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/start} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#start-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/start</a>
      */
     def start(...args) {
@@ -175,7 +175,7 @@ trait Server {
      * @param args.stop_type Either {@code soft} (default) or {@code hard}.
      * @param args.timeout If, after soft stop, this many seconds pass and the server hasn't stopped, a hard stop is performed.
      * @param args Stop type arguments and request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/stop} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#stop-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/stop</a>
      */
     def stop(...args) {
@@ -210,7 +210,7 @@ trait Server {
      * @param args.timeout Number of seconds to wait for the server to shutdown after ACPI signal, before performing {@code timeout_action}.
      * @param args.timeout_action Either {@code destroy} (hard stop and start) or {@code ignore} (do not restart).
      * @param args Stop type arguments and request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/restart} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#restart-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/restart</a>
      */
     def restart(...args) {
@@ -248,7 +248,7 @@ trait Server {
      * </code></pre>
      * @param storageDevice Storage device to attach
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/storage/attach} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/9-storages/#attach-storage" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/storage/attach</a>
      */
     def attach(Resource storageDevice, ...args) {
@@ -276,7 +276,7 @@ trait Server {
      * </code></pre>
      * @param storageDevice Storage device to detach
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/storage/detach} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/9-storages/#detach-storage" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/storage/detach</a>
      */
     def detach(Resource storageDevice, ...args) {
@@ -308,7 +308,7 @@ trait Server {
      * </code></pre>
      * @param storageDevice Storage device to insert as CD-ROM
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/cdrom/load} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/9-storages/#load-cd-rom" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cdrom/load</a>
      */
     def insert(Resource storageDevice, ...args) {
@@ -322,7 +322,7 @@ trait Server {
      *     in the {@code server} property.
      * </p>
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/cdrom/eject} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/9-storages/#eject-cd-rom" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cdrom/eject</a>
      */
     def eject(...args) {
@@ -342,7 +342,7 @@ trait Server {
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;/firewall_rule} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/11-firewall/#list-firewall-rules" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}/firewall_rule</a>
      */
     def firewallRules(...args) {
@@ -380,7 +380,7 @@ trait Server {
      * </code></pre>
      * @param firewallRule Description of the firewall rule
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/firewall_rule} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/11-firewall/#create-firewall-rule" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/firewall_rule</a>
      */
     def createFirewallRule(Resource firewallRule, ...args) {
@@ -400,7 +400,7 @@ trait Server {
      * </code></pre>
      * @param position The position number of the rule in the firewall rules list
      * @param args Request callbacks for the {@code GET /server/&#36;&#123;server.uuid&#125;/firewall_rule/&#36;position} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/11-firewall/#get-firewall-rule-details" target="_top">UpCloud API docs for GET /server/&#36;{server.uuid}/firewall_rule/&#36;position</a>
      */
     def loadFirewallRule(def position, ...args) {
@@ -418,7 +418,7 @@ trait Server {
      * </p>
      * @param position The position number of the rule in the firewall rules list
      * @param args Request callbacks for the {@code DELETE /server/&#36;&#123;server.uuid&#125;/firewall_rule/&#36;position} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/11-firewall/#remove-firewall-rule" target="_top">UpCloud API docs for DELETE /server/&#36;{server.uuid}/firewall_rule/&#36;position</a>
      */
     def deleteFirewallRule(def position, ...args) {
@@ -438,7 +438,7 @@ trait Server {
      * </code></pre>
      * @param tags List of tags to assign
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/tag/&#36;&#123;tags.join(',')&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/12-tags/#assign-tag-to-a-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/tag/&#36;{tags.join(',')}</a>
      */
     def addTags(def tags, ...args) {
@@ -458,7 +458,7 @@ trait Server {
      * </code></pre>
      * @param tags List of tags to remove
      * @param args Request callbacks for the {@code POST /server/&#36;&#123;server.uuid&#125;/untag/&#36;&#123;tags.join(',')&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/12-tags/#remove-tag-from-server" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/untag/&#36;{tags.join(',')}</a>
      */
     def deleteTags(def tags, ...args) {

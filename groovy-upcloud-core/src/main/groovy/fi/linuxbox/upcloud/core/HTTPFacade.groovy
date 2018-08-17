@@ -27,7 +27,7 @@ import static java.util.Collections.emptyMap
  * {@link #request(Map&lt;?, Closure&lt;Void&gt;&gt;, java.lang.String, java.lang.String, fi.linuxbox.upcloud.core.Resource, Closure&lt;Void&gt;) request method}
  */
 @CompileStatic
-abstract class AbstractSession<T> {
+abstract class HTTPFacade<T> {
     private static final Map<?, Closure<Void>> EMPTY_CBS = emptyMap().asUnmodifiable()
 
 

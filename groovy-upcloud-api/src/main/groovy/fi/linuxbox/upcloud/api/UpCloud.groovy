@@ -34,10 +34,10 @@ import fi.linuxbox.upcloud.core.*
  * </ul>
  */
 class UpCloud {
-    private final AbstractSession<?> HTTP
+    private final HTTPFacade<?> HTTP
 
     @Inject
-    UpCloud(final AbstractSession SESSION) {
+    UpCloud(final HTTPFacade SESSION) {
         HTTP = SESSION
     }
 
@@ -54,7 +54,7 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /account} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/3-accounts/#get-account-information" target="_top">UpCloud API docs for GET /account</a>
      */
     def account(...args) {
@@ -80,7 +80,7 @@ class UpCloud {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /price} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/4-pricing/" target="_top">UpCloud API docs for GET /price</a>
      */
     def prices(...args) {
@@ -106,7 +106,7 @@ class UpCloud {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /zone} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/5-zones/" target="_top">UpCloud API docs for GET /zone</a>
      */
     def zones(...args) {
@@ -126,7 +126,7 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /timezone} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/6-timezones/" target="_top">UpCloud API docs for GET /timezone</a>
      */
     def timezones(...args) {
@@ -147,7 +147,7 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /plan} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/7-plans/" target="_top">UpCloud API docs for GET /plan</a>
      */
     def plans(...args) {
@@ -168,7 +168,7 @@ class UpCloud {
      * </code></pre>
      *
      * @param args Request callbacks for the {@code GET /server_size} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#list-server-configurations" target="_top">UpCloud API docs for GET /server_size</a>
      */
     def serverSizes(...args) {
@@ -193,7 +193,7 @@ class UpCloud {
      * </p>
      *
      * @param args Request callbacks for the {@code GET /server} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#list-servers" target="_top">UpCloud API docs for GET /server</a>
      */
     def servers(...args) {
@@ -213,7 +213,7 @@ class UpCloud {
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code GET /ip_address} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/10-ip-addresses/#list-ip-addresses" target="_top">UpCloud API docs for GET /ip_address</a>
      */
     def ipAddresses(...args) {
@@ -233,7 +233,7 @@ class UpCloud {
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code GET /tag} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/12-tags/#list-existing-tags" target="_top">UpCloud API docs for GET /tag</a>
      */
     def tags(...args) {
@@ -269,7 +269,7 @@ class UpCloud {
      * @param args.type Optional filter for storages: {@code public}, {@code private}, {@code normal}, {@code backup},
      * {@code cdrom}, {@code template}, or {@code favorite}.
      * @param args Request callbacks for the {@code GET /storage} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/9-storages/#list-storages" target="_top">UpCloud API docs for GET /storage</a>
      */
     def storages(...args) {
@@ -302,7 +302,7 @@ class UpCloud {
      * </p>
      * @param resource Resource to create.
      * @param args Request callbacks for the {@code POST} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#create-server" target="_top">UpCloud API docs for POST /server</a>
      * @see <a href="https://www.upcloud.com/api/9-storages/#create-storage" target="_top">UpCloud API docs for POST /storage</a>
      * @see <a href="https://www.upcloud.com/api/10-ip-addresses/#assign-ip-address" target="_top">UpCloud API docs for POST /ip_address</a>

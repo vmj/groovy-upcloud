@@ -36,7 +36,7 @@ import fi.linuxbox.upcloud.core.*
  * </ul>
  */
 trait Tag {
-    abstract AbstractSession<?> getHTTP()
+    abstract HTTPFacade<?> getHTTP()
     abstract String getName()
 
     /**
@@ -47,7 +47,7 @@ trait Tag {
      * </p>
      * @param resource Description of the updated tag
      * @param args Request callbacks for the {@code PUT /tag/&#36;&#123;tag.name&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/12-tags/#modify-existing-tag" target="_top">UpCloud API docs for PUT /tag/&#36;{tag.name}</a>
      */
     def update(Resource resource, ...args) {
@@ -63,7 +63,7 @@ trait Tag {
      *     Deleting a tag will automatically remove that tag from any servers.
      * </p>
      * @param args Request callbacks for the {@code DELETE /tag/&#36;&#123;tag.name&#125;} call.
-     * @return Whatever is returned by the {@link AbstractSession} for starting an asynchronous request.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/12-tags/#delete-tag" target="_top">UpCloud API docs for DELETE /tag/&#36;{tag.name}</a>
      */
     def delete(...args) {
