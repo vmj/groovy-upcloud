@@ -35,7 +35,7 @@ import fi.linuxbox.upcloud.core.*
  *     <li>non-null address property, which can be read-only</li>
  * </ul>
  */
-trait IpAddress {
+trait IpAddressApi {
     abstract HTTPFacade<?> getHTTP()
     abstract String getAddress()
 
