@@ -17,9 +17,12 @@
  */
 package fi.linuxbox.upcloud.json.spi
 
+import groovy.transform.CompileStatic
+
 /**
  * An interface which is implemented by the JSON implementation.
  */
+@CompileStatic
 interface JSON {
     /**
      * Parse the representation from the input stream.

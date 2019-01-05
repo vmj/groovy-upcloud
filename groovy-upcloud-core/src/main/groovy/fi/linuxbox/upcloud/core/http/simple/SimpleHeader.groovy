@@ -19,6 +19,7 @@ package fi.linuxbox.upcloud.core.http.simple
 
 import fi.linuxbox.upcloud.http.spi.HeaderElement
 import fi.linuxbox.upcloud.http.spi.Header
+import groovy.transform.CompileStatic
 
 /**
  * A simple header.
@@ -33,6 +34,7 @@ import fi.linuxbox.upcloud.http.spi.Header
  * will provide fully functional headers for the application.
  * </p>
  */
+@CompileStatic
 class SimpleHeader implements Header {
     private final Map.Entry<String, String> header
 

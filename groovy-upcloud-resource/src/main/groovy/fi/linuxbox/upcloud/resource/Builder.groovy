@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.builder.ResourceBuilder
+import groovy.transform.CompileStatic
 
 import static groovy.lang.Closure.*
 import static java.util.Collections.EMPTY_MAP
@@ -28,6 +29,7 @@ import static java.util.Collections.EMPTY_MAP
  *     This class is basically just syntactic sugar for the more generic {@link ResourceBuilder}.
  * </p>
  */
+@CompileStatic
 class Builder extends ResourceBuilder {
     static Account account(Map kwargs, @DelegatesTo(strategy = DELEGATE_FIRST, value = Account) Closure closure = null) {
         configure(new Account(kwargs), closure)

@@ -18,11 +18,13 @@
 package fi.linuxbox.upcloud.core.http.simple
 
 import fi.linuxbox.upcloud.http.spi.Header
+import groovy.transform.CompileStatic
 
 
 /**
  * Iterator over simple headers.
  */
+@CompileStatic
 class SimpleHeaderIterator implements Iterator<Header> {
     private final Iterator<Map.Entry<String, String>> it
 

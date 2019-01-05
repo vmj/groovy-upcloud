@@ -17,11 +17,11 @@
  */
 package fi.linuxbox.upcloud.core
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
-import java.lang.reflect.Constructor
-
 @Slf4j
+@CompileStatic
 class ResourceLoader {
     private static final GroovyClassLoader gcl = new GroovyClassLoader(Resource.classLoader)
     private static final String resourcePackageName = "fi.linuxbox.upcloud.resource"
