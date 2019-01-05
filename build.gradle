@@ -52,10 +52,9 @@ check.finalizedBy(project.tasks.cobertura)
 // generate one set of groovydocs for the whole project
 //
 apply plugin: 'groovy'
-apply from: 'gradle/versions.gradle'
 
 dependencies {
-    compileOnly "org.codehaus.groovy:groovy:${versions.groovy}"
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
 }
 
 groovydoc {

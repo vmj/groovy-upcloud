@@ -1,7 +1,7 @@
 dependencies {
     // Libraries do not ship with logging API
-    implementation "org.slf4j:slf4j-api:${versions.slf4j}"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
     // Tests need LogbackConfigurator
-    testImplementation "ch.qos.logback:logback-classic:${versions.logback}"
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
 }

@@ -8,8 +8,8 @@ groovydoc {
 }
 
 dependencies {
-    compileOnly "org.codehaus.groovy:groovy-groovydoc:${versions.groovy}"
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
     // groovydoc should probably have a dependency on the old java.util.Date extension methods
     // (they were moved to their own module in Groovy 2.5)
-    compileOnly "org.codehaus.groovy:groovy-dateutil:${versions.groovy}"
+    compileOnly "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 }

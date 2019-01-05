@@ -4,10 +4,10 @@ groovydoc {
     // Java EE 7 APIs
     link("https://docs.oracle.com/javaee/7/api/", "javax.inject")
     // Groovy APIs
-    link("http://docs.groovy-lang.org/docs/groovy-${versions.groovy}/html/gapi/", "groovy.lang")
+    link("http://docs.groovy-lang.org/docs/groovy-$groovyVersion/html/gapi/", "groovy.lang")
     // Apache Client
     link("https://hc.apache.org/httpcomponents-asyncclient-dev/httpasyncclient/apidocs/", "org.apache.http.nio.client.", 'org.apache.http.impl.nio.')
     link("https://hc.apache.org/httpcomponents-core-ga/httpcore/apidocs/", "org.apache.http.")
     // Jackson
-    link("https://fasterxml.github.io/jackson-databind/javadoc/${versions.jackson_api}/", 'com.fasterxml.jackson')
+    link("https://fasterxml.github.io/jackson-databind/javadoc/$jacksonApiVersion/", 'com.fasterxml.jackson')
 }

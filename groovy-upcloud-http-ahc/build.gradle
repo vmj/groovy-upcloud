@@ -1,4 +1,3 @@
-apply from: '../gradle/versions.gradle'
 apply from: '../gradle/java-library.gradle'
 apply from: '../gradle/license.gradle'
 apply from: '../gradle/groovy.gradle'
@@ -21,15 +20,15 @@ dependencies {
     api project(':groovy-upcloud-http-spi')
     testImplementation project(':groovy-upcloud-core')
 
-    api "org.apache.httpcomponents:httpasyncclient:${versions.httpasyncclient}", {
+    api "org.apache.httpcomponents:httpasyncclient:$httpasyncclientVersion", {
         exclude module: 'commons-logging'
     }
 
     // bridge commons-logging to SLF4J
-    runtimeOnly "org.slf4j:jcl-over-slf4j:${versions.slf4j}"
+    runtimeOnly "org.slf4j:jcl-over-slf4j:$slf4jVersion"
 
     // Spock will use this for mocking the abstract CloseableHttpAsyncClient
-    testImplementation "cglib:cglib-nodep:${versions.cglib}"
+    testImplementation "cglib:cglib-nodep:$cglibVersion"
 }
 
 groovydoc {

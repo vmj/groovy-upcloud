@@ -1,10 +1,8 @@
-versions
-
 java-library    adds dependency (inject)
 nexus           java-library
-license         versions, java-library (soft)
-groovy          versions, java-library (soft), adds dependency (groovy)
-groovydoc       versions, groovy (soft)
+license         java-library (soft)
+groovy          java-library (soft), adds dependency (groovy)
+groovydoc       groovy (soft)
 groovydoc-*     groovydoc
 logging         adds dependencies (slf4j, logback(test))
 spock           adds dependencies (groovy (test), spock(test))
