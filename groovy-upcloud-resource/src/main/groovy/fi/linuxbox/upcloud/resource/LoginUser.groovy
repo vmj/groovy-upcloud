@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -27,6 +28,7 @@ import groovy.transform.InheritConstructors
  *     Linux template.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class LoginUser extends Resource {
     /**

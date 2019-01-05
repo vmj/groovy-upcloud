@@ -18,11 +18,13 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
  * IPv6 address price for a {@link Zone}.
  */
+@CompileStatic
 @InheritConstructors
 class Ipv6Address extends Resource {
     /**

@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -95,6 +96,7 @@ import groovy.transform.InheritConstructors
  *     decreased by one.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class FirewallRule extends Resource {
     /**

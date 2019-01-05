@@ -18,11 +18,13 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
  * Fixed server configuration price for 1CPU/1GB plan for a {@link Zone}.
  */
+@CompileStatic
 @InheritConstructors
 class ServerPlan_1xCPU_1GB extends Resource {
     /**

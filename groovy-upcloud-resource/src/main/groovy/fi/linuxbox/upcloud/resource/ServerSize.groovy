@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -26,6 +27,7 @@ import groovy.transform.InheritConstructors
  *     A list of these is typically fetched from {@link fi.linuxbox.upcloud.api.UpCloud#serverSizes(def) Server Sizes API}.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class ServerSize extends Resource {
     /**

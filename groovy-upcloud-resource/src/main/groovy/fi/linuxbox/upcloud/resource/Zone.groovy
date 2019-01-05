@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -32,6 +33,7 @@ import groovy.transform.InheritConstructors
  *     <li>Pricing API returns {@link #name} and various pricing properties. The name is same is id</li>
  * </ul>
  */
+@CompileStatic
 @InheritConstructors
 class Zone extends Resource {
     /**

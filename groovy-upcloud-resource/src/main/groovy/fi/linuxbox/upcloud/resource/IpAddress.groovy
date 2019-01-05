@@ -17,6 +17,7 @@
  */
 package fi.linuxbox.upcloud.resource
 
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 import fi.linuxbox.upcloud.core.*
@@ -144,6 +145,7 @@ import fi.linuxbox.upcloud.core.*
  *     }
  * </code></pre>
  */
+@CompileStatic
 @InheritConstructors
 class IpAddress extends Resource {
     /**

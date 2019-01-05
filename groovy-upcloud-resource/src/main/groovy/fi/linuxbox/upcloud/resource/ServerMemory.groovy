@@ -18,11 +18,13 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
  * Price per MB of RAM for a {@link Zone}.
  */
+@CompileStatic
 @InheritConstructors
 class ServerMemory extends Resource {
     /**

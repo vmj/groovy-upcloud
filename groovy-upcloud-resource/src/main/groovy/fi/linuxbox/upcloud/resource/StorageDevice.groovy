@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -42,6 +43,7 @@ import groovy.transform.InheritConstructors
  *     {@link fi.linuxbox.upcloud.api.Server#eject(fi.linuxbox.upcloud.core.Resource, def) eject} that device
  *     to/from a server.
  */
+@CompileStatic
 @InheritConstructors
 class StorageDevice extends Resource {
     /**

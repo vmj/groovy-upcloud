@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -26,6 +27,7 @@ import groovy.transform.InheritConstructors
  *     An instance of this is typically fetched from {@link fi.linuxbox.upcloud.api.UpCloud#account(def) Account API}.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class Account extends Resource {
     /**

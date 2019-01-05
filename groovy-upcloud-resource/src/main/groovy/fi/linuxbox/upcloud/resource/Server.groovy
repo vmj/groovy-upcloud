@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
@@ -241,6 +242,7 @@ import groovy.transform.InheritConstructors
  *     One would typically use VNC to connect to the server for stepping through the installation.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class Server extends Resource {
     /**

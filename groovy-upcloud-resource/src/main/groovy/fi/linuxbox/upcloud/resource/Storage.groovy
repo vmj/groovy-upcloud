@@ -17,6 +17,7 @@
  */
 package fi.linuxbox.upcloud.resource
 
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 import fi.linuxbox.upcloud.core.*
@@ -67,6 +68,7 @@ import fi.linuxbox.upcloud.core.*
  *     be manipulated from client side at all.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class Storage extends Resource {
     /**

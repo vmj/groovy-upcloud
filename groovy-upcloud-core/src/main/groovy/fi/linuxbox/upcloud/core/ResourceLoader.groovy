@@ -49,6 +49,7 @@ class ResourceLoader {
 
                                    import ${Resource.class.name}
 
+                                   @groovy.transform.CompileStatic
                                    class $resourceClassName extends ${Resource.class.simpleName} {
                                        $resourceClassName(final Map kwargs = [:]) {
                                            super(kwargs)

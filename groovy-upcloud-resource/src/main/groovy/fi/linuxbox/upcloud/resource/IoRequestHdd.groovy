@@ -18,11 +18,13 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
  * I/O request price information for HDD storage for a {@link Zone}.
  */
+@CompileStatic
 @InheritConstructors
 class IoRequestHdd extends Resource {
     /**

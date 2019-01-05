@@ -18,11 +18,13 @@
 package fi.linuxbox.upcloud.resource
 
 import fi.linuxbox.upcloud.core.Resource
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
  * Backup rule of a {@link Storage}.
  */
+@CompileStatic
 @InheritConstructors
 class BackupRule extends Resource {
     /**

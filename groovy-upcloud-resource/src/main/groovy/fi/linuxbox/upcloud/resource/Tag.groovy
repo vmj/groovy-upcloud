@@ -17,6 +17,7 @@
  */
 package fi.linuxbox.upcloud.resource
 
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 import fi.linuxbox.upcloud.core.*
@@ -135,6 +136,7 @@ import fi.linuxbox.upcloud.core.*
  *     API.
  * </p>
  */
+@CompileStatic
 @InheritConstructors
 class Tag extends Resource {
     /**
