@@ -23,15 +23,8 @@ import spock.lang.Specification
 class UpCloudScriptSpec extends Specification {
 
     def "low-level shutdown test"() {
-        given: "a compiler configuration that customizes the script class"
-            def config = new CompilerConfiguration()
-            config.scriptBaseClass = UpCloudScript.name
-
-        and: "a groovy shell with the configuration"
-            def groovyShell = new GroovyShell(config)
-
-        when: "a "
-            groovyShell.evaluate("""
+        when: "the script calls close() while requests are still in-flight"
+            evaluate("""
                 def session = newSession("username", "p4ssw0rd")
                 session.callback network_error: {}
     
@@ -54,5 +47,22 @@ class UpCloudScriptSpec extends Specification {
 
         then: "nothing bad happens"
             noExceptionThrown()
+    }
+
+    def "unhandled exception in top-level code"() {
+        when: "the script throws an exception from top-level code"
+        evaluate("""
+        throw new FileNotFoundException("intentional test exception")
+        """)
+
+        then: "no timeout exception is thrown"
+        noExceptionThrown()
+    }
+
+    private static void evaluate(final String script) {
+        final config = new CompilerConfiguration()
+        config.scriptBaseClass = UpCloudScript.name
+
+        new GroovyShell(config).evaluate(script)
     }
 }

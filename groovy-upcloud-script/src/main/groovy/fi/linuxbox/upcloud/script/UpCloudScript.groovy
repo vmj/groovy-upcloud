@@ -87,7 +87,9 @@ abstract class UpCloudScript extends Script {
             log.info("runUpCloudScript interrupted; exiting", e)
             Thread.currentThread().interrupt()
         } catch (final Exception e) {
-            log.error("Unhandled exception", e)
+            // Script threw an exception from the top level code
+            log.error("Closing due to unhandled exception", e)
+            close()
         }
     }
 
