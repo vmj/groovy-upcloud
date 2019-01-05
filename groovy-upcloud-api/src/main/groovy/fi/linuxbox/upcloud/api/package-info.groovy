@@ -18,4 +18,4 @@
 /**
  * Provides UpCloud APIs.
  */
-package fi.linuxbox.upcloud.api;
+package fi.linuxbox.upcloud.api

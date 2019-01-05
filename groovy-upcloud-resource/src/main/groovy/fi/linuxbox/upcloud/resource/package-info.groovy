@@ -28,4 +28,4 @@
  *     <li>{@link fi.linuxbox.upcloud.resource.FirewallRule}</li>
  * </ul>
  */
-package fi.linuxbox.upcloud.resource;
+package fi.linuxbox.upcloud.resource

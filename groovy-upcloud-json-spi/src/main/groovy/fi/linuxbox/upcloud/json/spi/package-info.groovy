@@ -18,4 +18,4 @@
 /**
  * Defines an interface for JSON implementations.
  */
-package fi.linuxbox.upcloud.json.spi;
+package fi.linuxbox.upcloud.json.spi

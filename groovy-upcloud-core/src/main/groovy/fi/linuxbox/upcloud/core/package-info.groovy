@@ -25,4 +25,4 @@
  *     <li>{@link fi.linuxbox.upcloud.core.Resource}</li>
  * </ul>
  */
-package fi.linuxbox.upcloud.core;
+package fi.linuxbox.upcloud.core
