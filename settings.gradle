@@ -8,7 +8,6 @@ include 'groovy-upcloud-builder'
 include 'groovy-upcloud-resource'
 include 'groovy-upcloud-api'
 include 'groovy-upcloud-script'
-include 'groovy-upcloud-app'
 include 'manual'
 
 rootProject.name = 'groovy-upcloud'
