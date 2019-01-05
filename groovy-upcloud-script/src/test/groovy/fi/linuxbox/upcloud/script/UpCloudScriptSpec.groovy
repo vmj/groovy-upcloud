@@ -24,45 +24,45 @@ class UpCloudScriptSpec extends Specification {
 
     def "low-level shutdown test"() {
         when: "the script calls close() while requests are still in-flight"
-            evaluate("""
-                def session = newSession("username", "p4ssw0rd")
-                session.callback network_error: {}
-    
-                def names = ['Alice', 'Bob', 'Clive', 'Dylan']
-                def count = 0
-    
-                names.each { name ->
-                    log.info "Making request for \$name"
-                    session.GET('/whatever') { response ->
-                        log.info "Got response for \$name"
-                        count++
-                        if (count >= 2) {
-                            log.info "Got enough responses, ignoring the rest and shutting down"
-                            close()
-                        }
-                        log.info "Handled response for \$name"
+        shell().evaluate("""
+            def session = newSession("username", "p4ssw0rd")
+            session.callback network_error: {}
+
+            def names = ['Alice', 'Bob', 'Clive', 'Dylan']
+            def count = 0
+
+            names.each { name ->
+                log.info "Making request for \$name"
+                session.GET('/whatever') { response ->
+                    log.info "Got response for \$name"
+                    count++
+                    if (count >= 2) {
+                        log.info "Got enough responses, ignoring the rest and shutting down"
+                        close()
                     }
+                    log.info "Handled response for \$name"
                 }
-            """)
+            }
+        """)
 
         then: "nothing bad happens"
-            noExceptionThrown()
+        noExceptionThrown()
     }
 
     def "unhandled exception in top-level code"() {
         when: "the script throws an exception from top-level code"
-        evaluate("""
-        throw new FileNotFoundException("intentional test exception")
+        shell().evaluate("""
+            throw new FileNotFoundException("intentional test exception")
         """)
 
         then: "no timeout exception is thrown"
         noExceptionThrown()
     }
 
-    private static void evaluate(final String script) {
+    private static GroovyShell shell() {
         final config = new CompilerConfiguration()
         config.scriptBaseClass = UpCloudScript.name
 
-        new GroovyShell(config).evaluate(script)
+        return new GroovyShell(config)
     }
 }
