@@ -1,5 +1,5 @@
 /*
- * Groovy UpCloud library - JSON GJson Module
+ * Groovy UpCloud library - an example application
  * Copyright (C) 2018  <mikko@varri.fi>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,33 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fi.linuxbox.upcloud.json.gjson;
+package fi.linuxbox.upcloud.app
 
-import ch.qos.logback.classic.*;
-import ch.qos.logback.core.status.*;
-import ch.qos.logback.core.util.*;
+import ch.qos.logback.classic.*
+import ch.qos.logback.core.status.*
+import ch.qos.logback.core.util.*
+import groovy.transform.CompileStatic
 
-import static ch.qos.logback.classic.Level.*;
+import static ch.qos.logback.classic.Level.*
 
 /**
- *
+ * Configures logging of tests in this module.
  */
-public class LogbackConfigurator
-        extends BasicConfigurator
-{
-    public LogbackConfigurator()
-    {
-        super();
-    }
-
+@CompileStatic
+class LogbackConfigurator extends BasicConfigurator {
     @Override
-    public void configure(final LoggerContext lc)
-    {
-        super.configure(lc);
+    void configure(final LoggerContext loggerContext) {
+        super.configure loggerContext
 
-        lc.getLogger(getClass().getPackage().getName()).setLevel(DEBUG);
+        loggerContext.getLogger(this.class.package.name).level = DEBUG
 
-        StatusPrinter.print(lc);
-        lc.getStatusManager().add(new OnConsoleStatusListener());
+        StatusPrinter.print loggerContext
+        loggerContext.statusManager.add new OnConsoleStatusListener()
     }
 }
