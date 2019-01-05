@@ -49,8 +49,8 @@ class HTTPImpl implements HTTP {
                 // block here.
                 try {
                     Thread.sleep(2500 + random.nextInt(3500)) // 2.5 - 6 secs
-                } catch (InterruptedException e) {
-                    log.info("Request interrupted; IO thread pool is shutting down", e)
+                } catch (InterruptedException ignored) {
+                    log.info("Request interrupted; IO thread pool is shutting down")
                     Thread.currentThread().interrupt()
                     return
                 }
@@ -61,8 +61,8 @@ class HTTPImpl implements HTTP {
                 // Pass it to whoever is listening for this HTTP transaction
                 try {
                     cb.completed(meta, null, null)
-                } catch (final InterruptedException e) {
-                    log.info("Response interrupted; script is shutting down", e)
+                } catch (final InterruptedException ignored) {
+                    log.info("Response interrupted; script is shutting down")
                     Thread.currentThread().interrupt()
                 }
             }

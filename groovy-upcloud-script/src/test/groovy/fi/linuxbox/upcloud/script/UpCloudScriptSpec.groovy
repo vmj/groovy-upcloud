@@ -25,18 +25,17 @@ class UpCloudScriptSpec extends Specification {
     def "low-level shutdown test"() {
         when: "the script calls close() while requests are still in-flight"
         shell().evaluate("""
-            def session = newSession("username", "p4ssw0rd")
+            final session = newSession("username", "p4ssw0rd")
             session.callback network_error: {}
 
-            def names = ['Alice', 'Bob', 'Clive', 'Dylan']
-            def count = 0
+            final names = ['Alice', 'Bob', 'Clive', 'Dylan']
+            int count = 0
 
-            names.each { name ->
+            names.each { final name ->
                 log.info "Making request for \$name"
-                session.GET('/whatever') { response ->
+                session.GET('/whatever') { final response ->
                     log.info "Got response for \$name"
-                    count++
-                    if (count >= 2) {
+                    if (++count >= 2) {
                         log.info "Got enough responses, ignoring the rest and shutting down"
                         close()
                     }
