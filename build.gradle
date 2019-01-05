@@ -3,16 +3,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // https://plugins.gradle.org/plugin/net.saliman.cobertura
-        classpath 'net.saliman:gradle-cobertura-plugin:2.5.4'
-        // https://github.com/bmuschko/gradle-nexus-plugin
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        // https://github.com/asciidoctor/asciidoctor-gradle-plugin
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.9.2'
-        // https://github.com/hierynomus/license-gradle-plugin
-        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.15.0"
-        // https://github.com/ajoberstar/gradle-git-publish
-        classpath 'org.ajoberstar:gradle-git-publish:2.0.0'
+        classpath "net.saliman:gradle-cobertura-plugin:$gradleCoberturaPluginVersion"
+        classpath "com.bmuschko:gradle-nexus-plugin:$gradleNexusPluginVersion"
+        classpath "org.asciidoctor:asciidoctor-gradle-plugin:$gradleAsciidoctorPluginVersion"
+        classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:$gradleLicensePluginVersion"
+        classpath "org.ajoberstar:gradle-git-publish:$gradleGitPublishPluginVersion"
     }
 }
 
