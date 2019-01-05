@@ -18,7 +18,9 @@
 package fi.linuxbox.upcloud.script
 
 import fi.linuxbox.upcloud.http.spi.HTTP
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class HTTPFactory {
     static HTTP create() {
         ServiceLoader.load(HTTP).find { it != null } as HTTP

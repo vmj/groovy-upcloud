@@ -18,7 +18,9 @@
 package fi.linuxbox.upcloud.script
 
 import fi.linuxbox.upcloud.json.spi.JSON
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class JSONFactory {
     static JSON create() {
         ServiceLoader.load(JSON).find { it != null } as JSON
