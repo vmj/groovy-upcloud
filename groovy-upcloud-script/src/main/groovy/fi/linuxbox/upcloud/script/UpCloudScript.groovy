@@ -48,6 +48,10 @@ abstract class UpCloudScript extends Script {
         new CompletableFutureSession(http, json, username, password)
     }
 
+    CompletableFutureSession newSession(final Credentials credentials) {
+        newSession(credentials.username, credentials.password)
+    }
+
     @Override
     Object run() {
         log.debug("Initializing")
