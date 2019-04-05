@@ -84,7 +84,7 @@ abstract class UpCloudScript extends Script {
             log.debug("Script top-level code finished")
         } catch (final InterruptedException e) {
             // Script called close() from the top level code
-            log.info("runUpCloudScript interrupted; exiting", e)
+            log.debug("Shutting down")
             Thread.currentThread().interrupt()
         } catch (final Exception e) {
             // Script threw an exception from the top level code
