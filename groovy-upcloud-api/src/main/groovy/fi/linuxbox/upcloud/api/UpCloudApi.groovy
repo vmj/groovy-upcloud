@@ -17,9 +17,6 @@
  */
 package fi.linuxbox.upcloud.api
 
-
-import javax.inject.*
-
 import fi.linuxbox.upcloud.core.*
 
 import static fi.linuxbox.upcloud.core.NamingContract.javaClassToPathSegment
@@ -314,6 +311,4 @@ trait UpCloudApi {
     def create(Resource resource, ...args) {
         HTTP.POST(javaClassToPathSegment(resource.class.simpleName), resource.wrapper(), *args)
     }
-
-
 }
