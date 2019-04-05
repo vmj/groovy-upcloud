@@ -23,6 +23,15 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class StorageCRUDSpec extends StorageApiSpecification {
 
+    def "api can be created from map"() {
+        when:
+        def api = [HTTP: session, uuid: 'fake-uuid'] as StorageApi
+
+        then:
+        noExceptionThrown()
+        api instanceof StorageApi
+    }
+
     def "load: GET /storage/fake-uuid"() {
         when:
             storage.load {}

@@ -23,6 +23,15 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class IpAddressCRUDSpec extends ApiSpecification {
 
+    def "api can be created from map"() {
+        when:
+        def api = [HTTP: session, address: '0.0.0.0'] as IpAddressApi
+
+        then:
+        noExceptionThrown()
+        api instanceof IpAddressApi
+    }
+
     // build minimal class that works for the IpAddressApi trait: HTTP and address
     def ipAddress = build 'IpAddress', HTTP: session, { address = '0.0.0.0' } withTraits IpAddressApi
 

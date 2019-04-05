@@ -23,6 +23,15 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class TagCRUDSpec extends ApiSpecification {
 
+    def "api can be created from map"() {
+        when:
+        def api = [HTTP: session, name: 'DEV'] as TagApi
+
+        then:
+        noExceptionThrown()
+        api instanceof TagApi
+    }
+
     // build minimal class that works for the TagApi trait: HTTP and name
     def tag = build 'Tag', HTTP: session, { name = 'DEV' } withTraits TagApi
 

@@ -23,6 +23,15 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class ServerCRUDSpec extends ServerApiSpecification {
 
+    def "api can be created from map"() {
+        when:
+        def api = [HTTP: session, uuid: 'fake-uuid'] as ServerApi
+
+        then:
+        noExceptionThrown()
+        api instanceof ServerApi
+    }
+
     def "load: GET /server/fake-uuid"() {
         when:
             server.load {}

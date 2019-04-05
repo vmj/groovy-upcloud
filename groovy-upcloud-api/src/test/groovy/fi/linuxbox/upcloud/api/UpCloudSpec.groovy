@@ -25,6 +25,15 @@ import static fi.linuxbox.upcloud.builder.ResourceBuilder.*
 
 class UpCloudSpec extends ApiSpecification {
 
+    def "api can be created from map"() {
+        when:
+        def api = [HTTP: session] as UpCloudApi
+
+        then:
+        noExceptionThrown()
+        api instanceof UpCloudApi
+    }
+
     def upCloud = session.withTraits(UpCloudApi)
 
     def "storages type: 'favorite' does GET .../storage/favorite"() {
