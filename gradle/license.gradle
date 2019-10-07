@@ -13,6 +13,9 @@ license {
         groovy = 'SLASHSTAR_STYLE'
     }
 
+    exclude "**/META-INF/services/**"
+    exclude "**/gstringTemplates/**"
+
     encoding = 'UTF-8'
     strictCheck = true
 }
