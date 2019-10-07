@@ -1,6 +1,5 @@
 apply from: '../gradle/license.gradle'
 apply from: "../gradle/groovy.gradle"
-apply from: "../gradle/spock.gradle"
 
 apply plugin: 'org.asciidoctor.convert'
 
@@ -10,5 +9,11 @@ asciidoctor {
 }
 
 dependencies {
+    // Tests are written in Spock
+    testCompile "org.spockframework:spock-core:$spockVersion"
+
+    // Tests need LogbackConfigurator
+    testCompile "ch.qos.logback:logback-classic:$logbackVersion"
+
     testCompile project(':groovy-upcloud-script')
 }

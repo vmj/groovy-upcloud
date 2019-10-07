@@ -1,7 +1,0 @@
-dependencies {
-    // Tests are written in Groovy
-    testCompile "org.codehaus.groovy:groovy:$groovyVersion"
-
-    // Tests are written in Spock
-    testCompile "org.spockframework:spock-core:$spockVersion"
-}

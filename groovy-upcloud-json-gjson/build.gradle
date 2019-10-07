@@ -3,7 +3,6 @@ apply from: '../gradle/groovy.gradle'
 apply from: '../gradle/groovydoc.gradle'
 apply from: '../gradle/groovydoc-highlightjs.gradle'
 apply from: '../gradle/groovydoc-links.gradle'
-apply from: '../gradle/spock.gradle'
 apply from: '../gradle/jacoco.gradle'
 apply from: '../gradle/nexus.gradle'
 
@@ -26,5 +25,11 @@ dependencies {
     // API docs
     compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
 
-    testImplementation "com.jayway.jsonpath:json-path-assert:$jsonPathAssertVersion"
+    // Tests are written in Spock
+    testCompile "org.spockframework:spock-core:$spockVersion"
+
+    // Tests need LogbackConfigurator
+    testCompile "ch.qos.logback:logback-classic:$logbackVersion"
+
+    testCompile "com.jayway.jsonpath:json-path-assert:$jsonPathAssertVersion"
 }
