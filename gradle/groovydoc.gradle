@@ -1,4 +1,6 @@
 groovydoc {
+    noTimestamp = true
+
     ['api', 'app', 'builder', 'core', 'http-ahc', 'http-spi', 'json-gjson', 'json-jackson', 'json-spi', 'resource', 'script'].each {
         //def url = "${rootProject.rootDir}/groovy-upcloud-$it/build/docs/groovydoc/"
         def url = "http://www.javadoc.io/page/${project.group}/groovy-upcloud-${it}/${project.version}/"
