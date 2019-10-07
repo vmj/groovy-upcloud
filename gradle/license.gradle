@@ -1,6 +1,8 @@
 apply plugin: "com.github.hierynomus.license"
 
 license {
+    header = file("$rootProject.projectDir/gradle/LICENSE_HEADER")
+    ext.module = project.project_module_name
     // licence headers with any other year than this will fail the check
     // https://github.com/hierynomus/license-gradle-plugin/issues/101
     ext.year = '2018'//Calendar.instance.get(Calendar.YEAR)
@@ -15,6 +17,7 @@ license {
     exclude "**/gstringTemplates/**"
 
     encoding = 'UTF-8'
+    strictCheck = true
 }
 
 downloadLicenses {
