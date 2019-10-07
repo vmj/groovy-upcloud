@@ -1,5 +1,5 @@
-apply from: '../gradle/license.gradle'
-apply from: "../gradle/groovy.gradle"
+apply from: "${rootDir}/gradle/license.gradle"
+apply from: "${rootDir}/gradle/groovy.gradle"
 
 apply plugin: 'org.asciidoctor.convert'
 
