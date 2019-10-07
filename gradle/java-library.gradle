@@ -18,3 +18,8 @@ dependencies {
     // Dependency injections are marked with standard API
     implementation 'javax.inject:javax.inject:1'
 }
+
+tasks.withType(AbstractArchiveTask) {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
