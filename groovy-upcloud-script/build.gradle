@@ -16,10 +16,17 @@ modifyPom {
     }
 }
 dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
     compile project(':groovy-upcloud-api')
     compile project(':groovy-upcloud-resource')
 
     // testRuntime relies on its own implementations of HTTP and JSON
     runtimeOnly project(':groovy-upcloud-http-ahc')
     runtimeOnly project(':groovy-upcloud-json-gjson')
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
 }

@@ -15,3 +15,12 @@ modifyPom {
         description 'Groovy UpCloud JSON provides SPIs for JSON'
     }
 }
+
+dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
+}

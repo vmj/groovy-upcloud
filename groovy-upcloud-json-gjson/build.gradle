@@ -16,10 +16,17 @@ modifyPom {
     }
 }
 dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
     compile project(':groovy-upcloud-json-spi')
 
     // implementation only
     compile "org.codehaus.groovy:groovy-json:$groovyVersion"
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
 
     testImplementation "com.jayway.jsonpath:json-path-assert:$jsonPathAssertVersion"
 }

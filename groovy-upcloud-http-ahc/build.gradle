@@ -17,12 +17,20 @@ modifyPom {
 }
 
 dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
     // Dependency injections are marked with standard API
     compileOnly 'javax.inject:javax.inject:1'
     runtime 'javax.inject:javax.inject:1'
     testCompileOnly 'javax.inject:javax.inject:1'
 
     compile project(':groovy-upcloud-http-spi')
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
+
     testCompile project(':groovy-upcloud-core')
 
     compile "org.apache.httpcomponents:httpasyncclient:$httpasyncclientVersion", {

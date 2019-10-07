@@ -30,6 +30,13 @@ groovydoc {
 }
 
 dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
     compile project(':groovy-upcloud-core')
     compile project(':groovy-upcloud-builder')
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
 }

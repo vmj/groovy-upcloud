@@ -16,6 +16,10 @@ modifyPom {
     }
 }
 dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
     // Dependency injections are marked with standard API
     compileOnly 'javax.inject:javax.inject:1'
     runtime 'javax.inject:javax.inject:1'
@@ -27,6 +31,9 @@ dependencies {
     //compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     // ObjectMapper is part of the API
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
 
     testCompile "com.jayway.jsonpath:json-path-assert:$jsonPathAssertVersion"
 }

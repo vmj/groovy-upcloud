@@ -16,7 +16,14 @@ modifyPom {
     }
 }
 dependencies {
+    // Runtime code is written in Groovy
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
     compile project(':groovy-upcloud-core')
+
+    // API docs
+    compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
 
     // it is interesting, on occasion, to look how the behaviour changes when the resources are on the classpath.
     //testRuntimeOnly project(':groovy-upcloud-resource')
