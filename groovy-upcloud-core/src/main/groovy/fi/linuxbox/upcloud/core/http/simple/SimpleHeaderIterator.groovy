@@ -1,6 +1,6 @@
 /*
  * Groovy UpCloud library - Core Module
- * Copyright (C) 2018  <mikko@varri.fi>
+ * Copyright (C) 2018  Mikko Värri
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
