@@ -16,17 +16,3 @@ include::architecture_overview.adoc[]
 
 
 include::accounts.adoc[]
-
-include::pricing.adoc[]
-
-include::zones.adoc[]
-
-include::timezones.adoc[]
-
-include::servers.adoc[]
-
-include::storages.adoc[]
-
-include::ip_addresses.adoc[]
-
-include::firewall.adoc[]
