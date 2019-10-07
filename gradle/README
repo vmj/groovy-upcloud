@@ -6,5 +6,3 @@ groovydoc       groovy (soft)
 groovydoc-*     groovydoc
 logging         adds dependencies (slf4j, logback(test))
 spock           adds dependencies (groovy (test), spock(test))
-
-cobertura       no deps but recommended to apply after java/groovy plugins

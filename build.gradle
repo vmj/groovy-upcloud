@@ -3,7 +3,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "net.saliman:gradle-cobertura-plugin:$gradleCoberturaPluginVersion"
         classpath "com.bmuschko:gradle-nexus-plugin:$gradleNexusPluginVersion"
         classpath "org.asciidoctor:asciidoctor-gradle-plugin:$gradleAsciidoctorPluginVersion"
         classpath "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:$gradleLicensePluginVersion"
@@ -22,26 +21,6 @@ buildScan {
     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
     termsOfServiceAgree = 'yes'
 }
-
-//
-// merge coverage reports of subprojects after check
-//
-apply plugin: 'net.saliman.cobertura'
-repositories {
-    jcenter() // required to fetch the cobertura dependencies
-}
-cobertura {
-    coverageEncoding = 'UTF-8'
-    subprojects.each { sp ->
-        if (sp.name != 'manual') {
-            if (coverageMergeDatafiles)
-                coverageMergeDatafiles += file("${sp.buildDir.path}/cobertura/cobertura.ser")
-            else
-                coverageMergeDatafiles = [file("${sp.buildDir.path}/cobertura/cobertura.ser")]
-        }
-    }
-}
-check.finalizedBy(project.tasks.cobertura)
 
 //
 // generate one set of groovydocs for the whole project
