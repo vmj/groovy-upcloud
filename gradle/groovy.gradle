@@ -1,5 +1,4 @@
 apply plugin: 'groovy'
-apply plugin: 'idea'
 
 group = 'fi.linuxbox.upcloud'
 version = '0.0.8-SNAPSHOT'
