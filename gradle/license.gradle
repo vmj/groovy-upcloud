@@ -2,11 +2,12 @@ apply plugin: "com.github.hierynomus.license"
 
 license {
     header = file("$rootProject.projectDir/gradle/LICENSE_HEADER")
+    ext.projectName = "Groovy UpCloud library"
     ext.module = project.project_module_name
     // licence headers with any other year than this will fail the check
     // https://github.com/hierynomus/license-gradle-plugin/issues/101
-    ext.year = '2018'//Calendar.instance.get(Calendar.YEAR)
-    ext.email = 'mikko@varri.fi'
+    ext.copyrightYear = '2018'//Calendar.instance.get(Calendar.YEAR)
+    ext.author = 'Mikko Värri'
 
     mapping {
         java = 'SLASHSTAR_STYLE'
