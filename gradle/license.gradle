@@ -30,6 +30,5 @@ downloadLicenses {
 
     licenses = [
             (group(project.group)): gpl3,
-            ("org.apache.httpcomponents:httpasyncclient:$httpasyncclientVersion".toString()): apache2
     ]
 }
