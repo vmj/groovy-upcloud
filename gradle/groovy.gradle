@@ -1,11 +1,5 @@
 apply plugin: 'groovy'
 
-group = 'fi.linuxbox.upcloud'
-version = '0.0.8-SNAPSHOT'
-
-// Java 8
-sourceCompatibility = 1.8
-
 repositories {
     mavenCentral()
 //    maven {
@@ -25,4 +19,9 @@ dependencies {
 tasks.withType(AbstractArchiveTask) {
     preserveFileTimestamps = false
     reproducibleFileOrder = true
+}
+
+compileGroovy {
+    sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
 }
