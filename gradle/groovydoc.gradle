@@ -1,4 +1,5 @@
 groovydoc {
+    noVersionStamp = true
     noTimestamp = true
 
     ['api', 'app', 'builder', 'core', 'http-ahc', 'http-spi', 'json-gjson', 'json-jackson', 'json-spi', 'resource', 'script'].each {
