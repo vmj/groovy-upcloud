@@ -1,4 +1,3 @@
-apply from: '../gradle/java-library.gradle'
 apply from: '../gradle/license.gradle'
 apply from: '../gradle/groovy.gradle'
 apply from: '../gradle/groovydoc.gradle'
@@ -17,7 +16,7 @@ modifyPom {
     }
 }
 dependencies {
-    api project(':groovy-upcloud-core')
+    compile project(':groovy-upcloud-core')
 
     // it is interesting, on occasion, to look how the behaviour changes when the resources are on the classpath.
     //testRuntimeOnly project(':groovy-upcloud-resource')

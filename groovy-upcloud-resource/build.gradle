@@ -1,4 +1,3 @@
-apply from: '../gradle/java-library.gradle'
 apply from: '../gradle/license.gradle'
 apply from: '../gradle/groovy.gradle'
 apply from: '../gradle/groovydoc.gradle'
@@ -33,6 +32,6 @@ groovydoc {
 }
 
 dependencies {
-    api project(':groovy-upcloud-core')
-    api project(':groovy-upcloud-builder')
+    compile project(':groovy-upcloud-core')
+    compile project(':groovy-upcloud-builder')
 }

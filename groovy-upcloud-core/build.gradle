@@ -1,4 +1,3 @@
-apply from: '../gradle/java-library.gradle'
 apply from: '../gradle/license.gradle'
 apply from: '../gradle/groovy.gradle'
 apply from: '../gradle/groovydoc.gradle'
@@ -28,10 +27,10 @@ groovydoc {
 }
 
 dependencies {
-    api project(':groovy-upcloud-http-spi')
-    api project(':groovy-upcloud-json-spi')
+    compile project(':groovy-upcloud-http-spi')
+    compile project(':groovy-upcloud-json-spi')
 
     // for functional testing: JSON to Resource
-    testImplementation project(':groovy-upcloud-json-gjson')
-    testImplementation project(':groovy-upcloud-resource')
+    testCompile project(':groovy-upcloud-json-gjson')
+    testCompile project(':groovy-upcloud-resource')
 }

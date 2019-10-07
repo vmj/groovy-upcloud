@@ -1,18 +1,27 @@
 apply plugin: 'groovy'
+apply plugin: 'idea'
 
-// Configuring the groovy plugin to work with java-library
-// https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_known_issues_compat
-configurations {
-    apiElements {
-        outgoing.variants.getByName('classes').artifact(
-                file: compileGroovy.destinationDir,
-                type: ArtifactTypeDefinition.JVM_CLASS_DIRECTORY,
-                builtBy: compileGroovy
-        )
-    }
+group = 'fi.linuxbox.upcloud'
+version = '0.0.8-SNAPSHOT'
+
+// Java 8
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+//    maven {
+//        url "https://oss.sonatype.org/content/repositories/snapshots/"
+//    }
 }
 
 dependencies {
+    // Dependency injections are marked with standard API
+    compile 'javax.inject:javax.inject:1'
     // Runtime code is written in Groovy
-    implementation "org.codehaus.groovy:groovy:$groovyVersion"
+    compile "org.codehaus.groovy:groovy:$groovyVersion"
+}
+
+tasks.withType(AbstractArchiveTask) {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
 }

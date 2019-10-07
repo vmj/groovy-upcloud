@@ -1,4 +1,3 @@
-apply from: '../gradle/java-library.gradle'
 apply from: '../gradle/license.gradle'
 apply from: '../gradle/groovy.gradle'
 apply from: '../gradle/groovydoc.gradle'
@@ -17,8 +16,8 @@ modifyPom {
     }
 }
 dependencies {
-    api project(':groovy-upcloud-api')
-    api project(':groovy-upcloud-resource')
+    compile project(':groovy-upcloud-api')
+    compile project(':groovy-upcloud-resource')
 
     // testRuntime relies on its own implementations of HTTP and JSON
     runtimeOnly project(':groovy-upcloud-http-ahc')

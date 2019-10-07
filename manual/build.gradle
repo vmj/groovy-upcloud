@@ -1,4 +1,3 @@
-apply from: "../gradle/java-library.gradle"
 apply from: '../gradle/license.gradle'
 apply from: "../gradle/groovy.gradle"
 apply from: "../gradle/spock.gradle"
