@@ -1,8 +1,0 @@
-dependencies {
-    // Libraries do not ship with logging API
-    compileOnly "org.slf4j:slf4j-api:$slf4jVersion"
-    runtime "org.slf4j:slf4j-api:$slf4jVersion"
-
-    // Tests need LogbackConfigurator
-    testCompile "ch.qos.logback:logback-classic:$logbackVersion"
-}

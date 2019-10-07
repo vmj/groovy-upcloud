@@ -7,8 +7,6 @@ apply from: '../gradle/spock.gradle'
 apply from: '../gradle/jacoco.gradle'
 apply from: '../gradle/nexus.gradle'
 
-apply from: '../gradle/logging.gradle'
-
 modifyPom {
     project {
         name 'Groovy UpCloud core'
@@ -31,11 +29,17 @@ dependencies {
     compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
     runtime "org.codehaus.groovy:groovy:$groovyVersion"
 
+    // Libraries do not ship with logging API
+    compileOnly "org.slf4j:slf4j-api:$slf4jVersion"
+
     compile project(':groovy-upcloud-http-spi')
     compile project(':groovy-upcloud-json-spi')
 
     // API docs
     compileOnly "org.codehaus.groovy:groovy-groovydoc:$groovyVersion"
+
+    // Tests need LogbackConfigurator
+    testCompile "ch.qos.logback:logback-classic:$logbackVersion"
 
     // for functional testing: JSON to Resource
     testCompile project(':groovy-upcloud-json-gjson')

@@ -2,8 +2,6 @@ apply from: '../gradle/license.gradle'
 apply from: "../gradle/groovy.gradle"
 apply from: "../gradle/spock.gradle"
 
-apply from: '../gradle/logging.gradle'
-
 apply plugin: 'org.asciidoctor.convert'
 
 asciidoctor {

@@ -7,8 +7,6 @@ apply from: '../gradle/spock.gradle'
 apply from: '../gradle/jacoco.gradle'
 apply from: '../gradle/nexus.gradle'
 
-apply from: '../gradle/logging.gradle'
-
 modifyPom {
     project {
         name 'Groovy UpCloud ahc'
@@ -20,6 +18,9 @@ dependencies {
     // Runtime code is written in Groovy
     compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
     runtime "org.codehaus.groovy:groovy:$groovyVersion"
+
+    // Libraries do not ship with logging API
+    compileOnly "org.slf4j:slf4j-api:$slf4jVersion"
 
     // Dependency injections are marked with standard API
     compileOnly 'javax.inject:javax.inject:1'
