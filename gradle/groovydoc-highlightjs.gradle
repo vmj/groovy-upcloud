@@ -1,12 +1,12 @@
 // Augment groovydoc with highlightjs
 
 task highlightjs(type: org.gradle.api.tasks.Copy) {
-    from "${rootProject.rootDir}/gradle/highlightjs/highlight.pack.js"
+    from "${rootDir}/gradle/highlightjs/highlight.pack.js"
     into "${buildDir}/docs/groovydoc/highlightjs"
 }
 
 task highlightstyle(type: org.gradle.api.tasks.Copy) {
-    from "${rootProject.rootDir}/gradle/highlightjs/styles/foundation.css"
+    from "${rootDir}/gradle/highlightjs/styles/foundation.css"
     into "${buildDir}/docs/groovydoc/highlightjs/styles"
 }
 
@@ -16,7 +16,7 @@ groovydoc.dependsOn highlightstyle
 sourceSets {
     highlightjs {
         resources {
-            srcDir "${rootProject.rootDir}/gradle/groovydoc"
+            srcDir "${rootDir}/gradle/groovydoc"
         }
     }
 }

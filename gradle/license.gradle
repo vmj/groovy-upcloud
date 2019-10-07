@@ -1,7 +1,7 @@
 apply plugin: "com.github.hierynomus.license"
 
 license {
-    header = file("$rootProject.projectDir/gradle/LICENSE_HEADER")
+    header = file("$rootDir/gradle/LICENSE_HEADER")
     ext.projectName = "Groovy UpCloud library"
     ext.module = project.project_module_name
     // licence headers with any other year than this will fail the check
