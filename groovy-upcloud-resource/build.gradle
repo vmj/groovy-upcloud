@@ -9,8 +9,6 @@ apply from: '../gradle/nexus.gradle'
 
 apply from: '../gradle/logging.gradle'
 
-apply from: '../gradle/logging.gradle'
-
 modifyPom {
     project {
         name 'Groovy UpCloud resource'
