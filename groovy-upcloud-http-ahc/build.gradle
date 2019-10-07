@@ -15,7 +15,13 @@ modifyPom {
         description 'Groovy UpCloud ahc provides a Apache HttpAsyncClient based HTTP implementation'
     }
 }
+
 dependencies {
+    // Dependency injections are marked with standard API
+    compileOnly 'javax.inject:javax.inject:1'
+    runtime 'javax.inject:javax.inject:1'
+    testCompileOnly 'javax.inject:javax.inject:1'
+
     compile project(':groovy-upcloud-http-spi')
     testCompile project(':groovy-upcloud-core')
 
