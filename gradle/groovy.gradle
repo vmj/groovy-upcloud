@@ -16,9 +16,11 @@ repositories {
 
 dependencies {
     // Dependency injections are marked with standard API
-    compile 'javax.inject:javax.inject:1'
+    compileOnly 'javax.inject:javax.inject:1'
+    runtime 'javax.inject:javax.inject:1'
     // Runtime code is written in Groovy
-    compile "org.codehaus.groovy:groovy:$groovyVersion"
+    compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
+    runtime "org.codehaus.groovy:groovy:$groovyVersion"
 }
 
 tasks.withType(AbstractArchiveTask) {
