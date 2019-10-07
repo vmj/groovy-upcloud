@@ -5,6 +5,9 @@ conf2ScopeMappings.addMapping(200, configurations.runtimeOnly, "runtime")
 
 modifyPom {
     project {
+        name project.project_name
+        description project.project_description
+
         url 'https://github.com/vmj/groovy-upcloud'
 
         licenses {

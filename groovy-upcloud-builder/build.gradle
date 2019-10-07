@@ -6,12 +6,6 @@ apply from: '../gradle/groovydoc-links.gradle'
 apply from: '../gradle/jacoco.gradle'
 apply from: '../gradle/nexus.gradle'
 
-modifyPom {
-    project {
-        name 'Groovy UpCloud builder'
-        description 'Groovy UpCloud builder provides a convenient way to build resources'
-    }
-}
 dependencies {
     // Runtime code is written in Groovy
     compileOnly "org.codehaus.groovy:groovy:$groovyVersion"
