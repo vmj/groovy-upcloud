@@ -1,13 +1,13 @@
-include 'groovy-upcloud-core'
-include 'groovy-upcloud-http-spi'
-include 'groovy-upcloud-http-ahc'
-include 'groovy-upcloud-json-spi'
-include 'groovy-upcloud-json-jackson'
-include 'groovy-upcloud-json-gjson'
-include 'groovy-upcloud-builder'
-include 'groovy-upcloud-resource'
-include 'groovy-upcloud-api'
-include 'groovy-upcloud-script'
-include 'guide'
-
 rootProject.name = 'groovy-upcloud'
+
+['docs', 'subprojects'].each { final String topLevelDirName ->
+    final File topLevelDir = new File(rootDir, topLevelDirName)
+    topLevelDir.eachDir { final File candidateSubdir ->
+        final File buildFile = new File(candidateSubdir, "build.gradle")
+        if (buildFile.isFile()) {
+            include candidateSubdir.name
+            project(":${candidateSubdir.name}").projectDir = candidateSubdir
+            project(":${candidateSubdir.name}").buildFileName = buildFile.name
+        }
+    }
+}
