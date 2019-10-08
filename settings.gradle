@@ -3,7 +3,7 @@ rootProject.name = 'groovy-upcloud'
 ['docs', 'subprojects'].each { final String topLevelDirName ->
     final File topLevelDir = new File(rootDir, topLevelDirName)
     topLevelDir.eachDir { final File candidateSubdir ->
-        final File buildFile = new File(candidateSubdir, "build.gradle")
+        final File buildFile = new File(candidateSubdir, "${candidateSubdir.name}.gradle")
         if (buildFile.isFile()) {
             include candidateSubdir.name
             project(":${candidateSubdir.name}").projectDir = candidateSubdir
