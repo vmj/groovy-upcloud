@@ -33,13 +33,10 @@ interface HTTP extends Closeable {
 
     /**
      * Execute the HTTP exchange asynchronously.
-     * <p>
-     *     The HTTP implementation is responsible for closing the input stream when done with it.
-     * <p>
      *
      * @param request HTTP request to execute.
      * @param body Request entity, or <code>null</code>.
-     * @param cb Completion callback to call when the response is received.
+     * @param cb Completion callback to call when the HTTP exchange is finished.
      */
-    void execute(final Request request, final InputStream body, final CompletionCallback cb)
+    void execute(final Request request, final byte[] body, final CompletionCallback cb)
 }

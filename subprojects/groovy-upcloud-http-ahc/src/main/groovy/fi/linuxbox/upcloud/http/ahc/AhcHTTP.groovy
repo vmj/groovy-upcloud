@@ -23,11 +23,12 @@ import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.Header
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import org.apache.http.HttpEntity
 import org.apache.http.HttpHost
 import org.apache.http.HttpRequest
 import org.apache.http.ProtocolVersion
 import org.apache.http.RequestLine
-import org.apache.http.entity.BasicHttpEntity
+import org.apache.http.entity.ByteArrayEntity
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
 import org.apache.http.impl.nio.client.HttpAsyncClients
 import org.apache.http.message.BasicHttpEntityEnclosingRequest
@@ -71,7 +72,7 @@ class AhcHTTP implements HTTP {
     }
 
     @Override
-    void execute(final Request request, final InputStream body, final CompletionCallback cb) {
+    void execute(final Request request, final byte[] body, final CompletionCallback cb) {
         if (client == null)
             throw new IllegalStateException("no client provided")
         if (request == null)
@@ -87,7 +88,7 @@ class AhcHTTP implements HTTP {
         }
     }
 
-    private void doExecute(final Request request, final InputStream body, final CompletionCallback cb) {
+    private void doExecute(final Request request, final byte[] body, final CompletionCallback cb) {
         // isRunning() and start() are only available in this CloseableHAC API :/
         if (!client.running)
             client.start()
@@ -101,13 +102,11 @@ class AhcHTTP implements HTTP {
         client.execute(HttpHost.create(request.host), req, new AhcCallback(request, cb))
     }
 
-    private HttpRequest toHttpRequest(final Request request, final InputStream body) {
+    private HttpRequest toHttpRequest(final Request request, final byte[] body) {
         final RequestLine rl = new BasicRequestLine(request.method, request.resource, HTTP_1_1)
 
         if (body) {
-            // BasicHTTPEntity will close the content when done with it
-            BasicHttpEntity entity = new BasicHttpEntity()
-            entity.content = body
+            final HttpEntity entity = new ByteArrayEntity(body);
 
             BasicHttpEntityEnclosingRequest req = new BasicHttpEntityEnclosingRequest(rl)
             req.entity = entity

@@ -35,12 +35,12 @@ class GJSON implements JSON {
     private final JsonSlurper parser = new JsonSlurper().setType(JsonParserType.INDEX_OVERLAY)
 
     @Override
-    Map<String, Object> decode(final InputStream data) {
+    Map<String, Object> decode(final byte[] data) {
         (Map<String, Object>) parser.parse(data)
     }
 
     @Override
-    InputStream encode(final Map<String, Object> repr) {
-        new ByteArrayInputStream(JsonOutput.toJson(repr).getBytes(UTF_8))
+    byte[] encode(final Map<String, Object> repr) {
+        JsonOutput.toJson(repr).getBytes(UTF_8)
     }
 }

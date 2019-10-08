@@ -40,12 +40,12 @@ class JacksonJSON implements JSON {
     }
 
     @Override
-    Map<String, Object> decode(final InputStream data) {
+    Map<String, Object> decode(final byte[] data) {
         mapper.readValue(data, Map)
     }
 
     @Override
-    InputStream encode(final Map<String, Object> repr) {
-        new ByteArrayInputStream(mapper.writeValueAsBytes(repr))
+    byte[] encode(final Map<String, Object> repr) {
+        mapper.writeValueAsBytes(repr)
     }
 }

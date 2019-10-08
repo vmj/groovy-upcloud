@@ -46,9 +46,9 @@ class HTTPDecorator implements HTTP {
     }
 
     @Override
-    void execute(final Request request, final InputStream body, final CompletionCallback cb) {
+    void execute(final Request request, final byte[] body, final CompletionCallback cb) {
         // We are in script thread initiating a request
-        http.execute(request, body) { META meta, InputStream entity, Throwable error ->
+        http.execute(request, body) { META meta, byte[] entity, Throwable error ->
             // We are in HTTP IO thread receiving the response
             try {
                 executorService.submit {
@@ -62,13 +62,6 @@ class HTTPDecorator implements HTTP {
                 }
             } catch (final RejectedExecutionException e) {
                 log.debug("Response rejected; script is shutting down", e)
-                if (entity != null) {
-                    try {
-                        entity.close()
-                    } catch (final IOException ioe) {
-                        log.warn("Unable to close the response stream", ioe)
-                    }
-                }
             }
         }
     }

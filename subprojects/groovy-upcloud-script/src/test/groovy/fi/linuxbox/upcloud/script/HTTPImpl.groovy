@@ -41,7 +41,7 @@ class HTTPImpl implements HTTP {
     }
 
     @Override
-    void execute(Request request, InputStream body, CompletionCallback cb) {
+    void execute(Request request, byte[] body, CompletionCallback cb) {
         try {
             ioThreads.submit {
                 // In reality, we would fire an HTTP request here, and

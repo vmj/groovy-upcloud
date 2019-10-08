@@ -352,11 +352,10 @@ abstract class Session<T> extends HTTPFacade<T> {
                 resource: API_VERSION + path,
                 headers: requestHeaders),
                 resource ? json.encode(resource as Map) : null,
-                { final META meta, final InputStream body, final Throwable err ->
+                { final META meta, final byte[] body, final Throwable err ->
                     // Contract is that either meta is non-null, or err
                     // is non-null.  Never both nulls and never both non-nulls.
                     final Resource resp = err ? null : decode(meta, body)
-                    body?.close()
                     requestCallback.accept(resp, err)
                     resolver?.accept(resp, err)
                 }
@@ -387,7 +386,7 @@ abstract class Session<T> extends HTTPFacade<T> {
      * @param body HTTP entity body to parse.
      * @return Resource, never null.
      */
-    private Resource decode(final META meta, final InputStream body) {
+    private Resource decode(final META meta, final byte[] body) {
         final Map<String, Object> repr = decode(meta.headers, body)
         return new Resource(repr: repr, HTTP: this, META: meta)
     }
@@ -409,7 +408,7 @@ abstract class Session<T> extends HTTPFacade<T> {
      * @param body HTTP entity body to parse.
      * @return Resource representation, or empty Map.
      */
-    private Map<String, Object> decode(final Headers headers, final InputStream body) {
+    private Map<String, Object> decode(final Headers headers, final byte[] body) {
         if (headers && body) {
             def isUTF8Json = headers.getAt('Content-Type').find { final HeaderElement headerElement ->
                 headerElement.name == 'application/json' && headerElement.parameters.find { final Parameter param ->

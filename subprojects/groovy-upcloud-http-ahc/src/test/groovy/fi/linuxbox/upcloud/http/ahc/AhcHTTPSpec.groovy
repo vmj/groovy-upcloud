@@ -100,7 +100,7 @@ class AhcHTTPSpec extends Specification {
         and:
             boolean ok = false
             Closure<Void> cb = { def meta, def body, def err ->
-                ok = meta instanceof META && request.is(meta.request) && body instanceof InputStream && err == null
+                ok = meta instanceof META && request.is(meta.request) && body instanceof byte[] && err == null
             }
 
         when:

@@ -42,7 +42,7 @@ class ResponseFunctionalSpec extends Specification {
     }
 
     Map<String, ?> parse(final String json) {
-        parser.decode(new ByteArrayInputStream(json.getBytes("UTF-8")))
+        parser.decode(json.getBytes("UTF-8"))
     }
 
     Resource load(final String json) {

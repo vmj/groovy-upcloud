@@ -31,7 +31,7 @@ import spock.lang.*
  */
 class SessionSpec extends Specification {
 
-    InputStream body = new ByteArrayInputStream(new byte[0])
+    byte[] body = [ 0 ] // empty array would be falsie
 
     HTTP http = Mock()
     JSON json = Mock()

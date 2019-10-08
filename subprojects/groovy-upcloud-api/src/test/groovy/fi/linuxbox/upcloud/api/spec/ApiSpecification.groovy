@@ -33,24 +33,24 @@ abstract class ApiSpecification extends Specification {
     HTTP http = Mock()
     JSON json = Mock()
     Session<?> session = new SimpleSession(http, json, null, null)
+    Map<String, Object> repr
     Request req
-    InputStream body
 
     def setup() {
         // allow default request callback to take only one argument
         session.callback network_error: {}
 
-        // given an HTTP implementation that just saves the Request
-        (_..1) * http.execute(*_) >> { req = it[0]; body = it[1] }
-        // and a JSON implementation that wraps the repr in an InputStream
-        (_..1) * json.encode(_) >> { new MockInputStream(it[0]) }
+        // given a JSON implementation that saves the repr
+        (_..1) * json.encode(_) >> { repr = it[0]; null }
+        // and an HTTP implementation that saves the Request
+        (_..1) * http.execute(*_) >> { req = it[0]; null }
     }
 
     void requestIs(def method, def resource, def repr = null) {
         // then request and resource were given as expected
         assert req?.method == method
         assert req.resource.endsWith(resource)
-        // and the repr in the MockInputStream is as expected
-        assert body?.repr == repr
+        // and the repr is as expected
+        assert this.repr == repr
     }
 }

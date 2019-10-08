@@ -25,18 +25,18 @@ import groovy.transform.CompileStatic
 @CompileStatic
 interface JSON {
     /**
-     * Parse the representation from the input stream.
+     * Parse the representation from the bytes.
      *
      * @param data The UTF-8 JSON data.
      * @return Java representation of the JSON.
      */
-    Map<String, Object> decode(InputStream data)
+    Map<String, Object> decode(byte[] data)
 
     /**
-     * Write the representation to a stream.
+     * Serialize the representation to bytes.
      *
      * @param repr Java representation of the JSON to be written.
-     * @return The UTF-8 JSON data as an input stream.
+     * @return The UTF-8 JSON data as bytes.
      */
-    InputStream encode(Map<String, Object> repr)
+    byte[] encode(Map<String, Object> repr)
 }

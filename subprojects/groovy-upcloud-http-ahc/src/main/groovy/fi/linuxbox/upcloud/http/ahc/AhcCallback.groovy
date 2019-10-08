@@ -22,9 +22,11 @@ import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.http.spi.Request
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.StatusLine
 import org.apache.http.concurrent.FutureCallback
+import org.apache.http.util.EntityUtils
 
 import java.util.concurrent.CancellationException
 import java.util.concurrent.CompletionException
@@ -46,15 +48,30 @@ class AhcCallback implements FutureCallback<HttpResponse> {
     @Override
     void completed(final HttpResponse response) {
         final StatusLine status = response?.statusLine
+        final HttpEntity entity = response?.entity
         if (status == null) {
             failed(new IllegalStateException("null response or null status line"))
+            return
+        }
+
+        final byte[] body
+        try {
+            // toByteArray closes the stream
+            body = entity ? EntityUtils.toByteArray(entity) : null
+        } catch (final IOException ioe) {
+            // read error
+            failed(ioe)
+            return
+        } catch (final IllegalArgumentException iae) {
+            // Content-Lenght > Integer.MAX_VALUE
+            failed(iae)
             return
         }
 
         final META meta = new META(status.statusCode, status.reasonPhrase, new AhcHeaders(response), req)
 
         log.debug("Finished HTTP exchange ($meta)")
-        cb.completed(meta, response.entity?.content, null)
+        cb.completed(meta, body, null)
     }
 
     @Override

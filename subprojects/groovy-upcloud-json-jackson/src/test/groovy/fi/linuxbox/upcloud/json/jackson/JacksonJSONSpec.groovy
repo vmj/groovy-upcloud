@@ -17,6 +17,7 @@
  */
 package fi.linuxbox.upcloud.json.jackson
 
+import fi.linuxbox.upcloud.json.spi.JSON
 import spock.lang.*
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.*
@@ -27,7 +28,7 @@ import static org.hamcrest.Matchers.*
  */
 class JacksonJSONSpec extends Specification {
 
-    static JacksonJSON out
+    static JSON out
 
     def setupSpec() {
         out = new JacksonJSON(new JacksonParserProvider().get())
@@ -38,7 +39,7 @@ class JacksonJSONSpec extends Specification {
         def json = """{ "foo": "bar" }"""
 
         when: "JSON implementation is asked to decode the input stream into a representation"
-        def repr = out.decode(inputStream(json))
+        def repr = out.decode(bytes(json))
 
         then: "the representation is "
         repr instanceof Map<String, Object>
@@ -50,7 +51,7 @@ class JacksonJSONSpec extends Specification {
         def json = """{ "timezones": { "timezone": ["Helsinki", "London", "New York"] } }"""
 
         when:
-        def repr = out.decode(inputStream(json))
+        def repr = out.decode(bytes(json))
 
         then:
         repr.timezones.timezone == [ "Helsinki", "London", "New York" ]
@@ -61,7 +62,7 @@ class JacksonJSONSpec extends Specification {
         def json = """{ "price": "100 €" }""" // EUR sign is in ISO-8859-9, not in ISO-8859-1
 
         when: "JSON implementation is asked to decode"
-        def repr = out.decode(inputStream(json))
+        def repr = out.decode(bytes(json))
 
         then: "it decodes UTF-8 correctly"
         repr.price == '100 €'
@@ -71,7 +72,7 @@ class JacksonJSONSpec extends Specification {
         given: "a simple resource representation"
         def repr = [foo: "bar"]
 
-        when: "JSON implementation is asked to encode the representation into a stream"
+        when: "JSON implementation is asked to encode the representation into bytes"
         def json = string(out.encode(repr))
 
         then:
@@ -101,25 +102,24 @@ class JacksonJSONSpec extends Specification {
     }
 
     /**
-     * Return an InputStream as the HTTP implementation is expected to.
-     *
+     * Return bytes as the HTTP implementation is expected to.
      *
      * @param json
      * @return
      */
-    private static InputStream inputStream(String json) {
-        new ByteArrayInputStream(json.getBytes("UTF-8"))
+    private static byte[] bytes(String json) {
+        json.getBytes("UTF-8")
     }
 
     /**
      *
-     * The HTTP implementation is expected to write the bytes from the inputStream to the socket as is.  I.e. JSON
-     * implementation is responsible for ensuring that the JSON data in the stream is UTF-8 encoded.
+     * The HTTP implementation is expected to write the bytes to the socket as is.  I.e. JSON
+     * implementation is responsible for ensuring that the JSON data is UTF-8 encoded.
      *
-     * @param inputStream
+     * @param bytes
      * @return
      */
-    private static String string(InputStream inputStream) {
-        inputStream.getText("UTF-8")
+    private static String string(byte[] bytes) {
+        new String(bytes, "UTF-8")
     }
 }

@@ -21,12 +21,12 @@ import fi.linuxbox.upcloud.json.spi.JSON
 
 class JSONImpl implements JSON {
     @Override
-    Map<String, Object> decode(final InputStream data) {
+    Map<String, Object> decode(final byte[] data) {
         return null
     }
 
     @Override
-    InputStream encode(final Map<String, Object> repr) {
+    byte[] encode(final Map<String, Object> repr) {
         return null
     }
 }
