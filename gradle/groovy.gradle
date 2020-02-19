@@ -16,3 +16,9 @@ compileGroovy {
     sourceCompatibility = project.sourceCompatibility
     targetCompatibility = project.targetCompatibility
 }
+
+test {
+    // Spock 2 (milestone 2) requires this to activate test execution
+    // (won't run any tests otherwise)
+    useJUnitPlatform()
+}
