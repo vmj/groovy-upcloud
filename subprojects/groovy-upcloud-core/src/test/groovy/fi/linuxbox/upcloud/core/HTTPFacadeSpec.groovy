@@ -57,11 +57,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'GET'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
-        session.cb.is(CB)
+        session.cb === CB
     }
 
     def "GET(Map, String)"() {
@@ -70,9 +70,9 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'GET'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
         session.cb == null
     }
@@ -83,11 +83,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'GET'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
-        session.cb.is(CB)
+        session.cb === CB
     }
 
     def "GET(String, Map)"() {
@@ -96,9 +96,9 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'GET'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
         session.cb == null
     }
@@ -111,9 +111,9 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'GET'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
-        session.cb.is(CB)
+        session.cb === CB
     }
 
     def "GET(String)"() {
@@ -124,7 +124,7 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'GET'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
         session.cb == null
     }
@@ -135,11 +135,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'DELETE'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
-        session.cb.is(CB)
+        session.cb === CB
     }
 
     def "DELETE(Map, String)"() {
@@ -148,9 +148,9 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'DELETE'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
         session.cb == null
     }
@@ -161,11 +161,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'DELETE'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
-        session.cb.is(CB)
+        session.cb === CB
     }
 
     def "DELETE(String, Map)"() {
@@ -174,9 +174,9 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'DELETE'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
         session.cb == null
     }
@@ -189,9 +189,9 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'DELETE'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
-        session.cb.is(CB)
+        session.cb === CB
     }
 
     def "DELETE(String)"() {
@@ -202,7 +202,7 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'DELETE'
-        session.path.is(PATH)
+        session.path === PATH
         session.resource == null
         session.cb == null
     }
@@ -213,11 +213,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'PUT'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
-        session.cb.is(CB)
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
     }
 
     def "PUT(Map, String, Resource)"() {
@@ -226,10 +226,10 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'PUT'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
+        session.path === PATH
+        session.resource === RESOURCE
         session.cb == null
     }
 
@@ -239,11 +239,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'PUT'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
-        session.cb.is(CB)
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
     }
 
     def "PUT(String, Resource, Map)"() {
@@ -252,10 +252,10 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'PUT'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
+        session.path === PATH
+        session.resource === RESOURCE
         session.cb == null
     }
 
@@ -267,9 +267,9 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'PUT'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
-        session.cb.is(CB)
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
     }
 
     def "PUT(String, Resource)"() {
@@ -280,8 +280,8 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'PUT'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
+        session.path === PATH
+        session.resource === RESOURCE
         session.cb == null
     }
 
@@ -291,11 +291,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'POST'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
-        session.cb.is(CB)
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
     }
 
     def "POST(Map, String, Resource)"() {
@@ -304,10 +304,10 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'POST'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
+        session.path === PATH
+        session.resource === RESOURCE
         session.cb == null
     }
 
@@ -317,11 +317,11 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'POST'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
-        session.cb.is(CB)
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
     }
 
     def "POST(String, Resource, Map)"() {
@@ -330,10 +330,10 @@ class HTTPFacadeSpec extends Specification {
 
         then:
         ok == SUCCESS
-        session.cbs.is(CBS)
+        session.cbs === CBS
         session.method == 'POST'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
+        session.path === PATH
+        session.resource === RESOURCE
         session.cb == null
     }
 
@@ -345,9 +345,9 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'POST'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
-        session.cb.is(CB)
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
     }
 
     def "POST(String, Resource)"() {
@@ -358,8 +358,8 @@ class HTTPFacadeSpec extends Specification {
         ok == SUCCESS
         session.cbs.isEmpty()
         session.method == 'POST'
-        session.path.is(PATH)
-        session.resource.is(RESOURCE)
+        session.path === PATH
+        session.resource === RESOURCE
         session.cb == null
     }
 }
