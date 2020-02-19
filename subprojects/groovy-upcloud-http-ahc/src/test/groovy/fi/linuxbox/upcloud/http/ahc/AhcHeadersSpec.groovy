@@ -54,7 +54,7 @@ class AhcHeadersSpec extends Specification {
                 println "${header.name}: ${header.value} (HeaderName: HeaderValue)"
                 println "  ${headerElement.name} = ${headerElement.value} (ElementName = ElementValue)"
                 headerElement.parameters.each { Parameter parameter ->
-                    println "    ${parameter.first} = ${parameter.second} (ParameterName = ParameterValue)"
+                    println "    ${parameter.name} = ${parameter.value} (ParameterName = ParameterValue)"
                 }
             }
         }

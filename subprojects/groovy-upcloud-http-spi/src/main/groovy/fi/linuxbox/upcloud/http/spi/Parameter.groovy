@@ -27,14 +27,16 @@ import groovy.transform.CompileStatic
  * </p>
  */
 @CompileStatic
-class Parameter extends Tuple2<String, String> {
+class Parameter {
+    final Tuple2<String, String> t
+
     /**
      * The sole constructor.
      *
      * @param name Name of the parameter.  E.g. "charset" in a header "Accept: application/json; charset=UTF-8"
      * @param value value of the parameter.  E.g. "UTF-8" in a header "Accept: application/json; charset=UTF-8"
      */
-    Parameter(final String name, final String value) { super(name, value) }
+    Parameter(final String name, final String value) { t = new Tuple2<>(name, value) }
 
     /**
      * Name of this HTTP header parameter.
@@ -45,7 +47,7 @@ class Parameter extends Tuple2<String, String> {
      *
      * @return The name of this HTTP header parameter.
      */
-    String getName() { getFirst() }
+    String getName() { t.first }
 
     /**
      * Value of this HTTP header parameter.
@@ -56,5 +58,5 @@ class Parameter extends Tuple2<String, String> {
      *
      * @return The value of this HTTP header parameter.
      */
-    String getValue() { getSecond() }
+    String getValue() { t.second }
 }
