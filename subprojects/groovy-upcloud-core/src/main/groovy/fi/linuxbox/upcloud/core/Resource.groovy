@@ -253,8 +253,7 @@ class Resource {
      * @return A wrapped resource whose sole property is this resource.
      */
     def wrapper() {
-        final String propertyName = javaClassToJavaProperty(this.class)
-        new Resource(HTTP: HTTP, META: META)."$propertyName"(this)
+        new Resource(HTTP: HTTP, META: META, repr: [(javaClassToJavaProperty(this.class)): this])
     }
 
     /**
@@ -273,10 +272,7 @@ class Resource {
      * @return A copy of this resource with specified properties removed.
      */
     def proj(final List<String> properties) {
-        resourceProperties().grep { it.key in properties }
-                .inject ((Resource)this.metaClass.invokeConstructor(HTTP: HTTP, META: META)) {
-            final Resource resource, final Map.Entry<String, Object> property -> resource."${property.key}"(property.value)
-        }
+        this.metaClass.invokeConstructor(HTTP: HTTP, META: META, repr: resourceProperties().subMap(properties))
     }
 
     /**
@@ -295,24 +291,6 @@ class Resource {
                         .sort()
                         .join(', ') +
                 ")"
-    }
-
-    /**
-     * MOP method that allows resource properties to be set in a fluent fashion.
-     *
-     * <p>
-     * Allows for code like <code>server.name('my server').description('My server')</code> to set two properties for
-     * the server resource.
-     * </p>
-     *
-     * @param name Name of the property.
-     * @param args Value of the property (must be a single element argument array).
-     * @return The resource for chaining.
-     */
-    def methodMissing(final String name, final def args) {
-        if (args?.length == 1)
-            this."$name" = args[0]
-        this
     }
 
     /**

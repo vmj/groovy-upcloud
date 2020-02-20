@@ -468,12 +468,14 @@ trait ServerApi {
 
     private def cmd(final String name, final List<String> options, final Object[] args) {
         Map kwargs = args.find { it instanceof Map }
-        options.inject(new Resource()."$name"(new Resource())) { Resource cmd, String option ->
-            def value = kwargs?.remove(option)
-            if (value)
-                cmd."$name"."$option" = value
-            cmd
-        }
+
+        Map opts = kwargs?.subMap(options) ?: [:]
+
+        // FIXME: modifies the user supplied map
+        if (kwargs)
+            options.each { kwargs.remove(it) }
+
+        new Resource(repr: [("$name"): new Resource(repr: opts)])
     }
 
 

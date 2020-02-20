@@ -17,7 +17,6 @@
  */
 package fi.linuxbox.upcloud.core
 
-import fi.linuxbox.upcloud.core.http.simple.SimpleHeaderIterator
 import fi.linuxbox.upcloud.http.spi.HTTP
 import fi.linuxbox.upcloud.http.spi.META
 import fi.linuxbox.upcloud.json.spi.JSON
@@ -214,29 +213,6 @@ class ResourceSpec extends Specification {
         thrown MissingPropertyException
     }
 
-    def "In dynamic resources, properties can be set using a method call"() {
-        given:
-        def resource = new Resource(repr: [ dynamic_method: [ :]])
-
-        when: "a property baz is set with a method call"
-        resource.baz([1, 2, 3])
-
-        then: "the property can be accessed via property"
-        resource.baz == [1, 2, 3]
-        and: "the getter method returns resource"
-        resource.baz() is resource
-        and: "the setter method allows for chaining, too"
-        resource.baz([3,2,1]) is resource
-    }
-
-    def "In dynamic resources, missing methods return the resource"() {
-        given:
-        def resource = new Resource(repr: [ missing_method: [ :]])
-
-        expect: "unset property just returns the resource, allows chaining"
-        resource.foo() is resource
-    }
-
     def "Properties can not change type"() {
         given:
         def resource = new Resource(repr: [ dynamic_type: [ :]])
@@ -244,18 +220,6 @@ class ResourceSpec extends Specification {
         when:
         resource.bar = [1,2,3]
         resource.bar = "foo"
-
-        then:
-        thrown GroovyCastException
-    }
-
-    def "Properties can not change type even if changing it via setter method"() {
-        given:
-        def resource = new Resource(repr: [ dynamic_type: [ :]])
-
-        when:
-        resource.bar([1,2,3])
-        resource.bar("foo")
 
         then:
         thrown GroovyCastException

@@ -273,6 +273,7 @@ trait UpCloudApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#list-storages" target="_top">UpCloud API docs for GET /storage</a>
      */
     def storages(...args) {
+        // FIXME: modifies the user supplied map
         def type = args.find { it instanceof Map } ?.remove('type')
         if (type)
             HTTP.GET("storage/$type", *args)
