@@ -25,6 +25,7 @@ import fi.linuxbox.upcloud.json.spi.JSON
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.BiConsumer
 
 import static fi.linuxbox.upcloud.core.UpCloudContract.*
@@ -285,6 +286,22 @@ abstract class Session<T> extends HTTPFacade<T> {
     private final JSON json
 
     /**
+     * Counts the number of in-flight HTTP exchanges that have been made through this session instance.
+     */
+    private AtomicInteger refCount = new AtomicInteger(0)
+
+    /**
+     * Callback that is called when refCount gets back to zero.
+     *
+     * <p>
+     * This implementation does not assume that anything really happens when this is called.
+     * I.e. the app may make more calls afterwards, and this callback is called again when
+     * the refCount gets back to zero, again.
+     * </p>
+     */
+    private AutoCloseable closer
+
+    /**
      * Injectable constructor.
      *
      * @param http HTTP implementation.
@@ -325,6 +342,26 @@ abstract class Session<T> extends HTTPFacade<T> {
     }
 
     /**
+     * Sets the callback that is called when the "last" request has finished processing.
+     *
+     * <p>
+     * Each time a request is started via this session instance, an internal reference count is increased.
+     * Similarly, when a response is handled (successfully or otherwise), the ref count is decremented.
+     * Each time the ref count gets back to zero, which it is initially, the given callback is called.
+     * </p>
+     *
+     * <p>
+     * This implementation does not assume that anything really happens.  It is up to the callback to actually
+     * stop the application.
+     * </p>
+     *
+     * @param closer
+     */
+    void whenFinished(final AutoCloseable closer) {
+        this.closer = closer
+    }
+
+    /**
      * Perform a HTTP request.
      *
      * @param cbs Additional request callbacks.
@@ -346,19 +383,26 @@ abstract class Session<T> extends HTTPFacade<T> {
         final T promise = unresolvedPromise()
         final BiConsumer<Resource, Throwable> resolver = promiseResolver(promise)
 
-        http.execute new Request(
+        final Request request = new Request(
                 host: HOST,
                 method: method,
                 resource: API_VERSION + path,
-                headers: requestHeaders),
-                resource ? json.encode(resource as Map) : null,
-                { final META meta, final byte[] body, final Throwable err ->
-                    // Contract is that either meta is non-null, or err
-                    // is non-null.  Never both nulls and never both non-nulls.
-                    final Resource resp = err ? null : decode(meta, body)
-                    requestCallback.accept(resp, err)
-                    resolver?.accept(resp, err)
-                }
+                headers: requestHeaders)
+        final byte[] payload = resource ? json.encode(resource as Map) : null
+
+        // in case the http implementation calls the completion callback synchronously,
+        // increase the ref count before executing
+        refCount.incrementAndGet()
+        http.execute(request, payload) { final META meta, final byte[] body, final Throwable err ->
+            // Contract is that either meta is non-null, or err
+            // is non-null.  Never both nulls and never both non-nulls.
+            final Resource resp = err ? null : decode(meta, body)
+            requestCallback.accept(resp, err)
+            resolver?.accept(resp, err)
+            if (refCount.decrementAndGet() <= 0) {
+                closer?.close()
+            }
+        }
 
         promise
     }

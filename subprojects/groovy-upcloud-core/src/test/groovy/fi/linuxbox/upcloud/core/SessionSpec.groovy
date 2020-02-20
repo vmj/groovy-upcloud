@@ -446,6 +446,61 @@ class SessionSpec extends Specification {
             ok
     }
 
+    def "Closing the session once"() {
+        given: "a close counter"
+        int closeCount = 0
+
+        and: "an HTTP implementation that calls the Session callback"
+        _ * http.execute(*_) >> { a, b, cb -> cb.completed(new META(status: 500), null, null) }
+
+        when: "Session is given a closer and then invoked"
+        session.whenFinished { closeCount++ }
+        session.request(null, null, null, null) {}
+
+        then: "the Session closer is invoked"
+        closeCount == 1
+    }
+
+    def "Closing the session twice"() {
+        given: "a close counter"
+        int closeCount = 0
+
+        and: "an HTTP implementation that calls the Session callback"
+        _ * http.execute(*_) >> { a, b, cb -> cb.completed(new META(status: 500), null, null) }
+
+        when: "Session is given a closer and then invoked twice"
+        session.whenFinished { closeCount++ }
+        session.request(null, null, null, null) {}
+        session.request(null, null, null, null) {}
+
+        then: "the Session closer is invoked twice"
+        closeCount == 2
+    }
+
+    def "Closing the session async"() {
+        given: "a close counter and init counter"
+        int closeCount = 0
+        int initCount = 0
+
+        and: "an HTTP implementation that calls the Session callback later"
+        _ * http.execute(*_) >> { a, b, cb ->
+            initCount++
+            if (initCount == 2) {
+                // Complete both HTTP exchanges
+                cb.completed(new META(status: 500), null, null)
+                cb.completed(new META(status: 500), null, null)
+            }
+        }
+
+        when: "Session is given a closer and then invoked twice"
+        session.whenFinished { closeCount++ }
+        session.request(null, null, null, null) {}
+        session.request(null, null, null, null) {}
+
+        then: "the Session closer is invoked only once"
+        closeCount == 1
+    }
+
     def "Read method with zero arguments"() {
         when:
             session.GET()
