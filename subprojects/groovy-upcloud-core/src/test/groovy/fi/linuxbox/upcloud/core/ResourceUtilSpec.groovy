@@ -59,6 +59,30 @@ class ResourceUtilSpec extends Specification {
         projection.hasProperty('bar')
         projection.bar == 2
         !projection.hasProperty('baz')
+
+        and: "the original is not modified"
+        resource.someThing.baz == 3
+    }
+
+    def "Cloning a resource without specified properties"() {
+        given:
+        final resource = new Resource(repr: [ some_thing: [foo: 1, bar: 2, baz: 3]])
+
+        when:
+        def projection = ResourceUtil.cloneWithoutProperties(resource.someThing, ['foo', 'bar'])
+
+        then:
+        projection !== resource.someThing
+        projection.class === resource.someThing.class
+        !projection.hasProperty('foo')
+        !projection.hasProperty('bar')
+        projection.hasProperty('baz')
+        projection.baz == 3
+
+        and: "the original is not modified"
+        resource.someThing.foo == 1
+        resource.someThing.bar == 2
+        resource.someThing.baz == 3
     }
 
     def "Resource properties"() {
