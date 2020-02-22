@@ -24,6 +24,7 @@ import static fi.linuxbox.upcloud.core.NamingContract.javaClassToJavaProperty
 import static fi.linuxbox.upcloud.core.NamingContract.jsonPropertyToJavaClass
 import static fi.linuxbox.upcloud.core.NamingContract.jsonPropertyToJavaProperty
 import static fi.linuxbox.upcloud.core.ResourceLoader.instantiateResourceClass
+import static fi.linuxbox.upcloud.core.ResourceUtil.resourceProperties
 
 /**
  * Model for a resource in UpCloud, e.g. server, storage device, IP address, etc.
@@ -156,21 +157,6 @@ class Resource {
     }
 
     /**
-     * Returns properties of this resource.
-     *
-     * <p>
-     * This method skips GroovyObject properties (every Groovy object has a 'class' property), meta resource properties
-     * (every Resource has 'META' and 'HTTP' properties), and properties whose value is <code>null</code>.
-     * </p>
-     *
-     * @return Properties of this resource.
-     */
-    private Map<String, Object> resourceProperties() {
-        def reserved = ~/^[A-Z]+$/
-        this.properties.findAll {!(it.key == 'class' || it.value == null || it.key =~ reserved) }
-    }
-
-    /**
      * Converts this resource to a Map<String, Object> representation for JSON generation.
      *
      * <p>
@@ -200,7 +186,7 @@ class Resource {
      * @return Representation of this resource.
      */
     Object asType(Class clazz) {
-        resourceProperties().collectEntries { final String key, final Object value ->
+        resourceProperties(this).collectEntries { final String key, final Object value ->
             final String property_name = javaClassOrPropertyToJsonProperty(key)
             [(property_name): value.with {
                 switch (it) {
@@ -272,7 +258,7 @@ class Resource {
      * @return A copy of this resource with specified properties removed.
      */
     def proj(final List<String> properties) {
-        this.metaClass.invokeConstructor(HTTP: HTTP, META: META, repr: resourceProperties().subMap(properties))
+        this.metaClass.invokeConstructor(HTTP: HTTP, META: META, repr: resourceProperties(this).subMap(properties))
     }
 
     /**
@@ -286,7 +272,7 @@ class Resource {
     @Override
     String toString() {
         this.class.simpleName + "(" +
-                resourceProperties()
+                resourceProperties(this)
                         .collect { k, v -> "$k: $v" }
                         .sort()
                         .join(', ') +
