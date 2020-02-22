@@ -45,7 +45,14 @@ abstract class UpCloudScript extends Script {
     }
 
     CompletableFutureSession newSession(final String username, final String password) {
-        new CompletableFutureSession(http, json, username, password)
+        final s = new CompletableFutureSession(http, json, username, password)
+        s.whenFinished {
+            executorService.submit {
+                log.info "Auto-closing"
+                close()
+            }
+        }
+        s
     }
 
     CompletableFutureSession newSession(final Credentials credentials) {
@@ -65,10 +72,9 @@ abstract class UpCloudScript extends Script {
         log.debug("Initialization complete")
         boolean ok = false
         try {
-            // TODO: make this maximum runtime configurable
             int timeout = 20
-            log.debug("Waiting for termination ($timeout seconds)")
-            ok = executorService.awaitTermination(timeout, TimeUnit.SECONDS)
+            log.debug("Waiting for termination ($timeout days)")
+            ok = executorService.awaitTermination(timeout, TimeUnit.DAYS)
         } catch (final InterruptedException ie) {
             log.warn("Executor service interrupted", ie)
         }

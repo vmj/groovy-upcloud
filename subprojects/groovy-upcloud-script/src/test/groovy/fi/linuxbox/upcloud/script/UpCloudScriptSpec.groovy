@@ -22,7 +22,7 @@ import spock.lang.Specification
 
 class UpCloudScriptSpec extends Specification {
 
-    def "low-level shutdown test"() {
+    def "early shutdown test"() {
         when: "the script calls close() while requests are still in-flight"
         shell().evaluate("""
             final session = newSession("username", "p4ssw0rd")
@@ -52,6 +52,22 @@ class UpCloudScriptSpec extends Specification {
         when: "the script throws an exception from top-level code"
         shell().evaluate("""
             throw new FileNotFoundException("intentional test exception")
+        """)
+
+        then: "no timeout exception is thrown"
+        noExceptionThrown()
+    }
+
+    def "auto-shutdown test"() {
+        when: "the script is shutdown automatically after last response"
+        shell().evaluate("""
+            final session = newSession("username", "p4ssw0rd")
+            session.callback network_error: {}
+
+            session.GET('/whatever') { final response ->
+                log.info "Callback done"
+            }
+            log.info "Top-level code done"
         """)
 
         then: "no timeout exception is thrown"

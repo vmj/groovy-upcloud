@@ -49,7 +49,9 @@ class HTTPDecorator implements HTTP {
     void execute(final Request request, final byte[] body, final CompletionCallback cb) {
         // We are in script thread initiating a request
         http.execute(request, body) { META meta, byte[] entity, Throwable error ->
-            // We are in HTTP IO thread receiving the response
+            // Typically, we are in HTTP IO thread receiving the response.
+            // But might be in script thread if the HTTP implementation called this completion thread
+            // synchronously.
             try {
                 executorService.submit {
                     // We are in script thread passing the response to the session (and finally to script)
