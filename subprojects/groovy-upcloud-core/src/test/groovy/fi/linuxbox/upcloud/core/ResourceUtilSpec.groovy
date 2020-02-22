@@ -44,6 +44,23 @@ class ResourceUtilSpec extends Specification {
         wrapper.someThing.class.simpleName == "SomeThing"
     }
 
+    def "Cloning a resource with specified properties"() {
+        given:
+        final resource = new Resource(repr: [ some_thing: [foo: 1, bar: 2, baz: 3]])
+
+        when:
+        def projection = ResourceUtil.cloneWithProperties(resource.someThing, ['foo', 'bar'])
+
+        then:
+        projection !== resource.someThing
+        projection.class === resource.someThing.class
+        projection.hasProperty('foo')
+        projection.foo == 1
+        projection.hasProperty('bar')
+        projection.bar == 2
+        !projection.hasProperty('baz')
+    }
+
     def "Resource properties"() {
         given:
         final meta = new META()

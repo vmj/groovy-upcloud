@@ -224,20 +224,4 @@ class ResourceSpec extends Specification {
         then:
         thrown GroovyCastException
     }
-
-    def "Projection"() {
-        given:
-        def resource = new Resource(repr: [ full_blown_thing: [ first: 1, second: 2, third: 3]])
-        def fullBlownThing = resource.fullBlownThing
-
-        when:
-        def projection = fullBlownThing.proj(['second', 'third'])
-
-        then:
-        projection instanceof Resource
-        projection.class.simpleName == "FullBlownThing"
-        projection.second == 2
-        projection.third == 3
-        !projection.hasProperty('first')
-    }
 }

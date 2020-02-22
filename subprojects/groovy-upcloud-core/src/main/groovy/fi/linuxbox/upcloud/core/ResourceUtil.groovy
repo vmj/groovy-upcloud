@@ -46,6 +46,29 @@ class ResourceUtil {
     }
 
     /**
+     * Returns a projection of the given resource.
+     *
+     * <p>
+     * Projection is a copy of the given resource with some of the properties removed.
+     * </p>
+     *
+     * <p>
+     * Some of the UpCloud APIs specifically disallow some of the resource properties from being sent in the requests,
+     * and this method is used in those API calls.
+     * </p>
+     *
+     * @param properties A list of property names to include.
+     * @return A copy of the given resource with specified properties.
+     */
+    static <R extends Resource> R cloneWithProperties(final R resource, final List<String> properties) {
+        (R) resource.metaClass.invokeConstructor(
+                HTTP: resource.HTTP,
+                META: resource.META,
+                repr: resourceProperties(resource).subMap(properties)
+        )
+    }
+
+    /**
      * Returns properties of the given resource.
      *
      * <p>

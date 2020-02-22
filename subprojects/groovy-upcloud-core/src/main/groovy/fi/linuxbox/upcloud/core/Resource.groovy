@@ -229,25 +229,6 @@ class Resource {
     }
 
     /**
-     * Returns a projection of this resource.
-     *
-     * <p>
-     * Projection is a copy of this resource with some of the properties removed.
-     * </p>
-     *
-     * <p>
-     * Some of the UpCloud APIs specifically disallow some of the resource properties from being sent in the requests,
-     * and this method is used in those API calls.
-     * </p>
-     *
-     * @param properties A list of property names to exclude.
-     * @return A copy of this resource with specified properties removed.
-     */
-    def proj(final List<String> properties) {
-        this.metaClass.invokeConstructor(HTTP: HTTP, META: META, repr: resourceProperties(this).subMap(properties))
-    }
-
-    /**
      * Returns a string representation of the UpCloud resource.
      * <p>
      *     This is meant to be human readable, not as an API.
