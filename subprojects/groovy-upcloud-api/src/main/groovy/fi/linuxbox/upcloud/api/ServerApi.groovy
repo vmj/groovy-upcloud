@@ -18,6 +18,9 @@
 package fi.linuxbox.upcloud.api
 
 import fi.linuxbox.upcloud.core.*
+
+import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
+
 /**
  * Server related APIs.
  *
@@ -91,7 +94,7 @@ trait ServerApi {
      * @see <a href="https://www.upcloud.com/api/8-servers/#modify-server" target="_top">UpCloud API docs for PUT /server/&#36;{server.uuid}</a>
      */
     def update(Resource resource, ...args) {
-        HTTP.PUT(serverPath(), resource.wrapper(), *args)
+        HTTP.PUT(serverPath(), wrapped(resource), *args)
     }
 
     /**
@@ -252,7 +255,7 @@ trait ServerApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#attach-storage" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/storage/attach</a>
      */
     def attach(Resource storageDevice, ...args) {
-        HTTP.POST(storagePath('attach'), storageDevice.wrapper(), *args)
+        HTTP.POST(storagePath('attach'), wrapped(storageDevice), *args)
     }
 
     /**
@@ -280,7 +283,7 @@ trait ServerApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#detach-storage" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/storage/detach</a>
      */
     def detach(Resource storageDevice, ...args) {
-        HTTP.POST(storagePath('detach'), storageDevice.wrapper(), *args)
+        HTTP.POST(storagePath('detach'), wrapped(storageDevice), *args)
     }
 
     /**
@@ -312,7 +315,7 @@ trait ServerApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#load-cd-rom" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/cdrom/load</a>
      */
     def insert(Resource storageDevice, ...args) {
-        HTTP.POST(cdromPath('load'), storageDevice.wrapper(), *args)
+        HTTP.POST(cdromPath('load'), wrapped(storageDevice), *args)
     }
 
     /**
@@ -384,7 +387,7 @@ trait ServerApi {
      * @see <a href="https://www.upcloud.com/api/11-firewall/#create-firewall-rule" target="_top">UpCloud API docs for POST /server/&#36;{server.uuid}/firewall_rule</a>
      */
     def createFirewallRule(Resource firewallRule, ...args) {
-        HTTP.POST(firewallRulesPath(), firewallRule.wrapper(), *args)
+        HTTP.POST(firewallRulesPath(), wrapped(firewallRule), *args)
     }
 
     /**

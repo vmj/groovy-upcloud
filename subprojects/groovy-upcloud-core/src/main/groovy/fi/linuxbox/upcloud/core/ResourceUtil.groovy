@@ -21,9 +21,29 @@ import groovy.transform.CompileStatic
 
 import java.util.regex.Pattern
 
+import static fi.linuxbox.upcloud.core.NamingContract.javaClassToJavaProperty
+
 @CompileStatic
 class ResourceUtil {
     private static final Pattern META_PROPERTIES = ~/^[A-Z]+$/
+
+    /**
+     * Returns the given resource wrapped in another resource.
+     *
+     * <p>
+     * Many of the UpCloud APIs require a wrapping JSON object to be sent into the resources,
+     * and this method is used in those places.
+     * </p>
+     *
+     * @return A wrapped resource whose sole property is the given resource.
+     */
+    static Resource wrapped(final Resource resource) {
+        new Resource(
+                HTTP: resource.HTTP,
+                META: resource.META,
+                repr: [(javaClassToJavaProperty(resource.class)): resource]
+        )
+    }
 
     /**
      * Returns properties of the given resource.

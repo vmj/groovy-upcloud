@@ -20,6 +20,7 @@ package fi.linuxbox.upcloud.api
 import fi.linuxbox.upcloud.core.*
 
 import static fi.linuxbox.upcloud.core.NamingContract.javaClassToPathSegment
+import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
 
 /**
  * Top-level APIs.
@@ -310,6 +311,6 @@ trait UpCloudApi {
      * @see <a href="https://www.upcloud.com/api/12-tags/#create-a-new-tag" target="_top">UpCloud API docs for POST /tag</a>
      */
     def create(Resource resource, ...args) {
-        HTTP.POST(javaClassToPathSegment(resource.class.simpleName), resource.wrapper(), *args)
+        HTTP.POST(javaClassToPathSegment(resource.class.simpleName), wrapped(resource), *args)
     }
 }

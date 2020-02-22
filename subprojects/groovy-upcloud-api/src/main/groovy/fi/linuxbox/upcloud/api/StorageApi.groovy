@@ -19,6 +19,8 @@ package fi.linuxbox.upcloud.api
 
 import fi.linuxbox.upcloud.core.*
 
+import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
+
 /**
  * Storage related APIs.
  *
@@ -92,7 +94,7 @@ trait StorageApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#modify-storage" target="_top">UpCloud API docs for PUT /storage/&#36;{storage.uuid}</a>
      */
     def update(Resource resource, ...args) {
-        HTTP.PUT(storagePath(), resource.wrapper(), *args)
+        HTTP.PUT(storagePath(), wrapped(resource), *args)
     }
 
     /**
@@ -140,7 +142,7 @@ trait StorageApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#clone-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/clone</a>
      */
     def clone(Resource resource, ...args) {
-        HTTP.POST(cmdPath('clone'), resource.wrapper(), *args)
+        HTTP.POST(cmdPath('clone'), wrapped(resource), *args)
     }
 
     /**
@@ -193,7 +195,7 @@ trait StorageApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#templatize-storage" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/templatize</a>
      */
     def templatize(Resource resource, ...args) {
-        HTTP.POST(cmdPath('templatize'), resource.wrapper(), *args)
+        HTTP.POST(cmdPath('templatize'), wrapped(resource), *args)
     }
 
     /**
@@ -219,7 +221,7 @@ trait StorageApi {
      * @see <a href="https://www.upcloud.com/api/9-storages/#create-backup" target="_top">UpCloud API docs for POST /storage/&#36;{storage.uuid}/backup</a>
      */
     def backup(Resource resource, ...args) {
-        HTTP.POST(cmdPath('backup'), resource.wrapper(), *args)
+        HTTP.POST(cmdPath('backup'), wrapped(resource), *args)
     }
 
     /**

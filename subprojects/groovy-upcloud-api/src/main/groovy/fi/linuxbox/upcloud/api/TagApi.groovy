@@ -19,6 +19,8 @@ package fi.linuxbox.upcloud.api
 
 import fi.linuxbox.upcloud.core.*
 
+import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
+
 /**
  * Tag related APIs.
  * <p>
@@ -51,7 +53,7 @@ trait TagApi {
      * @see <a href="https://www.upcloud.com/api/12-tags/#modify-existing-tag" target="_top">UpCloud API docs for PUT /tag/&#36;{tag.name}</a>
      */
     def update(Resource resource, ...args) {
-        HTTP.PUT(tagPath(), resource.wrapper(), *args)
+        HTTP.PUT(tagPath(), wrapped(resource), *args)
     }
 
     /**

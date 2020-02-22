@@ -229,20 +229,6 @@ class Resource {
     }
 
     /**
-     * Returns this resource wrapped in another resource.
-     *
-     * <p>
-     * Many of the UpCloud APIs require a wrapping JSON object to be sent into the resources, and this method is used
-     * in those places.
-     * </p>
-     *
-     * @return A wrapped resource whose sole property is this resource.
-     */
-    def wrapper() {
-        new Resource(HTTP: HTTP, META: META, repr: [(javaClassToJavaProperty(this.class)): this])
-    }
-
-    /**
      * Returns a projection of this resource.
      *
      * <p>

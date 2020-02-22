@@ -19,6 +19,8 @@ package fi.linuxbox.upcloud.api
 
 import fi.linuxbox.upcloud.core.*
 
+import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
+
 /**
  * IP address related APIs.
  * <p>
@@ -83,7 +85,7 @@ trait IpAddressApi {
      * @see <a href="https://www.upcloud.com/api/10-ip-addresses/#modify-ip-address" target="_top">UpCloud API docs for PUT /ip_address/&#36;{ipAddress.address}</a>
      */
     def update(Resource resource, ...args) {
-        HTTP.PUT(ipAddressPath(), resource.wrapper(), *args)
+        HTTP.PUT(ipAddressPath(), wrapped(resource), *args)
     }
 
     /**

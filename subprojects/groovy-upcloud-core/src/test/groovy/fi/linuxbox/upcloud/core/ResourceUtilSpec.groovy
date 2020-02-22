@@ -21,6 +21,29 @@ import fi.linuxbox.upcloud.http.spi.META
 import spock.lang.Specification
 
 class ResourceUtilSpec extends Specification {
+    def "Wrapping an empty resource gives a resource with a single resource property"() {
+        when:
+        def wrapper = ResourceUtil.wrapped(new Resource())
+
+        then:
+        wrapper instanceof Resource
+        wrapper.resource instanceof Resource
+    }
+
+    def "The wrapped resource has proper name and type"() {
+        given:
+        final resource = new Resource(repr: [ some_thing: [:]])
+        final Resource someThing = resource.someThing
+
+        when:
+        def wrapper = ResourceUtil.wrapped(someThing)
+
+        then:
+        wrapper instanceof Resource
+        wrapper.someThing instanceof Resource
+        wrapper.someThing.class.simpleName == "SomeThing"
+    }
+
     def "Resource properties"() {
         given:
         final meta = new META()

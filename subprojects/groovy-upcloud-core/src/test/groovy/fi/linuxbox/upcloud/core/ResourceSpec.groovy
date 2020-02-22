@@ -225,29 +225,6 @@ class ResourceSpec extends Specification {
         thrown GroovyCastException
     }
 
-    def "Wrapped empty resource has resource property"() {
-        when:
-        def resource = new Resource().wrapper()
-
-        then:
-        resource instanceof Resource
-        resource.resource instanceof Resource
-    }
-
-    def "Wrapped resource property name is proper"() {
-        given:
-        def resource = new Resource(repr: [ some_thing: [ :]])
-        def someThing = resource.someThing
-
-        when:
-        def wrappedSomething = someThing.wrapper()
-
-        then:
-        wrappedSomething instanceof Resource
-        wrappedSomething.someThing instanceof Resource
-        wrappedSomething.someThing.class.simpleName == "SomeThing"
-    }
-
     def "Projection"() {
         given:
         def resource = new Resource(repr: [ full_blown_thing: [ first: 1, second: 2, third: 3]])
