@@ -68,4 +68,12 @@ class ServerCRUDSpec extends ServerApiSpecification {
         then:
             requestIs 'DELETE', '/server/fake-uuid'
     }
+
+    def "delete: DELETE /server/fake-uuid?storages=1"() {
+        when:
+            server.delete storages: true, {}
+
+        then:
+            requestIs 'DELETE', '/server/fake-uuid?storages=1'
+    }
 }

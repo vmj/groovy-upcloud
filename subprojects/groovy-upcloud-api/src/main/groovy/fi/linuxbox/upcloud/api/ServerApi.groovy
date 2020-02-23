@@ -106,14 +106,23 @@ trait ServerApi {
      *     The {@link fi.linuxbox.upcloud.resource.Server#state} of the server must be {@code stopped}.
      * <p>
      * <p>
-     *     The storage devices of the server are automatically detached, and IP addresses are released.
+     *     The storage devices of the server are automatically detached, and can be reattached to other servers.
+     *     A keyword argument {@code storages}, with a truthy value, can be used to delete those storage devices.
      * </p>
+     * <p>
+     *     The IP addresses of the server are automatically releases.
+     * </p>
+     *
      * @param args Request callbacks for the {@code DELETE /server/&#36;&#123;server.uuid&#125;} call.
      * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
      * @see <a href="https://www.upcloud.com/api/8-servers/#delete-server" target="_top">UpCloud API docs for DELETE /server/&#36;{server.uuid}</a>
      */
     def delete(...args) {
-        HTTP.DELETE(serverPath(), *args)
+        final storages = args.find { it instanceof Map } ?.remove("storages")
+        if (storages)
+            HTTP.DELETE("${serverPath()}?storages=1", *args)
+        else
+            HTTP.DELETE(serverPath(), *args)
     }
 
     /**
