@@ -25,22 +25,21 @@ import fi.linuxbox.upcloud.core.*
 /**
  * IP address of a {@link Server}.
  * <p>
- *     The UpCloud network has public and private IP addresses.  Public addresses are exposed to the Internet, and
- *     private addresses are only visible to servers under the same UpCloud account.
+ *     The UpCloud network has public, private, and utility IP addresses.  Public addresses are exposed to the
+ *     Internet, and utility addresses are only visible to servers under the same UpCloud account.
+ *     TODO: describe private addresses.
  * </p>
  * <p>
- *     When a server is created, UpCloud will assign one {@code private} {@code IPv4} address to the server.
- *     That address can not be released, except by deleting the server, and additional {@code private} addresses
+ *     When a server is created, UpCloud will assign one {@code utility} {@code IPv4} address to the server.
+ *     That address can not be released, except by deleting the server, and additional {@code utility} addresses
  *     can not be added.
  * </p>
  * <p>
- *     In addition to the {@code private} address, one server can have 1-5 {@code public} addresses assigned to it.
+ *     In addition to the {@code utility} address, one server can have 1-5 {@code public} addresses assigned to it.
  *     These can be {@code IPv4} or {@code IPv6} addresses.
  * </p>
  * <p>
- *     All IP addresses are always assigned to some server.  IP addresses can not be reserved for later use.
- *     As soon as an IP address is released, either because the server it was assigned to was deleted, or the IP
- *     address was unassigned from a server, the IP address may be reassigned (by UpCloud) to another server.
+ *     TODO: describe floating private addresses.
  * </p>
  *
  * <h4>Listing IP addresses</h4>
@@ -86,6 +85,7 @@ import fi.linuxbox.upcloud.core.*
  * <p>
  *     After server creation, additional IP addresses can be assigned to a server.  Only {@link #family} and
  *     {@link #server} properties are allowed here, since additional {@code private} addresses can not be added.
+ *     TODO: is this still true?
  * </p>
  * <p>
  *     Note that the server must be stopped while adding IP addresses.

@@ -373,7 +373,7 @@ class ResponseFunctionalSpec extends Specification {
                 "ip_addresses": {
                   "ip_address": [
                     {
-                      "access": "private",
+                      "access": "utility",
                       "address": "10.0.0.00",
                       "family" : "IPv4"
                     },
@@ -533,14 +533,14 @@ class ResponseFunctionalSpec extends Specification {
               "ip_addresses": {
                 "ip_address": [
                   {
-                    "access": "private",
+                    "access": "utility",
                     "address": "10.0.0.0",
                     "family": "IPv4",
                     "ptr_record": "",
                     "server": "0053cd80-5945-4105-9081-11192806a8f7"
                   },
                   {
-                    "access": "private",
+                    "access": "utility",
                     "address": "10.0.0.1",
                     "family": "IPv4",
                     "ptr_record": "",
