@@ -70,7 +70,7 @@ class AhcCallback implements FutureCallback<HttpResponse> {
 
         final META meta = new META(status.statusCode, status.reasonPhrase, new AhcHeaders(response), req)
 
-        log.debug("Finished HTTP exchange ($meta)")
+        log.trace("Finished HTTP exchange ($meta)")
         cb.completed(meta, body, null)
     }
 

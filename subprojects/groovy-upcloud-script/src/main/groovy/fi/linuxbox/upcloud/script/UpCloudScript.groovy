@@ -32,6 +32,7 @@ abstract class UpCloudScript extends Script {
     private final ExecutorService executorService
     private final HTTP http
     private final JSON json
+    private boolean closing = false
 
     UpCloudScript() {
         this(new Binding())
@@ -39,7 +40,7 @@ abstract class UpCloudScript extends Script {
 
     UpCloudScript(final Binding binding) {
         super(binding)
-        executorService = Executors.newSingleThreadExecutor()
+        executorService = Executors.newSingleThreadExecutor(new ScriptThreadFactory())
         this.http = new HTTPDecorator(HTTPFactory.create(), executorService)
         this.json = JSONFactory.create()
     }
@@ -48,7 +49,7 @@ abstract class UpCloudScript extends Script {
         final s = new CompletableFutureSession(http, json, username, password)
         s.whenFinished {
             executorService.submit {
-                log.info "Auto-closing"
+                log.trace "Auto-closing"
                 close()
             }
         }
@@ -61,7 +62,6 @@ abstract class UpCloudScript extends Script {
 
     @Override
     Object run() {
-        log.debug("Initializing")
         try {
             executorService.submit { runScript() }
         } catch (final RejectedExecutionException e) {
@@ -69,17 +69,17 @@ abstract class UpCloudScript extends Script {
             log.error("Unable to start the script", e)
         }
 
-        log.debug("Initialization complete")
+        log.trace("Initialization complete")
         boolean ok = false
         try {
             int timeout = 20
-            log.debug("Waiting for termination ($timeout days)")
+            log.trace("Waiting for termination ($timeout days)")
             ok = executorService.awaitTermination(timeout, TimeUnit.DAYS)
         } catch (final InterruptedException ie) {
             log.warn("Executor service interrupted", ie)
         }
         if (ok) {
-            log.debug("Terminated normally")
+            log.trace("Terminated normally")
         } else {
             log.debug("Script timed out")
             throw new RuntimeException(new TimeoutException("Script timed out"))
@@ -89,16 +89,18 @@ abstract class UpCloudScript extends Script {
 
     void runScript() {
         try {
-            log.debug("Script execution beginning")
+            log.trace("Executing top-level code of the script")
             runUpCloudScript()
-            log.debug("Script top-level code finished")
+            log.trace("Top-level code finished")
         } catch (final InterruptedException e) {
-            // Script called close() from the top level code
-            log.debug("Shutting down")
+            // Script called close() from the top level code,
+            // or the interrupt signal was received.
+            if (!closing)
+                log.trace("Interrupted")
             Thread.currentThread().interrupt()
         } catch (final Exception e) {
             // Script threw an exception from the top level code
-            log.error("Closing due to unhandled exception", e)
+            log.error("Shutting down due to unhandled exception", e)
             close()
         }
     }
@@ -107,25 +109,42 @@ abstract class UpCloudScript extends Script {
 
     void close() throws InterruptedException {
         // This is executed in the script thread
+        closing = true
         shutdownExecutorService()
         closeHttp()
-        log.debug("Shutting down")
+        log.trace("Shutting down")
         throw new InterruptedException("shutting down")
     }
 
     private void closeHttp() {
         try {
-            log.debug("Closing HTTP implementation")
+            log.trace("Closing HTTP implementation")
             http.close()
         } catch (final IOException e) {
-            log.warn("Unable to close HTTP", e)
+            log.warn("Unable to close HTTP implementation", e)
         }
     }
 
     private void shutdownExecutorService() {
-        log.debug("Disabling new tasks from being submitted")
+        log.trace("Disabling new tasks from being submitted")
         executorService.shutdown()
-        log.debug("Cancelling currently executing task")
+        log.trace("Cancelling currently executing task")
         executorService.shutdownNow()
+    }
+
+    /**
+     * Otherwise a functional equivalent of DefaultThreadFactory, but uses simpler name.
+     */
+    private static class ScriptThreadFactory implements ThreadFactory {
+        Thread newThread(Runnable r) {
+            final SecurityManager s = System.securityManager
+            final ThreadGroup group = (s != null) ? s.threadGroup : Thread.currentThread().threadGroup
+            final Thread t = new Thread(group, r, "upcloud-script",0)
+            if (t.isDaemon())
+                t.setDaemon(false);
+            if (t.getPriority() != Thread.NORM_PRIORITY)
+                t.setPriority(Thread.NORM_PRIORITY);
+            return t
+        }
     }
 }

@@ -41,9 +41,9 @@ class ResourceLoader {
         Class clazz
         try {
             clazz = gcl.loadClass("${resourcePackageName}.$resourceClassName")
-            log.debug("Loaded resource $resourceClassName")
+            log.trace("Loaded resource $resourceClassName")
         } catch (final ClassNotFoundException ignored) {
-            log.info("Generating resource $resourceClassName")
+            log.trace("Generating resource $resourceClassName")
             clazz = gcl.parseClass("""
                                    package ${resourcePackageName}
 

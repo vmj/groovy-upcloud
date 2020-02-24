@@ -60,7 +60,7 @@ class AhcHTTP implements HTTP {
 
     @Override
     void close() throws IOException {
-        log.debug("Closing Apache HTTP Async Client")
+        log.trace("Closing Apache HTTP Async Client")
         client.close()
     }
 
@@ -98,7 +98,7 @@ class AhcHTTP implements HTTP {
             req
         }
 
-        log.debug("Starting HTTP exchange ($request)")
+        log.trace("Starting HTTP exchange ($request)")
         client.execute(HttpHost.create(request.host), req, new AhcCallback(request, cb))
     }
 
