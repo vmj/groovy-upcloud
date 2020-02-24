@@ -32,7 +32,7 @@ class UpCloudContract {
     /**
      * UpCloud API context path.
      */
-    static final String API_VERSION = '/1.2/'
+    static final String API_VERSION = '/1.3/'
 
     /**
      * Construct request headers for a session.
