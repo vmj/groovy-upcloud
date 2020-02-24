@@ -24,11 +24,18 @@ import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
 /**
  * IP address related APIs.
  * <p>
- *     This class provides following APIs:
+ *     This trait provides APIs for
+ *     {@link #load([Ljava.lang.Object;) loading},
+ *     {@link #update(Resource,[Ljava.lang.Object;) modifying}, and
+ *     {@link #delete([Ljava.lang.Object;) deleting}
+ *     IP addresses.
+ *     For listing all IP addresses associated with the UpCloud account, see
+ *     {@link fi.linuxbox.upcloud.api.UpCloudApi#ipAddresses([Ljava.lang.Object;) UpCloudApi::ipAddresses} method documentation.
  * </p>
- * <ul>
- *     <li>loading, modifying, and deleting IP addresses</li>
- * </ul>
+ * <p>
+ *     To obtain an instance of this trait, one would typically take an instance of
+ *     {@link fi.linuxbox.upcloud.resource.IpAddress}
+ * </p>
  * <p>
  *     This trait can be implemented by any class that has
  * </p>

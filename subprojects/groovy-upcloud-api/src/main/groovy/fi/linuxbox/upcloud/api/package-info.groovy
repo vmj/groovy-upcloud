@@ -16,6 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * Provides UpCloud APIs.
+ * UpCloud API traits.
  */
 package fi.linuxbox.upcloud.api
