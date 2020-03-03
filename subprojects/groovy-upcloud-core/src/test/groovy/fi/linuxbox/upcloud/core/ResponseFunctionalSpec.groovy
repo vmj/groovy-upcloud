@@ -24,6 +24,7 @@ import fi.linuxbox.upcloud.resource.Firewall
 import fi.linuxbox.upcloud.resource.FirewallRule
 import fi.linuxbox.upcloud.resource.IpAddress
 import fi.linuxbox.upcloud.resource.Plan
+import fi.linuxbox.upcloud.resource.ResourceLimits
 import fi.linuxbox.upcloud.resource.Server
 import fi.linuxbox.upcloud.resource.ServerPlan_2xCPU_2GB
 import fi.linuxbox.upcloud.resource.ServerSize
@@ -70,10 +71,63 @@ class ResponseFunctionalSpec extends Specification {
         when:
         def resp = load("""
             {
-                "account": {
-                    "credits": "10000",
-                    "username": "username"
+              "account": {
+                "credits": 9972.2324,
+                "username": "username",
+                "resource_limits": {
+                  "cores": "200",
+                  "detached_floating_ips": 10,
+                  "memory": 1048576,
+                  "networks": 100,
+                  "public_ipv4": 100,
+                  "public_ipv6": 100,
+                  "storage_hdd": 10240,
+                  "storage_ssd": 10240
                 }
+              }
+            }
+            """)
+
+        then:
+        resp?.account instanceof Account
+        resp.account.credits == "9972.2324"
+        resp.account.resourceLimits instanceof ResourceLimits
+        resp.account.resourceLimits.cores == "200"
+    }
+
+    def "trial account JSON to Account"() {
+        when:
+        def resp = load("""
+            {
+              "account": {
+                "credits": 9972.2324,
+                "username": "username",
+                "trial_resource_limits": {
+                  "trial_firewall_restrictions": 1,
+                  "trial_period_length": 90,
+                  "trial_server_max_cores": 1,
+                  "trial_server_max_memory": 1024,
+                  "trial_server_max_public_ipv4": 1,
+                  "trial_server_max_public_ipv6": 1,
+                  "trial_storage_max_size": 30,
+                  "trial_storage_tier": "maxiops",
+                  "trial_total_detached_floating_ips": 1,
+                  "trial_total_networks": 1,
+                  "trial_total_public_ipv4": 1,
+                  "trial_total_public_ipv6": 1,
+                  "trial_total_server_cores": 1,
+                  "trial_total_server_memory": 1024,
+                  "trial_total_servers": 1,
+                  "trial_total_storage_size": 30,
+                  "trial_total_storages": 1,
+                  "user_detached_floating_ips": null,
+                  "user_networks": null,
+                  "user_public_ipv4": null,
+                  "user_public_ipv6": null,
+                  "user_server_cores": null,
+                  "user_server_memory": null
+                }
+              }
             }
             """)
 

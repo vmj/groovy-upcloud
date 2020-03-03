@@ -182,6 +182,16 @@ class Builder extends ResourceBuilder {
         publicIpv6BandwidthOut(EMPTY_MAP, closure)
     }
 
+    static ResourceLimits resourceLimits(Map kwargs,
+                                                         @DelegatesTo(strategy = DELEGATE_FIRST, value = ResourceLimits) Closure closure = null) {
+        configure(new ResourceLimits(kwargs), closure)
+    }
+
+    static ResourceLimits resourceLimits(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ResourceLimits) Closure closure = null) {
+        resourceLimits(EMPTY_MAP, closure)
+    }
+
     /**
      * Builder method for a {@link fi.linuxbox.upcloud.resource.Server}.
      * <p>
@@ -313,6 +323,14 @@ class Builder extends ResourceBuilder {
 
     static Tag tag(@DelegatesTo(strategy = DELEGATE_FIRST, value = Tag) Closure closure = null) {
         tag(EMPTY_MAP, closure)
+    }
+
+    static TrialResourceLimits trialResourceLimits(Map kwargs, @DelegatesTo(strategy = DELEGATE_FIRST, value = TrialResourceLimits) Closure closure = null) {
+        configure(new TrialResourceLimits(kwargs), closure)
+    }
+
+    static TrialResourceLimits trialResourceLimits(@DelegatesTo(strategy = DELEGATE_FIRST, value = TrialResourceLimits) Closure closure = null) {
+        trialResourceLimits(EMPTY_MAP, closure)
     }
 
     static Zone zone(Map kwargs, @DelegatesTo(strategy = DELEGATE_FIRST, value = Zone) Closure closure = null) {
