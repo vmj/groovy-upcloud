@@ -274,4 +274,19 @@ class Zone extends Resource {
      */
     ServerPlan_2xCPU_2GB serverPlan_20xCPU_128GB
 
+    /**
+     * Private network price for a this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    NetworkPrivateVlan networkPrivateVlan
+
+    /**
+     * Private template price for a this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    StorageTemplate storageTemplate
 }

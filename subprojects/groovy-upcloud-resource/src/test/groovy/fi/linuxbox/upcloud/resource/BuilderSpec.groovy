@@ -445,6 +445,40 @@ class BuilderSpec extends Specification {
         loginUser.HTTP == session
     }
 
+    def "networkPrivateVlan builder"() {
+        when:
+        def networkPrivateVlan = networkPrivateVlan {}
+
+        then:
+        networkPrivateVlan instanceof NetworkPrivateVlan
+    }
+
+    def "networkPrivateVlan without config"() {
+        when:
+        def networkPrivateVlan = networkPrivateVlan()
+
+        then:
+        networkPrivateVlan instanceof NetworkPrivateVlan
+    }
+
+    def "networkPrivateVlan with kwargs and config"() {
+        when:
+        def networkPrivateVlan = networkPrivateVlan HTTP: session, {}
+
+        then:
+        networkPrivateVlan instanceof NetworkPrivateVlan
+        networkPrivateVlan.HTTP == session
+    }
+
+    def "networkPrivateVlan with kwargs and no config"() {
+        when:
+        def networkPrivateVlan = networkPrivateVlan HTTP: session
+
+        then:
+        networkPrivateVlan instanceof NetworkPrivateVlan
+        networkPrivateVlan.HTTP == session
+    }
+
     def "plan builder"() {
         when:
         def plan = plan {}
@@ -1328,6 +1362,40 @@ class BuilderSpec extends Specification {
         then:
         storageMaxiops instanceof StorageMaxiops
         storageMaxiops.HTTP == session
+    }
+
+    def "storageTemplate builder"() {
+        when:
+        def storageTemplate = storageTemplate {}
+
+        then:
+        storageTemplate instanceof StorageTemplate
+    }
+
+    def "storageTemplate without config"() {
+        when:
+        def storageTemplate = storageTemplate()
+
+        then:
+        storageTemplate instanceof StorageTemplate
+    }
+
+    def "storageTemplate with kwargs and config"() {
+        when:
+        def storageTemplate = storageTemplate HTTP: session, {}
+
+        then:
+        storageTemplate instanceof StorageTemplate
+        storageTemplate.HTTP == session
+    }
+
+    def "storageTemplate with kwargs and no config"() {
+        when:
+        def storageTemplate = storageTemplate HTTP: session
+
+        then:
+        storageTemplate instanceof StorageTemplate
+        storageTemplate.HTTP == session
     }
 
     def "tag builder"() {

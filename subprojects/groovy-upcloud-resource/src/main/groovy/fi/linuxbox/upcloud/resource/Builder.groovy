@@ -134,6 +134,15 @@ class Builder extends ResourceBuilder {
         loginUser(EMPTY_MAP, closure)
     }
 
+    static NetworkPrivateVlan networkPrivateVlan(Map kwargs,
+                               @DelegatesTo(strategy = DELEGATE_FIRST, value = NetworkPrivateVlan) Closure closure = null) {
+        configure(new NetworkPrivateVlan(kwargs), closure)
+    }
+
+    static NetworkPrivateVlan networkPrivateVlan(@DelegatesTo(strategy = DELEGATE_FIRST, value = NetworkPrivateVlan) Closure closure = null) {
+        networkPrivateVlan(EMPTY_MAP, closure)
+    }
+
     static Plan plan(Map kwargs, @DelegatesTo(strategy = DELEGATE_FIRST, value = Plan) Closure closure = null) {
         configure(new Plan(kwargs), closure)
     }
@@ -405,6 +414,16 @@ class Builder extends ResourceBuilder {
     static StorageMaxiops storageMaxiops(
             @DelegatesTo(strategy = DELEGATE_FIRST, value = StorageMaxiops) Closure closure = null) {
         storageMaxiops(EMPTY_MAP, closure)
+    }
+
+    static StorageTemplate storageTemplate(Map kwargs,
+                                         @DelegatesTo(strategy = DELEGATE_FIRST, value = StorageTemplate) Closure closure = null) {
+        configure(new StorageTemplate(kwargs), closure)
+    }
+
+    static StorageTemplate storageTemplate(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = StorageTemplate) Closure closure = null) {
+        storageTemplate(EMPTY_MAP, closure)
     }
 
     static Tag tag(Map kwargs, @DelegatesTo(strategy = DELEGATE_FIRST, value = Tag) Closure closure = null) {
