@@ -18,6 +18,7 @@
 package fi.linuxbox.upcloud.core
 
 import fi.linuxbox.upcloud.http.spi.META
+import groovy.util.logging.Slf4j
 
 import static fi.linuxbox.upcloud.core.NamingContract.javaClassOrPropertyToJsonProperty
 import static fi.linuxbox.upcloud.core.NamingContract.javaClassToJavaProperty
@@ -112,6 +113,7 @@ import static fi.linuxbox.upcloud.core.ResourceUtil.resourceProperties
  *     as any other resource class.
  * </p>
  */
+@Slf4j
 class Resource {
     final HTTPFacade<?> HTTP
     final META META
@@ -133,6 +135,8 @@ class Resource {
 
         final Map<String, ?> map = kwargs.remove('repr') as Map<String, ?>
         map?.each { final String key, final Object value ->
+            if (value == null)
+                return
             Object propertyValue
             switch (value) {
                 case ListWrapper:
@@ -152,7 +156,23 @@ class Resource {
                     propertyValue = value
                     break
             }
-            this.metaClass.setProperty(this, jsonPropertyToJavaProperty(key), propertyValue)
+
+            final propertyName = jsonPropertyToJavaProperty(key)
+            final property = this.metaClass.getMetaProperty(propertyName)
+            if (property == null) {
+                if (this.class !== Resource)
+                    log.trace("Assigning dynamic property $propertyName for class ${this.class.simpleName}")
+                this.metaClass.setProperty(this, propertyName, propertyValue)
+            } else if (!property.type.isAssignableFrom(propertyValue.class)) {
+                // Try to do Groovy type conversion, like Integer to Long or BigDecimal
+                final v = propertyValue.asType(property.type)
+                if (v != null)
+                    this.metaClass.setProperty(this, propertyName, v)
+                else
+                    log.warn("${this.class.simpleName} property $propertyName is of type ${property.type.simpleName}, got ${propertyValue.class.simpleName}")
+            } else {
+                this.metaClass.setProperty(this, propertyName, propertyValue)
+            }
         }
     }
 

@@ -90,7 +90,7 @@ class ResponseFunctionalSpec extends Specification {
 
         then:
         resp?.account instanceof Account
-        resp.account.credits == "9972.2324"
+        resp.account.credits == 9972.2324
         resp.account.resourceLimits instanceof ResourceLimits
         resp.account.resourceLimits.cores == "200"
     }
@@ -365,7 +365,7 @@ class ResponseFunctionalSpec extends Specification {
                   {
                     "core_number": "1",
                     "hostname": "fi.example.com",
-                    "licence" : 0,
+                    "license" : 0,
                     "memory_amount": "1024",
                     "plan" : "1xCPU-1GB",
                     "plan_ipv4_bytes" : "34253332",
@@ -384,7 +384,7 @@ class ResponseFunctionalSpec extends Specification {
                   {
                     "core_number": "1",
                     "hostname": "uk.example.com",
-                    "licence" : 0,
+                    "license" : 0,
                     "memory_amount": "512",
                     "plan" : "custom",
                     "state": "stopped",

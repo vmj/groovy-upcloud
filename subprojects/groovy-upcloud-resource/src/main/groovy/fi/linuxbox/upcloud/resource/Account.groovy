@@ -37,7 +37,7 @@ class Account extends Resource {
      *     The API users do not have their own credits.
      * </p>
      */
-    String credits
+    BigDecimal credits
     /**
      * The UpCloud API username.
      * <p>

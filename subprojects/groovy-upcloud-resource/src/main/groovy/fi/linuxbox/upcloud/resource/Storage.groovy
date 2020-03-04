@@ -105,7 +105,7 @@ class Storage extends Resource {
      *     modifying, or cloning a storage.
      * </p>
      */
-    Integer licence
+    Integer license
     /**
      * Server UUIDs of servers where this storage is attached.
      * <p>
