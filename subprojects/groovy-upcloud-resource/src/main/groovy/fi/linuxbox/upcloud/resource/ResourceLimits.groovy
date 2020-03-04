@@ -22,38 +22,41 @@ import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 /**
- * UpCloud API account information.
- * <p>
- *     An instance of this is typically fetched from {@link fi.linuxbox.upcloud.api.UpCloudApi#account(def) Account API}.
- * </p>
+ * Resource limits of an non-trial {@link Account}.
  */
 @CompileStatic
 @InheritConstructors
-class Account extends Resource {
+class ResourceLimits extends Resource {
     /**
-     * Number of credits still available on the UpCloud account.
-     * <p>
-     *     The credits correspond to the super-account of the UpCloud API account.
-     *     The API users do not have their own credits.
-     * </p>
+     * Maximum number of CPU cores.
      */
-    String credits
+    String cores
     /**
-     * The UpCloud API username.
-     * <p>
-     *     This is typically the sub-account of the UpCloud account.
-     * </p>
+     * Maximum number of detached floating IP addresses.
      */
-    String username
+    Long detachedFloatingIps
     /**
-     * Resource limits of an non-trial account.
+     * Maximum amount of memory in MiB.
      */
-    ResourceLimits resourceLimits
+    Long memory
     /**
-     * Resource limits of an trial account.
-     * <p>
-     *     This is not available for non-trial accounts.
-     * </p>
+     * Maximum number of networks.
      */
-    TrialResourceLimits trialResourceLimits
+    Long networks
+    /**
+     * Maximum number of IPv4 addresses.
+     */
+    Long publicIpv4
+    /**
+     * Maximum number of IPv6 addresses.
+     */
+    Long publicIpv6
+    /**
+     * Maximum amount of HDD storage space in MiB.
+     */
+    Long storageHdd
+    /**
+     * Maximum amount of SSD storage space in MiB.
+     */
+    Long storageSsd
 }

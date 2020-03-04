@@ -615,6 +615,40 @@ class BuilderSpec extends Specification {
         publicIpv6BandwidthOut.HTTP == session
     }
 
+    def "resourceLimits builder"() {
+        when:
+        def resourceLimits = resourceLimits {}
+
+        then:
+        resourceLimits instanceof ResourceLimits
+    }
+
+    def "resourceLimits without config"() {
+        when:
+        def resourceLimits = resourceLimits()
+
+        then:
+        resourceLimits instanceof ResourceLimits
+    }
+
+    def "resourceLimits with kwargs and config"() {
+        when:
+        def resourceLimits = resourceLimits HTTP: session, {}
+
+        then:
+        resourceLimits instanceof ResourceLimits
+        resourceLimits.HTTP == session
+    }
+
+    def "resourceLimits with kwargs and no config"() {
+        when:
+        def resourceLimits = resourceLimits HTTP: session
+
+        then:
+        resourceLimits instanceof ResourceLimits
+        resourceLimits.HTTP == session
+    }
+
     def "server builder"() {
         when:
         def server = server {}
@@ -1022,6 +1056,40 @@ class BuilderSpec extends Specification {
         then:
         tag instanceof Tag
         tag.HTTP == session
+    }
+
+    def "trialResourceLimits builder"() {
+        when:
+        def trialResourceLimits = trialResourceLimits {}
+
+        then:
+        trialResourceLimits instanceof TrialResourceLimits
+    }
+
+    def "trialResourceLimits without config"() {
+        when:
+        def trialResourceLimits = trialResourceLimits()
+
+        then:
+        trialResourceLimits instanceof TrialResourceLimits
+    }
+
+    def "trialResourceLimits with kwargs and config"() {
+        when:
+        def trialResourceLimits = trialResourceLimits HTTP: session, {}
+
+        then:
+        trialResourceLimits instanceof TrialResourceLimits
+        trialResourceLimits.HTTP == session
+    }
+
+    def "trialResourceLimits with kwargs and no config"() {
+        when:
+        def trialResourceLimits = trialResourceLimits HTTP: session
+
+        then:
+        trialResourceLimits instanceof TrialResourceLimits
+        trialResourceLimits.HTTP == session
     }
 
     def "zone builder"() {

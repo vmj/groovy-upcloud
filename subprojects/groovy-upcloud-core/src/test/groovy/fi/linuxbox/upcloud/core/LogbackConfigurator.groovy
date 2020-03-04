@@ -33,7 +33,7 @@ class LogbackConfigurator extends BasicConfigurator {
     void configure(final LoggerContext loggerContext) {
         super.configure loggerContext
 
-        loggerContext.getLogger(this.class.package.name).level = DEBUG
+        loggerContext.getLogger(this.class.package.name).level = TRACE
 
         StatusPrinter.print loggerContext
         loggerContext.statusManager.add new OnConsoleStatusListener()
