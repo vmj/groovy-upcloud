@@ -195,6 +195,14 @@ class Zone extends Resource {
     ServerPlan_1xCPU_1GB serverPlan_1xCPU_1GB
 
     /**
+     * Fixed server configuration price for 1CPU/2GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_1xCPU_1GB serverPlan_1xCPU_2GB
+
+    /**
      * Fixed server configuration price for 2CPU/2GB plan for this zone.
      * <p>
      *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
@@ -202,4 +210,83 @@ class Zone extends Resource {
      */
     ServerPlan_2xCPU_2GB serverPlan_2xCPU_2GB
 
+    /**
+     * Fixed server configuration price for 2CPU/4GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_2xCPU_4GB
+
+    /**
+     * Fixed server configuration price for 4CPU/8GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_4xCPU_8GB
+
+    /**
+     * Fixed server configuration price for 6CPU/16GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_6xCPU_16GB
+
+    /**
+     * Fixed server configuration price for 8CPU/32GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_8xCPU_32GB
+
+    /**
+     * Fixed server configuration price for 12CPU/48GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_12xCPU_48GB
+
+    /**
+     * Fixed server configuration price for 16CPU/64GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_16xCPU_64GB
+
+    /**
+     * Fixed server configuration price for 20CPU/96GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_20xCPU_96GB
+
+    /**
+     * Fixed server configuration price for 20CPU/128GB plan for this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    ServerPlan_2xCPU_2GB serverPlan_20xCPU_128GB
+
+    /**
+     * Private network price for a this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    NetworkPrivateVlan networkPrivateVlan
+
+    /**
+     * Private template price for a this zone.
+     * <p>
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     * </p>
+     */
+    StorageTemplate storageTemplate
 }
