@@ -785,6 +785,40 @@ class BuilderSpec extends Specification {
         serverPlan_1xCPU_1GB.HTTP == session
     }
 
+    def "serverPlan_1xCPU_2GB builder"() {
+        when:
+        def serverPlan_1xCPU_2GB = serverPlan_1xCPU_2GB {}
+
+        then:
+        serverPlan_1xCPU_2GB instanceof ServerPlan_1xCPU_2GB
+    }
+
+    def "serverPlan_1xCPU_2GB without config"() {
+        when:
+        def serverPlan_1xCPU_2GB = serverPlan_1xCPU_2GB()
+
+        then:
+        serverPlan_1xCPU_2GB instanceof ServerPlan_1xCPU_2GB
+    }
+
+    def "serverPlan_1xCPU_2GB with kwargs and config"() {
+        when:
+        def serverPlan_1xCPU_2GB = serverPlan_1xCPU_2GB HTTP: session, {}
+
+        then:
+        serverPlan_1xCPU_2GB instanceof ServerPlan_1xCPU_2GB
+        serverPlan_1xCPU_2GB.HTTP == session
+    }
+
+    def "serverPlan_1xCPU_2GB with kwargs and no config"() {
+        when:
+        def serverPlan_1xCPU_2GB = serverPlan_1xCPU_2GB HTTP: session
+
+        then:
+        serverPlan_1xCPU_2GB instanceof ServerPlan_1xCPU_2GB
+        serverPlan_1xCPU_2GB.HTTP == session
+    }
+
     def "serverPlan_2xCPU_2GB builder"() {
         when:
         def serverPlan_2xCPU_2GB = serverPlan_2xCPU_2GB {}
@@ -817,6 +851,278 @@ class BuilderSpec extends Specification {
         then:
         serverPlan_2xCPU_2GB instanceof ServerPlan_2xCPU_2GB
         serverPlan_2xCPU_2GB.HTTP == session
+    }
+
+    def "serverPlan_2xCPU_4GB builder"() {
+        when:
+        def serverPlan_2xCPU_4GB = serverPlan_2xCPU_4GB {}
+
+        then:
+        serverPlan_2xCPU_4GB instanceof ServerPlan_2xCPU_4GB
+    }
+
+    def "serverPlan_2xCPU_4GB without config"() {
+        when:
+        def serverPlan_2xCPU_4GB = serverPlan_2xCPU_4GB()
+
+        then:
+        serverPlan_2xCPU_4GB instanceof ServerPlan_2xCPU_4GB
+    }
+
+    def "serverPlan_2xCPU_4GB with kwargs and config"() {
+        when:
+        def serverPlan_2xCPU_4GB = serverPlan_2xCPU_4GB HTTP: session, {}
+
+        then:
+        serverPlan_2xCPU_4GB instanceof ServerPlan_2xCPU_4GB
+        serverPlan_2xCPU_4GB.HTTP == session
+    }
+
+    def "serverPlan_2xCPU_4GB with kwargs and no config"() {
+        when:
+        def serverPlan_2xCPU_4GB = serverPlan_2xCPU_4GB HTTP: session
+
+        then:
+        serverPlan_2xCPU_4GB instanceof ServerPlan_2xCPU_4GB
+        serverPlan_2xCPU_4GB.HTTP == session
+    }
+
+    def "serverPlan_4xCPU_8GB builder"() {
+        when:
+        def serverPlan_4xCPU_8GB = serverPlan_4xCPU_8GB {}
+
+        then:
+        serverPlan_4xCPU_8GB instanceof ServerPlan_4xCPU_8GB
+    }
+
+    def "serverPlan_4xCPU_8GB without config"() {
+        when:
+        def serverPlan_4xCPU_8GB = serverPlan_4xCPU_8GB()
+
+        then:
+        serverPlan_4xCPU_8GB instanceof ServerPlan_4xCPU_8GB
+    }
+
+    def "serverPlan_4xCPU_8GB with kwargs and config"() {
+        when:
+        def serverPlan_4xCPU_8GB = serverPlan_4xCPU_8GB HTTP: session, {}
+
+        then:
+        serverPlan_4xCPU_8GB instanceof ServerPlan_4xCPU_8GB
+        serverPlan_4xCPU_8GB.HTTP == session
+    }
+
+    def "serverPlan_4xCPU_8GB with kwargs and no config"() {
+        when:
+        def serverPlan_4xCPU_8GB = serverPlan_4xCPU_8GB HTTP: session
+
+        then:
+        serverPlan_4xCPU_8GB instanceof ServerPlan_4xCPU_8GB
+        serverPlan_4xCPU_8GB.HTTP == session
+    }
+
+    def "serverPlan_6xCPU_16GB builder"() {
+        when:
+        def serverPlan_6xCPU_16GB = serverPlan_6xCPU_16GB {}
+
+        then:
+        serverPlan_6xCPU_16GB instanceof ServerPlan_6xCPU_16GB
+    }
+
+    def "serverPlan_6xCPU_16GB without config"() {
+        when:
+        def serverPlan_6xCPU_16GB = serverPlan_6xCPU_16GB()
+
+        then:
+        serverPlan_6xCPU_16GB instanceof ServerPlan_6xCPU_16GB
+    }
+
+    def "serverPlan_6xCPU_16GB with kwargs and config"() {
+        when:
+        def serverPlan_6xCPU_16GB = serverPlan_6xCPU_16GB HTTP: session, {}
+
+        then:
+        serverPlan_6xCPU_16GB instanceof ServerPlan_6xCPU_16GB
+        serverPlan_6xCPU_16GB.HTTP == session
+    }
+
+    def "serverPlan_6xCPU_16GB with kwargs and no config"() {
+        when:
+        def serverPlan_6xCPU_16GB = serverPlan_6xCPU_16GB HTTP: session
+
+        then:
+        serverPlan_6xCPU_16GB instanceof ServerPlan_6xCPU_16GB
+        serverPlan_6xCPU_16GB.HTTP == session
+    }
+
+    def "serverPlan_8xCPU_32GB builder"() {
+        when:
+        def serverPlan_8xCPU_32GB = serverPlan_8xCPU_32GB {}
+
+        then:
+        serverPlan_8xCPU_32GB instanceof ServerPlan_8xCPU_32GB
+    }
+
+    def "serverPlan_8xCPU_32GB without config"() {
+        when:
+        def serverPlan_8xCPU_32GB = serverPlan_8xCPU_32GB()
+
+        then:
+        serverPlan_8xCPU_32GB instanceof ServerPlan_8xCPU_32GB
+    }
+
+    def "serverPlan_8xCPU_32GB with kwargs and config"() {
+        when:
+        def serverPlan_8xCPU_32GB = serverPlan_8xCPU_32GB HTTP: session, {}
+
+        then:
+        serverPlan_8xCPU_32GB instanceof ServerPlan_8xCPU_32GB
+        serverPlan_8xCPU_32GB.HTTP == session
+    }
+
+    def "serverPlan_8xCPU_32GB with kwargs and no config"() {
+        when:
+        def serverPlan_8xCPU_32GB = serverPlan_8xCPU_32GB HTTP: session
+
+        then:
+        serverPlan_8xCPU_32GB instanceof ServerPlan_8xCPU_32GB
+        serverPlan_8xCPU_32GB.HTTP == session
+    }
+
+    def "serverPlan_12xCPU_48GB builder"() {
+        when:
+        def serverPlan_12xCPU_48GB = serverPlan_12xCPU_48GB {}
+
+        then:
+        serverPlan_12xCPU_48GB instanceof ServerPlan_12xCPU_48GB
+    }
+
+    def "serverPlan_12xCPU_48GB without config"() {
+        when:
+        def serverPlan_12xCPU_48GB = serverPlan_12xCPU_48GB()
+
+        then:
+        serverPlan_12xCPU_48GB instanceof ServerPlan_12xCPU_48GB
+    }
+
+    def "serverPlan_12xCPU_48GB with kwargs and config"() {
+        when:
+        def serverPlan_12xCPU_48GB = serverPlan_12xCPU_48GB HTTP: session, {}
+
+        then:
+        serverPlan_12xCPU_48GB instanceof ServerPlan_12xCPU_48GB
+        serverPlan_12xCPU_48GB.HTTP == session
+    }
+
+    def "serverPlan_12xCPU_48GB with kwargs and no config"() {
+        when:
+        def serverPlan_12xCPU_48GB = serverPlan_12xCPU_48GB HTTP: session
+
+        then:
+        serverPlan_12xCPU_48GB instanceof ServerPlan_12xCPU_48GB
+        serverPlan_12xCPU_48GB.HTTP == session
+    }
+
+    def "serverPlan_16xCPU_64GB builder"() {
+        when:
+        def serverPlan_16xCPU_64GB = serverPlan_16xCPU_64GB {}
+
+        then:
+        serverPlan_16xCPU_64GB instanceof ServerPlan_16xCPU_64GB
+    }
+
+    def "serverPlan_16xCPU_64GB without config"() {
+        when:
+        def serverPlan_16xCPU_64GB = serverPlan_16xCPU_64GB()
+
+        then:
+        serverPlan_16xCPU_64GB instanceof ServerPlan_16xCPU_64GB
+    }
+
+    def "serverPlan_16xCPU_64GB with kwargs and config"() {
+        when:
+        def serverPlan_16xCPU_64GB = serverPlan_16xCPU_64GB HTTP: session, {}
+
+        then:
+        serverPlan_16xCPU_64GB instanceof ServerPlan_16xCPU_64GB
+        serverPlan_16xCPU_64GB.HTTP == session
+    }
+
+    def "serverPlan_16xCPU_64GB with kwargs and no config"() {
+        when:
+        def serverPlan_16xCPU_64GB = serverPlan_16xCPU_64GB HTTP: session
+
+        then:
+        serverPlan_16xCPU_64GB instanceof ServerPlan_16xCPU_64GB
+        serverPlan_16xCPU_64GB.HTTP == session
+    }
+
+    def "serverPlan_20xCPU_96GB builder"() {
+        when:
+        def serverPlan_20xCPU_96GB = serverPlan_20xCPU_96GB {}
+
+        then:
+        serverPlan_20xCPU_96GB instanceof ServerPlan_20xCPU_96GB
+    }
+
+    def "serverPlan_20xCPU_96GB without config"() {
+        when:
+        def serverPlan_20xCPU_96GB = serverPlan_20xCPU_96GB()
+
+        then:
+        serverPlan_20xCPU_96GB instanceof ServerPlan_20xCPU_96GB
+    }
+
+    def "serverPlan_20xCPU_96GB with kwargs and config"() {
+        when:
+        def serverPlan_20xCPU_96GB = serverPlan_20xCPU_96GB HTTP: session, {}
+
+        then:
+        serverPlan_20xCPU_96GB instanceof ServerPlan_20xCPU_96GB
+        serverPlan_20xCPU_96GB.HTTP == session
+    }
+
+    def "serverPlan_20xCPU_96GB with kwargs and no config"() {
+        when:
+        def serverPlan_20xCPU_96GB = serverPlan_20xCPU_96GB HTTP: session
+
+        then:
+        serverPlan_20xCPU_96GB instanceof ServerPlan_20xCPU_96GB
+        serverPlan_20xCPU_96GB.HTTP == session
+    }
+
+    def "serverPlan_20xCPU_128GB builder"() {
+        when:
+        def serverPlan_20xCPU_128GB = serverPlan_20xCPU_128GB {}
+
+        then:
+        serverPlan_20xCPU_128GB instanceof ServerPlan_20xCPU_128GB
+    }
+
+    def "serverPlan_20xCPU_128GB without config"() {
+        when:
+        def serverPlan_20xCPU_128GB = serverPlan_20xCPU_128GB()
+
+        then:
+        serverPlan_20xCPU_128GB instanceof ServerPlan_20xCPU_128GB
+    }
+
+    def "serverPlan_20xCPU_128GB with kwargs and config"() {
+        when:
+        def serverPlan_20xCPU_128GB = serverPlan_20xCPU_128GB HTTP: session, {}
+
+        then:
+        serverPlan_20xCPU_128GB instanceof ServerPlan_20xCPU_128GB
+        serverPlan_20xCPU_128GB.HTTP == session
+    }
+
+    def "serverPlan_20xCPU_128GB with kwargs and no config"() {
+        when:
+        def serverPlan_20xCPU_128GB = serverPlan_20xCPU_128GB HTTP: session
+
+        then:
+        serverPlan_20xCPU_128GB instanceof ServerPlan_20xCPU_128GB
+        serverPlan_20xCPU_128GB.HTTP == session
     }
 
     def "serverSize builder"() {

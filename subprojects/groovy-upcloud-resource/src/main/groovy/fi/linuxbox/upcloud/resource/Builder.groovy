@@ -250,6 +250,16 @@ class Builder extends ResourceBuilder {
         serverPlan_1xCPU_1GB(EMPTY_MAP, closure)
     }
 
+    static ServerPlan_1xCPU_2GB serverPlan_1xCPU_2GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_1xCPU_2GB) Closure closure = null) {
+        configure(new ServerPlan_1xCPU_2GB(kwargs), closure)
+    }
+
+    static ServerPlan_1xCPU_2GB serverPlan_1xCPU_2GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_1xCPU_2GB) Closure closure = null) {
+        serverPlan_1xCPU_2GB(EMPTY_MAP, closure)
+    }
+
     static ServerPlan_2xCPU_2GB serverPlan_2xCPU_2GB(Map kwargs,
                                                      @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_2xCPU_2GB) Closure closure = null) {
         configure(new ServerPlan_2xCPU_2GB(kwargs), closure)
@@ -258,6 +268,86 @@ class Builder extends ResourceBuilder {
     static ServerPlan_2xCPU_2GB serverPlan_2xCPU_2GB(
             @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_2xCPU_2GB) Closure closure = null) {
         serverPlan_2xCPU_2GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_2xCPU_4GB serverPlan_2xCPU_4GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_2xCPU_4GB) Closure closure = null) {
+        configure(new ServerPlan_2xCPU_4GB(kwargs), closure)
+    }
+
+    static ServerPlan_2xCPU_4GB serverPlan_2xCPU_4GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_2xCPU_4GB) Closure closure = null) {
+        serverPlan_2xCPU_4GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_4xCPU_8GB serverPlan_4xCPU_8GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_4xCPU_8GB) Closure closure = null) {
+        configure(new ServerPlan_4xCPU_8GB(kwargs), closure)
+    }
+
+    static ServerPlan_4xCPU_8GB serverPlan_4xCPU_8GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_4xCPU_8GB) Closure closure = null) {
+        serverPlan_4xCPU_8GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_6xCPU_16GB serverPlan_6xCPU_16GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_6xCPU_16GB) Closure closure = null) {
+        configure(new ServerPlan_6xCPU_16GB(kwargs), closure)
+    }
+
+    static ServerPlan_6xCPU_16GB serverPlan_6xCPU_16GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_6xCPU_16GB) Closure closure = null) {
+        serverPlan_6xCPU_16GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_8xCPU_32GB serverPlan_8xCPU_32GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_8xCPU_32GB) Closure closure = null) {
+        configure(new ServerPlan_8xCPU_32GB(kwargs), closure)
+    }
+
+    static ServerPlan_8xCPU_32GB serverPlan_8xCPU_32GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_8xCPU_32GB) Closure closure = null) {
+        serverPlan_8xCPU_32GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_12xCPU_48GB serverPlan_12xCPU_48GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_12xCPU_48GB) Closure closure = null) {
+        configure(new ServerPlan_12xCPU_48GB(kwargs), closure)
+    }
+
+    static ServerPlan_12xCPU_48GB serverPlan_12xCPU_48GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_12xCPU_48GB) Closure closure = null) {
+        serverPlan_12xCPU_48GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_16xCPU_64GB serverPlan_16xCPU_64GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_16xCPU_64GB) Closure closure = null) {
+        configure(new ServerPlan_16xCPU_64GB(kwargs), closure)
+    }
+
+    static ServerPlan_16xCPU_64GB serverPlan_16xCPU_64GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_16xCPU_64GB) Closure closure = null) {
+        serverPlan_16xCPU_64GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_20xCPU_96GB serverPlan_20xCPU_96GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_20xCPU_96GB) Closure closure = null) {
+        configure(new ServerPlan_20xCPU_96GB(kwargs), closure)
+    }
+
+    static ServerPlan_20xCPU_96GB serverPlan_20xCPU_96GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_20xCPU_96GB) Closure closure = null) {
+        serverPlan_20xCPU_96GB(EMPTY_MAP, closure)
+    }
+
+    static ServerPlan_20xCPU_128GB serverPlan_20xCPU_128GB(Map kwargs,
+                                                     @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_20xCPU_128GB) Closure closure = null) {
+        configure(new ServerPlan_20xCPU_128GB(kwargs), closure)
+    }
+
+    static ServerPlan_20xCPU_128GB serverPlan_20xCPU_128GB(
+            @DelegatesTo(strategy = DELEGATE_FIRST, value = ServerPlan_20xCPU_128GB) Closure closure = null) {
+        serverPlan_20xCPU_128GB(EMPTY_MAP, closure)
     }
 
     static ServerSize serverSize(Map kwargs,
