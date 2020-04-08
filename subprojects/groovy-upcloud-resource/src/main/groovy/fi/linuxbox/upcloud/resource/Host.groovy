@@ -12,11 +12,11 @@ import groovy.transform.InheritConstructors
 @InheritConstructors
 class Host extends Resource {
     /**
-     * Host identifier.
+     * Identifier of a private cloud host.
      */
     Long id
     /**
-     * Host description.
+     * Description of a private cloud host.
      */
     String description
     /**
@@ -28,7 +28,10 @@ class Host extends Resource {
      */
     String zone
     /**
-     * Statistics like CPU idle or memory free.
+     * Statistics about a private cloud host.
+     * <p>
+     *     Note that there may be multiple statistics with the same name; their timestamps should be different, though.
+     * </p>
      */
     List<Stat> stats
 }

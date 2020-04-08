@@ -4,8 +4,6 @@ import fi.linuxbox.upcloud.core.Resource
 import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
-import java.time.ZonedDateTime
-
 /**
  * A statistic about a {@link Host}.
  */
@@ -19,10 +17,10 @@ class Stat extends Resource {
     /**
      * Value of this statistic.
      * <p>
-     *     For CPU idle statistic, average percentage over last 15 minutes.
+     *     For CPU idle statistic, average percentage over the last 15 minutes from the timestamp.
      * </p>
      * <p>
-     *     For memory free statistic, current value in gigabytes.
+     *     For memory free statistic, gigabytes free at the timestamp.
      * </p>
      */
     BigDecimal value
