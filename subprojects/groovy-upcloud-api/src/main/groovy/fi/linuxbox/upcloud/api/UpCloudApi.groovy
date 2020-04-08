@@ -71,13 +71,13 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.prices { resp, err ->
      *         assert resp?.prices instanceof List
-     *         assert rest.prices.every { it instanceof Zone }
+     *         assert resp.prices.every { it instanceof Zone }
      *     }
      * </code></pre>
      * <p>
-     *     When zones are listed via this API, they will <b>not</b> include
-     *     {@link fi.linuxbox.upcloud.resource.Zone#id} properties, but {@link fi.linuxbox.upcloud.resource.Zone#name}
-     *     properties instead.  They are the same.
+     *     When zones are listed via this API, as opposed to {@link #zones([Ljava.lang.Object;) zones}, they will <b>not</b>
+     *     include {@link fi.linuxbox.upcloud.resource.Zone#id} properties, but
+     *     {@link fi.linuxbox.upcloud.resource.Zone#name} properties instead.  They are the same.
      * </p>
      *
      * @param args Request callbacks for the {@code GET /price} call.
@@ -97,13 +97,19 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.zones { resp, err ->
      *         assert resp?.zones instanceof List
-     *         assert rest.zones.every { it instanceof Zone }
+     *         assert resp.zones.every { it instanceof Zone }
      *     }
      * </code></pre>
      * <p>
-     *     When zones are listed via this API, they will <b>not</b> include
-     *     {@link fi.linuxbox.upcloud.resource.Zone#name} properties, but {@link fi.linuxbox.upcloud.resource.Zone#id}
-     *     properties instead.  They are the same.
+     *     When zones are listed via this API, as opposed to {@link #prices([Ljava.lang.Object;) prices}, they will <b>not</b>
+     *     include {@link fi.linuxbox.upcloud.resource.Zone#name} properties, but
+     *     {@link fi.linuxbox.upcloud.resource.Zone#id} properties instead.  They are the same.
+     * </p>
+     * <p>
+     *     NOTE: Since {@code public} is a keyword in Groovy, there's no {@code public} field declared in the
+     *     {@link fi.linuxbox.upcloud.resource.Zone} class.  In dynamic Groovy, you can still access the property as
+     *     {@code zone.public}, but in static Groovy you will need to use {@code zone.getProperty("public")} instead.
+     *     The value is {@code "yes"} for public zones and {@code "no"} for private cloud zones.
      * </p>
      *
      * @param args Request callbacks for the {@code GET /zone} call.
@@ -122,7 +128,7 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.timezones { resp, err ->
      *         assert resp?.timezones instanceof List
-     *         assert rest.timezones.every { it instanceof String }
+     *         assert resp.timezones.every { it instanceof String }
      *     }
      * </code></pre>
      *
@@ -143,7 +149,7 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.plans { resp, err ->
      *         assert resp?.plans instanceof List
-     *         assert rest.plans.every { it instanceof Plan }
+     *         assert resp.plans.every { it instanceof Plan }
      *     }
      * </code></pre>
      *
@@ -164,7 +170,7 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.serverSizes { resp, err ->
      *         assert resp?.serverSizes instanceof List
-     *         assert rest.serverSizes.every { it instanceof ServerSize }
+     *         assert resp.serverSizes.every { it instanceof ServerSize }
      *     }
      * </code></pre>
      *
@@ -185,7 +191,7 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.servers { resp, err ->
      *         assert resp?.servers instanceof List
-     *         assert rest.servers.every { it instanceof Server }
+     *         assert resp.servers.every { it instanceof Server }
      *     }
      * </code></pre>
      * <p>
@@ -210,7 +216,7 @@ trait UpCloudApi {
      * <pre><code class="groovy">
      *     upcloud.ipAddresses { resp, err ->
      *         assert resp?.ipAddresses instanceof List
-     *         assert rest.ipAddresses.every { it instanceof IpAddress }
+     *         assert resp.ipAddresses.every { it instanceof IpAddress }
      *     }
      * </code></pre>
      * @param args Request callbacks for the {@code GET /ip_address} call.

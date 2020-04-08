@@ -32,7 +32,7 @@ class UpCloudContract {
     /**
      * UpCloud API context path.
      */
-    static final String API_VERSION = '/1.2/'
+    static final String API_VERSION = '/1.3/'
 
     /**
      * Construct request headers for a session.
@@ -50,7 +50,7 @@ class UpCloudContract {
                 'Authorization': 'Basic ' + "$username:$password".bytes.encodeBase64().toString(),
                 'Content-Type' : 'application/json',
                 'Host'         : 'api.upcloud.com',
-                'User-Agent'   : 'Groovy UpCloud/0.0.8-SNAPSHOT ' + userAgent,
+                'User-Agent'   : 'Groovy UpCloud/0.1.0-SNAPSHOT ' + userAgent,
         ])
     }
 }

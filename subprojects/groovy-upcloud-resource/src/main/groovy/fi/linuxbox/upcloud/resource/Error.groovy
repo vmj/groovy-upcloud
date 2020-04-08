@@ -36,12 +36,12 @@ import groovy.transform.InheritConstructors
  *     upcloud.account { Resource resp, Throwable err ->
  *         if (err) {
  *             // The err.message is something like:
- *             //   - "failed to start http exchange (GET /1.2/account)"
- *             //   - "failed to finish http exchange (GET /1.2/account)"
- *             //   - "cancelled http exchange (GET /1.2/account)"
+ *             //   - "failed to start http exchange (GET /1.3/account)"
+ *             //   - "failed to finish http exchange (GET /1.3/account)"
+ *             //   - "cancelled http exchange (GET /1.3/account)"
  *             log.fatal("Network error", err)
  *         } else if (resp.error) {
- *             // "HTTP error: 401 Unauthorized (GET /1.2/account)"
+ *             // "HTTP error: 401 Unauthorized (GET /1.3/account)"
  *             log.error "HTTP error: ${resp.META}"
  *             // "Details: Error(errorCode: xxx, errorMessage: yyy)"
  *             log.error "Details: ${resp.error}"
