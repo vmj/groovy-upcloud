@@ -24,14 +24,26 @@ import groovy.transform.InheritConstructors
 /**
  * Description of an UpCloud zone.
  * <p>
- *     A list of these can be fetched from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API} or
- *     {@link fi.linuxbox.upcloud.api.UpCloud#zones(def) Zones API}.  Both return a list of zones, but their
- *     content is completely different:
+ *     A list of these can be fetched from {@link fi.linuxbox.upcloud.api.UpCloudApi#zones([Ljava.lang.Object;)} and
+ *     from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.  Both return a list of zones, but
+ *     their content is completely different:
  * </p>
- * <ul>
- *     <li>Zones API returns {@link #id} and {@link #description} properties, and nothing else</li>
- *     <li>Pricing API returns {@link #name} and various pricing properties. The name is same is id</li>
- * </ul>
+ * <h4>Zones</h2>
+ * <p>
+ *     The {@link fi.linuxbox.upcloud.api.UpCloudApi#zones([Ljava.lang.Object;)} API returns {@link #id},
+ *     {@link #description}, and {@code public} properties, and nothing else.
+ * </p>
+ * <p>
+ *     NOTE: Since {@code public} is a keyword in Groovy, there's no {@code public} field declared in this class.
+ *     In dynamic Groovy, you can still access the property as {@code zone.public}, but in static Groovy you will need
+ *     to use {@code zone.getProperty("public")} instead.  The value is {@code "yes"} for public zones and
+ *     {@code "no"} for private cloud zones.
+ * </p>
+ * <h4>Prices</h4>
+ * <p>
+ *     The {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)} API returns {@link #name} and the
+ *     various pricing properties. The name is same as id in the zones listing.
+ * </p>
  */
 @CompileStatic
 @InheritConstructors
@@ -40,9 +52,9 @@ class Zone extends Resource {
      * Unique zone ID.
      * <p>
      *     This has values such as {@code fi-hel1}.  This is what you get from
-     *     {@link fi.linuxbox.upcloud.api.UpCloud#zones(def) Zones API}.  This
+     *     {@link fi.linuxbox.upcloud.api.UpCloudApi#zones([Ljava.lang.Object;)}.  This
      *     same information is available in the {@link #name} property when using
-     *     the {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     the {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     String id
@@ -50,7 +62,7 @@ class Zone extends Resource {
     /**
      * Zone description.
      * <p>
-     *     This is not returned from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is not returned from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     String description
@@ -59,9 +71,9 @@ class Zone extends Resource {
      * Unique zone name.
      * <p>
      *     This has values such as {@code fi-hel1}.  This is what you get from
-     *     {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.  This
+     *     {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.  This
      *     same information is available in the {@link #id} property when using
-     *     the {@link fi.linuxbox.upcloud.api.UpCloud#zones(def) Zones API}.
+     *     the {@link fi.linuxbox.upcloud.api.UpCloudApi#zones([Ljava.lang.Object;)}.
      * </p>
      */
     String name
@@ -69,7 +81,7 @@ class Zone extends Resource {
     /**
      * Firewall price information for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     Firewall firewall
@@ -77,7 +89,7 @@ class Zone extends Resource {
     /**
      * I/O request price information for backups for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     IoRequestBackup ioRequestBackup
@@ -85,7 +97,7 @@ class Zone extends Resource {
     /**
      * I/O request price information for HDD storage for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     IoRequestHdd ioRequestHdd
@@ -93,7 +105,7 @@ class Zone extends Resource {
     /**
      * I/O request price information for MAXIOPS storage for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     IoRequestMaxiops ioRequestMaxiops
@@ -101,7 +113,7 @@ class Zone extends Resource {
     /**
      * IPv4 address price for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     Ipv4Address ipv4Address
@@ -109,7 +121,7 @@ class Zone extends Resource {
     /**
      * IPv6 address price for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     Ipv6Address ipv6Address
@@ -117,7 +129,7 @@ class Zone extends Resource {
     /**
      * Inbound IPv4 traffic price information for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     PublicIpv4BandwidthIn publicIpv4BandwidthIn
@@ -125,7 +137,7 @@ class Zone extends Resource {
     /**
      * Outbound IPv4 traffic price information for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     PublicIpv4BandwidthOut publicIpv4BandwidthOut
@@ -133,7 +145,7 @@ class Zone extends Resource {
     /**
      * Inbound IPv6 traffic price information for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     PublicIpv6BandwidthIn publicIpv6BandwidthIn
@@ -141,7 +153,7 @@ class Zone extends Resource {
     /**
      * Outbound IPv6 traffic price information for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     PublicIpv6BandwidthOut publicIpv6BandwidthOut
@@ -149,7 +161,7 @@ class Zone extends Resource {
     /**
      * Price per CPU core for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerCore serverCore
@@ -157,7 +169,7 @@ class Zone extends Resource {
     /**
      * Price per MB of RAM for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerMemory serverMemory
@@ -165,7 +177,7 @@ class Zone extends Resource {
     /**
      * Price per GB of backup storage for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     StorageBackup storageBackup
@@ -173,7 +185,7 @@ class Zone extends Resource {
     /**
      * Price per GB of HDD storage for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     StorageHdd storageHdd
@@ -181,7 +193,7 @@ class Zone extends Resource {
     /**
      * Price per GB of MAXIOPS storage for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     StorageMaxiops storageMaxiops
@@ -189,7 +201,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 1CPU/1GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_1xCPU_1GB serverPlan_1xCPU_1GB
@@ -197,7 +209,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 1CPU/2GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_1xCPU_1GB serverPlan_1xCPU_2GB
@@ -205,7 +217,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 2CPU/2GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_2xCPU_2GB
@@ -213,7 +225,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 2CPU/4GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_2xCPU_4GB
@@ -221,7 +233,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 4CPU/8GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_4xCPU_8GB
@@ -229,7 +241,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 6CPU/16GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_6xCPU_16GB
@@ -237,7 +249,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 8CPU/32GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_8xCPU_32GB
@@ -245,7 +257,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 12CPU/48GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_12xCPU_48GB
@@ -253,7 +265,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 16CPU/64GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_16xCPU_64GB
@@ -261,7 +273,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 20CPU/96GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_20xCPU_96GB
@@ -269,7 +281,7 @@ class Zone extends Resource {
     /**
      * Fixed server configuration price for 20CPU/128GB plan for this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     ServerPlan_2xCPU_2GB serverPlan_20xCPU_128GB
@@ -277,7 +289,7 @@ class Zone extends Resource {
     /**
      * Private network price for a this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     NetworkPrivateVlan networkPrivateVlan
@@ -285,7 +297,7 @@ class Zone extends Resource {
     /**
      * Private template price for a this zone.
      * <p>
-     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloud#prices(def) Pricing API}.
+     *     This is returned only from {@link fi.linuxbox.upcloud.api.UpCloudApi#prices([Ljava.lang.Object;)}.
      * </p>
      */
     StorageTemplate storageTemplate
