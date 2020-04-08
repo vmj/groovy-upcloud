@@ -36,6 +36,14 @@ class HostCRUDSpec extends ApiSpecification {
     // build minimal class that works for the HostApi trait: HTTP and id
     def host = build 'Host', HTTP: session, { id = 123L } withTraits HostApi
 
+    def "load: GET /host/123"() {
+        when:
+        host.load {}
+
+        then:
+        requestIs 'GET', '/host/123'
+    }
+
     def "update: PATCH /host/123"() {
         given:
             def changes = build 'Host', {

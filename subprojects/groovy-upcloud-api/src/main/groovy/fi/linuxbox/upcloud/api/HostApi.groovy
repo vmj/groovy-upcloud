@@ -20,6 +20,32 @@ trait HostApi {
     abstract Long getId()
 
     /**
+     * Fetch detailed information about a specific {@link fi.linuxbox.upcloud.resource.Host}.
+     * <p>
+     *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Host}
+     *     in the {@code host} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     import fi.linuxbox.upcloud.api.HostApi
+     *     import fi.linuxbox.upcloud.resource.Host
+     *
+     *     // Obtain HostApi somehow.  For example:
+     *     final hostApi = [HTTP: session, id: 123] as HostApi
+     *
+     *     hostApi.load { resp, err ->
+     *         assert resp?.host instanceof Host
+     *     }
+     * </code></pre>
+     *
+     * @param args Request callbacks for the {@code GET /host/&#36;&#123;host.id&#125;} call.
+     * @return Whatever is returned by the {@link fi.linuxbox.upcloud.core.Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/14-hosts/#get-host-details" target="_top">UpCloud API docs for GET /host/&#36;{host.id}</a>
+     */
+    def load(...args) {
+        HTTP.GET(hostPath(), *args)
+    }
+
+    /**
      * Modifies the description of a private cloud host.
      * <p>
      *     A {@code 200 OK} response will include an instance of {@link fi.linuxbox.upcloud.resource.Host}
