@@ -66,6 +66,15 @@ class Builder extends ResourceBuilder {
         firewallRule(EMPTY_MAP, closure)
     }
 
+    static Host host(Map kwargs,
+                     @DelegatesTo(strategy = DELEGATE_FIRST, value = Host) Closure closure = null) {
+        configure(new Host(kwargs), closure)
+    }
+
+    static Host host(@DelegatesTo(strategy = DELEGATE_FIRST, value = Host) Closure closure = null) {
+        host(EMPTY_MAP, closure)
+    }
+
     static IoRequestBackup ioRequestBackup(Map kwargs,
                                            @DelegatesTo(strategy = DELEGATE_FIRST, value = IoRequestBackup) Closure closure = null) {
         configure(new IoRequestBackup(kwargs), closure)
@@ -366,6 +375,15 @@ class Builder extends ResourceBuilder {
 
     static ServerSize serverSize(@DelegatesTo(strategy = DELEGATE_FIRST, value = ServerSize) Closure closure = null) {
         serverSize(EMPTY_MAP, closure)
+    }
+
+    static Stat stat(Map kwargs,
+                     @DelegatesTo(strategy = DELEGATE_FIRST, value = Stat) Closure closure = null) {
+        configure(new Stat(kwargs), closure)
+    }
+
+    static Stat stat(@DelegatesTo(strategy = DELEGATE_FIRST, value = Stat) Closure closure = null) {
+        stat(EMPTY_MAP, closure)
     }
 
     static Storage storage(Map kwargs,

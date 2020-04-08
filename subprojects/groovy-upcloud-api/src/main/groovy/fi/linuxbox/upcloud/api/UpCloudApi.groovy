@@ -29,7 +29,7 @@ import static fi.linuxbox.upcloud.core.ResourceUtil.wrapped
  * </p>
  * <ul>
  *     <li>getting account information</li>
- *     <li>listing prices, zones, timezones, plans, and server sizes</li>
+ *     <li>listing prices, zones, timezones, plans, server sizes, and hosts on private cloud</li>
  *     <li>listing and creating servers, IP addresses, tags, and storages</li>
  * </ul>
  * <p>
@@ -280,6 +280,32 @@ trait UpCloudApi {
             HTTP.GET("storage/$type", *args)
         else
             HTTP.GET("storage", *args)
+    }
+
+    /**
+     * Fetch a list of hosts on private cloud associated with this account.
+     * <p>
+     *     A {@code 200 OK} response will include a list of {@link fi.linuxbox.upcloud.resource.Host} instances in the
+     *     {@code hosts} property.
+     * </p>
+     * <pre><code class="groovy">
+     *     upcloud.hosts { resp, err ->
+     *         assert resp?.hosts instanceof List
+     *         assert resp.hosts.every { it instanceof Host }
+     *     }
+     * </code></pre>
+     * @param args.zone Optional filter for hosts.
+     * @param args Request callbacks for the {@code GET /host} call.
+     * @return Whatever is returned by the {@link Session} for starting an asynchronous request.
+     * @see <a href="https://www.upcloud.com/api/14-hosts/#list-available-hosts" target="_top">UpCloud API docs for GET /host</a>
+     */
+    def hosts(...args) {
+        // FIXME: modifies the user supplied map
+        def zone = args.find { it instanceof Map } ?.remove('zone')
+        if (zone)
+            HTTP.GET("host?zone=$zone", *args)
+        else
+            HTTP.GET('host', *args)
     }
 
     /**
