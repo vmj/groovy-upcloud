@@ -185,6 +185,48 @@ abstract class HTTPFacade<T> {
     }
 
     /**
+     * Performs a HTTP PATCH method.
+     * <p>
+     *     This method calls the
+     *     {@link #request(Map&lt;?, Closure&lt;Void&gt;&gt;, java.lang.String, java.lang.String, fi.linuxbox.upcloud.core.Resource, Closure&lt;Void&gt;) request method}
+     *     with {@code PATCH} method.
+     * </p>
+     * <p>
+     *     This overload is used when the application code calls this directly.  For example:
+     * </p>
+     * <pre><code lang="groovy">
+     *     import static fi.linuxbox.upcloud.builder.ResourceBuilder.configure
+     *
+     *     Resource lb = // obtain a LoadBalancer...
+     *
+     *     lb = configure lb {
+     *         method = 'round-robin'
+     *     }
+     *
+     *     session.PATCH "/lb/${lb.uuid}", lb, error: { log.fatal("${it.META}") }, { res, err ->
+     *         if (err)
+     *           log.warn("Network error: ${err.message}")
+     *         else
+     *           log.info("Load balancer updated")
+     *     }
+     * </code></pre>
+     * <p>
+     *     In the example above, there is a REST API endpoint that this library does not know about: {@code /lb}.
+     *     Application can bypass the outdated library API and PATCH the custom resource to the REST API directly.
+     * </p>
+     *
+     * @param cbs Additional request callbacks.
+     * @param path Resource path relative to the API context path, i.e. without leading slash.
+     * @param resource Resource to send or {@code null}.
+     * @param cb Default request callback.
+     * @return Whatever is returned by a concrete subclass from the
+     * {@link #request(Map&lt;?, Closure&lt;Void&gt;&gt;, java.lang.String, java.lang.String, fi.linuxbox.upcloud.core.Resource, Closure&lt;Void&gt;) request method}.
+     */
+    T PATCH(Map<?, Closure<Void>> cbs, String path, Resource resource, Closure<Void> cb = null) {
+        request(cbs, "PATCH", path, resource, cb)
+    }
+
+    /**
      * Perform a HTTP request.
      *
      * @param cbs Additional request callbacks.
@@ -334,5 +376,40 @@ abstract class HTTPFacade<T> {
      */
     T POST(String path, Resource resource, Map<?, Closure<Void>> cbs, Closure<Void> cb = null) {
         POST(cbs, path, resource, cb)
+    }
+
+    /**
+     * Calls {@code PATCH} with an empty map as additional request callbacks.
+     * <p>
+     *     This overload is typically used by the higher level API traits when the application does not pass any
+     *     additional request callbacks.
+     * </p>
+     *
+     * @param path Resource path relative to the API context path, i.e. without leading slash.
+     * @param resource Resource to send or {@code null}.
+     * @param cb Default request callback.
+     * @return Whatever is returned by a concrete subclass from the
+     * {@link #request(Map&lt;?, Closure&lt;Void&gt;&gt;, java.lang.String, java.lang.String, fi.linuxbox.upcloud.core.Resource, Closure&lt;Void&gt;) request method}.
+     */
+    T PATCH(String path, Resource resource, Closure<Void> cb = null) {
+        PATCH(EMPTY_CBS, path, resource, cb)
+    }
+
+    /**
+     * Calls {@code PATCH} with given arguments in correct order.
+     * <p>
+     *     This overload is typically used by the higher level API traits when the application does provide some
+     *     additional request callbacks.
+     * </p>
+     *
+     * @param path Resource path relative to the API context path, i.e. without leading slash.
+     * @param resource Resource to send or {@code null}.
+     * @param cbs Additional request callbacks.
+     * @param cb Default request callback.
+     * @return Whatever is returned by a concrete subclass from the
+     * {@link #request(Map&lt;?, Closure&lt;Void&gt;&gt;, java.lang.String, java.lang.String, fi.linuxbox.upcloud.core.Resource, Closure&lt;Void&gt;) request method}.
+     */
+    T PATCH(String path, Resource resource, Map<?, Closure<Void>> cbs, Closure<Void> cb = null) {
+        PATCH(cbs, path, resource, cb)
     }
 }

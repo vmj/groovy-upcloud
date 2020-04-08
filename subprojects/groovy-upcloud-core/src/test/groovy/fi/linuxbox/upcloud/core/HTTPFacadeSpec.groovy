@@ -362,4 +362,82 @@ class HTTPFacadeSpec extends Specification {
         session.resource === RESOURCE
         session.cb == null
     }
+
+    def "PATCH(Map, String, Resource, Closure)"() {
+        when:
+        def ok = session.PATCH(CBS, PATH, RESOURCE, CB)
+
+        then:
+        ok == SUCCESS
+        session.cbs === CBS
+        session.method == 'PATCH'
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
+    }
+
+    def "PATCH(Map, String, Resource)"() {
+        when:
+        def ok = session.PATCH(CBS, PATH, RESOURCE)
+
+        then:
+        ok == SUCCESS
+        session.cbs === CBS
+        session.method == 'PATCH'
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb == null
+    }
+
+    def "PATCH(String, Resource, Map, Closure)"() {
+        when:
+        def ok = session.PATCH(PATH, RESOURCE, CBS, CB)
+
+        then:
+        ok == SUCCESS
+        session.cbs === CBS
+        session.method == 'PATCH'
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
+    }
+
+    def "PATCH(String, Resource, Map)"() {
+        when:
+        def ok = session.PATCH(PATH, RESOURCE, CBS)
+
+        then:
+        ok == SUCCESS
+        session.cbs === CBS
+        session.method == 'PATCH'
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb == null
+    }
+
+    def "PATCH(String, Resource, Closure)"() {
+        when:
+        def ok = session.PATCH(PATH, RESOURCE, CB)
+
+        then:
+        ok == SUCCESS
+        session.cbs.isEmpty()
+        session.method == 'PATCH'
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb === CB
+    }
+
+    def "PATCH(String, Resource)"() {
+        when:
+        def ok = session.PATCH(PATH, RESOURCE)
+
+        then:
+        ok == SUCCESS
+        session.cbs.isEmpty()
+        session.method == 'PATCH'
+        session.path === PATH
+        session.resource === RESOURCE
+        session.cb == null
+    }
 }

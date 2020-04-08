@@ -44,6 +44,14 @@ class UpCloudSpec extends ApiSpecification {
             requestIs 'GET', '/storage/favorite'
     }
 
+    def "Private Cloud host list can be filtered by zone"() {
+        when:
+            upCloud.hosts zone: 'test-zone-fi-1', {}
+
+        then:
+            requestIs 'GET', '/host?zone=test-zone-fi-1'
+    }
+
     @Unroll
     def "#methodName does GET ...#resource"() {
         when:
@@ -64,6 +72,7 @@ class UpCloudSpec extends ApiSpecification {
             'ipAddresses' | '/ip_address'
             'storages'    | '/storage'
             'tags'        | '/tag'
+            'hosts'       | '/host'
     }
 
     def "creating an IP address"() {

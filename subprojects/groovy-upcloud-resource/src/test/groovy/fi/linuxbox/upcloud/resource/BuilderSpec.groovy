@@ -207,6 +207,40 @@ class BuilderSpec extends Specification {
         firewallRule.HTTP == session
     }
 
+    def "host builder"() {
+        when:
+        def host = host {}
+
+        then:
+        host instanceof Host
+    }
+
+    def "host without config"() {
+        when:
+        def host = host()
+
+        then:
+        host instanceof Host
+    }
+
+    def "host with kwargs and config"() {
+        when:
+        def host = host HTTP: session, {}
+
+        then:
+        host instanceof Host
+        host.HTTP == session
+    }
+
+    def "host with kwargs and no config"() {
+        when:
+        def host = host HTTP: session
+
+        then:
+        host instanceof Host
+        host.HTTP == session
+    }
+
     def "ioRequestBackup builder"() {
         when:
         def ioRequestBackup = ioRequestBackup {}
@@ -1167,7 +1201,6 @@ class BuilderSpec extends Specification {
         serverSize instanceof ServerSize
     }
 
-
     def "serverSize without config"() {
         when:
         def serverSize = serverSize()
@@ -1192,6 +1225,40 @@ class BuilderSpec extends Specification {
         then:
         serverSize instanceof ServerSize
         serverSize.HTTP == session
+    }
+
+    def "stat builder"() {
+        when:
+        def stat = stat {}
+
+        then:
+        stat instanceof Stat
+    }
+
+    def "stat without config"() {
+        when:
+        def stat = stat()
+
+        then:
+        stat instanceof Stat
+    }
+
+    def "stat with kwargs and config"() {
+        when:
+        def stat = stat HTTP: session, {}
+
+        then:
+        stat instanceof Stat
+        stat.HTTP == session
+    }
+
+    def "stat with kwargs and no config"() {
+        when:
+        def stat = stat HTTP: session
+
+        then:
+        stat instanceof Stat
+        stat.HTTP == session
     }
 
     def "storage builder"() {
